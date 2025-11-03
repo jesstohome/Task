@@ -98,6 +98,7 @@ export default {
         position: relative;
         z-index: 1;
         text-align: center;
+        margin-top: 80px;
         .qiu{
             width: 175px;
             border-radius: 50%;
@@ -153,8 +154,8 @@ export default {
             
             .close-btn {
                 position: absolute;
-                top: 16px;
-                right: 16px;
+                top: 26px;
+                right: 26px;
                 width: 40px;
                 height: 40px;
                 display: flex;
@@ -164,7 +165,7 @@ export default {
                 z-index: 2;
                 
                 :deep(.van-icon) {
-                    font-size: 24px;
+                    font-size: 44px;
                     color: #fff;
                 }
                 

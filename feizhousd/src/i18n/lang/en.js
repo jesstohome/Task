@@ -85,7 +85,7 @@ module.exports = {
 		"switch_lang_success": "Succeeded in switching languages",
 		"home": "Home page",
 		"order": "The order",
-		"obj": "object",
+		"obj": "Starting",
 		"tel": "Customer service",
 		"self": "my",
 		"my_yu_e": "The balance of my",

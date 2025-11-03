@@ -85,7 +85,7 @@ module.exports = {
     switch_lang_success: 'Chuyển đổi ngôn ngữ thành công',
     home: 'Trang chủ',
     order: 'Đặt hàng',
-    obj: 'Đối tượng',
+    obj: 'Bắt đầu',
     tel: 'Dịch vụ',
     self: 'Của tôi',
     my_yu_e: 'Số dư của tôi',

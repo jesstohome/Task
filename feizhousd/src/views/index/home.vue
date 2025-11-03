@@ -1,22 +1,23 @@
 <template>
     <div class="home">
-        <van-nav-bar :title="app_name">
+        <van-nav-bar>
             <template #left>
-                <img :src="logo" class="logo" height="30" alt="">
+                <img :src="require('@/assets/images/head.png')" class="logo-head" height="30" alt="">
             </template>
             <template #right>
                 <!-- <img :src="$store.state.langImg" class="lang" height="18" width="27" alt=""> -->
-                <lang-vue></lang-vue>
+                <!-- <lang-vue></lang-vue> -->
+                 <img @click="$router.push({path: '/message'})" :src="require('@/assets/images/news/msg2.png')" width="26.5" alt="">
             </template>
         </van-nav-bar>
         <!-- <div class="top">
         </div> -->
         <!-- banner图 -->
-        <van-swipe class="my-swipe banner" :autoplay="3000" indicator-color="white" v-if="banner.length > 0">
+        <!-- <van-swipe class="my-swipe banner" :autoplay="3000" indicator-color="white" v-if="banner.length > 0">
             <van-swipe-item v-for="item in banner" :key="item.id">
                 <img :src="item.image" alt="" class="img">
             </van-swipe-item>
-        </van-swipe>
+        </van-swipe> -->
         <!-- 内容 -->
         <div class="content">
             <!-- 开始赚钱 -->
@@ -26,38 +27,11 @@
             </div>
             <van-button type="primary" class="kszq" round block  @click="toRoute('/obj')">{{$t('msg.kszq')}}</van-button> -->
             <!-- 次导航 -->
-            <div class="n_nav">
-                <div class="li nav" @click="toRoute('/chongzhi')">
-                    <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_recharge.png')" width="40" height="40" alt="">
-                    </div>
-                    <div class="text" style="color: #8389fb; font-weight: 600;">{{$t('msg.mscz')}}</div>
-                </div>
-                <div class="li nav" @click="toRoute('/drawing',monney,2)">
-                    <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_withdraw.png')" width="40" height="40" alt="">
-                    </div>
-                    <div class="text" style="color: #fb9833; font-weight: 600;">{{$t('msg.kstx')}}</div>
-                </div>
-                <div class="li nav" @click="toRoute('/libao',monney)">
-                    <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_finance.png')" width="40" height="40" alt="">
-                    </div>
-                    <div class="text" style="color: #f85355; font-weight: 600;">{{$t('msg.jflc')}}</div>
-                </div>
-                <div class="li nav" @click="toRoute('/share')">
-                    <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_invite.png')" width="40" height="40" alt="">
-                    </div>
-                    <div class="text" style="color: #3bc180; font-weight: 600;">{{$t('msg.yqhy')}}</div>
-                </div>
-            </div>
-            <!-- 次导航 -->
             <div class="earnings mt-2" style="">
                 <div class="earnings_Info">
                     <div class="vip_level ft-16" v-if="userinfo?.tel">
                         <div style="flex: 2 1 0px;">{{userinfo?.tel}}</div>
-                        <div style="flex: 1 1 0px; justify-content: center;">{{userinfo?.invite_code}}</div>
+                        <!-- <div style="flex: 1 1 0px; justify-content: center;">{{userinfo?.invite_code}}</div> -->
                     </div>
                     <div class="balance mt-2 d-flex justify-between">
                         <span >{{$t('msg.zhye')}}</span><span >{{$t('msg.djje')}}</span>
@@ -91,6 +65,34 @@
                     </div>
                 </div>
             </div>
+            <!-- 次导航 -->
+            <div class="n_nav">
+                <div class="li nav" @click="toRoute('/chongzhi')">
+                    <div class="imge">
+                        <img :src="require('@/assets/images/news/ic_recharge.png')" width="40" height="40" alt="">
+                    </div>
+                    <div class="text" style="color: #8389fb; font-weight: 600;">{{$t('msg.mscz')}}</div>
+                </div>
+                <div class="li nav" @click="toRoute('/drawing',monney,2)">
+                    <div class="imge">
+                        <img :src="require('@/assets/images/news/ic_withdraw.png')" width="40" height="40" alt="">
+                    </div>
+                    <div class="text" style="color: #fb9833; font-weight: 600;">{{$t('msg.kstx')}}</div>
+                </div>
+                <div class="li nav" @click="toRoute('/libao',monney)">
+                    <div class="imge">
+                        <img :src="require('@/assets/images/news/ic_finance.png')" width="40" height="40" alt="">
+                    </div>
+                    <div class="text" style="color: #f85355; font-weight: 600;">{{$t('msg.jflc')}}</div>
+                </div>
+                <div class="li nav" @click="toRoute('/share')">
+                    <div class="imge">
+                        <img :src="require('@/assets/images/news/ic_invite.png')" width="40" height="40" alt="">
+                    </div>
+                    <div class="text" style="color: #3bc180; font-weight: 600;">{{$t('msg.yqhy')}}</div>
+                </div>
+            </div>
+            
             <!-- banner图 -->
             <van-row gutter="20" class="hy_box" v-if="hyList.length > 0">
                 <van-col span="12" v-for="item in hyList" :key="item.id" >
@@ -314,9 +316,9 @@ export default {
         :deep(.van-nav-bar){
             // position: sticky;
             // top: 0;
-            background-color: #d4dff5;
+            //background-color: #d4dff5;
             color: #333;
-            padding: 10px 0;
+            padding: 40px 0;
             .van-nav-bar__left{
                 .van-icon{
                     color: #fff;
@@ -327,6 +329,10 @@ export default {
                 font-weight: 600;
                 font-size: 28px;
             }
+        }
+        .logo-head{
+            width: 250px;
+            height: 100px;
         }
         .top{
             height: 62px;
@@ -501,6 +507,7 @@ export default {
         .content{
             padding: 0 30px;
             text-align: left;
+            margin-top: 50px;
             .zq{
                 padding: 46px;
                 margin-top: 40px;
@@ -611,7 +618,7 @@ export default {
             }
         }
         .earnings{
-            background: url('~@/assets/images/news/balanceBG.png') no-repeat;
+            background: url('~@/assets/images/news/balance_bg.png') no-repeat;
             background-size: 100% 100%;
             padding: 24px;
             margin-bottom: 24px;
@@ -627,11 +634,12 @@ export default {
                     justify-content: space-between;
                     line-height: 30px;
                     padding-left: 5px;
-                    font-size: 30px;
+                    font-size: 40px;
                     // font-weight: 500;
-                    color: #000;
+                    color: #ffffff;
+                    font-weight: bold;
                     &:first-child{
-                        border-right: 1px solid #adadad;
+                        //border-right: 1px solid #adadad;
                         padding-right: 5px;
                         padding-left: 0;
                     }

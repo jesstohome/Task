@@ -85,7 +85,7 @@ module.exports = {
     switch_lang_success: 'Cambio de idioma con éxito',
     home: 'página delantera',
     order: 'Pedido',
-    obj: ' Objeto ',
+    obj: 'A partir de',
     tel: 'Servicio al Cliente',
     self: 'mia',
     my_yu_e: 'Saldo de la cuenta',

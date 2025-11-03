@@ -85,7 +85,7 @@ module.exports = {
       switch_lang_success: '切换语言成功',
       home: '首页',
       order: '订单',
-      obj: '对象',
+      obj: '开始',
       tel: '客服',
       self: '我的',
       my_yu_e: '我的余额',

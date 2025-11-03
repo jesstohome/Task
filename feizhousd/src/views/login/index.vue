@@ -3,7 +3,7 @@
     <van-nav-bar :title="title" :left-arrow="leftArrow" @click-left="$router.go(-1)">
         <template #right>
             <template v-if="$route.name === 'login'">
-                <img :src="require('@/assets/images/service.png')" class="lang-icon" alt="">
+                <img @click="$router.push({path: '/register'})" :src="require('@/assets/images/service.png')" class="lang-icon" alt="">
                 <lang-vue v-if="!hideLang" color='white'></lang-vue>
             </template>
             <template v-else>

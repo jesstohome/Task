@@ -3,7 +3,8 @@
         <div class="f_li" v-for="item in list" :key="item.key" :class="item.key == 'obj' && 'obj'" @click="checkList(item.key)">
             <div class="span">
                 <img :src="fooCheck == item.key ? item.img_check : item.img" class="img" alt="">
-                <div class="text" v-if="item.key != 'obj'" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div>
+                <!-- <div class="text" v-if="item.key != 'obj'" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div> -->
+                 <div class="text" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div>
             </div>
         </div>
     </div>
@@ -18,28 +19,29 @@ export default {
         const fooCheck = ref(store.state.fooCheck)
         const list = reactive([
             {
-                img: require('@/assets/images/footer/home.png'),
-                img_check: require('@/assets/images/footer/home_check.png'),
+                img: require('@/assets/images/footer/homeb.png'),
+                img_check: require('@/assets/images/footer/homea.png'),
                 key: 'home'
             },
             {
-                img: require('@/assets/images/footer/order.png'),
-                img_check: require('@/assets/images/footer/order_check.png'),
-                key: 'order'
+                img: require('@/assets/images/footer/serviceb.png'),
+                img_check: require('@/assets/images/footer/servicea.png'),
+                key: 'tel'
             },
+            
             {
-                img: require('@/assets/images/footer/obj1.png'),
-                img_check: require('@/assets/images/footer/obj1.png'),
+                img: require('@/assets/images/footer/startb.png'),
+                img_check: require('@/assets/images/footer/starta.png'),
                 key: 'obj'
             },
             {
-                img: require('@/assets/images/footer/tel.png'),
-                img_check: require('@/assets/images/footer/tel_check.png'),
-                key: 'tel'
+                img: require('@/assets/images/footer/recordb.png'),
+                img_check: require('@/assets/images/footer/recorda.png'),
+                key: 'order'
             },
             {
-                img: require('@/assets/images/footer/self.png'),
-                img_check: require('@/assets/images/footer/self_check.png'),
+                img: require('@/assets/images/footer/myb.png'),
+                img_check: require('@/assets/images/footer/mya.png'),
                 key: 'self'
             },
         ])
@@ -86,10 +88,10 @@ export default {
                     background: #fff;
                     border-radius: 50%;
                     padding: 5px;
-                    height: 100px;
+                    height: 300px;
                     .img{
-                        height: 100%;
-                        width: auto;
+                        height: 120px;
+                        width: 120px;
                     }
                 }
             }
@@ -101,9 +103,9 @@ export default {
                 justify-content: center;
                 text-align: center;
                 .img{
-                    height: 44px;
-                    width: 44px;
-                    margin: 0 auto 5px;
+                    height: 64px;
+                    width: 64px;
+                    margin: 0 auto 10px;
                 }
                 .text{
                     font-size: 24px;
@@ -113,7 +115,7 @@ export default {
                     // left: 50%;
                     // transform: translate(-50%);
                     // white-space: nowrap;
-                    width: 80PX;
+                    //width: 80PX;
                     white-space: wrap;
                     line-height: 1;
                     margin-bottom: 5px;
