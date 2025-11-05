@@ -210,6 +210,7 @@ module.exports = {
     zhzjcg: "账户资金超过",
     mtrwcs: "每天任务次数",
     wfsyqtgjgn: "无法使用其他高级功能",
-    zshdqlxkflq: "专属活动，请联系客服领取"
+    zshdqlxkflq: "专属活动，请联系客服领取",
+    xyf: "信用分"
     }
   }

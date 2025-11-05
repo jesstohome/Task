@@ -301,6 +301,9 @@ module.exports = {
   zhzjcg: "Đã vượt quá số dư tài khoản",
   mtrwcs: "Số lượng nhiệm vụ hàng ngày",
   wfsyqtgjgn: "Không thể sử dụng các tính năng nâng cao khác",
-  zshdqlxkflq: "Hoạt động độc quyền, vui lòng liên hệ bộ phận Chăm sóc Khách hàng để yêu cầu"
+  zshdqlxkflq: "Hoạt động độc quyền, vui lòng liên hệ bộ phận Chăm sóc Khách hàng để yêu cầu",
+  xyf: "درجة الائتمان",
+  wdcw: "امور مالی من",
+  qita: "دیگر"
     }
   }

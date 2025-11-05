@@ -301,6 +301,9 @@ module.exports = {
   zhzjcg: "Fondos de la cuenta excedidos",
   mtrwcs: "Número de tareas diarias",
   wfsyqtgjgn: "No se pueden usar otras funciones avanzadas",
-  zshdqlxkflq: "Actividad exclusiva. Comuníquese con el servicio al cliente para reclamarla"
+  zshdqlxkflq: "Actividad exclusiva. Comuníquese con el servicio al cliente para reclamarla",
+  xyf: "Puntaje de Crédito",
+  wdcw: "Mi Finanzas",
+  qita: "Otros"
   }
 }

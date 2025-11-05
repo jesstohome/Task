@@ -5,65 +5,97 @@
             <div>{{loadText}}</div>
         </div>
         <div class="content">
-            <div class="money">
-                <div class="left">
-                    <div class="top">{{currency}}
-                        <span class="span">{{info.uinfo?.balance_format}}</span>
+            <div class="header-card">
+                    <div class="hc-left">
+                        <van-image :src="require('@/assets/images/news/users.png')" class="hc-avatar" fit="cover" />
+                        <div class="hc-meta">
+                            <div class="hc-name">{{ userinfo.tel }}
+                                <img v-if="userinfo.level" :src="require('@/assets/images/self/vip'+ userinfo.level +'.png')" class="vip" alt="">
+                            </div>
+                            
+                            <div class="hc-score-label">
+                                <div>{{$t('msg.xyf') }}:</div>                              
+                                <van-progress class="jindutiao" :percentage="Number(creditPercent)" pivot-text="" stroke-width="6" color="#fdb824" inactive-color="#ffeedd" />
+                                <div>
+                                    {{ creditPercent }}%
+                                </div>                          
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="text">{{$t('msg.my_yu_e')}}</div>
                 </div>
-                <div class="right">
-                    <!-- <img :src="require('@/assets/images/order/add.png')" class="img" alt=""> -->
-                    <van-button icon="plus" type="primary" to="chongzhi"/>
+            <!-- Earnings block copied/adapted from home.vue -->
+            <div class="earnings mt-2">
+                <div class="earnings_Info">
+                    <div class="vip_level ft-16" v-if="userinfo?.tel">
+                        <div style="flex: 2 1 0px;">{{userinfo?.tel}}</div>
+                    </div>
+                    <div class="balance mt-2 d-flex justify-between">
+                        <span >{{$t('msg.zhye')}}</span><span >{{$t('msg.djje')}}</span>
+                    </div>
+                    <div class="balance-val d-flex justify-between">
+                        <span >
+                            <span class="mm">{{info.uinfo?.balance_format || 0.00}}{{currency}}</span>
+                        </span>
+                        <span >
+                            <span class="mm">{{info.lock_deal || 0.00}}{{currency}}</span></span>
+                    </div>
+                    <!-- 切换按钮：同一行两个按钮 -->
+                    <div class="count-switch">
+                        <van-button class="switch-btn" :class="{active: activeTab===1}" @click="activeTab=1">{{$t('msg.get_m')}}</van-button>
+                        <van-button class="switch-btn" :class="{active: activeTab===2}" @click="activeTab=2">{{$t('msg.zsy')}}</van-button>
+                    </div>
+
+                    <!-- 根据选中按钮显示对应内容 -->
+                    <div class="count-data">
+                        <template v-if="activeTab === 1">
+                            <div class="flex-full">
+                                <div>{{$t('msg.today_monney')}}</div>
+                                <div class="two">{{mInfo.yon1 || 0}}</div>
+                            </div>
+                            <div class="flex-full">
+                                <div>{{$t('msg.zrsy')}}</div>
+                                <div class="two">{{mInfo.Yesterdaysearnings || 0}}</div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="flex-full">
+                                <div>{{$t('msg.zsy')}}</div>
+                                <div class="two">{{mInfo.yon3 || 0}}</div>
+                            </div>
+                            <div class="flex-full">
+                                <div>{{$t('msg.tdsy')}}</div>
+                                <div class="two">{{mInfo.Teambenefits || 0}}</div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
-            <div class="vip">
-                <!-- <img :src="require('@/assets/images/order/info.png')" alt="" class="right" @click="level_show=true"> -->
-                <div class="top">
-                    <!-- <img :src="require('@/assets/images/home/huiyuan.png')" class="l" alt=""> -->
-                    <div class="r">
-                        <div class="title">{{info.level_info?.name || ''}}</div>
-                        <div class="sub">
-                            {{$t('msg.zdye')}}：{{info.level_info?.num_min || 0.00}}
-                        </div>
-                        <div class="sub s1">
-                            {{$t('msg.yonj2')}}：{{(info.level_info?.bili*100 || 0).toFixed(1)}}%
-                        </div>
-                    </div>
+            <div class="vipinfo">
+                <div class="vipimg">
+                    <img v-if="userinfo.level" :src="require('@/assets/images/self/vip'+ userinfo.level +'.png')" class="vip" alt="">
+                    VIP  {{ userinfo.level }} ({{info.day_completed_count || 0}}/{{info.order_num || 0}})
                 </div>
-                <div class="b">
-					<!-- 已抢单数 -->
-                    <!-- <span class="span">{{info.day_d_count || 0}}</span>/{{info.order_num || 0}} -->
-                    <!-- 已完成单数 -->
-					<span class="span">{{info.day_completed_count || 0}}</span>/{{info.order_num || 0}}
+                <div class="vipright">
+                    {{ $t('msg.get_monney') }}: {{(info.level_info?.bili*100 || 0).toFixed(1)}}%
                 </div>
+            </div>
+            <!-- 背景视频（自动循环、无控件，作为背景展示） -->
+            <div class="video-bg">
+                <video class="video-bg__media" :src="qiangdanMp4" autoplay loop muted playsinline preload="auto"></video>
             </div>
             <div class="yonj">
-                <div class="li">
-                    <div class="top">{{currency}}{{info.day_deal || 0.00}}</div>
-                    <div class="text">{{$t('msg.yonj2')}}</div>
-                </div>
-                <div class="li">
-                    <div class="top">{{currency}}{{info.lock_deal || 0.00}}</div>
-                    <div class="text">{{$t('msg.djje')}}</div>
-                </div>
-                <div class="li">
-                </div>
-                <div class="li">
-                    <div class="top">{{currency}}{{info.uinfo?.balance_format || 0.00}}</div>
-                    <div class="text">{{$t('msg.kyye')}}</div>
-                </div>
                 <div class="btnn">
                     <van-button round block type="primary" class="ksqg" @click="getDd()">
                         <img :src="require('@/assets/images/news/click.png')" class="img" height="35" alt="">
-                        {{loading ? $t('msg.hddd') : $t('msg.ksqg')}}
+                        {{loading ? $t('msg.hddd') : $t('msg.obj')}}
                     </van-button>
                 </div>
             </div>
-            <div class="qd">
-                <!-- <div class="title">{{$t('msg.qdsm')}}</div> -->
+            <!-- <div class="qd">
+                <div class="title">{{$t('msg.qdsm')}}</div>
                 <div class="sub" v-html="content"></div>
-            </div>
+            </div> -->
         </div>
 
         <!-- 会员等级弹窗 -->
@@ -158,7 +190,7 @@
     </div>
 </template>
 <script>
-import { ref,getCurrentInstance, reactive} from 'vue';
+import { ref,getCurrentInstance, reactive, computed} from 'vue';
 import {rot_order,submit_order,order_info,do_order} from '@/api/order/index'
 import store from '@/store/index'
 import {getdetailbyid} from '@/api/home/index.js'
@@ -166,17 +198,24 @@ import {formatTime} from '@/api/format.js'
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n'
 import {getsupport} from '@/api/tel/index'
+import qiangdanMp4 from '@/assets/images/qiangdan.mp4'
 export default {
     setup(){
          const { t } = useI18n()
+         const userinfo = ref(store.state.userinfo)
         const { push } = useRouter();
         const {proxy} = getCurrentInstance()
-        const level_show = ref(false)
+    const level_show = ref(false)
         const loading = ref(false)
         const loadText = ref('')
         const loadImg = ref('')
         const currency = ref(store.state.baseInfo?.currency)
         const info = ref(store.state.objInfo)
+        const creditPercent = ref(100)
+    // earnings related (copied/adapted from home.vue)
+    const activeTab = ref(1)
+    const monney = computed(() => info.value?.uinfo?.balance_format || '')
+    const mInfo = computed(() => info.value || {})
         const onceinfo = ref({})
         const showTj = ref(false)
         const content = ref('')
@@ -303,7 +342,23 @@ export default {
                 }
             },time)
         } 
-        return {info,currency,level_show,loading,getDd,clickRight,confirmPwd,tjOrder,showTj,onceinfo,formatTime,cancelPwd,content, loadText,status_list,loadImg}
+    const copyInvite = (xinxi) => {
+            try{
+                if (navigator && navigator.clipboard && userinfo.value?.invite_code) {
+                    navigator.clipboard.writeText(userinfo.value.invite_code)
+                    proxy.$toast?.success && proxy.$toast.success(xinxi)
+                }
+            }catch(e){
+                // fallback
+                const ta = document.createElement('textarea')
+                ta.value = userinfo.value?.invite_code || ''
+                document.body.appendChild(ta)
+                ta.select()
+                document.execCommand('copy')
+                document.body.removeChild(ta)
+            }
+        }
+    return {info,currency,level_show,loading,getDd,clickRight,confirmPwd,tjOrder,showTj,onceinfo,formatTime,cancelPwd,content, loadText,status_list,loadImg,activeTab,monney,mInfo, userinfo,creditPercent,copyInvite, qiangdanMp4}
     }
 }
 </script>
@@ -322,6 +377,77 @@ export default {
         border-top-right-radius: 30px;
         padding-bottom:140px;
         color: #333;
+        .header-card{
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #fff;
+                padding: 12px 16px;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                margin-bottom: 12px;
+                height: 200px;
+                text-align: left;
+                font-weight: 900;
+                .hc-left{ display:flex; align-items:center; gap:12px }
+                .hc-avatar{ width:126px; height:126px; border-radius:50%;}
+                .hc-name{ font-size:36px; color:#222;display:flex;align-items: center; gap:15px;}
+                .hc-invite{ font-size:28px; color:#666; margin-top:4px;display: flex;align-items: center; }
+                .code{ background:#f5f5f5; padding:2px 6px; border-radius:6px; margin:0 8px; font-weight:700 }
+                .hc-copy{ background:#fdb824; color:#fff; padding:0 8px;border-radius: 15px; }
+                .hc-score-label{ font-size:28px; color:#666;display: flex;flex-direction: row;align-items: center;gap: 20px; }
+                .jindutiao{width: 150px;}
+                .vip{width: 55px;padding: 0;background-color: #fff;margin-top: 0;box-shadow: 0 0 2.666667vw 0 #ffffff;}
+            }
+        .vipinfo{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: $shadow;
+            border-radius: 20px;
+            height: 100px;
+            font-size: 32px;
+            font-weight: 900;
+            padding: 15px;
+            line-height: 100px;
+            .vipimg{
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                .vip{
+                    width: 60px;
+                    background-color: #fff;
+                    margin-top: 0;
+                    box-shadow: 0 0 2.666667vw 0 #ffffff;
+                    padding: 0;
+                }
+            }           
+            .vipright{
+                font-size: 24px;
+                color: #000;
+                background-color: #fdb824;
+                border-radius: 10px;
+                padding: 10px;
+                line-height: 30px;
+            }
+        }
+        .video-bg{
+            margin-top: 16px;
+            width: 100%;
+            height: 400px; /* 与 vipinfo 类似的视觉高度，可根据需要调整 */
+            overflow: hidden;
+            border-radius: 35px;
+            box-shadow: $shadow;
+            background-color: #000;
+            .video-bg__media{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                pointer-events: none; /* 禁止交互 */
+            }
+        }
         .money{
             display: flex;
             justify-content: space-between;
@@ -351,6 +477,94 @@ export default {
                     right: 0;
                     top: 50%;
                     transform: translateY(-50%);
+                }
+            }
+        }
+        .earnings{
+            background: url('~@/assets/images/news/balance_bg.png') no-repeat;
+            background-size: 100% 100%;
+            padding: 54px 34px;
+            margin-bottom: 24px;
+            .vip_level{
+                height: 30px;
+                display: flex;
+                box-sizing: border-box;
+                font-size: 20px;
+                color: #333;
+                &>div{
+                    flex: 3;
+                    display: flex;
+                    justify-content: space-between;
+                    line-height: 30px;
+                    padding-left: 5px;
+                    font-size: 40px;
+                    color: #ffffff;
+                    font-weight: bold;
+                    &:first-child{
+                        padding-right: 5px;
+                        padding-left: 0;
+                    }
+                }
+            }
+            .balance{
+                margin: 20px 0 1px;
+                font-size: 36px;
+                font-weight: 900;
+                color: #fff;
+                display: flex;
+                justify-content: space-between;
+            }
+            .balance-val{
+                font-size: 40px;
+                font-family: PingFangSC-Semibold,PingFang SC;
+                font-weight: 900;
+                color: #fdb824;
+                display: flex;
+                justify-content: space-between;
+                span{
+                    .mm{
+                        display: block;
+                    }
+                }
+            }
+            .count-data{
+                display: flex;
+                margin-top: 20px;
+                gap:20px;
+                .flex-full{
+                    color: #ffffff;
+                    font-size: 28px; 
+                    .two{
+                        display: block;
+                        font-weight: 900;
+                        font-size:34px
+                    }
+                }
+                .flex-full:not(:first-child) {
+                    border-left: 3px solid white;
+                    padding-left: 20px;
+                }
+                .flex-full:not(:last-child) {
+                    padding-right: 15px;
+                }
+            }
+            .count-switch{
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 16px;
+                .van-button{
+                    height: 44px;
+                    border-color: #fff;
+                    background: #1a7ae7;
+                    color: #fff;
+                    padding: 10px;
+                    font-weight: 900;
+                }
+                .van-button.active{
+                    background: #ffffff;
+                    color: #1a7ae7;
                 }
             }
         }
@@ -404,11 +618,12 @@ export default {
             }
         }
         .yonj{
+            margin-top: 40px;
             display: flex;
             flex-wrap: wrap;
             box-shadow: $shadow;
             border-radius: 24px;
-            padding:0 24px;
+            margin-bottom: 100px;
             .li{
                 width: 50%;
                 text-align: left;
@@ -430,13 +645,12 @@ export default {
             }
             .btnn{
                 width: 100%;
-                padding: 10px 0 ;
                 // border: 1px solid #999;
                 .ksqg{
                     height: 85px;
                     line-height: 85px;
                     font-size: 30px;
-                    border-radius: 0;
+                    border-radius: 24px;
                     .img{
                         vertical-align: middle;
                     }
@@ -613,7 +827,7 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(0,0,0);
+    background-color: rgba(151, 151, 151, 0.821);
     color: #fff;
     display: flex;
     flex-direction: column;

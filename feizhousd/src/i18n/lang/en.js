@@ -314,7 +314,9 @@ mtrwcs: "Daily Task Count",
 
 wfsyqtgjgn: "Unable to Use Other Advanced Features",
 
-zshdqlxkflq: "Exclusive Activity, Please Contact Customer Service to Claim"
-
+  zshdqlxkflq: "Exclusive Activity, Please Contact Customer Service to Claim",
+  xyf: "Credit Score",
+  wdcw: "My Finance",
+  qita: "Others"
 	}
 }

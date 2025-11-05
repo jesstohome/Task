@@ -2,28 +2,89 @@
     <div class="self home">
         <div class="top">
             <div class="info">
-                <van-nav-bar @click-right="clickRight">
-                    <template #right>
-                        <!-- <van-icon name="comment-o" size="18"/> -->
-                        <img :src="require('@/assets/images/news/msg2.png')" width="26.5" alt="">
-                    </template>
-                </van-nav-bar>
-                <van-uploader :after-read="afterRead" ref="upload" v-show="false"/>
-                <div class="avaitar">
+                <!-- header card: avatar + credit score (replaces van-nav-bar) -->
+                <div class="header-card">
+                    <div class="hc-left">
+                        <van-image :src="require('@/assets/images/news/users.png')" class="hc-avatar" fit="cover" />
+                        <div class="hc-meta">
+                            <div class="hc-name">{{ userinfo.tel }}
+                                <img v-if="userinfo.level" :src="require('@/assets/images/self/vip'+ userinfo.level +'.png')" class="vip" alt="">
+                            </div>
+                            
+                            <div class="hc-score-label">
+                                <div>{{$t('msg.xyf') }}:</div>                              
+                                <van-progress class="jindutiao" :percentage="Number(creditPercent)" pivot-text="" stroke-width="6" color="#fdb824" inactive-color="#ffeedd" />
+                                <div>
+                                    {{ creditPercent }}%
+                                </div>                          
+                            </div>
+                            <div class="hc-invite">{{$t('msg.code') }}：
+                                <span class="code">{{ userinfo.invite_code }}</span>
+                                <van-button size="mini" class="hc-copy" @click="copyInvite($t('msg.copy_s'))">{{$t('msg.copy')}}</van-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <van-uploader :after-read="afterRead" ref="upload" v-show="false"/> -->
+                <!-- <div class="avaitar">
                     <van-image :src="require('@/assets/images/news/user.png')"  class="img" fit="contain"/>
                     <div class="right">
                         <div class="title">
                             {{userinfo.tel}}
-                            <!-- <img v-if="info.level" :src="require('@/assets/images/self/vip'+ info.level +'.png')" class="vip" alt=""> -->
+                            <img v-if="info.level" :src="require('@/assets/images/self/vip'+ info.level +'.png')" class="vip" alt="">
                         </div>
-                        <!-- <div class="b" @click="toShare">
+                        <div class="b" @click="toShare">
                             {{$t('msg.tgm')}}： {{info.invite_code}}
-                        </div> -->
+                        </div>
+                    </div>
+                </div> -->
+                <!-- Earnings block copied from index/home.vue -->
+                <div class="earnings mt-2">
+                    <div class="earnings_Info">
+                        <div class="vip_level ft-16" v-if="userinfo?.tel">
+                            <div style="flex: 2 1 0px;">{{userinfo?.tel}}</div>
+                        </div>
+                        <div class="balance mt-2 d-flex justify-between">
+                            <span >{{$t('msg.zhye')}}</span><span >{{$t('msg.djje')}}</span>
+                        </div>
+                        <div class="balance-val d-flex justify-between">
+                            <span >
+                                <span class="mm">{{monney || 0}}{{currency}}</span>
+                            </span>
+                            <span >
+                                <span class="mm">{{mInfo.freeze_balance || 0}}{{currency}}</span></span>
+                        </div>
+                        <div class="count-switch">
+                            <van-button class="switch-btn" :class="{active: activeTab===1}" @click="activeTab=1">{{$t('msg.get_m')}}</van-button>
+                            <van-button class="switch-btn" :class="{active: activeTab===2}" @click="activeTab=2">{{$t('msg.zsy')}}</van-button>
+                        </div>
+
+                        <div class="count-data">
+                            <template v-if="activeTab === 1">
+                                <div class="flex-full">
+                                    <div>{{$t('msg.today_monney')}}</div>
+                                    <div class="two">{{mInfo.yon1 || 0}}</div>
+                                </div>
+                                <div class="flex-full">
+                                    <div>{{$t('msg.zrsy')}}</div>
+                                    <div class="two">{{mInfo.Yesterdaysearnings || 0}}</div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="flex-full">
+                                    <div>{{$t('msg.zsy')}}</div>
+                                    <div class="two">{{mInfo.yon3 || 0}}</div>
+                                </div>
+                                <div class="flex-full">
+                                    <div>{{$t('msg.tdsy')}}</div>
+                                    <div class="two">{{mInfo.Teambenefits || 0}}</div>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                 </div>
-                <div class="money">
+                <!-- <div class="money">
                     <div class="li w100">
-                        <!-- <div class="t">{{currency}} {{userinfo.balance*1 + userinfo.freeze_balance*1}} ---</div> -->
                         <div class="t">{{currency}} {{userinfo.balance_all_format}}</div>
                         <div class="b">{{$t('msg.my_yu_e')}}</div>
                         <van-button icon="plus" class="plus" type="primary" to="chongzhi"/>
@@ -36,30 +97,106 @@
                         <div class="t" style="color: red">{{currency}} {{userinfo.freeze_balance_format}}</div>
                         <div class="b">{{$t('msg.djje')}}</div>
                     </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="caiwu">
+            <div>
+                {{ $t('msg.wdcw') }}
+            </div>
+            <div class="caiwulist">
+                <div @click="toRoute(list[1],1)">
+                    <div>
+                        <van-image :src="require('@/assets/images/self/chongzhi.png')" class="caiwuimg" fit="cover" />
+                    </div>
+                    <div>
+                        {{ $t('msg.chongzhi') }}
+                    </div>
+                </div>
+                <div @click="toRoute(list[0],0)">
+                    <div>
+                        <van-image :src="require('@/assets/images/self/tixian.png')" class="caiwuimg" fit="cover" />
+                    </div>
+                    <div>
+                        {{ $t('msg.tixian') }}
+                    </div>
+                </div>
+                <div @click="toRoute(list[3],3)">
+                    <div>
+                        <van-image :src="require('@/assets/images/self/zhangbian.png')" class="caiwuimg" fit="cover" />
+                    </div>
+                    <div>
+                        {{ $t('msg.zbjl') }}
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="tikuan">
+            <div>
+                {{ $t('msg.tkxx') }}
+            </div>
+            <div class="tikuanlist">
+                <div @click="toRoute(list[4],4)">
+                    <div>
+                        <van-image :src="require('@/assets/images/self/tikuanxinxi.png')" class="tikuanimg" fit="cover" />
+                    </div>
+                    <div>
+                        {{ $t('msg.tkxx') }}
+                    </div>
+                </div>
+                <div @click="toRoute(list[2],2)">
+                    <div>
+                        <van-image :src="require('@/assets/images/self/tixianjilu.png')" class="tikuanimg" fit="cover" />
+                    </div>
+                    <div>
+                        {{ $t('msg.tixian') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tikuan">
+            <div>
+                {{ $t('msg.qita') }}
+            </div>
+        </div>
         <div class="list">
-            <van-cell is-link v-for="(item,index) in list" :key="index" @click="toRoute(item,index)">
+            <van-cell is-link v-for="(item,index) in qitalist" :key="index" @click="toRoute(item,index)">
                 <template #title>
-                    <img :src="item.img" :class="index == 0 ? 'img img1' : 'img'" :width="index == 0 ? '30' : '24'" :height="index == 0 ? '30' : '24'" alt="">
+                    <img :src="item.img" :class="index == 1 ? 'img img1' : 'img'" :width="index == 1 ? '30' : '24'" :height="index == 1 ? '30' : '24'" alt="">
                     {{item.label}}
                 </template>
             </van-cell>
+            <div class="yuyan">
+                <div class="yuyanimg">
+                    <van-image :src="require('@/assets/images/self/yuyan.png')" class="tikuanimg" fit="cover" />
+                </div>
+                <div class="yuyantext">
+                    {{ $t('msg.check_lang') }}
+                </div>
+                <div class="yuyanlist">
+                    <langVue />
+                </div>
+            </div>
+            
+        </div>
+        <div style="margin: 20px 0;">
+            <van-button block round plain hairline type="primary" @click="tuichu">{{ $t('msg.out') }}</van-button>
         </div>
     </div>
 </template>
 <script>
 import { ref,getCurrentInstance, onMounted} from 'vue';
 import {getself} from '@/api/self/index'
-import {uploadImg,headpicUpdatae} from '@/api/home/index.js'
+import {uploadImg,headpicUpdatae,getHomeData} from '@/api/home/index.js'
 import {logout} from '@/api/login/index'
 import store from '@/store/index'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
 import {bind_bank} from '@/api/self/index.js'
 import { Dialog } from 'vant'
+import langVue from '@/components/lang.vue'
 export default {
+    components: {langVue},
     setup(){
         const { push } = useRouter();
         const {proxy} = getCurrentInstance()
@@ -67,10 +204,17 @@ export default {
         const upload = ref(null)
         const currency = ref(store.state.baseInfo?.currency)
         const userinfo = ref(store.state.userinfo)
+    const monney = ref('')
+    const mInfo = ref({})
+    const activeTab = ref(1)
+    // credit score and invite code (you can set these values later)
+    const creditPercent = ref(100)
+    const inviteCode = ref('TPIAA')
         const is_bind = ref(false)
         store.dispatch('changefooCheck','self')
         const list = ref([
             {label: t('msg.tikuan'), img: require('@/assets/images/self/00.png'),path:'/drawing', params: 'balance'},
+            {label: t('msg.chongzhi'), img: require('@/assets/images/self/02.png'),path:'/chongzhi'},
             {label: t('msg.txjl'), img: require('@/assets/images/self/02.png'),path:'/deposit'},
             {label: t('msg.zbjl'), img: require('@/assets/images/self/03.png'),path:'/account_details'},
             {label: t('msg.tkxx'), img: require('@/assets/images/self/04.png'),path:'/bingbank'},
@@ -104,7 +248,35 @@ export default {
                 });
             }},
         ])
-        
+        const qitalist = ref([
+            {label: t('msg.tel'), img: require('@/assets/images/self/kefu.png'),path:'/service'},
+            {label: t('msg.pwd'), img: require('@/assets/images/self/tixian.png'),path:'/editPwd'},
+            {label: t('msg.xxgg'), img: require('@/assets/images/self/tongzhi.png'),path:'/message'}
+        ])
+        const tuichu = () => {
+            proxy.$dialog.confirm({
+                    title: t('msg.ts'),
+                    message: t('msg.next_login'),
+                    confirmButtonText: t('msg.yes'),
+                    cancelButtonText: t('msg.quxiao'),
+                })
+                .then(() => {
+                    // on confirm
+                    logout().then(res => {
+                        if(res.code === 0) {
+                            if(res.code === 0) {
+                                proxy.$Message({ type: 'success', message:res.info});
+                                push('/login')
+                            } else {
+                                proxy.$Message({ type: 'error', message:res.info});
+                            }
+                        }
+                    })
+                })
+                .catch(() => {
+                    // on cancel
+            });
+        }
         const getInfo = () => {
             getself().then(res => {
                 if(res.code === 0) {
@@ -113,6 +285,16 @@ export default {
             })
         }
         getInfo()
+
+        // load home earnings data
+        onMounted(() => {
+            getHomeData().then(res => {
+                if(res.code === 0) {
+                    monney.value = res.data.balance
+                    mInfo.value = {...res.data}
+                }
+            })
+        })
         const clickRight = () => {
             push('/message')
         }
@@ -127,7 +309,7 @@ export default {
 		})
 
         const toRoute = (row,index) => {
-			if (index == 0 && !is_bind.value) {
+			if (index == 0 && !is_bind.value && row.path != '/service') {
 			    Dialog.confirm({
 			        title: '',
 			    message:
@@ -166,7 +348,23 @@ export default {
         const toShare = () => {
             push('/share')
         }
-        return {currency,list,setAvatar,toShare,toRoute,afterRead,upload,clickRight,userinfo}
+        const copyInvite = (xinxi) => {
+            try{
+                if (navigator && navigator.clipboard && userinfo.value?.invite_code) {
+                    navigator.clipboard.writeText(userinfo.value.invite_code)
+                    proxy.$toast?.success && proxy.$toast.success(xinxi)
+                }
+            }catch(e){
+                // fallback
+                const ta = document.createElement('textarea')
+                ta.value = userinfo.value?.invite_code || ''
+                document.body.appendChild(ta)
+                ta.select()
+                document.execCommand('copy')
+                document.body.removeChild(ta)
+            }
+        }
+        return {currency,list,qitalist,tuichu,setAvatar,toShare,toRoute,afterRead,upload,clickRight,userinfo,monney,mInfo,activeTab,creditPercent,inviteCode,copyInvite}
     }
 }
 </script>
@@ -174,6 +372,8 @@ export default {
 .self{
     overflow: auto;
     display: block !important;
+    padding: 0 30px;
+    margin-bottom: 100px;
     //padding: calc(var(--van-nav-bar-height) + 20px) 24px 0;
     .van-nav-bar{
         background:#d4dff5;
@@ -203,6 +403,127 @@ export default {
                         width: auto;
                     }
                 }
+            }
+            /* header-card (avatar + score) */
+            .header-card{
+                margin-top: 50px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #fff;
+                padding: 12px 16px;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                margin-bottom: 12px;
+                height: 200px;
+                text-align: left;
+                font-weight: 900;
+                .hc-left{ display:flex; align-items:center; gap:12px }
+                .hc-avatar{ width:126px; height:126px; border-radius:50%;}
+                .hc-name{ font-size:36px; color:#222;display:flex;align-items: center; gap:15px;}
+                .hc-invite{ font-size:28px; color:#666; margin-top:4px;display: flex;align-items: center; }
+                .code{ background:#f5f5f5; padding:2px 6px; border-radius:6px; margin:0 8px; font-weight:700 }
+                .hc-copy{ background:#fdb824; color:#fff; padding:0 8px;border-radius: 15px; }
+                .hc-score-label{ font-size:28px; color:#666;display: flex;flex-direction: row;align-items: center;gap: 20px; }
+                .jindutiao{width: 150px;}
+                .vip{width: 55px;}
+            }
+
+            .earnings{
+                background: url('~@/assets/images/news/balance_bg.png') no-repeat;
+                background-size: 100% 100%;
+                padding: 34px 24px;
+                min-height: 120px; /* ensure visible area */
+                margin-bottom: 24px;
+                margin-top: 50px;
+                .vip_level{
+                    height: 30px;
+                    display: flex;
+                    box-sizing: border-box;
+                    font-size: 20px;
+                    color: #333;
+                    &>div{
+                        flex: 3;
+                        display: flex;
+                        justify-content: space-between;
+                        line-height: 30px;
+                        padding-left: 5px;
+                        font-size: 40px;
+                        // font-weight: 500;
+                        color: #ffffff;
+                        font-weight: bold;
+                        &:first-child{
+                            //border-right: 1px solid #adadad;
+                            padding-right: 5px;
+                            padding-left: 0;
+                        }
+                    }
+                }
+                .balance{
+                    margin: 20px 0 1px;
+                    font-size: 36px;
+                    font-weight: 900;
+                    color: #fff;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .balance-val{
+                    font-size: 40px;
+                    font-family: PingFangSC-Semibold,PingFang SC;
+                    font-weight: 900;
+                    color: #fdb824;
+                    display: flex;
+                    justify-content: space-between;
+                    span{
+                        .mm{
+                            display: block;
+                        }
+                    }
+                }
+                .count-data{
+                    display: flex;
+                    margin-top: 20px;
+                    gap:20px;
+                    .flex-full{
+                        color: #ffffff;
+                        font-size: 28px; 
+                        .two{
+                            display: block;
+                            font-weight: 900;
+                            font-size:34px
+                        }
+                    }
+                    .flex-full:not(:first-child) {
+                        border-left: 3px solid white;  /* 只有中间和右侧的加线 */
+                        padding-left: 20px;
+                    }
+
+                        /* 右边项不加额外内边距（可选） */
+                    .flex-full:not(:last-child) {
+                        padding-right: 15px;
+                    }
+                }
+                .count-switch{
+                    margin-top: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start; /* 靠左排列 */
+                    gap: 16px; /* 间隔 */
+                    .van-button{
+                        height: 44px;
+                        border-color: #fff;
+                        background: #1a7ae7;
+                        color: #fff;
+                        padding: 10px;
+                        font-weight: 900;
+                    }
+                    .van-button.active{
+                        background: #ffffff;
+                        color: #fff;
+                        color: #1a7ae7;
+                    }
+                }
+            }
                 .right{
                     flex: 1;
                     height: 100%;
@@ -268,15 +589,69 @@ export default {
             }
         }
     }
+    .caiwu{
+        align-items: center;
+        font-size: 34px;
+        font-weight: 600;
+        color: #333;
+        text-align: left;
+        .caiwulist{
+            display: flex;
+            gap: 40px;
+            justify-content: space-between;
+            margin: 34px 40px;
+            
+            div{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-size: 28px;
+                color: #000000;
+                .caiwuimg{
+                    width: 80px;
+                    height: 80px;
+                    margin-bottom: 20px;
+                }
+            }
+        }
+    }
+    .tikuan{
+        align-items: center;
+        font-size: 34px;
+        font-weight: 600;
+        color: #333;
+        text-align: left;
+        .tikuanlist{
+            display: flex;
+            gap: 40px;
+            justify-content: space-between;
+            margin: 34px 0;           
+            div{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                font-size: 28px;
+                color: #000000;
+                background-color: #f2f2f2;
+                padding: 5px;
+                width: 45%;
+                .tikuanimg{
+                    width: 100px;
+                    height: 100px;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
     .list{
         border-radius: 30px;
         position: relative;
         background-color: #fff;
         text-align: left;
         overflow: hidden;
-        margin-top: 48px;
+        margin-top: 10px;
         .van-cell{
-            padding: 22px 45px;
+            padding: 22px 10px;
             font-size: 34px;
             color: #000;
             .van-cell__title{
@@ -284,7 +659,7 @@ export default {
                     margin-right: 10px;
                     vertical-align: middle;
                     &.img1{
-                        margin-left: -6PX;
+                        margin-left: -3PX;
                     }
                 }
             }
@@ -293,5 +668,25 @@ export default {
             }
         }
     }
-}
+    .yuyan{
+        display: flex;
+        align-items: center;
+        padding: 20px 0;
+        border-top: 1px solid #f2f2f2;
+        margin: 0 10px;
+        .yuyanimg{
+            margin-right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        .yuyantext{
+            flex: 1;
+            font-size: 32px;
+            color: #333;
+        }
+        .yuyanlist{
+            width: 240px;
+        }
+    }
+
 </style>

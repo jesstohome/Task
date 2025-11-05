@@ -301,6 +301,9 @@ module.exports = {
     zhzjcg: "Fonduri cont depășite",
     mtrwcs: "Număr zilnic de sarcini",
     wfsyqtgjgn: "Nu se pot utiliza alte funcții avansate",
-    zshdqlxkflq: "Activitate exclusivă, vă rugăm să contactați Serviciul Clienți pentru a revendica"
+    zshdqlxkflq: "Activitate exclusivă, vă rugăm să contactați Serviciul Clienți pentru a revendica",
+    xyf: "Scor de credit",
+    wdcw: "Finanțele mele",
+    qita: "Altele"
     }
   }

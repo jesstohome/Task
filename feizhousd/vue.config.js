@@ -15,7 +15,7 @@ module.exports = defineConfig({
     open: false, //自动打开浏览器
     proxy: {
       '/vi': { 
-        target: 'http://47.245.122.59', // 代理的线上的接口地址
+        target: 'https://admin.gnvcso.com', // 代理的线上的接口地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/vi/, "/")
       }

@@ -2,11 +2,6 @@
     <div class="order home">
         <!-- <van-loading size="24px" vertical v-show="loading">{{$t('msg.loading')}}...</van-loading> -->
         <!-- <van-nav-bar :title="$t('msg.order')" @click-right="clickRight"> -->
-        <van-nav-bar title="" @click-right="clickRight">
-            <template #right>
-                <img :src="require('@/assets/images/news/msg2.png')" width="26.5" alt="">
-            </template>
-        </van-nav-bar>
         <van-tabs v-model:active="active" @click-tab="initData" type="card">
             <van-tab v-for="item in status_data" :key="item.value" :title="item.label">
                <div class="list" v-for="info in list" :key="info.id"  @click="tjOrder(info)">
@@ -326,6 +321,7 @@ export default {
 .order{
     //padding: calc(var(--van-nav-bar-height) + 30px) 0 0;
     background-color: #f1f1f1;
+    margin-top: 50px;
     :deep(.van-nav-bar){
         background-color: #d4dff5;
     }

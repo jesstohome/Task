@@ -99,7 +99,7 @@ export default {
         push('/self')
     }
     const clickRight = () => {
-        push('/tel')
+        push('/service')
     }
     const validator = (val) => {
         if(!val) return false;
