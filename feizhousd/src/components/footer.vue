@@ -71,6 +71,10 @@ export default {
         z-index: 999;
         background: #fff;
         filter: drop-shadow(0 0 4px #bbb);
+        /* iOS Safari 优化 */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
     
     .f_li{
         // 保持原有样式...

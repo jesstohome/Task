@@ -73,5 +73,13 @@ export default {
   text-align: center;
   color: $textColor;
   height: 100vh;
+  /* iOS Safari 优化 */
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  /* 防止 iOS 上的双击延迟 */
+  touch-action: pan-y;
 }
 </style>

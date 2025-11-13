@@ -1,50 +1,51 @@
 <template>
-    <div id="wrapper" ref="wrapper">
+    <div id="wrapper" ref="wrapper" @scroll="onScroll" @touchend="onTouchEnd">
         <slot></slot>
     </div>
 </template>
 
 <script>
-    import BScroll from 'better-scroll'
-    export default {
-        name: "betterScroll",
-        props: {
-            handleToScroll: {
-                type:Function,
-                default:function () {}
-            },
-            handleToTouch:{
-                type: Function,
-                default:function () {}
+export default {
+    name: "betterScroll",
+    props: {
+        handleToScroll: {
+            type:Function,
+            default:function () {}
+        },
+        handleToTouch:{
+            type: Function,
+            default:function () {}
+        }
+    },
+    methods:{
+        onScroll(e) {
+            const pos = {
+                x: -e.target.scrollLeft,
+                y: -e.target.scrollTop
             }
+            this.handleToScroll(pos)
         },
-        mounted() {
-            this.$nextTick(()=>{
-                var bscroll = new BScroll(this.$refs.wrapper,{
-                    tap:true,
-                    probeType:1
-                });
-                this.bscroll = bscroll;
-                bscroll.on("scroll",(pos)=>{
-                    this.handleToScroll(pos);
-                });
-                bscroll.on("touchEnd",(pos)=>{
-                    this.handleToTouch(pos);
-                })
-            })
-
+        onTouchEnd(e) {
+            const pos = {
+                x: -this.$refs.wrapper.scrollLeft,
+                y: -this.$refs.wrapper.scrollTop
+            }
+            this.handleToTouchEnd(pos)
         },
-        methods:{
-            scrollToTop(y){
-                this.bscroll.scrollTo(0,y);
+        scrollToTop(y){
+            if (this.$refs.wrapper) {
+                this.$refs.wrapper.scrollTop = -y
             }
         }
-
     }
+}
 </script>
 
 <style scoped>
     #wrapper{
-        height: 100%;}
+        height: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 </style>
 
