@@ -17,7 +17,7 @@
                     <div class="flex">
                         <div class="title">{{item.username}}</div>
                         <div class="time">{{item.btime}}——{{item.etime}}</div>
-                        <van-button round block type="primary" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
+                        <van-button block type="primary" style="padding: 5px;margin: 5px;" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@ export default {
         position: relative;
         .box{
             width: 100%;
-            height: 350px;
+            height: 450px;
             background-image: url('~@/assets/images/tel/tel.png');
             background-size: 100% 100%;
             box-shadow: $shadow;
@@ -97,6 +97,7 @@ export default {
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
+                        align-items: center;
                     height: 100%;
                 }
                 .title{

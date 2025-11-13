@@ -307,6 +307,11 @@ module.exports = {
   qita: "دیگر",
   zichan: "دارایی‌ها",
   dianjifabiaopinglun: "برای نظر دادن کلیک کنید",
-  zidongpinglun: "نظر خودکار"
+  zidongpinglun: "نظر خودکار",
+  jijinanquan: "امنیت صندوق",
+  shouyizhong: "درآمد در حال انجام",
+  shangpinmingcheng: "نام محصول",
+  xiepinglun: "نوشتن نظر",
+  bili: "نسبت"
     }
   }

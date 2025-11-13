@@ -23,6 +23,11 @@ const routes = [
     component: ()=> import('@/views/index/level.vue')
   },
   {
+    path: '/detail/:id',
+    name: 'detail',
+    component: ()=> import('@/views/order/detail.vue')
+  },
+  {
     path: '/',
     name: 'index',
     component: ()=> import('@/views/index/index.vue'),

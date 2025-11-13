@@ -320,6 +320,11 @@ wdcw: "Minhas Finanças",
 qita: "Outros",
 zichan: "Ativos",
 dianjifabiaopinglun: "Clique para postar um comentário",
-zidongpinglun: "Comentários automáticos"
+zidongpinglun: "Comentários automáticos",
+jijinanquan: "Segurança do Fundo",
+shouyizhong: "Ganhos em andamento",
+shangpinmingcheng: "Nome do produto",
+xiepinglun: "Escrever um comentário",
+bili: "Proporção"
     }
   }

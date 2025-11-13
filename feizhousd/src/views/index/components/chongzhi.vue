@@ -150,6 +150,7 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/theme.scss';
 .home{
+    margin-bottom: 100px;
     :deep(.van-nav-bar){
         // background-color: $theme;
         // color: #fff;
@@ -170,14 +171,14 @@ export default {
     :deep(.van-form){
         padding: 40px 30px 0;
         .zdy{
-            padding: 15px 0;
+            padding: 15px;
             background-color: rgba(219,228,246,.8);
             margin-bottom: 15px;
         }
         
         .text_b{
             margin: 70px 60px 40px;
-            font-size: 18px;
+            font-size: 28px;
             color: #999;
             text-align: left;
             .tex{
@@ -262,7 +263,7 @@ export default {
         .pay{
             text-align: left;
             .title{
-                font-size: 24px;
+                font-size: 32px;
                 color: #333;
             }
             .van-radio-group{
@@ -276,7 +277,7 @@ export default {
                     position: relative;
                     overflow: initial;
                     border-radius: 6px;
-
+                    margin-right: 20px;
                     display: -webkit-box;
                     -webkit-box-direction: reverse;
                     -webkit-box-orient: vertical;

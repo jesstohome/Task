@@ -306,6 +306,11 @@ module.exports = {
   xyf: "Điểm tín dụng",
   zichan: "Tài sản",
   dianjifabiaopinglun: "Nhấp để bình luận",
-  zidongpinglun: "Bình luận tự động"
+  zidongpinglun: "Bình luận tự động",
+  jijinanquan: "An ninh quỹ",
+  shouyizhong: "Thu nhập đang diễn ra",
+  shangpinmingcheng: "Tên sản phẩm",
+  xiepinglun: "Viết bình luận",
+  bili: "Tỷ lệ"
   }
 }

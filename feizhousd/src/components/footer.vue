@@ -1,12 +1,15 @@
 <template>
     <div class="footer">
-        <div class="f_li" v-for="item in list" :key="item.key" :class="item.key == 'obj' && 'obj'" @click="checkList(item.key)">
-            <div class="span">
-                <img :src="fooCheck == item.key ? item.img_check : item.img" class="img" alt="">
-                <!-- <div class="text" v-if="item.key != 'obj'" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div> -->
-                 <div class="text" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div>
-            </div>
+        <div style="display: flex;width: 750px;justify-content: space-around;">
+            <div class="f_li" v-for="item in list" :key="item.key" :class="item.key == 'obj' && 'obj'" @click="checkList(item.key)">
+                    <div class="span">
+                        <img :src="fooCheck == item.key ? item.img_check : item.img" class="img" alt="">
+                        <!-- <div class="text" v-if="item.key != 'obj'" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div> -->
+                        <div class="text" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div>
+                    </div>
+                </div>
         </div>
+        
     </div>
 </template>
 <script>
@@ -58,73 +61,60 @@ export default {
 </script>
 <style lang="scss" scoped>
     .footer{
-        display: flex;
-        justify-content: space-around;
-        // height: 130px;
-        // background-image: url('~@/assets/images/footer/bg.png');
-        // background-size: 100% 100%;
-        position: fixed;
-        width: 100%;
-        bottom: -18px;
-        left: 0;
-        padding: 0;
-        z-index: 999;
-        background: #fff;
-        filter: drop-shadow(0 0 4px #bbb);
-        .f_li{
-            // width: 54px;
-            // padding-top: 55px;
-            // height: 100px;
-            &.obj{
-                width: auto;
-                position: relative;
-                padding-top: 0;
-                margin-top: -35px;
-                .span{
-                    // position: absolute;
-                    // left: 0;
-                    // top: 0;
-                    // transform: translateY(-50%);
-                    background: #ffffff00;
-                    //border-radius: 50%;
-                    padding: 5px;
-                    height: 220px;
-                    .img{
-                        height: 100px;
-                        width: 100px;
-                    }
+    display: flex;
+    justify-content: space-around;
+    padding: 0 0 18px 0;
+    /* ⭐ 删除以下样式，因为在 App.vue 中已经统一设置了 */
+    /* position: fixed; */
+    /* width: 100%; */
+    /* max-width: 750px; */
+    /* bottom: 0; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
+    /* z-index: 999; */
+    /* background: #fff; */
+    /* box-shadow: ...; */
+    
+    .f_li{
+        width: 20%;
+        // 保持原有样式...
+        &.obj{
+            width: auto;
+            position: relative;
+            padding-top: 0;
+            margin-top: -35px;
+            .span{
+                background: #ffffff00;
+                padding: 5px;
+                height: 220px;
+                .img{
+                    height: 100px;
+                    width: 100px;
                 }
             }
-            .span{
-                height: 100%;
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                text-align: center;
-                .img{
-                    height: 64px;
-                    width: 64px;
-                    margin: 0 auto 10px;
-                }
-                .text{
-                    font-size: 26px;
-                    color: #a19fa8;
-                    // margin-top: -10px;
-                    // position: absolute;
-                    // left: 50%;
-                    // transform: translate(-50%);
-                    // white-space: nowrap;
-                    //width: 80PX;
-                    white-space: wrap;
-                    line-height: 1;
-                    //margin-bottom: 5px;
-                    // height: 55px;
-                    &.check{
-                        color: #2c7ce7;
-                    }
+        }
+        .span{
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            .img{
+                height: 64px;
+                width: 64px;
+                margin: 0 auto 10px;
+            }
+            .text{
+                font-size: 26px;
+                color: #a19fa8;
+                white-space: wrap;
+                line-height: 1;
+                &.check{
+                    color: #2c7ce7;
                 }
             }
         }
     }
+}
 </style>

@@ -17,7 +17,7 @@
                     <div class="flex">
                         <div class="title">{{item.username}}</div>
                         <div class="time">{{item.btime}}——{{item.etime}}</div>
-                        <van-button round block type="primary" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
+                        <van-button block type="primary" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
                     </div>
                 </div>
             </div>

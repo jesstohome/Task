@@ -105,7 +105,7 @@
                 {{ $t('msg.wdcw') }}
             </div>
             <div class="caiwulist">
-                <div @click="toRoute(list[1],1)">
+                <div @click="toRoute(list[1],1)" class="caiwuitem">
                     <div>
                         <van-image :src="require('@/assets/images/self/chongzhi.png')" class="caiwuimg" fit="cover" />
                     </div>
@@ -113,7 +113,7 @@
                         {{ $t('msg.chongzhi') }}
                     </div>
                 </div>
-                <div @click="toRoute(list[0],0)">
+                <div @click="toRoute(list[0],0)" class="caiwuitem">
                     <div>
                         <van-image :src="require('@/assets/images/self/tixian.png')" class="caiwuimg" fit="cover" />
                     </div>
@@ -121,7 +121,7 @@
                         {{ $t('msg.tixian') }}
                     </div>
                 </div>
-                <div @click="toRoute(list[3],3)">
+                <div @click="toRoute(list[3],3)" class="caiwuitem">
                     <div>
                         <van-image :src="require('@/assets/images/self/zhangbian.png')" class="caiwuimg" fit="cover" />
                     </div>
@@ -149,7 +149,7 @@
                         <van-image :src="require('@/assets/images/self/tixianjilu.png')" class="tikuanimg" fit="cover" />
                     </div>
                     <div>
-                        {{ $t('msg.tixian') }}
+                        {{ $t('msg.txjl') }}
                     </div>
                 </div>
             </div>
@@ -600,16 +600,17 @@ export default {
         text-align: left;
         .caiwulist{
             display: flex;
-            gap: 40px;
             justify-content: space-between;
             margin: 34px 40px;
             
-            div{
+            .caiwuitem{
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 font-size: 28px;
                 color: #000000;
+                width: 33%;
+                text-align: center;
                 .caiwuimg{
                     width: 80px;
                     height: 80px;

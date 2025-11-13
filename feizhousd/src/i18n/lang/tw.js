@@ -310,6 +310,11 @@ module.exports = {
   qita: "其它",
   zichan: "สินทรัพย์",
   dianjifabiaopinglun: "คลิกเพื่อแสดงความคิดเห็น",
-  zidongpinglun: "แสดงความคิดเห็นโดยอัตโนมัติ"
+  zidongpinglun: "แสดงความคิดเห็นโดยอัตโนมัติ",
+  jijinanquan: "ความปลอดภัยของกองทุน",
+  shouyizhong: "รายได้ระหว่างดำเนินการ",
+  shangpinmingcheng: "ชื่อสินค้า",
+  xiepinglun: "เขียนความคิดเห็น",
+  bili: "อัตราส่วน"
   }
 }

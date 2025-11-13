@@ -282,12 +282,12 @@ export default {
         }
         initData()
         const tjOrder = (row) => {
-            order_info({id: row.oid}).then(res => {
-            //order_info({id: 'UB2511071853326364'}).then(res => {
-                loading.value = false
-                onceinfo.value = {...res}
-                showTj.value = true
-            })
+            push({ name: 'detail', params: { id: row.oid } })
+            // order_info({id: row.oid}).then(res => {
+            //     loading.value = false
+            //     onceinfo.value = {...res}
+            //     showTj.value = true
+            // })
         }
         //tjOrder()
 

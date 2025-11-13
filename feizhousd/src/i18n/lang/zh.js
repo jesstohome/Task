@@ -307,6 +307,11 @@ module.exports = {
     qita: "其它",
     zichan: "资产",
     dianjifabiaopinglun: "点击发表评论",
-    zidongpinglun: "自动评论"
+    zidongpinglun: "自动评论",
+    jijinanquan: "基金安全",
+    shouyizhong: "收益中",
+    shangpinmingcheng: "商品名称",
+    xiepinglun: "写评论",
+    bili: "比例"
     }
   }

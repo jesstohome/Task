@@ -307,6 +307,11 @@ module.exports = {
   qita: "Otros",
   zichan: "Activos",
   dianjifabiaopinglun: "Haga clic para publicar un comentario",
-  zidongpinglun: "Comentario automático"
+  zidongpinglun: "Comentario automático",
+  jijinanquan: "Seguridad del fondo",
+  shouyizhong: "Ingresos en curso",
+  shangpinmingcheng: "Nombre del producto",
+  xiepinglun: "Escribir un comentario",
+  bili: "Proporción"
   }
 }

@@ -20,9 +20,9 @@
                 <div class="address" v-for="(item,index) in list" :key="index">
                     <div class="l">
                         <div class="time red">{{$t('msg.zblx')}}：{{tabs?.find(rr=>rr.value==item.type)?.label || $t('msg.all')}}</div>
-                        <div class="time">{{$t('msg.zqje')}}：{{currency}}{{item.balance || '0.00'}}</div>
-                        <div class="time green">{{$t('msg.zbje')}}：{{currency}}{{item.num}}</div>
-                        <div class="time">{{$t('msg.zhje')}}：{{currency}}{{item.status == 1 ? item.balance*1 + item.num*1 :  item.balance*1 - item.num*1}}</div>
+                        <div class="time">{{$t('msg.zqje')}}：{{currency}} {{item.balance || '0.00'}}</div>
+                        <div class="time green">{{$t('msg.zbje')}}：{{currency}} {{item.num}}</div>
+                        <div class="time">{{$t('msg.zhje')}}：{{currency}} {{item.newnum}}</div>
                         <div class="time">{{$t('msg.zbsj')}}：{{formatTime('',item.addtime)}}</div>
                     </div>
                 </div>
@@ -57,6 +57,9 @@ export default {
             {label: t('msg.fanyong'),value: 3},
             {label: t('msg.tgfy'),value: 5},
             {label: t('msg.xjjyfy'),value: 6},
+            {label: 'Web3' + t('msg.zr'),value: 21},
+            {label: 'Web3' + t('msg.out_money'),value: 22},
+            {label: 'Web3' + t('msg.get_m'),value: 23},
         ])
 
         const clickLeft = () => {

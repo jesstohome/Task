@@ -13,12 +13,12 @@
             >
                 <div class="address" :class="item.is_qu&&'mb30'" v-for="(item,index) in list" :key="index">
                     <div class="l">
-                        <div class="time">{{$t('msg.zrlxb') + item.day + $t('msg.day') + item.bili*100 + '%'}}</div>
+                        <div class="time">{{$t('msg.zr') + 'Web3 ' + item.day + $t('msg.day') + item.bili*100 + '%'}}</div>
                         <div class="tag">{{item.num}}</div>
                     </div>
                     <div class="c">
                         <div class="time">{{$t('msg.crsj')}}：{{formatTime('',item.addtime)}}</div>
-                        <div class="tag">{{$t('msg.zrlxb')}}</div>
+                        <div class="tag">{{$t('msg.zr') + 'Web3 '}}</div>
                     </div>
                     <div class="r" v-if="!item.is_qu" @click="qu_money(item)">
                        {{$t('msg.out_money')}}
@@ -72,6 +72,7 @@ export default {
                 }
             })
         }
+        getCW()
         const qu_money = (row) => {
             proxy.$dialog.confirm({
                 title: t('msg.wxts'),
@@ -180,9 +181,9 @@ export default {
                 line-height: 60px;
                 background-color: $theme;
                 color: #fff;
-                border-radius: 50px;
+                border-radius: 10px;
                 float: right;
-                font-size: 20px;
+                font-size: 25px;
             }
         }
     }

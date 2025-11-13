@@ -4,7 +4,7 @@
         <!-- <van-nav-bar :title="$t('msg.order')" @click-right="clickRight"> -->
         <van-tabs v-model:active="active" @click-tab="initData" type="card">
             <van-tab v-for="item in status_data" :key="item.value" :title="item.label">
-               <div class="list" v-for="info in list" :key="info.id"  @click="tjOrder(info)">
+               <div class="list" v-for="info in list" :key="info.id">
                    <div class="top">
                        <span class="time">{{formatTime('',info.addtime)}}</span>
                        <div class="number">{{info.id}}</div>
@@ -51,115 +51,19 @@
                            <!-- <span class="value" style="color: red">{{countTime(info.addtime, info.endtime)}}</span>
                            <span class="value" style="color: red">{{countTime(info.addtime, info.endtime).hours + ' : ' + countTime(info.addtime, info.endtime).minutes + ' : ' + countTime(info.addtime, info.endtime).seconds}}</span> -->
                        </div>
+                       <div class="tent" v-if="info.status == 1">
+                           <span class="span"></span>
+                           <span class="value"><van-rate v-model="info.pingfen" :size="20" readonly color="#ffd21e" void-icon="star" void-color="#d1d1d1" /></span>
+                       </div>
                    </div>
-                    <van-button class="tj-btn" round block type="primary" v-if="info.status == 0 || (info.duorw > 0 && info.time_limit > 1)">{{$t('msg.tjdd')}}</van-button>
+                    <van-button class="tj-btn" round block type="primary" v-if="info.status == 0 || (info.duorw > 0 && info.time_limit > 1)" @click.stop="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
                     <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click.stop="toTei()">{{$t('msg.lxkfjd')}}</van-button>
                     <van-button round block type="danger" v-else-if="info.status == 5" @click.stop="toTei()">{{$t('msg.lxkfjd')}}</van-button>
                </div>
                <van-empty v-if="list.length == 0" :description="$t('msg.zwdd')" />
             </van-tab>
         </van-tabs>
-        <van-dialog v-model:show="showTj" :confirmButtonText="$t('msg.queren')" :cancelButtonText="$t('msg.close')" :show-confirm-button="showConfirm" :title="$t('msg.ddxq')" show-cancel-button @confirm="confirmPwd">
-            <template #title>
-                <div style="text-align: center">{{$t('msg.ddxq')}}</div>
-            </template>
-            <div class="list" v-if="onceinfo.data?.group_rule_num == 0 || (!onceinfo.data && !onceinfo.duorw) || onceinfo.data?.duorw == 0">
-                <div class="cet">
-                    <img :src="onceinfo?.goods_pic" class="img" alt="">
-                </div>
-                <div class="monney">
-                    <div class="tent">
-                        <span class="span">{{$t('msg.ddh')}}</span>
-                        <span class="value">{{onceinfo?.id}}</span>
-                    </div>
-                    <div class="tent">
-                        <span class="span">{{$t('msg.xdsj')}}</span>
-                        <span class="value">{{formatTime('',onceinfo?.addtime)}}</span>
-                    </div>
-                    <div class="tent">
-                        <span class="span">{{$t('msg.spdj')}}</span>
-                        <span class="value">{{currency+onceinfo?.goods_price}}</span>
-                    </div>
-                    <div class="tent">
-                        <span class="span">{{$t('msg.spsl')}}</span>
-                        <span class="value">{{'x ' + onceinfo?.goods_count}}</span>
-                    </div>
-                    <div class="tent">
-                        <span class="span">{{$t('msg.order_Num')}}</span>
-                        <span class="value">{{currency+onceinfo?.num}}</span>
-                    </div>
-                    <div class="tent">
-                        <span class="span">{{$t('msg.yonj')}}</span>
-                        <span class="value">{{currency+onceinfo?.commission}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="list" v-else>
-                <div class="tops">
-                    <span class="span">{{$t('msg.ddrws')}}：</span>
-                    <span class="span" style="color:red;">{{onceinfo.data?.duorw}}</span>
-                </div>
-                <div class="tops">
-                    <span class="span">{{$t('msg.ywc')}}：</span>
-                    <span class="span" style="color:#00a300;">{{onceinfo.data?.completedquantity}}</span>
-                </div>
-                <div class="box" v-for="item in onceinfo.group_data" :key="item.id">
-                    <div class="cet">
-                        <img :src="item?.goods_pic" class="img" alt="">
-                    </div>
-                    <div class="monney">
-                        <div class="tent">
-                            <span class="span">{{$t('msg.spdj')}}</span>
-                            <span class="value">{{currency+item?.goods_price}}</span>
-                        </div>
-                        <div class="tent">
-                            <span class="span">{{$t('msg.spsl')}}</span>
-                            <span class="value">{{'x ' + item?.goods_count}}</span>
-                        </div>
-                        <div class="tent">
-                            <span class="span">{{$t('msg.order_Num')}}</span>
-                            <span class="value">{{currency+item?.num}}</span>
-                        </div>
-                        <div class="tent">
-                            <span class="span">{{$t('msg.fkzt')}}</span>
-                            <span class="value" :class="'value'+item.is_pay">{{item.is_pay === 0 ? $t('msg.dfk') : $t('msg.yfk')}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pinglun">
-                <div class="pingluna">
-                    <div>
-                        {{ $t('msg.dianjifabiaopinglun') }}
-                    </div>
-                    <div>
-                        <van-rate
-                        v-model="pinglun"
-                        :size="20"
-                        color="#ffd21e"
-                        void-icon="star"
-                        void-color="#eee"
-                        />
-                    </div>
-                </div>
-                <div class="pinglunb">
-                    <van-cell-group inset>
-                        <van-field
-                            v-model="pingluntext"
-                            rows="2"
-                            type="textarea"
-                            placeholder=""
-                            :required="true"
-                            :center="true"
-                        >
-                        <template #button>
-                            <van-button @click="generateRandomComment" size="mini" color="#ff9800">{{ $t('msg.zidongpinglun') }}</van-button>
-                            </template>
-                        </van-field>
-                    </van-cell-group>
-                </div>
-            </div>
-        </van-dialog>
+        <!-- dialog 已移至 detail 页面 -->
     </div>
 </template>
 <script>
@@ -167,10 +71,9 @@ import { ref,reactive,getCurrentInstance } from 'vue';
 import store from '@/store/index'
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n'
-import {getOrderList,do_order,order_info,submit_order} from '@/api/order/index'
+import {getOrderList} from '@/api/order/index'
 import {formatTime} from '@/api/format.js'
 import { useCountDown } from '@vant/use'
-import { Toast } from 'vant'
 export default {
     setup(){
         const {proxy} = getCurrentInstance()
@@ -178,11 +81,10 @@ export default {
         const { t } = useI18n()
         const active = ref(0)
         const page = ref(1)
-        const showConfirm = ref(false)
+    // dialog-related state removed (moved to detail page)
         const nowTime = ref(new Date().getTime())
         const currency = ref(store.state.baseInfo?.currency)
-        const pinglun = ref(0)
-        const pingluntext = ref('')
+        
         store.dispatch('changefooCheck','order')
         
         const countTime = (start,end) => { 
@@ -213,37 +115,18 @@ export default {
         ])
         const list = ref([]);
         const loading = ref(false)
-        const showTj = ref(false)
-        const onceinfo = ref({})
-
         const toTei = () => {
             push('/tel')
         }
 
-        const tjOrder = (row) => {
-            // if(row){
-            //     if (row.status == 5) {
-            //         push('/tel')
-            //         return false
-            //     }
-            // }
-		
-            if (!row.duorw) {
-                onceinfo.value = {...row}
-                showConfirm.value = row.is_pay === 0 && row.status == 0
-                showTj.value = true
-            } else {
-                order_info({id: row.id}).then(res => {
-                    console.log(res)
-                    onceinfo.value = {...res}
-                    showConfirm.value = !!onceinfo.value?.group_data?.find(rr => rr.time_limit > 0)
-                    showTj.value = true
-                })
-            }
+        // 点击跳转到详情页（详情页负责拉取 order_info 并展示 dialog 内容）
+        const goDetail = (id) => {
+            if (!id) return
+            push({ name: 'detail', params: { id } })
         }
 
-        const timeData = ref({})
-        const time = ref(60000)
+    const timeData = ref({})
+    const time = ref(60000)
         
         const clickRight = () => {
             push('/message')
@@ -279,102 +162,29 @@ export default {
                 }
             })
         }
-        const confirmPwd = () => {
-            let id = ''
-            if (onceinfo.value.group_data && onceinfo.value.group_data.length > 0) {
-                let info = onceinfo.value.group_data?.find(rr => rr.is_pay === 0)
-                // let info = onceinfo.value.group_data?.find(rr => rr.status === 0)
-                id = info?.oid
-            } else {
-                id = onceinfo.value?.id
-            }
-            let json = {
-                oid: id,
-                status: 1,
-                pingfen: pinglun.value,
-                pinglun: pingluntext.value
-            }
-            do_order(json).then(res => {
-                if(res.code === 0) {
-                    // data不存在或者duorw为0，不匹配订单
-                    const group_data = onceinfo.value.group_data || []
-                    if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
-                        proxy.$Message({ type: 'success', message:res.info});
-                        showTj.value = false
-                        initData()
-                    } else if (group_data.length == onceinfo.value.data.duorw) {
-                        //duorw > 0 但是 grpoup_data.length == duorw的情况，不进行匹配订单
-                        proxy.$Message({ type: 'success', message:res.info});
-                        showTj.value = false
-                        initData()
-                    } else {
-                        submit_order().then(()=>{
-                            showTj.value = false
-                            Toast.success(t('msg.tjcg'))
-                            initData()
-                        })
-                    }
-                } else {
-                    proxy.$Message({ type: 'error', message:res.info});
-                }
-            })
-        }
-        const generateRandomComment = () => {
-            const comments = [
-                "I absolutely love this product! It exceeded my expectations.",
-                "Excellent quality and great value for money.",
-                "This is exactly what I was looking for. Highly recommended!",
-                "The quality is outstanding and it works perfectly.",
-                "Very satisfied with my purchase. Will buy again!",
-                "This product is amazing and worth every penny.",
-                "Fast shipping and the product is even better than described.",
-                "I'm really impressed with the quality and performance.",
-                "This has made my life so much easier. Thank you!",
-                "Great product with excellent craftsmanship.",
-                "Better than I expected! The quality is superb.",
-                "I would definitely recommend this to my friends.",
-                "Perfect in every way. No complaints at all!",
-                "The attention to detail is remarkable.",
-                "This product is a game-changer! So glad I bought it.",
-                "High-quality materials and excellent workmanship.",
-                "Exceeded my expectations in every aspect.",
-                "I'm very happy with this purchase. It's fantastic!",
-                "Well designed and very functional. Love it!",
-                "This is by far the best product I've bought this year."
-            ];
-            
-            const randomIndex = Math.floor(Math.random() * comments.length);
-            pingluntext.value = comments[randomIndex];
-    };
+        
         initData()
         // watch(fooCheck,(newValue)=>{
         //     console.log("新值是"+newValue);
         //     push('/'+newValue)
         // })
-        return {
-            showTj,
-            active,
-            initData,
-            status_data,
-            status_list,
-            list,
-            loading,
-            clickRight,
-            formatTime,
-            timeData,
-            currency,
-            time,
-            nowTime,
-            onceinfo, 
-            tjOrder,
-            confirmPwd,
-            countTime,
-            showConfirm,
-            toTei,
-            pinglun,
-            pingluntext,
-            generateRandomComment
-      }
+                return {
+                        active,
+                        initData,
+                        status_data,
+                        status_list,
+                        list,
+                        loading,
+                        clickRight,
+                        formatTime,
+                        timeData,
+                        currency,
+                        time,
+                        nowTime,
+                        countTime,
+                        toTei,
+                        goDetail
+            }
     }
 }
 </script>
@@ -395,12 +205,9 @@ export default {
     :deep(.van-tab__panel){
         padding: 0 var(--van-padding-md);
     }
-    :deep(.van-tabs){
+        :deep(.van-tabs){
         .van-tab--card:last-child{
             border-right: none;
-        }
-        .van-tabs__nav--card{
-            // margin: 0 calc(var(--van-padding-md));
         }
     }
   .van-submit-bar{
@@ -481,13 +288,11 @@ export default {
     margin-top: 20px;
     border-radius: 10px;
     background-color: #fff;
-    .top{
+        .top{
         display: flex;
         justify-content: space-between;
         margin-bottom: 35px;
-        font-size: 16px;
-        .time{
-        }
+        font-size: 26px;
     }
     .cet{
         display: flex;

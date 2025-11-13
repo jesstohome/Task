@@ -320,6 +320,11 @@ wfsyqtgjgn: "Unable to Use Other Advanced Features",
   qita: "Others",
   zichan: "Assets",
   dianjifabiaopinglun: "Click to Post a Comment",
-  zidongpinglun: "Automatic Comments"
+  zidongpinglun: "Automatic Comments",
+  jijinanquan: "Fund Security",
+  shouyizhong: "Earnings in Progress",
+  shangpinmingcheng: "Product Name",
+  xiepinglun: "Write a Comment",
+  bili: "Proportion"
 	}
 }

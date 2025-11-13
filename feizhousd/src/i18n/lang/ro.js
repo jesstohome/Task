@@ -307,6 +307,11 @@ module.exports = {
     qita: "Altele",
     zichan: "Active",
     dianjifabiaopinglun: "Faceți clic pentru a comenta",
-    zidongpinglun: "Comentarii automate"
+    zidongpinglun: "Comentarii automate",
+    jijinanquan: "Securitatea fondului",
+    shouyizhong: "Venit în curs",
+    shangpinmingcheng: "Numele produsului",
+    xiepinglun: "Scrie un comentariu",
+    bili: "Proporție"
     }
   }
