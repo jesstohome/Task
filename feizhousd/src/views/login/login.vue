@@ -64,7 +64,18 @@ export default {
       }
     }
 
-    localStorage.clear()
+    // 只清除用户相关数据，保留语言、基础信息等
+    const clearUserData = () => {
+      const keysToKeep = ['lang', 'baseInfo', 'langImg'] // 保留这些 key
+      const allKeys = Object.keys(localStorage)
+      allKeys.forEach(key => {
+        if (!keysToKeep.includes(key)) {
+          localStorage.removeItem(key)
+        }
+      })
+    }
+    
+    clearUserData()
 
     const onSubmit = (values) => {
       const json = {...values}
