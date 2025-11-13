@@ -1,0 +1,127 @@
+ng+PHP7.2 + MySQL 5.6.50
+
+application/database.php
+运行目录public 伪静态 thinkphp
+/hzw-system-login admin    aa123456
+
+
+
+
+
+后端配置
+
+ add_header 'Access-Control-Allow-Credentials' 'true';
+   # add_header 'Access-Control-Allow-Origin' 'https://kele1006.space/home';
+    add_header 'Access-Control-Allow-Headers' 'language,token,access-control-allow-credentials,access-control-allow-origin';
+
+自动冻结订单:http://www.jake1006.space/index/Crontab/freeze_order
+
+前端伪静态
+location ~ ^/vi {    # 使用 ^/vi 确保匹配以 /vi/ 开头的路径
+    proxy_pass http://43.156.84.195:5544;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    
+    # 允许跨域请求
+    add_header Access-Control-Allow-Origin * always;
+    add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS' always;
+    add_header Access-Control-Allow-Headers '*' always;
+    
+    if ($request_method = 'OPTIONS') {
+        return 204;
+    }
+}
+
+location / {
+  root   /www/wwwroot/qianduan.com;    #地址弄自己的地址
+  try_files $uri $uri/ /index.html;
+  index  index.html index.htm;
+}
+
+后改独立前段规则
+location ~ ^/(vi|upload)/ {
+        proxy_pass http://127.0.0.5;
+        proxy_buffer_size 16k;
+        proxy_buffers 4 32k;
+        proxy_busy_buffers_size 64k;
+        
+        proxy_ssl_verify off;
+        proxy_ssl_server_name on;
+        
+        proxy_connect_timeout 10s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+        
+        proxy_set_header Host admin.gnvcso.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+  location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+
+  <style lang="scss" scoped>
+    .footer{
+    display: flex;
+    justify-content: space-around;
+    height: 6.5rem;
+    /* ⭐ 删除以下样式，因为在 App.vue 中已经统一设置了 */
+    /* position: fixed; */
+    /* width: 100%; */
+    /* max-width: 750px; */
+    /* bottom: 0; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
+    /* z-index: 999; */
+    /* background: #fff; */
+    /* box-shadow: ...; */
+    
+    .f_li{
+        width: 20%;
+        // 保持原有样式...
+        &.obj{
+            width: auto;
+            position: relative;
+            padding-top: 0;
+            margin-top: -1rem;
+            .span{
+                background: #ffffff00;
+                padding: 5px;
+                
+                .img{
+                    height: 3rem;
+                    width: 3rem;
+                }
+            }
+        }
+        .span{
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            .img{
+                height: 2rem;
+                width: 2rem;
+                margin: 0 auto 1rem;
+            }
+            .text{
+                font-size: .9rem;
+                color: #a19fa8;
+                white-space: wrap;
+                line-height: 1;
+                &.check{
+                    color: #2c7ce7;
+                }
+            }
+        }
+    }
+}
+</style>

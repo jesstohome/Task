@@ -272,7 +272,7 @@ export default {
 .home{
     overflow: auto;
     background: linear-gradient(to bottom, #2e64eb 10%, #f6f7f9 40%);
-    margin-top: 100px;
+    padding-top: 100px;
     :deep(.van-nav-bar){
         background-color: #2e64eb;
         color: #fff;

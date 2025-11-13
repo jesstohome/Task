@@ -72,25 +72,25 @@
             <div class="n_nav">
                 <div class="li nav" @click="toRoute('/service')">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/service.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/service.png')" alt="">
                     </div>
                     <div class="text">{{$t('msg.tel')}}</div>
                 </div>
                 <div class="li nav" @click="toRoute('/libao',monney)">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_finance.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/ic_finance.png')" alt="">
                     </div>
                     <div class="text">Web3</div>
                 </div>
                 <div class="li nav" @click="toRoute('/chongzhi')">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_recharge.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/ic_recharge.png')" alt="">
                     </div>
                     <div class="text">{{$t('msg.chongzhi')}}</div>
                 </div>
                 <div class="li nav" @click="toRoute('/drawing',monney,2)">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/ic_withdraw.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/ic_withdraw.png')" alt="">
                     </div>
                     <div class="text"
                     >{{$t('msg.tixian')}}</div>
@@ -98,28 +98,28 @@
                 <!-- 公司简介 -->
                  <div class="li nav" @click="toDetails(2,$t('msg.gsjj'))">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/aboult.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/aboult.png')" alt="">
                     </div>
                     <div class="text"
                     >{{$t('msg.gsjj')}}</div>
                 </div>
                 <div class="li nav" @click="toDetails(3,$t('msg.gzms'))">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/tiaokuan.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/tiaokuan.png')" alt="">
                     </div>
                     <div class="text"
                     >{{$t('msg.gzms')}}</div>
                 </div>
                 <div class="li nav" @click="toDetails(4,$t('msg.dlhz'))">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/zhengshu.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/zhengshu.png')" alt="">
                     </div>
                     <div class="text"
                     >{{$t('msg.dlhz')}}</div>
                 </div>
                 <div class="li nav" @click="toDetails(12,$t('msg.qyzz'))">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/ask.png')" width="50" height="50" alt="">
+                        <img :src="require('@/assets/images/news/ask.png')" alt="">
                     </div>
                     <div class="text"
                     >{{$t('msg.qyzz')}}</div>
@@ -672,6 +672,10 @@ export default {
                         display: flex;
                         flex-direction: column;
                         justify-content: center;
+                        img{
+                            width: 80px;
+                            height: 80px;
+                        }
                     }
                 }
                 .img{
@@ -794,6 +798,7 @@ export default {
                     color: #fff;
                     padding: 10px;
                     font-weight: 900;
+                    font-size: 30px;
                 }
                 .van-button.active{
                     background: #ffffff;

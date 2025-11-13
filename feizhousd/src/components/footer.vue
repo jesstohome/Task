@@ -63,20 +63,16 @@ export default {
     .footer{
     display: flex;
     justify-content: space-around;
-    padding: 0 0 18px 0;
-    /* ⭐ 删除以下样式，因为在 App.vue 中已经统一设置了 */
-    /* position: fixed; */
-    /* width: 100%; */
-    /* max-width: 750px; */
-    /* bottom: 0; */
-    /* left: 50%; */
-    /* transform: translateX(-50%); */
-    /* z-index: 999; */
-    /* background: #fff; */
-    /* box-shadow: ...; */
+    position: fixed;
+        width: 100%;
+        bottom: -18px;
+        left: 0;
+        padding: 0;
+        z-index: 999;
+        background: #fff;
+        filter: drop-shadow(0 0 4px #bbb);
     
     .f_li{
-        width: 20%;
         // 保持原有样式...
         &.obj{
             width: auto;
