@@ -613,7 +613,7 @@ export default {
         .caiwulist{
             display: flex;
             justify-content: space-between;
-            margin: 34px 40px;
+            margin: 34px 0px;
             
             .caiwuitem{
                 display: flex;

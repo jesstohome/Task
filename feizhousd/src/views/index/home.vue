@@ -635,6 +635,7 @@ export default {
             justify-content: space-between;
             margin-top: 40px;
             flex-wrap: wrap;
+            text-align: center;
             &.jj{
                 margin: 20px 0 60px;
                 padding: 0 38px;
@@ -646,6 +647,7 @@ export default {
                     .text{
                         font-size: 18px;
                         color: $sub_theme;
+                        text-align: center;
                     }
                 }
             }
@@ -667,6 +669,7 @@ export default {
                         flex-direction: column;
                         justify-content: space-around;
                         font-size: 26px;
+                        text-align: center;
                     }
                     .imge{
                         display: flex;
