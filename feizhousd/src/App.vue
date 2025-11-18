@@ -1,12 +1,12 @@
 <template>
-  <div class="viewport-outer" :class="{ 'is-scaled': isScaled }">
+  <div class="viewport-outer" :class="{ 'is-scaled': isScaled }" :style="{ '--current-scale': scale }">
     <div class="viewport-scaler" :style="scalerStyle">
       <div class="app-content" :style="{ width: `${innerWidth}px` }">
         <my-scroll>
           <router-view />
         </my-scroll>
       </div>
-    </div>    
+    </div>
     <!-- ⭐ Footer 必须放在这里，在 viewport-scaler 外面 -->
     <Footer v-if="showFooter" />
   </div>
@@ -29,7 +29,7 @@ export default {
     const route = useRoute()
     const innerWidth = ref(window.innerWidth)
     const innerHeight = ref(window.innerHeight)
-    const targetWidth = ref(750)
+    const targetWidth = ref(1000)
     const scale = ref(1)
 
     const showFooter = computed(() => {
@@ -57,7 +57,8 @@ export default {
       transform: `scale(${scale.value})`,
       transformOrigin: 'top center',
       width: `${innerWidth.value}px`,
-      height: `${innerHeight.value / (scale.value || 1)}px`
+      height: `${innerHeight.value / (scale.value || 1)}px`,
+      '--current-scale': scale.value // 暴露scale值给CSS使用
     }))
 
     const changeFavicon = link => {
@@ -95,7 +96,8 @@ export default {
       innerWidth,
       scalerStyle,
       isScaled,
-      showFooter // ⭐ 返回
+      showFooter,
+      scale // 将scale暴露给模板使用
     }
   }
 }
@@ -132,13 +134,28 @@ export default {
 .viewport-outer > .footer{
   position: fixed !important;
   left: 50% !important;
-  transform: translateX(-50%) !important;
   bottom: 0 !important;
-  // width: 100% !important;
-  max-width: 750px !important;
   z-index: 9999 !important;
   background: #fff !important;
   box-shadow: 0 -2px 8px rgba(187, 187, 187, 0.3) !important;
+  transform-origin: center bottom !important;
+}
+
+/* 未缩放时（手机端） */
+.viewport-outer:not(.is-scaled) > .footer{
+  width: 100% !important;
+  max-width: 1000px !important;
+  transform: translateX(-50%) !important;
+}
+
+/* 缩放时（PC端） */
+.viewport-outer.is-scaled > .footer{
+  /* Footer需要与主内容等宽
+     主内容实际宽度是innerWidth，缩放后视觉宽度是1000px
+     所以Footer原始宽度应该是innerWidth，缩放scale后视觉是1000px */
+  width: 100vw !important;
+  max-width: 100vw !important;
+  transform: translateX(-50%) scale(var(--current-scale, 1)) !important;
 }
 
 #app {

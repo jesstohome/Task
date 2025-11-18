@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        <div style="display: flex;width: 750px;justify-content: space-around;">
+        <div style="display: flex;width: 100%;justify-content: space-around;">
             <div class="f_li" v-for="item in list" :key="item.key" :class="item.key == 'obj' && 'obj'" @click="checkList(item.key)">
                     <div class="span">
                         <img :src="fooCheck == item.key ? item.img_check : item.img" class="img" alt="">
@@ -63,7 +63,7 @@ export default {
     .footer{
     display: flex;
     justify-content: space-around;
-    height: 6.5rem;
+    // height: 150px;
     // position: fixed;
     //     width: 100%;
         // bottom: -18px;
@@ -84,14 +84,14 @@ export default {
             // width: auto;
             position: relative;
             padding-top: 0;
-            margin-top: -1rem;
+            margin-top: -35px;
             .span{
                 background: #ffffff00;
                 padding: 5px;
-                // height: 220px;
+                height: 220px;
                 .img{
-                    height: 3rem;
-                    width: 3rem;
+                    height: 100px;
+                    width: 100px;
                 }
             }
         }
@@ -104,12 +104,12 @@ export default {
             text-align: center;
             
             .img{
-                height: 2rem;
-                width: 2rem;
-                margin: 0 auto 1rem;
+                height: 64px;
+                width: 64px;
+                margin: 0 auto 10px;
             }
             .text{
-                font-size: .9rem;
+                font-size: 26px;
                 color: #a19fa8;
                 white-space: wrap;
                 line-height: 1;

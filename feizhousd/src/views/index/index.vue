@@ -28,7 +28,7 @@ export default {
         padding-bottom:140px;
         display: flex;
         flex-direction: column;
-        margin-bottom: 200px;
+        padding-bottom: 200px;
     }
 
 }

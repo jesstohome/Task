@@ -392,7 +392,7 @@ export default {
     overflow: auto;
     display: block !important;
     padding: 0 30px;
-    margin-bottom: 100px;
+    // margin-bottom: 100px;
     //padding: calc(var(--van-nav-bar-height) + 20px) 24px 0;
     .van-nav-bar{
         background:#d4dff5;
