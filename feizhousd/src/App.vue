@@ -95,17 +95,16 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: 100%;
+  overflow: hidden;
   -webkit-overflow-scrolling: touch;
   position: relative;
 }
 
 .viewport-container{
   width: 100%;
-  max-width: 1000px; /* 最大宽度1000px */
-  min-height: 100vh;
+  max-width: 1000PX; /* 最大宽度1000px */
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -114,11 +113,13 @@ export default {
 .app-content{
   flex: 1;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .app-content > *{
-  min-height: 100%;
+  height: 100%;
 }
 
 /* ⭐ Footer 样式 - 固定在底部 */
@@ -128,7 +129,7 @@ export default {
   transform: translateX(-50%);
   bottom: 0;
   width: 100%;
-  max-width: 1000px; /* 与container一致 */
+  max-width: 1000PX; /* 与container一致 */
   z-index: 9999;
   background: #fff;
   box-shadow: 0 -2px 8px rgba(187, 187, 187, 0.3);

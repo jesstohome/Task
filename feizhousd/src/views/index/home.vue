@@ -395,7 +395,7 @@ export default {
 @import '@/styles/theme.scss';
     .home{
         position: relative;
-        width: 100vw;
+        // width: 100vw;
         overflow-x: hidden;
         overflow-y: auto;
         display: block !important;
