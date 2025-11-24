@@ -170,14 +170,14 @@ export default {
 					const group_data = onceinfo.value.group_data || []
 					if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
 						proxy.$Message({ type: 'success', message: res.info })
-						push({ name: 'order' })
+						push({ name: 'obj' })
 					} else if (group_data.length == onceinfo.value.data.duorw) {
 						proxy.$Message({ type: 'success', message: res.info })
-						push({ name: 'order' })
+						push({ name: 'obj' })
 					} else {
 						submit_order().then(() => {
 							Toast.success(t('msg.tjcg'))
-							push({ name: 'order' })
+							push({ name: 'obj' })
 						})
 					}
 				} else {
