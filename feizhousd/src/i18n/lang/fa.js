@@ -312,6 +312,7 @@ module.exports = {
   shouyizhong: "درآمد در حال انجام",
   shangpinmingcheng: "نام محصول",
   xiepinglun: "نوشتن نظر",
-  bili: "نسبت"
+  bili: "نسبت",
+  qxxyd: "لغو سفارش خوش شانس"
     }
   }

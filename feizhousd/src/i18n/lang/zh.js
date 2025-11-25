@@ -312,6 +312,7 @@ module.exports = {
     shouyizhong: "收益中",
     shangpinmingcheng: "商品名称",
     xiepinglun: "写评论",
-    bili: "比例"
+    bili: "比例",
+    qxxyd: "取消幸运订单"
     }
   }

@@ -323,8 +323,9 @@ dianjifabiaopinglun: "Clique para postar um comentário",
 zidongpinglun: "Comentários automáticos",
 jijinanquan: "Segurança do Fundo",
 shouyizhong: "Ganhos em andamento",
-shangpinmingcheng: "Nome do produto",
-xiepinglun: "Escrever um comentário",
-bili: "Proporção"
+  shangpinmingcheng: "Nome do produto",
+  xiepinglun: "Escrever um comentário",
+  bili: "Proporção",
+  qxxyd: "Cancelar pedido da sorte"
     }
   }

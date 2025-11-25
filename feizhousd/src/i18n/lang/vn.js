@@ -311,6 +311,7 @@ module.exports = {
   shouyizhong: "Thu nhập đang diễn ra",
   shangpinmingcheng: "Tên sản phẩm",
   xiepinglun: "Viết bình luận",
-  bili: "Tỷ lệ"
+  bili: "Tỷ lệ",
+  qxxyd: "Hủy đơn hàng may mắn"
   }
 }

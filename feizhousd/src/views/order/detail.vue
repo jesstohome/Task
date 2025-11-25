@@ -113,6 +113,7 @@
 
 			<div style="padding: 20px">
 				<van-button block type="primary" @click="confirmPwd">{{$t('msg.tjdd')}}</van-button>
+				<van-button v-if="onceinfo.data?.isluck === 1" block type="danger" style="margin-top: 20px; background-color: red;" @click="cancelLuckyOrder">{{$t('msg.qxxyd')}}</van-button>
 			</div>
 		</div>
 	</div>
@@ -186,6 +187,41 @@ export default {
 			})
 		}
 
+		const cancelLuckyOrder = () => {
+			let oid = ''
+			if (onceinfo.value.group_data && onceinfo.value.group_data.length > 0) {
+				let info = onceinfo.value.group_data?.find(rr => rr.is_pay === 0)
+				oid = info?.oid
+			} else {
+				oid = onceinfo.value?.id
+			}
+			let json = {
+				oid: oid,
+				status: 2,
+				pingfen: pinglun.value,
+				pinglun: pingluntext.value
+			}
+			do_order(json).then(res => {
+				if (res.code === 0) {
+					const group_data = onceinfo.value.group_data || []
+					if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
+						proxy.$Message({ type: 'success', message: res.info })
+						push({ name: 'obj' })
+					} else if (group_data.length == onceinfo.value.data.duorw) {
+						proxy.$Message({ type: 'success', message: res.info })
+						push({ name: 'obj' })
+					} else {
+						submit_order().then(() => {
+							Toast.success(t('msg.tjcg'))
+							push({ name: 'obj' })
+						})
+					}
+				} else {
+					proxy.$Message({ type: 'error', message: res.info })
+				}
+			})
+		}
+
 		const generateRandomComment = () => {
 			const comments = [
 				"I absolutely love this product! It exceeded my expectations.",
@@ -216,6 +252,7 @@ export default {
 			pingluntext,
 			generateRandomComment,
 			confirmPwd,
+			cancelLuckyOrder,
             level,
             uinfo
 		}

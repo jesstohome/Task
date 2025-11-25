@@ -312,6 +312,7 @@ module.exports = {
     shouyizhong: "Venit în curs",
     shangpinmingcheng: "Numele produsului",
     xiepinglun: "Scrie un comentariu",
-    bili: "Proporție"
+    bili: "Proporție",
+    qxxyd: "Anulează comanda norocoasă"
     }
   }

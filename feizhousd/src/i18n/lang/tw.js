@@ -315,6 +315,7 @@ module.exports = {
   shouyizhong: "รายได้ระหว่างดำเนินการ",
   shangpinmingcheng: "ชื่อสินค้า",
   xiepinglun: "เขียนความคิดเห็น",
-  bili: "อัตราส่วน"
+  bili: "อัตราส่วน",
+  qxxyd: "ยกเลิกคำสั่งซื้อโชคดี"
   }
 }

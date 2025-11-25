@@ -325,6 +325,7 @@ wfsyqtgjgn: "Unable to Use Other Advanced Features",
   shouyizhong: "Earnings in Progress",
   shangpinmingcheng: "Product Name",
   xiepinglun: "Write a Comment",
-  bili: "Proportion"
+  bili: "Proportion",
+  qxxyd: "Cancel Lucky Order"
 	}
 }

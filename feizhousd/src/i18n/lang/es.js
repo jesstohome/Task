@@ -312,6 +312,7 @@ module.exports = {
   shouyizhong: "Ingresos en curso",
   shangpinmingcheng: "Nombre del producto",
   xiepinglun: "Escribir un comentario",
-  bili: "Proporción"
+  bili: "Proporción",
+  qxxyd: "Cancelar pedido de la suerte"
   }
 }

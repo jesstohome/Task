@@ -6,3 +6,28 @@
 
     使用方法：在下面批量绑定用户或者到用户列表位置匹配方案组
     系统匹配订单模式优先级：单控 > 方案组 > 普通抢单
+
+代理规则：
+    location ~ ^/(vi|upload)/ {
+        proxy_pass http://127.0.0.5;
+        proxy_buffer_size 16k;
+        proxy_buffers 4 32k;
+        proxy_busy_buffers_size 64k;
+        
+        proxy_ssl_verify off;
+        proxy_ssl_server_name on;
+        
+        proxy_connect_timeout 10s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+        
+        proxy_set_header Host admin.gnvcso.com;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
