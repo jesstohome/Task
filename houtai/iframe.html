@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端页面适配器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .mobile-container {
+            background: #fff;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            position: relative;
+            max-width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .phone-frame {
+            background: #000;
+            border-radius: 30px;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notch {
+            width: 150px;
+            height: 25px;
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .screen {
+            width: 375px;
+            height: 667px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+            z-index: 5;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #e74c3c;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            display: none;
+            z-index: 10;
+        }
+
+        .error-message h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .error-message p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .error-message button {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 15px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .control-btn {
+            background: #667eea;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            min-width: 100px;
+            font-weight: 500;
+        }
+
+        .control-btn:hover {
+            background: #5568d3;
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .control-btn.active {
+            background: #764ba2;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .control-btn:active {
+            transform: translateX(3px);
+        }
+
+        /* 移动端直接展示样式 */
+        .direct-view {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+        }
+
+        .direct-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 响应式 - 小屏幕时调整尺寸 */
+        @media (max-width: 1200px) {
+            .controls {
+                left: 10px;
+                padding: 15px 10px;
+                gap: 10px;
+            }
+            
+            .control-btn {
+                padding: 10px 15px;
+                font-size: 12px;
+                min-width: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .screen {
+                width: 320px;
+                height: 568px;
+            }
+            
+            .controls {
+                flex-direction: row;
+                left: 50%;
+                top: auto;
+                bottom: 10px;
+                transform: translateX(-50%);
+                padding: 10px 15px;
+                gap: 8px;
+                overflow-x: auto;
+                max-width: 90vw;
+            }
+            
+            .control-btn {
+                padding: 8px 12px;
+                font-size: 11px;
+                min-width: 60px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 0;
+                background: #000;
+            }
+            
+            .mobile-container,
+            .phone-frame,
+            .controls {
+                display: none;
+            }
+
+            .direct-view {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PC端展示 - 手机框架 -->
+    <div class="mobile-container" id="pcView">
+        <div class="phone-frame">
+            <div class="notch"></div>
+            <div class="screen">
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>加载中...</p>
+                </div>
+                <div class="error-message" id="errorMessage">
+                    <h3>⚠️ 加载失败</h3>
+                    <p id="errorText"></p>
+                    <button onclick="retryLoad()">重试</button>
+                </div>
+                <iframe 
+                    class="mobile-iframe" 
+                    id="mobileIframe"
+                    src=""
+                    title="移动端页面"
+                    allow="accelerometer; camera; microphone; geolocation">
+                </iframe>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="control-btn active" onclick="setSize(375, 667)" title="iPhone 8 - 标准手机">
+                📱 iPhone
+            </button>
+            <button class="control-btn" onclick="setSize(390, 844)" title="iPhone 14 - 新款手机">
+                📱 iPhone 14
+            </button>
+            <button class="control-btn" onclick="setSize(360, 640)" title="Android - 安卓手机">
+                🤖 Android
+            </button>
+            <button class="control-btn" onclick="setSize(768, 1024)" title="iPad - 标准平板">
+                📱 iPad
+            </button>
+            <button class="control-btn" onclick="setSize(820, 1180)" title="iPad Pro - 大屏平板">
+                📱 iPad Pro
+            </button>
+            <button class="control-btn" onclick="rotateScreen()" title="旋转屏幕">
+                🔄 旋转
+            </button>
+        </div>
+    </div>
+
+    <!-- 移动端直接展示 -->
+    <div class="direct-view" id="mobileView">
+        <iframe 
+            class="direct-iframe" 
+            id="directIframe"
+            src=""
+            title="移动端页面"
+            allow="accelerometer; camera; microphone; geolocation">
+        </iframe>
+    </div>
+
+    <script>
+        // ==================== 配置区域 ====================
+        const MOBILE_PAGE_URL = 'https://m.gnvcso.com';  // 👈 修改这里
+        // ================================================
+
+        let currentWidth = 375;
+        let currentHeight = 667;
+        let isRotated = false;
+        let loadTimeout;
+
+        // 检测是否为移动设备
+        function isMobileDevice() {
+            const ua = navigator.userAgent.toLowerCase();
+            const isMobile = /iphone|ipad|ipod|android|mobile|blackberry|windows phone|webos/i.test(ua);
+            const isSmallScreen = window.innerWidth <= 400;
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            
+            return isMobile || isSmallScreen || isTouchDevice;
+        }
+
+        // 显示错误消息
+        function showError(message) {
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            loading.style.display = 'none';
+            errorMessage.style.display = 'block';
+            errorText.innerHTML = message;
+        }
+
+        // 重试加载
+        function retryLoad() {
+            const errorMessage = document.getElementById('errorMessage');
+            const loading = document.getElementById('loading');
+            
+            errorMessage.style.display = 'none';
+            loading.style.display = 'block';
+            
+            initPage();
+        }
+
+        // 初始化页面
+        function initPage() {
+            const pcView = document.getElementById('pcView');
+            const mobileView = document.getElementById('mobileView');
+            const mobileIframe = document.getElementById('mobileIframe');
+            const directIframe = document.getElementById('directIframe');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // 清除之前的超时
+            if (loadTimeout) {
+                clearTimeout(loadTimeout);
+            }
+
+            // 隐藏错误消息
+            errorMessage.style.display = 'none';
+
+            if (isMobileDevice()) {
+                // 移动端 - 直接跳转
+                window.location.href = MOBILE_PAGE_URL;
+            } else {
+                // PC端 - 使用iframe模拟手机
+                pcView.style.display = 'flex';
+                mobileView.style.display = 'none';
+                
+                // 设置超时检测
+                loadTimeout = setTimeout(() => {
+                    showError(`
+                        无法加载页面。可能的原因:<br><br>
+                        1. <strong>路径错误</strong>: 请确认 MOBILE_PAGE_URL 配置正确<br>
+                        2. <strong>跨域问题</strong>: 如果是外部URL,需要配置CORS<br>
+                        3. <strong>网络问题</strong>: 请检查网络连接<br><br>
+                        当前URL: <code>${MOBILE_PAGE_URL}</code>
+                    `);
+                }, 10000);
+
+                mobileIframe.src = MOBILE_PAGE_URL;
+                
+                // iframe加载完成
+                mobileIframe.onload = function() {
+                    clearTimeout(loadTimeout);
+                    loading.style.display = 'none';
+                    console.log('页面加载成功');
+                };
+
+                // iframe加载错误
+                mobileIframe.onerror = function() {
+                    clearTimeout(loadTimeout);
+                    showError(`
+                        加载失败!<br><br>
+                        <strong>请检查:</strong><br>
+                        1. URL是否正确<br>
+                        2. 网络是否正常<br>
+                        3. 服务器是否可访问
+                    `);
+                };
+
+                console.log('检测到PC设备,使用iframe模拟展示');
+            }
+        }
+
+        // 设置屏幕尺寸
+        function setSize(width, height) {
+            if (isMobileDevice()) return;
+
+            const screen = document.querySelector('.screen');
+            const buttons = document.querySelectorAll('.control-btn');
+            
+            currentWidth = width;
+            currentHeight = height;
+            isRotated = false;
+            
+            screen.style.width = width + 'px';
+            screen.style.height = height + 'px';
+            
+            // 更新按钮状态
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 旋转屏幕
+        function rotateScreen() {
+            if (isMobileDevice()) return;
+
+            const screen = document.querySelector('.screen');
+            isRotated = !isRotated;
+            
+            if (isRotated) {
+                screen.style.width = currentHeight + 'px';
+                screen.style.height = currentWidth + 'px';
+            } else {
+                screen.style.width = currentWidth + 'px';
+                screen.style.height = currentHeight + 'px';
+            }
+        }
+
+        // 监听窗口大小变化
+        window.addEventListener('resize', function() {
+            // 不重新初始化,避免刷新
+        });
+
+        // 页面加载时初始化
+        window.addEventListener('load', initPage);
+
+        // 防止iframe内容被拖拽
+        window.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>

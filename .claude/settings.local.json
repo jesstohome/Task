@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install postcss-pxtorem --save-dev)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

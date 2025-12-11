@@ -1,0 +1,109 @@
+{extend name='main'}
+
+{block name="button"}
+
+<!--{if auth("add")}-->
+<!--<button data-modal='{:url("add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>-->
+<!--{/if}-->
+
+<!--{if auth("remove")}-->
+<!--<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些用户吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除用户</button>-->
+<!--{/if}-->
+
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    {include file='user/index_search'}
+    <table class="layui-table margin-top-10" >
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='text-center nowrap'>序号</th>
+            <th class='text-center nowrap'>登录名</th>
+            <th class='text-center nowrap'>昵称</th>
+            <th class='text-center nowrap'>手机号</th>
+            <th class='text-center nowrap'>角色</th>
+            <th class='text-center nowrap'>状态</th>
+<!--            <th class='text-center nowrap'>登录次数</th>-->
+<!--            <th class='text-center nowrap'>使用状态</th>-->
+<!--            <th class='text-left nowrap'>创建时间</th>-->
+<!--            <th class='text-left nowrap'>最后登录时间</th>-->
+            <th class='text-center nowrap'>操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class='text-center nowrap'>{$vo.id}</td>
+            <td class='text-center nowrap'>{$vo.username|default=''}</td>
+            <td class='text-center nowrap'>{$vo.nickname|default=''}</td>
+            <td class='text-center nowrap'>{$vo.phone|default='-'}</td>
+            <td class='text-center nowrap'>{$vo.authorize_name|default='-'}</td>
+            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">禁止</span>{else}<span class="color-green">开放</span>{/eq}</td>
+<!--            <td class='text-center nowrap'>{$vo.login_num|default=0}</td>-->
+<!--            <td class='text-left nowrap'>{$vo.create_at|format_datetime}</td>-->
+<!--            <td class='text-left nowrap'>{if $vo.login_num>0}{$vo.login_at|format_datetime}{else} - {/if}</td>-->
+            <td class='text-center nowrap'>
+
+                {if auth("edit_sys_user")}
+                <a data-dbclick class="layui-btn layui-btn-normal layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit_sys_user")}?id={$vo.id}'>查看</a>
+                {/if}
+
+                {if auth("del_sys_user")}
+                <a data-confirm="确定要删除吗？"  class="layui-btn layui-btn-sm layui-btn-danger" data-title="删除"
+                   data-action='{:url("del_sys_user")}' data-value="id#{$vo.id}">删除</a><br/>
+                {/if}
+
+                {if auth("sys_user_resetting_pwd")}
+                <a data-confirm="确定重置密码吗？"  class="layui-btn layui-btn-sm layui-btn-warm" data-title="重置密码"
+                   data-action='{:url("sys_user_resetting_pwd")}' data-value="id#{$vo.id}">重置密码</a><br/>
+                {/if}
+
+                {if auth("edit_sys_user")}
+                <span  class="layui-btn layui-btn-sm offOnline">强制下线</span><br/>
+                {/if}
+
+<!--                {if auth("pass")}-->
+<!--                <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="设置密码" data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>-->
+<!--                {/if}-->
+
+<!--                {if auth("edit")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑用户" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>-->
+<!--                {/if}-->
+
+<!--                {if $vo.status eq 1 and auth("forbid")}-->
+<!--                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>-->
+<!--                {elseif $vo.status eq 0 and auth("resume")}-->
+<!--                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启 用</a>-->
+<!--                {/if}-->
+
+<!--                {if auth("remove")}-->
+<!--                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该用户吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>-->
+<!--                {/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+<script>
+    window.form.render();
+    $('.offOnline').on('click', function () {
+        layer.confirm('确认强制下线吗？', function (index) {
+            layer.msg('下线成功');
+        })
+    })
+</script>
+{/block}

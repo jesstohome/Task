@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>{block name="title"}{$title|default=''}{if !empty($title)} · {/if}{:sysconf('site_name')}{/block}</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=0.4">
+    <link rel="shortcut icon" href="{:sysconf('site_icon')}">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/awesome/fonts.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/console.css?at={:date('md')}">
+    {block name="style"}{/block}
+    <script>window.ROOT_URL = '__ROOT__';</script>
+    <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
+    <style>
+        /*.layui-badge {*/
+        /*    border-radius: 50%;*/
+        /*    top: 10px !important;*/
+        /*}*/
+
+        /*::-webkit-scrollbar {*/
+        /*    height: 11px !important;*/
+        /*}*/
+
+        /* #sa{*/
+        /*     width: 20%;*/
+        /*     height: 50px;*/
+        /*overflow-x:scroll;*/
+        /*     overflow-y:scroll;*/
+        /* }*/
+
+        /*#sa ::-webkit-scrollbar {*/
+        /* width:12px;*/
+        /* }*/
+        /* 滚动槽 */
+        /* #sa ::-webkit-scrollbar-track {*/
+        /* -webkit-box-shadow:inset006pxrgba(0,0,0,0.3);*/
+        /* border-radius:10px;*/
+        /* }*/
+        /* 滚动条滑块 */
+        /*  #sa ::-webkit-scrollbar-thumb {*/
+        /* border-radius:10px;*/
+        /* background:rgba(0,0,0,0.1);*/
+        /* -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);*/
+        /* }*/
+        /* #sa ::-webkit-scrollbar-thumb:window-inactive {*/
+        /* background:rgba(255,0,0,0.4);*/
+        /* }*/
+        .black{
+            color: black !important;
+        }
+        .layui-header [data-target-menu-type],.layui-header .layui-layout-right > li > a{
+            border-width: 0;
+            border-style: none;
+            border-color: transparent;
+        }
+        .hide{
+            display: none !important;
+        }
+        .show{
+            display: block !important;
+        }
+
+        element.style {
+            background-color: #297adc !important;
+        }
+        .padding-left-5 {
+            padding-left: 5px !important;
+        }
+        .layui-layout > .layui-side .layui-nav-item a{
+            color: #FFFFFFB2 !important;
+        }
+        .layui-layout > .layui-side .layui-nav-item a:hover,.layui-this{
+            color: #fff !important;
+            background-color: #297adc !important;
+        }
+        .layui-nav .layui-nav-child dd.layui-this a, .layui-nav-child dd.layui-this,.layui-this>a:hover,.layui-this{
+            background-color: #297adc !important;
+            color: #fff !important;
+        }
+        .layui-side-scroll>.layui-nav>.layui-nav-item>.layui-nav-itemed>a{
+            color: #fff !important;
+        }
+        .layui-header .layui-nav-item > a {
+            color: #666666 !important;
+        }
+        .layui-nav * {
+            font-size: 13px;
+        }
+        .layui-layout-body .layui-layout .layui-side .layui-side-scroll .layui-nav .layui-nav-itemed{
+            color: #fff !important;
+        }
+        .layui-tab-card .layui-tab-title .layui-this{
+            background-color: #42B983!important;
+            color: #fff !important;
+            font-size: 12px;
+        }
+        .layui-tab-card .layui-tab-title, .layui-tab-card .layui-tab-title li {
+            font-size: 12px;
+            border: 1px solid #ccc;
+            /*z-index: 99999999;*/
+            padding: 0 4px 0 8px;
+            height: 25px;
+            line-height: 25px;
+            margin-right: 10px;
+        }
+        .layui-tab-card>.layui-tab-title .layui-this:after{
+            height: 25px;
+        }
+        .layui-tab-card .layui-tab-title li i {
+            font-size: 12px;
+            height: 25px;
+        }
+        .layui-tab-card>.layui-tab-title .layui-this i {
+            color: #fff !important;
+        }
+        .layui-tab-card>.layui-tab-title .layui-this{
+            border: none;
+        }
+        .layui-tab-card .layui-tab-title .layui-this i:hover {
+            background-color: transparent;
+        }
+        .layui-tab-title .layui-this:after{
+            border-color: #fff;
+        }
+        .layui-tab-card>.layui-tab-title {
+            width: 100%;
+            padding: 6px 0 6px 18px;
+            /*border-top: 0.2px solid #fff; !* 下边框样式 *!*/
+            border-top: none;
+            border-bottom: 2px solid #ccc; /* 下边框样式 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            background-color: #fff;
+        }
+        .layui-tab-title li .layui-tab-close:hover{
+            border-radius: 2px;
+            background-color: inherit;
+            color: #c2c2c2;
+        }
+        /*.layui-nav-tree .layui-nav-title a:hover {*/
+        /*      color: #fff!important;*/
+        /*  }*/
+    </style>
+</head>
+
+<body class="layui-layout-body">
+{block name='body'}
+<div class="layui-layout layui-layout-admin layui-layout-left-hide">
+    <div class="layui-layout layui-layout-admin layui-layout-left-hide">
+        <!-- 顶部菜单 开始 -->
+        <div class="layui-header notselect" style="background-color: #fff!important;">
+            <!--            <a href="{:url('@')}" class="layui-logo layui-elip">-->
+            <!--                {:sysconf('app_name')} {if sysconf('app_version')}<sup class="padding-left-5">{:sysconf('app_version')}</sup>{/if}-->
+            <!--            </a>-->
+            <ul class="layui-nav layui-layout-left">
+                <!--左侧展开按钮-->
+                <li class="layui-nav-item" lay-unselect>
+                    <a class="text-center no-border" data-target-menu-type>
+                        <i class="layui-icon layui-icon-spread-left black"></i>
+                    </a>
+                </li>
+
+                <li class="layui-nav-item">
+                    <p class="text-center no-border">
+                        <span style="color: #666666;font-size: 13px;">首页 </span> <span class="nav-title" style="color: #A9A9A9FF;font-size: 13px;">/ {$title}</span>
+                    </p>
+                </li>
+
+                <!--头部一级导航-->
+                {foreach $menus as $oneMenu}
+                <li class="layui-nav-item site-demo-active layui-hide"
+                    data-type="tabAdd"
+                    data-title="{$oneMenu.title|default=''}"
+                    data-url="m-{$oneMenu.url}"
+                    data-id="{$oneMenu.id}"
+                >
+                    <a data-menu-node="m-{$oneMenu.id}" data-open="{$oneMenu.url}">
+                        {notempty name='oneMenu.icon'}<span class='{$oneMenu.icon} padding-right-5 black'></span>{/notempty}
+                        <span class="black">{$oneMenu.title|default=''}</span>
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+
+            <!--头部右侧功能区域-->
+            <ul class="layui-nav layui-layout-right">
+                <li lay-unselect="" class="layui-nav-item">
+                    <a href="/admin.html#/admin/deal/user_recharge.html" style="color: #666666 !important;font-size: 13px;">
+                        充值记录
+                        <!--                        <span class="layui-badge recharge">0</span>-->
+                    </a>
+                </li>
+                <li lay-unselect="" class="layui-nav-item">
+                    <a href="/admin.html#/admin/deal/deposit_list.html" style="color: #666666 !important;font-size: 13px;">
+                        提款记录
+                        <!--                        <span class="layui-badge deposit">0</span>-->
+                    </a>
+                </li>
+
+                <li lay-unselect="" class="layui-nav-item">
+                    <div class="top-msg">
+                        <img src="__ROOT__/static/theme/img/tongzhi.png" alt="" style="cursor: pointer; position: relative;width: 15px;height: 15px;">
+                        <span class="layui-circle" style="position: absolute;top: 33%;right: 0;width: 5px;height: 5px;background-color: red;"></span>
+                    </div>
+                </li>
+                <li lay-unselect="" class="layui-nav-item">
+                    <a href="javascript:;" class="fullscreenButton">
+                        <img src="__ROOT__/static/theme/img/quanping.png" alt="" style="width: 20px;height: 20px;">
+                    </a>
+                </li>
+
+                <!--刷新-->
+                <!--                <li lay-unselect class="layui-nav-item">-->
+                <!--                    <a data-reload>-->
+                <!--                        <i class="layui-icon layui-icon-refresh-3" style="color: #666666;"></i>-->
+                <!--                    </a>-->
+                <!--                </li>-->
+                {notempty name='Think.session.admin_user.username'}
+                <li class="layui-nav-item">
+                    <dl class="layui-nav-child">
+                        <dd lay-unselect><a data-modal="{:url('admin/index/info',['id'=>session('admin_user.id')])}"><i class="layui-icon layui-icon-set-fill margin-right-5"></i>基本资料</a></dd>
+                        <dd lay-unselect><a data-modal="{:url('admin/index/pass',['id'=>session('admin_user.id')])}"><i class="layui-icon layui-icon-component margin-right-5"></i>安全设置</a></dd>
+
+                        <!--<dd lay-unselect><a data-modal="{:url('admin/index/buildOptimize')}"><i class="layui-icon layui-icon-template-1 margin-right-5"></i>压缩发布</a></dd>-->
+
+                        <dd lay-unselect><a data-modal="{:url('admin/index/clearRuntime')}"><i class="layui-icon layui-icon-fonts-clear margin-right-5"></i>清理缓存</a></dd>
+
+                        {notempty name='GLOBALS.AdminUserRightOption'}
+                        {foreach $GLOBALS.AdminUserRightOption as $option}
+                        {if auth($option.node)}
+                        <dd lay-unselect><a data-{$option.type}="{$option.action}"><i class="{$option.icon} margin-right-5"></i>{$option.title}</a></dd>
+                        {/if}
+                        {/foreach}
+                        {/notempty}
+
+                        <dd lay-unselect><a data-confirm="确定要退出登录吗？" data-load="{:url('admin/login/out')}"><i class="layui-icon layui-icon-release margin-right-5"></i>退出登录</a></dd>
+                    </dl>
+                    <a><span style="color: #666666 !important;"><i class="layui-icon layui-icon-username margin-right-5" style="color: #666666 !important;"></i> {:session('admin_user.username')}</span></a>
+                </li>
+                {else}
+                <li class="layui-nav-item">
+                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i> 立即登录</a>
+                </li>
+                {/notempty}
+            </ul>
+        </div>
+        <!-- 顶部菜单 结束 -->
+
+        <!-- 左则菜单 开始 -->
+        <div class="layui-side  notselect" style="background-color: #297adc;position: absolute;left: 0;top:0;height: 100%;z-index: 999999">
+            <div class="layui-side-scroll">
+                {foreach $menus as $oneMenu}
+                {notempty name='oneMenu.sub'}
+                <ul class="layui-nav layui-nav-tree layui-hide" data-menu-layout="m-{$oneMenu.id}">
+                    {foreach $oneMenu.sub as $twoMenu}
+                    <li class="layui-nav-item" data-submenu-layout='m-{$oneMenu.id}-{$twoMenu.id}' style="border: none;">
+                        <a data-target-tips="{$twoMenu.title}" style="background-color:#297adc !important;">
+                            <span class='nav-icon {$twoMenu.icon}'></span>
+                            <span class="nav-text padding-left-5" style="background-color:#297adc !important;">{$twoMenu.title}</span>
+                        </a>
+                        <dl class="layui-nav-child" style="background-color:#297adc !important;">
+                            {notempty name='twoMenu.sub'}
+                            {foreach $twoMenu.sub as $thrMenu}
+                            <dd>
+                                <a data-target-tips="{$thrMenu.title}" data-open="{$thrMenu.url}" data-menu-node="m-{$oneMenu.id}-{$twoMenu.id}-{$thrMenu.id}">
+                                    <span class='nav-icon padding-left-5 {$thrMenu.icon}'></span>
+                                    <span class="nav-text padding-left-5">{$thrMenu.title}</span>
+                                </a>
+                            </dd>
+                            {/foreach}
+                            {/notempty}
+                        </dl>
+                    </li>
+                    {/foreach}
+                </ul>
+                {/notempty}
+                {/foreach}
+            </div>
+        </div>
+        <!-- 左则菜单 结束 -->
+
+
+        <!-- 主体内容 开始 -->
+        <div class="layui-body  layui-bg-gray" style="background-color: #fff!important;">
+            <div class="layui-tab layui-tab-card" lay-allowClose="true" lay-filter="menuItem">
+                <ul class="layui-tab-title">
+                    <!--                    <li lay-id="/admin/users/index" class="layui-this">网站设置</li>-->
+                    <!--                    <li lay-id="/admin/index/main">首页</li>-->
+                </ul>
+                <div class="layui-tab-content">
+                    {block name='content'}{/block}
+                </div>
+            </div>
+        </div>
+        <!-- 主体内容 结束 -->
+
+    </div>
+</div>
+{/block}
+<script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
+<script src="__ROOT__/static/plugs/require/require.js"></script>
+<script src="__ROOT__/static/admin.js?v20210818"></script>
+{block name='script'}{/block}
+
+</body>
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('.top-msg').on('click', function () {
+            $.get("{:url('index/index/get_msg')}?lang=zh_cn", function (res) {
+                if(res.code == 0){
+                    layer.open({
+                        title: '通知',
+                        type: 1,
+                        content: res.data,
+                        area: ['50%', '70%']
+                    });
+                }
+            })
+        });
+
+        $('.fullscreenButton').on('click', function() {
+            toggleFullScreen();
+        });
+
+        function toggleFullScreen() {
+            var doc = window.document;
+            var docEl = doc.documentElement;
+
+            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+            if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                requestFullScreen.call(docEl);
+            } else {
+                cancelFullScreen.call(doc);
+            }
+        }
+        // if(!localStorage.asid){
+        //     localStorage.asid = 1;
+        // }
+        //
+        //  $('.licssid'+localStorage.asid).attr('style',"float: left;width:6%;height:44px;text-align:center; font-size:16px; border-bottom:3px solid rgb(64,158,255);");
+        //  $('.acssid'+localStorage.asid).attr('style',"color:rgb(64,158,255) !important;");
+
+        //     function getStatus() {
+        //         $.get("{:url('index/order_info')}", function (result) {
+        //             if (typeof result == 'string') result = JSON.parse(result);
+        //             console.log(result);
+        //             $('.recharge').html(result.recharge)
+        //             $('.deposit').html(result.deposit);
+        //             $('.recharge1').html(result.recharge1)
+        //             $('.deposit1').html(result.deposit1);
+
+
+        //             if(result.recharge > 0){
+        //                  var strAudio = "<audio id='audioPlay' src='/public/cz.mp3' hidden='true'>";
+        //                 if ($("body").find("audio").length <= 0)
+        //                     $("body").append(strAudio);
+        //                 var audio = document.getElementById("audioPlay");
+        //                 //浏览器支持 audion
+        //                 audio.play();
+        //             }
+        //             if(result.recharge1 > 0){
+        //                  var strAudio = "<audio id='audioPlay' src='/public/cz_jia.mp3' hidden='true'>";
+        //                 if ($("body").find("audio").length <= 0)
+        //                     $("body").append(strAudio);
+        //                 var audio = document.getElementById("audioPlay");
+        //                 //浏览器支持 audion
+        //                 audio.play();
+        //             }
+
+        //             if (result.deposit > 0) {
+        //                 var strAudio = "<audio id='audioPlay' src='/public/tx.mp3' hidden='true'>";
+        //                 if ($("body").find("audio").length <= 0)
+        //                     $("body").append(strAudio);
+        //                 var audio = document.getElementById("audioPlay");
+        //                 //浏览器支持 audion
+        //                 audio.play();
+        //             }
+        //             if (result.deposit1 > 0) {
+        //                 var strAudio = "<audio id='audioPlay' src='/public/tx_jia.mp3' hidden='true'>";
+        //                 if ($("body").find("audio").length <= 0)
+        //                     $("body").append(strAudio);
+        //                 var audio = document.getElementById("audioPlay");
+        //                 //浏览器支持 audion
+        //                 audio.play();
+        //             }
+        //             $('#system-date').text(result.date);
+        //         });
+        //     }
+
+        //     getStatus();
+        //     setInterval(function () {
+        //         getStatus();
+        //     }, 30000)
+    })
+</script>
+</html>

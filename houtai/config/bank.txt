@@ -1,0 +1,5 @@
+BCP|BCP
+BBVA|BBVA
+Interbank|Interbank
+Scotiabank|Scotiabank
+HSBC|Scotiabank

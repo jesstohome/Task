@@ -1,0 +1,89 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">登录名</label>
+            <div class="layui-input-block">
+                <input name="tel" required placeholder="登录名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <div class="layui-form-mid">添加多个请用英文逗号隔开，示例：13800,13801</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="pwd" placeholder="密码" value="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">取款密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="pwd2" placeholder="取款密码" value="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">等级</label>
+            <div class="layui-input-block">
+                <select name="level" class="layui-select"  lay-verify="">
+                    {volist name="levels" id="le"}
+                    <option value="{$le.level}">{$le.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">平台代理</label>
+            <div class="layui-input-block">
+                <select name="agent_service_id" class="layui-select" id="selectList">
+                    {foreach $agent_services as $v}
+                    <option value="{$v.id}">{$v.username}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">账户类型</label>
+            <div class="layui-input-block">
+                <select name="bank_type">
+                    <option value="BANK">BANK</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">开户银行</label>
+            <div class="layui-input-block">
+                <input name="bankname" value="" required placeholder="开户行" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">银行账号</label>
+            <div class="layui-input-block">
+                <input name="cardnum" value="" required placeholder="银行账号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">开户人</label>
+            <div class="layui-input-block">
+                <input name="username" value="" required placeholder="开户人" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">手机号</label>
+            <div class="layui-input-block">
+                <input name="bank_tel" value="" required placeholder="手机号" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>提交</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+    </div>
+
+</form>
+<script>window.form.render();</script>

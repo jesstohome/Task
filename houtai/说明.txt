@@ -1,0 +1,17 @@
+ng+PHP7.2 + MySQL 5.6.50
+
+application/database.php修改数据库(app.php文件的144行有俩个自动生成一句话自己删除下)
+运行目录public 伪静态 thinkphp
+/hzw-system-login admin    aa123456
+
+
+
+
+
+后端配置
+
+ add_header 'Access-Control-Allow-Credentials' 'true';
+   # add_header 'Access-Control-Allow-Origin' 'https://kele1006.space/home';
+    add_header 'Access-Control-Allow-Headers' 'language,token,access-control-allow-credentials,access-control-allow-origin';
+
+自动冻结订单:http://www.jake1006.space/index/Crontab/freeze_order

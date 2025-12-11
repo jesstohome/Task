@@ -1,0 +1,14 @@
+前端配置伪静态
+location / {
+        root   /www/wwwroot/kele1006.space/dist;    #地址弄自己的地址
+                try_files $uri $uri/ /index.html;
+        index  index.html index.htm;
+        }   
+
+
+
+后台服务器配置
+
+   add_header 'Access-Control-Allow-Credentials' 'true';
+   # add_header 'Access-Control-Allow-Origin' 'https://kele1006.space/home';
+    add_header 'Access-Control-Allow-Headers' 'language,token,access-control-allow-credentials,access-control-allow-origin';

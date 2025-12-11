@@ -1,0 +1,51 @@
+
+{block name="content"}
+<style>
+    .layui-table {
+        border-collapse: separate;
+        border-spacing: 2px; /* 调整表格边框间距，可根据需求调整 */
+    }
+
+    .layui-table th, .layui-table td {
+        border: 2px solid #ddd; /* 修改表格单元格的边框样式及粗细 */
+    }
+</style>
+<div class="think-box-shadow">
+    <table class="layui-table margin-top-10" >
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th rowspan="2" class="text-center">单数</th>
+            <th rowspan="2" class="text-center">抢单模式</th>
+            <th colspan="2" class="text-center">抢单金额匹配方式</th>
+            <th colspan="2" class="text-center">抢单佣金</th>
+            <th colspan="2" class="text-center">触发方案</th>
+        </tr>
+        <tr>
+            <th class="text-center">余额比例</th>
+            <th class="text-center">固定金额</th>
+            <th class="text-center">订单比例</th>
+            <th class="text-center">固定佣金</th>
+            <th class="text-center">触发等级</th>
+        </tr>
+        </thead>
+
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='text-left nowrap'>{$vo.order_num|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.order_type_name|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.balance_bili|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.fixed_amount|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.order_bili|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.order_fixed_amount|default='-'}</td>
+            <td class='text-left nowrap'>{$vo.level_name|default='-'}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+<script>window.form.render();</script>
+{/block}

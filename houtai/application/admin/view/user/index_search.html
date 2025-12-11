@@ -1,0 +1,64 @@
+<fieldset>
+
+    <legend>条件搜索</legend>
+
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+
+        <div class="layui-form-item layui-inline">
+<!--            <label class="layui-form-label">登录账号</label>-->
+            <div class="layui-input-inline">
+                <input name="username" value="{$Think.get.username|default=''}" placeholder="登录账号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <!--            <label class="layui-form-label">昵称</label>-->
+            <div class="layui-input-inline">
+                <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="昵称" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+<!--            <label class="layui-form-label">注册手机</label>-->
+            <div class="layui-input-inline">
+                <input name="phone" value="{$Think.get.phone|default=''}" placeholder="注册手机" class="layui-input">
+            </div>
+        </div>
+
+<!--        <div class="layui-form-item layui-inline">-->
+<!--            <label class="layui-form-label">联系邮箱</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input name="mail" value="{$Think.get.mail|default=''}" placeholder="请输入联系邮箱" class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="layui-form-item layui-inline">-->
+<!--            <label class="layui-form-label">使用状态</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <select class="layui-select" name="status">-->
+<!--                    {foreach [''=>'&#45;&#45; 全部状态 &#45;&#45;','0'=>'已禁用的账号','1'=>'使用中的账号'] as $k=>$v}-->
+<!--                    {eq name='Think.get.status' value='$k.""'}-->
+<!--                    <option selected value="{$k}">{$v}</option>-->
+<!--                    {else}-->
+<!--                    <option value="{$k}">{$v}</option>-->
+<!--                    {/eq}-->
+<!--                    {/foreach}-->
+<!--                </select>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="layui-form-item layui-inline">
+<!--            <label class="layui-form-label">登录时间</label>-->
+            <div class="layui-input-inline">
+                <input data-date-range name="login_at" value="{$Think.get.login_at|default=''}" placeholder="开始时间   -   结束时间" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            <button data-height="60%" data-modal='{:url("add_sys_user")}' data-title="新建用户" class='layui-btn layui-btn-sm layui-btn-normal'>添加用户</button>
+        </div>
+    </form>
+
+</fieldset>
+
+<script>form.render()</script>

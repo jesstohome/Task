@@ -1,0 +1,24 @@
+
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">选择代理</label>
+            <div class="layui-input-block">
+                <select name="migrate_user_id" class="layui-select" id="selectList">
+                    <option value="">请选择</option>
+                    {foreach $agents as $v}
+                    <option value="{$v.id}">{$v.username}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    <input type="hidden" name="id" value="{$id}">
+    <div class="layui-form-item text-center">
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消吗？" data-close>取消</button>
+        <button class="layui-btn" type='submit'>确定</button>
+    </div>
+</form>
+<script>window.form.render();</script>

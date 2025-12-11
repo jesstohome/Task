@@ -1,0 +1,115 @@
+{extend name='main'}
+
+{block name='content'}
+<style>
+
+    .store-total-container {
+        font-size: 14px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .store-total-container .store-total-icon {
+        top: 45%;
+        right: 8%;
+        font-size: 65px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .store-total-container .store-total-item {
+        color: #fff;
+        line-height: 4em;
+        padding: 15px 25px;
+        position: relative;
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+    }
+
+    .num2 {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 100%
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 26px;
+        line-height: 36px;
+        font-weight: bold;
+    }
+
+    .store-total-container .store-total-item {
+        line-height: 2em
+    }
+</style>
+<div class="think-box-shadow store-total-container">
+    <!--<h4 style="text-align: center">当地时间： {:date('Y-m-d H:i:s')}</h4>-->
+
+
+    <!--<div class="margin-bottom-15">商城统计</div>-->
+
+    {if($tuigljie)}
+    <div class="margin-bottom-15">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">推广地址:</label>
+            <div class="layui-input-inline" style="width:500px;line-height:40px;">
+                <a href="{$tuigljie}" target="_blank" > {$tuigljie} </a>
+            </div>
+        </div>
+        {/if}
+        <div class="margin-bottom-15">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">统计时间</label>
+                <div class="layui-input-inline">
+                    <input data-date-range name="addtime" id= "addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择统计时间"
+                           class="layui-input">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn" onclick="shop()"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15" id="shop_content">加载中....</div>
+    </div>
+    <!--<div id="agent_content">-->
+    <!--    加载中......-->
+    <!--</div>-->
+</div>
+    <script>
+        shop();
+        function shop(){
+            let type = "{$agent_id}" > 0 ? "agent" : "shop";
+            $.ajax({
+                url: "{:url('main')}",
+                data: {type: type,addtime:$("#addtime").val()},
+                type: 'get',
+                success: function (res) {
+                    $('#shop_content').html(res);
+                    //get_agent();
+                }
+            });
+        }
+
+
+        // function get_agent()
+        //         {
+        //             $.ajax({
+        //                 url: "{:url('main')}",
+        //                 data: {type: "agent"},
+        //                 type: 'get',
+        //                 success: function (res) {
+        //                     $('#agent_content').html(res);
+        //                     $.form.reInit();
+        //                 }
+        //             });
+        //         }
+
+
+    </script>
+    {/block}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="deeppurple-theme">
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="description" content="">
+    <title>{$Think.lang.kf_title}</title>
+    <!-- Material design icons CSS -->
+    <link href="/Icon/icon.css?family=Material+Icons" rel="stylesheet">
+    <!--<link href="/red/materializeicon/material-icons.css" rel="stylesheet">-->
+    <!-- Roboto fonts CSS -->
+    <link href="/Icon/css.css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
+    <!--<link href="/red/roboto/css.css" rel="stylesheet">-->
+    <!-- Bootstrap core CSS -->
+    <link href="/red/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link href="/red/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/red/style.css?v=V1.24" rel="stylesheet">
+    <link rel="stylesheet" href="/static_new/css/public.css?v=V1.24">
+  </head>
+  <body class="">
+    <div class="wrapper homepage">
+      <!-- header -->
+      <div class="header" style="backdrop-filter:none">
+        <div class="row no-gutters">
+          <div class="col-auto">
+            <!--<button class="btn btn-link text-white">
+              <i class="material-icons">menu</i>
+              <span class="new-notification"></span>
+            </button>-->
+          </div>
+          <div class="col text-center">
+            <!--<img src="/red/logo-header.png" alt="" class="header-logo">--></div>
+          <div class="col-auto">
+            <a href="/index/my/msg" class="btn  btn-link text-white position-relative">
+              <i class="material-icons">notifications_none</i></a>
+          </div>
+        </div>
+      </div>
+      <!-- header ends -->
+      <div class="container bg-template mb-5 pb-5">
+        <div class="row">
+          <div class="col text-center">
+            <h5 class="subtitle mb-1">{$Think.lang.onekefu}</h5>
+            <p class=""></p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-12 col-md-3">
+            {volist name='list' id='v' offset="0" length='8'}  
+            <div class="card shadow border-0 mb-3">{$v.username}
+                <a href="{$v.url}">
+              <div class="card-body">
+                <div class="avatar avatar-60 no-shadow border-0">
+                  <div class="overlay bg-template"></div>
+                  <i class="material-icons vm md-36 text-template">question_answer</i></div>
+                <p class="mt-3 mb-0 font-weight-normal text-dark">
+                    <span style="position: relative;top:1px">{$v.btime}-{$v.etime}</span>
+                </p>
+              </div>
+              </a>
+            </div>
+            {/volist}
+          </div>
+        </div>
+      </div>
+      <!-- footer-->
+      {include file="public/floor" /}
+      <!-- footer ends-->
+      <!--tj--></div>
+    <!-- jquery, popper and bootstrap js -->
+    <script src="/red/jquery-3.3.1.min.js"></script>
+    <script src="/red/popper.min.js"></script>
+    <script src="/red/bootstrap/js/bootstrap.min.js"></script>
+    <!-- swiper js -->
+    <script src="/red/swiper/swiper-bundle.min.js"></script>
+    <!-- cookie js -->
+    <script src="/red/jquery.cookie.js"></script>
+    <script charset="utf-8" src="/static_new/js/dialog.min.js"></script>
+    <script charset="utf-8" src="/static_new/js/common.js"></script>
+    <!-- template custom js -->
+    <script src="/red/main.js?v=V1.24"></script>
+    <!-- page level script -->
+    <script>$(function() {
+        $('.footer').find('.btn-link-default').eq(3).addClass("active");
+
+        $('.tabs_btn1').click(function() {
+          $(document).dialog({
+            type: 'confirm',
+            titleText: "Tem certeza de que quer sair?",
+            buttonTextConfirm: "confirme",
+            buttonTextCancel: "cancelar",
+            autoClose: 0,
+            onClickConfirmBtn: function() {
+              window.location.href = "/index/user/logout.html";
+            },
+            onClickCancelBtn: function() {
+
+}
+          });
+        });
+      });</script>
+  </body>
+
+</html>

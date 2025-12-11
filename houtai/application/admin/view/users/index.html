@@ -1,0 +1,354 @@
+{extend name='main'}
+
+{block name="button"}
+
+{if auth("add_users")}
+<!--<button data-modal='{:url("add_users")}' data-title="添加会员" class='layui-btn layui-btn-sm layui-btn-primary'>添加会员</button>-->
+{/if}
+
+{/block}
+
+{block name="content"}
+<!--<style type="text/css" media="all">-->
+<!--    .layui-table th, .layui-table td {-->
+<!--        text-align: center !important;-->
+<!--    }-->
+<!--</style>-->
+<div class="think-box-shadow">
+    {include file='users/index_search'}
+    <table class="layui-table margin-top-15" lay-filter="table">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th lay-data="{type:'checkbox',width:40,fixed:'left'}" class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" data-auto-none data-check-target='.list-check-box' type='checkbox' name="ids[]"></label>
+            </th>
+            <th lay-data="{field:'id',width:80,fixed:'left'}" class='text-center nowrap' >账号资料</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>余额</th>
+            <th lay-data="{field:'addtime',width:150}" class='text-center nowrap'>抢单收益</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>充值/提款</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>理财收益</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>上级代理</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>状态</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>注册时间</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>最近登录</th>
+            <th lay-data="{field:'edit',width:280,fixed: 'right'}" class='text-center nowrap'>操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+
+        <?php
+             $ips = new \Ip2Region();
+        
+        ?>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class=' list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class='text-left nowrap'>
+
+                  {$vo.tel}<br>
+                  <span class="{$vo.is_jia == 0 ? 'layui-badge layui-bg-green' : 'layui-badge layui-bg-blue'}">{$vo.is_jia == 0 ? '外部' : '内部'}</span><br>
+                  <span style="color: #1E9FFF;">当前等级：{$vo.level_name}</span><br>
+                  <span style="color: #FF5722;">推广码:{$vo.invite_code}</span><br>
+                  <span style="color: #009688;">用户ID：{$vo.id}</span><br>
+
+
+                <a data-dbclick  data-title="方案组" data-width="40%;" data-height="50%;" class="layui-btn layui-btn-xs layui-btn layui-btn layui-btn-normal"
+                   data-modal='{:url("users/guizhes")}?id={$vo.id}'>{if $vo.group_id && isset($groupAllList[$vo.group_id])} {$groupAllList[$vo.group_id]}{else}无方案组{/if}</span></a>
+            </td>
+             <td class='text-left nowrap' >
+
+                 余额：<span style="color: red;">{$vo.balance}</span><br/>
+                 冻结本金：{$vo.freeze_amount}<br/>
+                 抢单冻结：{$vo.order_freeze_balance}<br/>
+
+<!--                 佣金：{$vo.com}<br/>-->
+                 体验金：{$vo.lottery_money}
+
+             </td>
+             <td class='text-left nowrap'>
+                 今日已抢单：{$vo.today_order_grabbing_num}次 <span style="color: red;">（成功：{$vo.today_success_count}次）</span><br/>
+                 今日收益： {$vo.today_income}/{$vo.today_income_count}次<br/>
+                 累计收益：{$vo.sum_income}/{$vo.sum_income_count}次 <span style="color: red;">（成功：{$vo.sum_income_count}次）</span><br/>
+                 昨日收益： {$vo.sum_yesterday_income}<br/>
+                 累计推广佣金：{$vo.promotion_income}<br/>
+
+<!--                 已完成订单总数:{$vo.day_d_count}<br/>-->
+<!--                 全部订单总数:{$vo.order_num}<br/>-->
+<!--                 未完成订单数:{$vo.order_incomplete_num}<br/>-->
+
+             </td>
+             <td class='text-left nowrap' >
+                 日提款：{$vo.today_withdrawal_sum}/{$vo.today_withdrawal_count}次<br/>
+                 总提款：{$vo.all_deposit_num}/{$vo.all_deposit_count}次<br/>
+                 日充值：{$vo.today_recharge_sum}<br/>
+                 日在线充值：{$vo.today_onlin_recharge_sum}<br/>
+                 总充值：{$vo.recharge_sum}<br/>
+                 总在线充值：{$vo.online_recharge_sum}/{$vo.online_recharge_count}次<br/>
+                 总赠送：{$vo.give_amount_sum}<br/>
+<!--                 总充值：{$vo.all_recharge_num}/{$vo.all_recharge_count}次<br/>-->
+             </td>
+            <td class='text-left nowrap' >
+                余额宝金额：{$vo.lixibao_balance}<br/>
+                累计收益：{$vo.lixbao_income}<br/>
+            </td>
+             <td class='text-left nowrap'>
+<!--                 <span style="color: red;">上级：{$vo.parent_tel} - {$vo.parent_invite_code}</span><br/>-->
+                 <span style="color: green;">代理：{$vo.service} - {$vo.service_yqm}</span><br/>
+             </td>
+            <td class='text-center nowrap' >
+                <div class="layui-form">
+                    <span>登录：</span>
+                    <input type="checkbox" lay-filter="status" name="status" lay-skin="switch" lay-text="ON|OFF"  data-id="{$vo.id}" value="{$vo.status}" {if($vo.status == 1)}checked{/if}>
+                </div>
+                <div class="layui-form">
+                    <span>提现：</span>
+                    <input type="checkbox" lay-filter="withdrawal_status" name="withdrawal_status" lay-skin="switch" lay-text="ON|OFF"  data-id="{$vo.id}" value="{$vo.withdrawal_status}" {if($vo.withdrawal_status == 1)}checked{/if}>
+                </div>
+                <div class="layui-form">
+                    <span>抢单：</span>
+                    <input type="checkbox" lay-filter="shuadan_status" name="shuadan_status" lay-skin="switch" lay-text="ON|OFF" data-id="{$vo.id}" value="{$vo.shuadan_status}" value="1"{if($vo.shuadan_status == 1)}checked{/if}>
+                </div>
+            </td>
+            <td class='text-center nowrap' >
+                <span>{$vo.register_time}</span><br/>
+                {if($vo.register_ip)}
+                <span style="color:red;">{$vo.register_ip}</span><br/>
+                {/if}
+            </td>
+
+
+             <td class='text-left nowrap'>
+                 {$vo.login_time|format_datetime}<br/>
+                 {if($vo.ip)}
+                     ip：{$vo.ip}<br/>
+                     ip地址：<span><?php
+                         $result = $ips->btreeSearch($vo['ip']);
+                         $vo['ips'] = isset($result['region']) ? $result['region'] : '';
+                         $vo['ips'] = str_replace(['内网IP', '0', '|'], '', $vo['ips']);
+                         echo $vo['ips'];
+                     ?><br/>({$vo.ip})
+                     </span>
+                 {/if}
+                 <!--状态：{if $vo.is_jia>0}-->
+                 <!--       <a class="layui-btn layui-btn-danger layui-btn-xs">假人</a>-->
+                 <!--       {else}-->
+                 <!--       <a class="layui-btn layui-btn-normal layui-btn-xs">真人</a>-->
+                 <!--       {/if}<br/>-->
+
+             </td>
+            <td class='text-left nowrap'>
+<!--                {if auth("inyectar/index")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="打针计划"-->
+<!--                   data-open='{:url("inyectar/index")}?uid={$vo.id}'>打针</a>-->
+<!--                {/if}-->
+
+<!--                {if auth("usetting/index")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="做单设置"-->
+<!--                   data-open='{:url("usetting/index")}?uid={$vo.id}'>做单</a>-->
+<!--                {/if}-->
+                {if auth("user_data")}
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="查看"
+                   data-width="80%;"
+                   data-modal='{:url("user_data")}?uid={$vo.id}'>查看</a>
+                {/if}
+
+                {if auth("offline")}
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="下线"
+                   data-action='{:url("offline")}?uid={$vo.id}'
+                   data-value="uid#{$vo.id}"
+                >下线</a>
+                {/if}
+
+                {if auth("change_user_balance")}
+                <a data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm" data-title="账变"
+                   data-modal='{:url("admin/users/change_user_balance")}?id={$vo.id}'>账变</a><br/>
+                {/if}
+
+                <a class="layui-btn layui-btn-xs"
+                   data-action="{:url('qingkon',['status'=>2,'id'=>$vo.id])}"
+                   data-value="id#{$vo.id};status#2" >{:lang("清空抢单次数")}
+                </a>
+
+                {if auth("set_single_control")}
+                <a class="layui-btn layui-btn-xs layui-btn-normal"
+                   data-dbclick data-height="70%;"
+                   data-modal="{:url('set_single_control')}?uid={$vo.id}" data-title="设置单控方案">{:lang("设置单控方案")}
+                </a>
+                {/if}
+
+<!--                {if auth("edit_level")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="编辑等级"-->
+<!--                   data-modal='{:url("users/edit_level")}?id={$vo.id}'>等级</a>-->
+<!--                {/if}-->
+
+                <br/>
+
+<!--                {if auth("edit_money")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑余额信息"-->
+<!--                   style='background:red;'-->
+<!--                   data-modal='{:url("users/edit_money")}?id={$vo.id}'>余额</a>-->
+<!--                {/if}-->
+
+<!--                {if auth("edit_users_ankou")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="暗扣设置"-->
+<!--                   data-modal='{:url("users/edit_users_ankou")}?id={$vo.id}'>暗扣设置</a>-->
+<!--                {/if}-->
+<!--                {if auth("edit_users")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑用户信息"-->
+<!--                   data-modal='{:url("users/edit_users")}?id={$vo.id}'>编辑</a>-->
+<!--                {/if}-->
+<!--                {if auth("edit_users_bk")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs" data-title="银行卡信息"-->
+<!--                   data-modal='{:url("users/edit_users_bk")}?id={$vo.id}'>银行卡信息</a>-->
+<!--                {/if}-->
+
+                 <br/>
+
+<!--                {if auth("edit_users_address")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="收货地址信息"-->
+<!--                   data-modal='{:url("users/edit_users_address")}?id={$vo.id}'>地址信息</a>-->
+<!--                {/if}-->
+<!--                {if auth("edit_users_ewm")}-->
+<!--                <a class="layui-btn layui-btn-xs layui-btn"-->
+<!--                   data-action="{:url('edit_users_ewm',['status'=>2,'id'=>$vo.id])}"-->
+<!--                   data-value="id#{$vo.id};status#{$vo.invite_code}" style='background:red;'>刷新二维码</a>-->
+<!--                {/if}-->
+<!--                {if auth("tuandui")}-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="查看团队" data-reload="true"-->
+<!--                   data-open='{:url("users/tuandui")}?id={$vo.id}'>查看团队</a>-->
+<!--                     <br/>-->
+<!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="查看账变" data-reload="true"-->
+<!--                   data-open='{:url("users/caiwu")}?id={$vo.id}'>账变</a>-->
+<!--                {/if}-->
+
+
+
+<!--                {if ($vo.status == 1) and auth("edit_users_status")}-->
+<!--                <a class="layui-btn layui-btn-xs layui-btn-warm"-->
+<!--                   data-action="{:url('edit_users_status',['status'=>2,'id'=>$vo.id])}"-->
+<!--                   data-value="id#{$vo.id};status#2" style='background:red;'>禁用</a>-->
+<!--                {elseif ($vo.status == 2) and auth("edit_users_status") /}-->
+<!--                <a class="layui-btn layui-btn-xs layui-btn-warm"-->
+<!--                   data-action="{:url('edit_users_status',['status'=>1,'id'=>$vo.id])}"-->
+<!--                   data-value="id#{$vo.id};status#1" style='background:green;'>启用</a>-->
+<!--                {/if}-->
+<!--                {if auth("delete_user")}-->
+<!--                <a class="layui-btn layui-btn-xs layui-btn" onClick="del_user({$vo.id})" style='background:red;'>删除</a>-->
+<!--                {/if}-->
+
+
+
+                <!--{if auth("edit_users_status")}-->
+                <!--{if ($vo.is_jia == 1)}-->
+                <!--<a class="layui-btn layui-btn-xs layui-btn-warm"-->
+                <!--   data-action="{:url('edit_users_status2',['status'=>-1,'id'=>$vo.id])}"-->
+                <!--   data-value="id#{$vo.id};status#-1" style='background:red;'>设为真人</a>-->
+                <!--{else/}-->
+                <!--<a class="layui-btn layui-btn-xs layui-btn-warm"-->
+                <!--   data-action="{:url('edit_users_status2',['status'=>1,'id'=>$vo.id])}"-->
+                <!--   data-value="id#{$vo.id};status#1" style='background:green;'>设为假人</a>-->
+                <!--{/if}-->
+                <!--{/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    <script>
+        function del_user(id) {
+            layer.confirm("确认要删除吗，删除后不能恢复", {title: "删除确认"}, function (index) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('delete_user')}",
+                    data: {
+                        'id': id,
+                        '_csrf_': "{:systoken('delete_user')}"
+                    },
+                    success: function (res) {
+                        layer.msg(res.info, {time: 2500});
+                        location.reload();
+                    }
+                });
+            }, function () {
+            });
+        }
+
+        layui.use('form', function () {
+            var form = layui.form;
+
+            // 监听开关的switch事件
+            form.on('switch(status)', function (data) {
+                let status = data.elem.checked ? 1 : 0;
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('edit_status')}",
+                    data: {
+                        'id': id,
+                        'status': status,
+                        'type': 'status',
+                    },
+                    success: function (res) {
+                        layer.msg(res.info, {time: 2500});
+                    }
+                });
+            });
+
+            // 监听开关的switch事件
+            form.on('switch(withdrawal_status)', function (data) {
+                let status = data.elem.checked ? 1 : 0;
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('edit_status')}",
+                    data: {
+                        'id': id,
+                        'status': status,
+                        'type': 'withdrawal_status',
+                    },
+                    success: function (res) {
+                        layer.msg(res.info, {time: 2500});
+                    }
+                });
+            });
+
+            // 监听开关的switch事件
+            form.on('switch(shuadan_status)', function (data) {
+                let status = data.elem.checked ? 1 : 0;
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('edit_status')}",
+                    data: {
+                        'id': id,
+                        'status': status,
+                        'type': 'shuadan_status',
+                    },
+                    success: function (res) {
+                        layer.msg(res.info, {time: 2500});
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        var table = layui.table;
+        //转换静态表格
+        var limit = Number('{$Think.get.limit}');
+        if (limit == 0) limit = 20;
+        table.init('tab', {
+            cellMinWidth: 120,
+            skin: 'line,row',
+            size: 'lg',
+            limit: limit
+        });
+    </script>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

@@ -1,0 +1,295 @@
+{notempty name='bk_info'}
+{volist name='bk_info' id='vo'}
+<style>
+    .layui-form-item .layui-inline .layui-form-label{
+        width: 110px;
+        text-align: left;
+    }
+</style>
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <input type="hidden" name="id" value="{$vo.id}">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">图标</label>
+            <div class="layui-input-block">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <td width="90px" class="text-center"><input name="pic" value="{$vo.pic}" type="hidden"></td>
+                    </tr>
+                    </thead>
+                </table>
+                <script>$('[name="pic"]').uploadOneImage();</script>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">名称</label>
+            <div class="layui-input-block">
+                <input name="name" placeholder="等级名称" value="{$vo.name}" class="layui-input">
+                <input type="hidden" name="_csrf_" value="{:systoken('admin/users/edit_users_level')}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">等级值</label>
+            <div class="layui-input-block">
+                <input name="level" required value="{$vo.level}" readonly placeholder="请输入会员等级值" class="layui-input">
+                <p class="help-block">等级值禁止修改</p>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">升级价格</label>
+            <div class="layui-input-block">
+                <input name="num" required value="{$vo.num}" placeholder="请输入升级价格" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">余额最低金额</label>
+            <div class="layui-input-block">
+                <input name="balance_min_amount" required value="{$vo.balance_min_amount}" placeholder="余额最低金额" class="layui-input">
+                <p class="help-block">购买等级时，要求用户账户余额必须大于等于该金额</p>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">余额最高金额</label>
+            <div class="layui-input-block">
+                <input name="balance_max_amount" required value="{$vo.balance_max_amount}" placeholder="余额最高金额" class="layui-input">
+                <p class="help-block">购买等级时，要求用户账户余额不能大于该金额</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提款配置</label>
+            <div class="layui-inline">
+                <label class="layui-form-label">提款金额：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.tixian_min}" name="tixian_min" placeholder="最低提款金额" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid">至</div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.tixian_max}" name="tixian_max" placeholder="最高提款金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">提款次数/天：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.day_withdraw_num}" name="day_withdraw_num" placeholder="日提款次数" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">免费次数/天：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.day_withdraw_free_num}" name="day_withdraw_free_num" placeholder="日免费次数" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">提现固定手续费/次：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.withdraw_fixed_fee}" name="withdraw_fixed_fee" placeholder="提现固定手续费" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">超出每日免费次数后的固定提款手续费</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">提现手续费(%)/次：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.tixian_shouxu * 100}" name="tixian_shouxu" placeholder="提现手续费(%)/次" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">超出每日免费次数后的提款手续费比例</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">提现抢单次数/天：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.tixian_nim_order}" name="tixian_nim_order" placeholder="提现抢单次数要求" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">提款时，当前抢单最低次数要求，没有达到不能提款</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">抢单配置</label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单余额限制：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.num_min}" name="num_min" placeholder="抢单余额限制" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">抢单时账户余额需要大于等于该金额</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单最低金额：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.grab_order_min_amount}" name="grab_order_min_amount" placeholder="抢单最低金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单最高金额：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.grab_order_max_amount}" name="grab_order_max_amount" placeholder="抢单最高金额" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">抢单最高金额必须大于等于最低金额</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单次数限制：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.order_num}" name="order_num" placeholder="抢单次数限制" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单固定佣金：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.grab_order_fixed_commission}" name="grab_order_fixed_commission" placeholder="抢单固定佣金" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">设置大于0有效，设置后将按该金额固定计算每单佣金【抢单佣金比例优先】</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单佣金比例(%)：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.bili * 100}" name="bili" placeholder="抢单佣金比例" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-inline">
+                <label class="layui-form-label">抢单最低信用限制：</label>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" value="{$vo.credit}"  name="credit" placeholder="抢单最低信用限制" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width: 300px;">
+                    <span style="color: red;">信用分高于才能抢单</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否自动开启理财产品</label>
+            <div class="layui-input-block">
+                <input type="radio" name="auto_buy_finance" value="1" title="开启" {if $vo.auto_buy_finance == 1} checked {/if} lay-filter="genderRadio">
+                <input type="radio" name="auto_buy_finance" value="0" title="关闭" {if $vo.auto_buy_finance == 0} checked {/if} lay-filter="genderRadio">
+            </div>
+        </div>
+        <div class="layui-form-item lixibao_id" style="display: {if $vo.auto_buy_finance == 1} block {else} none {/if};">
+            <label class="layui-form-label">选择理财产品</label>
+            <div class="layui-input-block">
+                <select name="lixibao_id" class="layui-select"  lay-verify="">
+                    <option value="">请选择理财产品</option>
+                    {volist name="list" id="vo2"}
+                    <option value="{$vo2.id}" {if $vo2.id == $vo.lixibao_id} selected {/if}>{$vo2.min_num}-{$vo2.max_num}/{$vo2.day}天/{$vo2.bili*100}%收益/{$vo2.shouxu*100}%手续费</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">有效天数</label>
+            <div class="layui-input-block">
+                <input type="number" name="expire_day" value="{$vo.expire_day}" class="layui-input">
+                <p class="help-block">购买等级后，有效天数后过期，0为不限制</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否享受推广佣金</label>
+            <div class="layui-input-block">
+                <input type="radio" name="promotion_commisssion" value="1" title="开启" {if $vo.promotion_commisssion == 1} checked {/if}>
+                <input type="radio" name="promotion_commisssion" value="0" title="关闭" {if $vo.promotion_commisssion == 0} checked {/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">到期是否退回本金</label>
+            <div class="layui-input-block">
+                <input type="radio" name="expire_return_principal" value="1" title="开启" {if $vo.expire_return_principal == 1} checked {/if}>
+                <input type="radio" name="expire_return_principal" value="0" title="关闭" {if $vo.expire_return_principal == 0} checked {/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" autocomplete="off">排序</label>
+            <div class="layui-input-block">
+                <input type="number" value="{$vo.sort}" name="sort" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">显示状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="show_status" value="1" title="显示" {if $vo.show_status == 1} checked {/if}>
+                <input type="radio" name="show_status" value="0" title="隐藏" {if $vo.show_status == 0} checked {/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开启状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="开启" {if $vo.status == 1} checked {/if}>
+                <input type="radio" name="status" value="0" title="关闭" {if $vo.status == 0} checked {/if}>
+            </div>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>提交</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+    </div>
+
+    <script>
+        window.form.render();
+        layui.use('form', function(){
+            var form = layui.form;
+
+            // 监听单选框选择事件
+            form.on('radio(genderRadio)', function(data){
+                // 在此处添加单选框选择事件的处理逻辑
+                if (data.value === '1') {
+                    $('.lixibao_id').show();
+                } else if (data.value === '0') {
+                    $('.lixibao_id').hide();
+                }
+            });
+        })
+    </script>
+
+</form>
+
+{/volist}
+{/notempty}
+

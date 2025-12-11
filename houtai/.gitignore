@@ -1,0 +1,13 @@
+.idea
+
+.env
+
+.htaccess
+
+/public/.htaccess
+
+/runtime/*
+
+.DS_Store
+
+/config/app.php

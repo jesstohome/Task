@@ -1,0 +1,108 @@
+$theme: #2c7ce7;
+$sub_theme: #466eeb;
+$textColor: #666;
+$subtext: #999;
+
+// 阴影
+$shadow: 0 0 20px 0 #e9e9e9;
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    --webkit-overflow-scrolling: touch;
+}
+body {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.van-loading{
+    position: fixed;
+    z-index: 111;
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    .van-loading__spinner{
+        top: 50%;
+    }
+    .van-loading__text{
+        top: 50%;
+        position: relative;
+        color: #fff;
+    }
+}
+
+
+.van-button--primary{
+    background-color: $theme;
+    border-color: $theme;
+    &.van-button--plain{
+        background-color: white;
+        color: $theme;
+    }
+}
+
+.bbline{
+    position: relative;
+    overflow: hidden;
+    &::after{
+        position: absolute;
+        content: '';
+        height: 8px;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        background-image:linear-gradient(90deg,#a570fb,#2620ce)
+    }
+}
+.van-nav-bar{
+    //position: fixed !important;
+    top: 0;
+    background-color: initial;
+    width: 100%;
+    padding: 10px 0;
+    &::after{
+        border: none;
+    }
+}
+.home {
+    //padding-top: calc(var(--van-nav-bar-height) + 30px);
+    z-index: 10;
+}
+::v-deep(.van-tabs__nav){
+    background-color: initial;
+}
+
+.van-toast--loading{
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    margin: 0px !important;
+    max-width: initial !important;
+    background-color: rgba(0,0,0,0.3) !important;
+    transition: all 1ms !important;
+    padding: 0 !important;
+    .van-loading{
+        height: auto;
+        background-color: initial;
+        margin-bottom: 40px;
+        position: relative;
+    }
+}
+// .van-notify{
+//     top: 50% !important;
+//     width: auto !important;
+//     left: 50% !important;
+//     transform: translate(-50%, -50%) !important;
+//     border-radius: 30px !important;
+//     padding: 10px 50px !important;
+// }

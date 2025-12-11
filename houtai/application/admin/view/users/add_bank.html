@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{if($b_id)} 编辑银行卡 {else} 添加银行卡 {/if}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/awesome/fonts.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css?at={:date('md')}">
+    <link rel="stylesheet" href="__ROOT__/static/theme/css/console.css?at={:date('md')}">
+</head>
+<body>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+                       <div class="layui-card-body">
+                           <div class="layui-form-item">
+                               <label class="layui-form-label label-required">账户类型</label>
+                               <div class="layui-input-block">
+                                   <select name="bank_type">
+                                       {if(!$bank_info)}
+                                       <option value="BANK">BANK</option>
+                                       {else}
+                                       <option value="BANK" {if($bank_info.bank_type == 'BANK')} selected {/if}>BANK</option>
+                                       {/if}
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="layui-form-item">
+                               <label class="layui-form-label label-required">开户行</label>
+                               <div class="layui-input-block">
+                                   <select name="bankname">
+                                       {volist name="bank_list" id="vo"}
+                                       {if(!$bank_info)}
+                                       <option value="{$vo}">{$vo}</option>
+                                       {else}
+                                       <option value="{$vo}" {if($bank_info.bankname == $vo)} selected {/if}>{$vo}</option>
+                                       {/if}
+
+                                       {/volist}
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="layui-form-item">
+                               <label class="layui-form-label label-required">银行账号</label>
+                               <div class="layui-input-block">
+                                   <input name="cardnum" value="{$bank_info.cardnum|default=''}" required placeholder="银行账号" class="layui-input">
+                               </div>
+                           </div>
+                           <div class="layui-form-item">
+                               <label class="layui-form-label label-required">开户人</label>
+                               <div class="layui-input-block">
+                                   <input name="username" value="{$bank_info.username|default=''}" required placeholder="真实姓名" class="layui-input">
+                               </div>
+                           </div>
+                           <div class="layui-form-item">
+                               <label class="layui-form-label label-required">手机</label>
+                               <div class="layui-input-block">
+                                   <input name="tel" value="{$bank_info.tel|default=''}" required placeholder="手机" class="layui-input">
+                               </div>
+                           </div>
+                           <div class="layui-form-item">
+                               <label class="layui-form-label label-required">CCI账号</label>
+                               <div class="layui-input-block">
+                                   <input name="bank_code" value="{$bank_info.bank_code|default=''}" required placeholder="CCI账号" class="layui-input">
+                               </div>
+                           </div>
+                        </div>
+                        <input name="uid" type="hidden" value="{$uid}">
+                        <input name="b_id" type="hidden" value="{$b_id}">
+                        <div class="hr-line-dashed"></div>
+                        <div class="layui-form-item text-center">
+                            <button type="button" class="layui-btn layui-btn-normal add_bank_submit" lay-submit lay-filter="add_bank_submit">{if $b_id} 编辑 {else} 添加 {/if}</button>
+<!--                            <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
+<script>
+    //引入jquery
+    layui.use(['form','jquery'], function() {
+        var form = layui.form;
+        var $ = layui.jquery;
+        form.on('submit(add_bank_submit)', function(data) {
+            event.preventDefault();
+            var formData = data.field;
+            $.ajax({
+                type: 'POST',
+                url: "{:url('users/add_bank')}",
+                data: formData,
+                success: function (res) {
+                    layer.msg(res.info, {time: 2500, end: function () {
+                        //关闭父级弹窗
+                        if (res.code == 1) {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));
+                        }
+                    }});
+                }
+            });
+        })
+    });
+</script>
+</body>
+</html>

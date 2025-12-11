@@ -1,0 +1,95 @@
+<?php
+
+?><form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">上级代理</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" value="{$system_user.id}">
+                <select name="parent_id" class="layui-select" id="selectList">
+                    <option value="0">请选择</option>
+                    {foreach $agents as $v}
+                    <option value="{$v.id}" {if($system_user.parent_id == $v.id)} selected {/if}>{$v.username}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">邀请码</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" autofocus name="invite_code"
+                       value='{$system_user.invite_code}' placeholder="邀请码"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">登录名</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" autofocus name="username"
+                       value='{$system_user.username}' placeholder="登录名"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">密码</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" autofocus name="password"
+                       value='' placeholder="不填则不修改"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">昵称</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" autofocus name="nickname"
+                       value='{$system_user.nickname}' placeholder="昵称"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">联系手机</label>
+            <div class="layui-input-block">
+                <input type="text" autocomplete="off" autofocus name="phone"
+                       value='{$system_user.phone}' placeholder="联系手机"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">邮箱</label>
+            <div class="layui-input-block">
+                <input name="mail" autocomplete="off"
+                       value='{$system_user.mail}' placeholder="邮箱" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">QQ</label>
+            <div class="layui-input-block">
+                <input name="qq" autocomplete="off"
+                       value='{$system_user.qq}' placeholder="qq" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">状态</label>
+            <div class="layui-input-block">
+                <select name="status" class="layui-select" id="selectList">
+                    <option value="1" {if($system_user.status == 1)} selected {/if}>开放</option>
+                    <option value="0" {if($system_user.status == 0)} selected {/if}>禁用</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消</button>
+        <button class="layui-btn" type='submit'>修改</button>
+    </div>
+</form>
+<script>window.form.render();</script>

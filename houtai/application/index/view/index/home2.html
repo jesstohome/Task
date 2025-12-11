@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="deeppurple-theme">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <meta name="description" content="">
+    <title>{$Think.lang.hometitle}</title>
+    <!-- Material design icons CSS -->
+    <link href="/Icon/icon.css?family=Material+Icons" rel="stylesheet">
+    <!--<link href="/red/materializeicon/material-icons.css" rel="stylesheet">-->
+    <!-- Roboto fonts CSS -->
+    <link href="/Icon/css.css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
+   <!-- <link href="/red/roboto/css.css" rel="stylesheet">-->
+    <!-- Bootstrap core CSS -->
+    <link href="/red/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link href="/red/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/red/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static_new/css/public.css">
+    <link href="/public/js/layer_mobile/need/layer.css" type="text/css" rel="styleSheet" id="layermcss">
+    <style>
+        .modal-backdrop .show{
+            opacity:1!important;
+        }
+    </style>
+</head>
+
+<body class="">
+<div class="wrapper homepage">
+    <!-- header -->
+    <div class="header active" style="backdrop-filter:none">
+        <div class="row no-gutters">
+            <div class="col">
+                <!--<a class="btn  btn-link text-dark" href="/app" style="width: 120px">
+                  APP<i class="material-icons">get_app</i></a>
+                </a>-->
+                <!--<img src="/red/logo-header.png" alt="" class="header-logo">-->
+            </div>
+            <div class="col-auto">
+                <a href="{$user_service_chats}" class="btn  btn-link text-dark position-relative">
+                    <i class="material-icons">support_agent</i></a>
+            </div>
+        </div>
+    </div>
+    <!-- header ends -->
+    <div class="container" style="padding:0">
+        <div class="swiper-container swiper-container-banner swiper-container-horizontal swiper-container-ios">
+            <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                {foreach $banner as $vo}
+                <div class="swiper-slide swiper-slide-active" style="width: 375px;">
+                    <a href="{$vo.url}">
+                        <img src="{$vo.image}" style="width: 100%; height: 280px"></a>
+                </div>
+                {/foreach}
+            </div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+    </div>
+    <div class="container top-50" style="z-index: 2; position: relative;">
+        <div class="card mb-4 shadow">
+            <div class="card-body border-bottom">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="mb-0 font-weight-normal">{:config("currency")} {$info.balance}</h3>
+                        <p class="text-mute">{$Think.lang.qb_mymoney}</p></div>
+                    <div class="col-auto">
+                        <button class="btn btn-default border-3 btn-rounded-54 shadow"
+                                onclick="window.location.href=`/index/ctrl/recharge`">
+                            <i class="material-icons">attach_money</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <button onclick="window.location.href='/index/rot_order/index'"
+                class="btn btn-lg btn-default btn-block btn-rounded shadow btn-important">
+            <i class="material-icons text-mute">swipe</i>
+            <span>{$Think.lang.qd_kszq}</span></button>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="swiper-container icon-slide mb-4 swiper-container-horizontal swiper-container-ios">
+                <div class="swiper-wrapper">
+                    {if config('enable_lxb')==1}
+                    <a href="/index/ctrl/lixibao" class="swiper-slide text-center swiper-slide-active">
+                        <div class="avatar avatar-60 no-shadow border-0">
+                            <div class="overlay bg-template"></div>
+                            <i class="material-icons text-template">clean_hands</i></div>
+                        <p class="small mt-2">Tesouro lunar</p></a>
+                    {/if}
+                    <a href="/index/ctrl/recharge" class="swiper-slide text-center swiper-slide-next">
+                        <div class="avatar avatar-60 no-shadow border-0">
+                            <div class="overlay bg-template"></div>
+                            <i class="material-icons text-template">monetization_on</i></div>
+                        <p class="small mt-2">{$Think.lang.pay}</p></a>
+                    <a href="/index/ctrl/deposit" class="swiper-slide text-center">
+                        <div class="avatar avatar-60 no-shadow border-0">
+                            <div class="overlay bg-template"></div>
+                            <i class="material-icons text-template">payment</i></div>
+                        <p class="small mt-2">{$Think.lang.with}</p></a>
+                    <a href="/index/my/invite" class="swiper-slide text-center">
+                        <div class="avatar avatar-60 no-shadow border-0">
+                            <div class="overlay bg-template"></div>
+                            <i class="material-icons text-template">share</i></div>
+                        <p class="small mt-2">{$Think.lang.intive}</p></a>
+                </div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h5 class="subtitle mb-1">{$Think.lang.get_income}</h5></div>
+        </div>
+        <div class="row text-center mt-1">
+            <div class="col-6 col-md-3">
+                <div class="card shadow border-0 mb-3">
+                    <div class="card-body">
+                        <h5 class="mb-0 font-weight-normal">{:config("currency")} {$today_income}</h5>
+                        <p class="text-secondary text-mute small">{$Think.lang.todayincome}</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card shadow border-0 mb-3">
+                    <div class="card-body">
+                        <h5 class="mb-0 font-weight-normal">{:config("currency")} {$tod_user_yongjin}</h5>
+                        <p class="text-secondary text-mute small">{$Think.lang.today_comm}</p></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card shadow border-0 mb-3">
+                    <div class="card-body">
+                        <h5 class="mb-0 font-weight-normal">{:config("currency")} {$user_yongjin|round=###,2}</h5>
+                        <p class="text-secondary text-mute small">{$Think.lang.get_income}</p></div>
+                </div>
+            </div>
+            {if config('enable_lxb')==1}
+            <div class="col-6 col-md-3">
+                <div class="card shadow border-0 mb-3">
+                    <div class="card-body">
+                        <h5 class="mb-0 font-weight-normal">{:config("currency")} {$lixi_count}</h5>
+                        <p class="text-secondary text-mute small">Yuebao</p></div>
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" style="font-size: 12px">
+            <a class="col-3 text-center" href="javascript:void(0)"
+               onclick="window.location.href=`/index/my/detail.html?id=2`">
+                <img style="width:100%;" src="/static_indonesia/img/company-profile.png">
+                <br>{$index_icon[2]}</a>
+            <a class="col-3 text-center" href="javascript:void(0)"
+               onclick="window.location.href=`/index/my/detail.html?id=3`">
+                <img style="width:100%;" src="/static_indonesia/img/Rule-description.png">
+                <br>{$index_icon[3]}</a>
+            <a class="col-3 text-center" href="javascript:void(0)"
+               onclick="window.location.href=`/index/my/detail.html?id=4`">
+                <img style="width:100%;" src="/static_indonesia/img/Agent-cooperation.png">
+                <br>{$index_icon[4]}</a>
+            <a class="col-3 text-center" href="javascript:void(0)"
+               onclick="window.location.href=`/index/my/detail.html?id=12`">
+                <img style="width:100%;" src="/static_indonesia/img/Calculate-revenue.png">
+                <br>{$index_icon[12]}</a></div>
+    </div>
+    <div class="container">
+        <style>
+            .vip_bg_0 {
+                background: linear-gradient(240deg, rgb(12, 36, 66), rgb(79, 116, 146)) !important;
+            }
+
+            .vip_bg_1 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(240deg, rgb(89, 112, 149), rgb(118, 138, 170)) !important;
+            }
+
+            .vip_bg_2 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(240deg, rgba(219, 111, 33, 0.99), rgb(249, 153, 5)) !important;
+            }
+
+            .vip_bg_3 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(240deg, rgba(39, 53, 131, 0.99), rgb(47, 67, 177)) !important;
+            }
+
+            .vip_bg_4 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(240deg, rgba(61, 147, 181, 0.99), rgb(49, 179, 139)) !important;
+            }
+
+            .vip_bg_5 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(240deg, rgba(33, 35, 39, 0.99), rgb(67, 69, 73)) !important;
+            }
+
+            .vip_bg_6 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(240deg, rgba(72, 0, 154, 0.99), rgb(97, 0, 160)) !important;
+            }
+
+            .vip_bg_7 {
+                background: url(../../static/images/vip-bg.png?) center center / 160px 64px no-repeat, linear-gradient(to right, rgb(186, 139, 2), rgb(209, 145, 60)) !important;
+            }
+        </style>
+        <h6 class="subtitle">{$Think.lang.my_level}</h6>
+        
+        {foreach name="$level_list" item="vo" key="k" }
+        <div class="card shadow border-0 mb-3 bg-template vip_bg_{$k}">
+            <div class="card-body"
+            <?php if($vo['level']>$info['level']){ ?>
+            onclick="window.location.href='/index/ctrl/recharge.html?vip_id={$vo['id']}'" <?php } ?>>
+            <div class="row">
+                <div class="col-auto pr-0">
+                    <img src="/red/graphics-carousel-scheme1.png" alt="" class="mw-100"></div>
+                <div class="col align-self-center">
+                    <h5 class="mb-2 font-weight-normal">
+                        <span style="float: left">{$vo.name}</span>
+                        <?php if($vo['level']<=$info['level']){ ?>
+                        <span style="float: right">{$Think.lang.cur_level}</span></h5>
+                    <?php }else{ ?>
+                    <span style="float: right">{$Think.lang.join}&gt;&gt;</span>
+                    <?php } ?>
+                    <div style="clear: both"></div>
+                   <p class="text-mute" style="margin-bottom: 0;font-size: 12px">{$Think.lang.sxtz}&nbsp;{:config("currency")}
+                        {$vo.num}</p>
+                  <p class="text-mute" style="font-size: 12px">
+                        {$Think.lang.commission}&nbsp;{$vo.bili*100}% |
+                        {$vo.order_num}&nbsp;{$Think.lang.Record}
+                        </p>
+                        <!-- <p class="text-mute" style="font-size: 12px">
+                        {$Think.lang.commission}&nbsp;{$vo.bili}%
+                        </p>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    {/foreach}
+<div class="container">
+    <h6 class="subtitle">{$Think.lang.index_sr_list}</h6>
+    <div class="agent_box" style="height: 270px; display: block;overflow:hidden;">
+        <div class="ul" style="transition: transform 0s ease 0s; transform: translateY(0px); margin-top: 0px;">
+            {foreach $list as $vo}
+            <div class="card shadow border-0 mb-3">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-5 pr-0 text-center">
+                            <div class="avatar avatar-30 no-shadow border-0">
+                                <img src="" alt=""></div>
+                            <h6 class="font-weight-normal mb-1">{$vo.tel}</h6>
+                        </div>
+                        <div class="col-auto align-self-center border-left">
+                            <h6 class="font-weight-normal mb-1">{:config("currency")} {$vo.today_income}</h6>
+                            <p class="text-mute small text-secondary">{$Think.lang.todayincome}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h6 class="subtitle">{$Think.lang.index_partner}</h6>
+    <div class="row">
+        <!-- Swiper -->
+        <div class="swiper-container news-slide swiper-container-horizontal swiper-container-ios"
+             style="width: 382px;height: auto">
+            <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                <div class="swiper-slide swiper-slide-next" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/amazon.png"></div>
+                </div>
+                <div class="swiper-slide swiper-slide-next" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/shopify.png"></div>
+                </div>
+                <div class="swiper-slide swiper-slide-next" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/alibaba.png"></div>
+                </div>
+                <div class="swiper-slide swiper-slide-next" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/walmart.png"></div>
+                </div>
+                <div class="swiper-slide swiper-slide-next" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/lazada.png"></div>
+                </div>
+                <div class="swiper-slide swiper-slide-active" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/bukalapak.png"></div>
+                </div>
+                <div class="swiper-slide" style="width: 187.5px;">
+                    <div class="card shadow-sm border-0 text-white">
+                        <img src="/static_indonesia/img/orami.png"></div>
+                </div>
+            </div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+    </div>
+</div>
+<!-- footer-->
+{include file="public/floor" /}
+<!-- footer ends-->
+<!--tj--></div>
+<!-- notification ends -->
+<div class="modal in tanchuang" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="close close-rounded tanchuangClose" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span></button>
+            <div class="modal-header border-0"
+                 style="height: 100px;background: url(/red/tanchuang_header.png); background-size: cover;"></div>
+            <div class="modal-body text-center pt-4" style="max-height: 300px; overflow: scroll">
+                {$notice|RAW}
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button"
+                        class="btn btn-default btn-lg btn-rounded shadow btn-block btn-important tanchuangClose"
+                        data-dismiss="modal">OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="notification shadow pt-0 pl-0 pr-0 border-0 bg-template-light">
+    <div id="notification_countdown"></div>
+    <div class="row pt-2 pl-3 pr-3">
+        <div class="col-auto align-self-center pr-0">
+            <i class="material-icons text-template md-36">redeem</i></div>
+        <div class="col small notification-content">loading...</div>
+        <div class="col-auto align-self-center pl-0">
+            <button class="btn btn-link closenotification">
+                <i class="material-icons text-template md-18 ">close</i></button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">var app = {'online_popup': ""}</script>
+<!-- jquery, popper and bootstrap js -->
+<script src="/red/jquery-3.3.1.min.js"></script>
+<script src="/red/popper.min.js"></script>
+<script src="/red/bootstrap/js/bootstrap.min.js"></script>
+<!-- swiper js -->
+<script src="/red/swiper/swiper-bundle.min.js"></script>
+<!-- cookie js -->
+<script src="/red/jquery.cookie.js"></script>
+<script charset="utf-8" src="/static_new/js/dialog.min.js"></script>
+<link rel="stylesheet" href="/public/js/layer_mobile/need/layer.css">
+<script src="/public/js/layer_mobile/layer.js"></script>
+<script charset="utf-8" src="/static_new/js/jquery.progressBarTimer.js"></script>
+<script charset="utf-8" src="/static_new/js/common.js"></script>
+<!-- template custom js -->
+<script src="/red/main.js"></script>
+<!-- page level script -->
+<script>
+    $(function () {
+        $('.footer').find('.btn-link-default').eq(0).addClass("active");
+        var bannerSwiper = new Swiper('.swiper-container-banner', {
+            slidesPerView: 1,
+            autoplay: true,
+        });
+        $('.tanchuangClose').click(function () {
+            $('#tanchuang').hide();
+            var date = new Date();
+            var minutes = 60 * 8;
+            date.setTime(date.getTime() + minutes * 60 * 1000);
+            $.cookie('tanchuang', 'none', {
+                expires: date
+            });
+        });
+        $('.announcement-task .a-t-items').click(function () {
+            if (!$(this).hasClass('not')) {
+                cid = $(this).data('cid');
+                window.location.href = '/index/rot_order/index.html?type=' + cid;
+            }
+        });
+        if ("none" != 'none' || sessionStorage.getItem('login_flag') == '1') {
+            setTimeout(function () {
+                    $('.tanchuang').modal('show');
+                },
+                500);
+            sessionStorage.removeItem('login_flag');
+        }
+        /*        $(document).dialog({
+                    type: 'alert',
+                    titleText: "DEPOS",
+                    buttonTextConfirm: "OK",
+                    autoClose: 0,
+                });*/
+    });
+
+    (function ($) {
+        $.fn.textSlider = function (options) {
+            var defaults = {
+                scrollHeight: 25,
+                line: 1,
+                speed: 'normal',
+                timer: 2000
+            };
+            var opts = $.extend(defaults, options);
+            this.each(function () {
+                var timerID;
+                var obj = $(this);
+                var $ul = obj.children(".ul");
+                var $height = $ul.find(".card").height();
+                var $Upheight = 0 - opts.line * $height;
+                obj.hover(function () {
+                        clearInterval(timerID);
+                    },
+                    function () {
+                        timerID = setInterval(moveUp, opts.timer);
+                    });
+
+                function moveUp() {
+                    $ul.animate({
+                            "margin-top": $Upheight
+                        },
+                        opts.speed,
+                        function () {
+                            for (i = 0; i < opts.line; i++) {
+                                $ul.find("li:first").appendTo($ul);
+                            }
+                            $ul.css("margin-top", 0);
+                        });
+                };
+                timerID = setInterval(moveUp, opts.timer);
+            });
+        };
+    })(jQuery);
+
+    $(function () {
+        $(".agent_box").textSlider({
+            line: 1
+        });
+    });
+    </script>
+</body>
+</html>

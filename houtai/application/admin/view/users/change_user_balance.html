@@ -1,0 +1,60 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <input name="id" type="hidden" value="{$user.id}">
+        <input name="ids" type="hidden" value="{$ids}">
+        {if($user.id)}
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">用户</label>
+            <div class="layui-input-block">
+                <input  value="{$user.tel}" readonly disabled class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">当前余额</label>
+            <div class="layui-input-block">
+                <input  value="{$user.balance}" readonly disabled class="layui-input">
+                <input type="hidden" name="_csrf_" value="{:systoken('admin/users/change_user_balance')}">
+            </div>
+        </div>
+        {/if}
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">账变类型</label>
+            <div class="layui-input-block">
+                <select name="type" class="layui-select">
+                    <option value="32">后台充值</option>
+                    <option value="34">免费赠送</option>
+                    <option value="31">手动扣款</option>
+                    <option value="35">冻结本金</option>
+                    <option value="36">解冻本金</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">账变金额</label>
+            <div class="layui-input-block">
+                <input type="number" step="0.01" min="1" name="balance" pattern="^\d*\.?\d+$" required placeholder="请输入正数！" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">账变说明</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="remark"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">用户端账变说明</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="user_remark"></textarea>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type='submit'>提交</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+        </div>
+    </div>
+</form>
+<script>window.form.render();</script>

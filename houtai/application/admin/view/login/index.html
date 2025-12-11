@@ -1,0 +1,88 @@
+{extend name="admin@index/index"}
+
+{block name="body"}
+<style>
+    .box {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .layui-input:hover {
+        border-color: #1890FF!important;
+    }
+</style>
+<div class="login-container" data-supersized="__ROOT__/static/theme/img/login/login_bg.jpg">
+<!--1234.gif-->
+    <div class="header notselect layui-hide-xs">
+        <!--<a href="{:url('@')}" class="title">{:sysconf('app_name')}<span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>-->
+    </div>
+
+    <div class="box">
+        <h2 class="notselect" style="font-size: 16px;padding: 0;color: #fff;margin-bottom: 20px;">管理后台登录</h2>
+        <div style="border-radius: 10px;background-color: #fff;width: 350px;height: 280px;display: flex;justify-content: center;align-items: center;">
+            <form data-login-form onsubmit="return false" method="post" class="layui-anim layui-anim-upbit" autocomplete="off">
+                <ul>
+                    <li class="username">
+                        <label>
+                            <i class="layui-icon layui-icon-username"></i>
+                            <input class="layui-input" required pattern="^\S{4,}$" name="username" autofocus autocomplete="off" placeholder="登录账号" title="请输入登录账号">
+                        </label>
+                    </li>
+                    <li class="password">
+                        <label style="position:relative;">
+                            <i class="layui-icon layui-icon-password"></i>
+                            <input class="layui-input" required pattern="^\S{4,}$" name="password" maxlength="32" type="password" autocomplete="off" placeholder="登录密码" title="请输入登录密码">
+<!--                            <span style="position:absolute;top: 12px;right: 12px;"><img src="__ROOT__/static/theme/img/login/biyan.png" alt="" style="width: 12px;height: 12px;"></span>-->
+                        </label>
+                    </li>
+                    <!--<li class="password">
+                        <label>
+                            <i class="layui-icon layui-icon-auz"></i>
+                            <input class="layui-input" name="google_code" maxlength="6" type="text" autocomplete="off" placeholder="谷歌令牌/未绑定不填写" title="请输入谷歌令牌">
+                        </label>
+                    </li>-->
+<!--                    <li class="verify layui-hide">-->
+<!--                        <label class="inline-block relative">-->
+<!--                            <i class="layui-icon layui-icon-picture-fine"></i>-->
+<!--                            <input class="layui-input" required pattern="^\S{4,}$" name="verify" value="" maxlength="4" autocomplete="off" placeholder="验证码" title="请输入验证码">-->
+<!--                        </label>-->
+<!--                        <img data-refresh-captcha alt="img" src="{$captcha->getData()}">-->
+<!--                        <input type="hidden" name="uniqid" value="{$captcha->getUniqid()}">-->
+<!--                    </li>-->
+                    <li class="text-center padding-top-20">
+                        <input type="hidden" name="_csrf_" value="{:systoken('index')}">
+                        <input type="hidden" name="skey" value="{$loginskey|default=''}">
+                        <button type="submit" class="layui-btn layui-disabled full-width" data-form-loaded="登录" onclick="SSSSS()" style="background-color: #1890FF !important;color: #fff !important;">正在载入</button>
+                        <script>
+                            localStorage.asid = 1;
+                        </script>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div style="margin-top: 20px;color: #fff;">
+            <span>
+                {:sysconf('miitbeian')}
+            </span>
+        </div>
+    </div>
+    <div class="footer notselect">
+        <!--<p class="layui-hide-xs"><a target="_blank" href="https://www.google.cn/chrome">推荐使用谷歌浏览器</a></p>-->
+        <!--{:sysconf('site_copy')}-->
+        <!--{if sysconf('miitbeian')}<span class="padding-5">|</span><a target="_blank" href="http://beian.miit.gov.cn">{:sysconf('miitbeian')}</a>{/if}-->
+    </div>
+</div>
+{/block}
+
+{block name='style'}
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<script>if (location.href.indexOf('#') > -1) location.replace(location.href.split('#')[0])</script>
+<link rel="stylesheet" href="__ROOT__/static/theme/css/login.css">
+{/block}
+
+{block name='script'}
+<script src="__ROOT__/static/plugs/supersized/supersized.3.2.7.min.js"></script>
+{/block}

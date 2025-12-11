@@ -1,0 +1,142 @@
+{extend name='main'}
+
+{block name="button"}
+
+{if auth("add_level")}
+
+<button data-modal='{:url("add_level")}' data-title="添加等级" class='layui-btn layui-btn-sm'>添加等级</button>
+{/if}
+
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+
+    <table class="layui-table margin-top-15" >
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th lay-data="{field:'id',width:50}" class='text-left nowrap'>编号</th>
+            <th lay-data="{field:'pic',width:80}" class='text-center nowrap'>图标</th>
+            <th lay-data="{field:'name',width:80}" class='text-center nowrap'>名称</th>
+            <th lay-data="{field:'level',width:80}" class='text-center nowrap'>等级值</th>
+            <th lay-data="{field:'',width:80}" class='text-left nowrap'>提款限制</th>
+            <th lay-data="{field:'',width:80}" class='text-left nowrap'>抢单限制</th>
+            <th lay-data="{field:'num',width:110}" class='text-center nowrap'>升级价格</th>
+            <th lay-data="{field:'',width:110}" class='text-center nowrap'>购买余额限制</th>
+            <th lay-data="{field:'sort',width:80}" class='text-center nowrap'>排序</th>
+            <th lay-data="{field:'show_status',width:80}" class='text-center nowrap'>显示状态</th>
+            <th lay-data="{field:'status',width:80}" class='text-center nowrap'>开启状态</th>
+
+
+
+<!--            <th lay-data="{field:'bili',width:110}" class='text-center nowrap'>佣金比例</th>-->
+<!--            <th lay-data="{field:'tj_bili',width:150}" class='text-center nowrap'>下级佣金比例</th>-->
+<!--            <th lay-data="{field:'num_min',width:120}" class='text-center nowrap'>最小余额</th>-->
+<!--            <th lay-data="{field:'order_num',width:80}" class='text-center nowrap'>接单次数</th>-->
+<!--            <th lay-data="{field:'tixian_ci',width:80}" class='text-center nowrap'>每日提现次数</th>-->
+<!--            <th lay-data="{field:'tixian_min',width:110}" class='text-center nowrap'>提现最小金额</th>-->
+<!--            <th lay-data="{field:'tixian_max',width:110}" class='text-center nowrap'>提现最大金额</th>-->
+<!--            <th lay-data="{field:'is_invite',width:110}" class='text-center nowrap'>邀请权限</th>-->
+            <!--<th lay-data="{field:'addtime',width:200}" class='text-left nowrap'>注册时间</th>-->
+            <th lay-data="{field:'edit',width:80,fixed: 'right'}" class='text-center nowrap'>操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+
+            <td class='text-left nowrap'>{$vo.id}</td>
+            <td class='text-center nowrap'>
+                <img src="{$vo.pic}" alt="" style="width: 40%;height: 40%;">
+            </td>
+            <td class='text-center nowrap'>{$vo.name}</td>
+            <td class='text-center nowrap'>{$vo.level}</td>
+            <td class='text-left nowrap'>
+                <p>提款次数：{$vo.day_withdraw_num}次/天</p>
+                <p>免费提款次数：{$vo.day_withdraw_free_num}次/天</p>
+                <p>超次数提款手续费：{$vo.tixian_shouxu * 100}%</p>
+                <p>提现最低金额：{$vo.tixian_min}</p>
+                <p>提现最高金额：{$vo.tixian_max}</p>
+                <p>提现抢单次数：{$vo.tixian_nim_order}次/天</p>
+            </td>
+            <td class='text-left nowrap'>
+                <p>余额限制：{$vo.num_min}次/天</p>
+                <p>每日次数：{$vo.order_num}次/天</p>
+                <p>佣金比例：{$vo.bili * 100}%</p>
+                <p>抢单金额：{$vo.grab_order_min_amount} - {$vo.grab_order_max_amount}</p>
+            </td>
+
+            <td class='text-center nowrap'><span style="color:rgb(103,194,58);">{$vo.num}</span></td>
+<!--            <td class='text-center nowrap'>{$vo.bili}</td>-->
+            <td class='text-center nowrap'>
+                {$vo.balance_min_amount} - {$vo.balance_max_amount}
+            </td>
+            <td class='text-center nowrap'>{$vo.sort}</td>
+            <td class='text-center nowrap'>
+                {$vo.show_status == 1 ? '显示' : '隐藏'}
+            </td>
+            <td class='text-center nowrap'>
+                {$vo.status == 1 ? '开启' : '关闭'}
+            </td>
+<!--            <td class='text-center nowrap'>{$vo.tj_bili}</td>-->
+<!--            <td class='text-center nowrap'>{$vo.num_min}</td>-->
+<!--            <td class='text-center nowrap'>{$vo.order_num}</td>-->
+<!--            <td class='text-center nowrap'>{$vo.tixian_ci}</td>-->
+<!--            <td class='text-center nowrap'>{$vo.tixian_min}</td>-->
+<!--            <td class='text-center nowrap'>{$vo.tixian_max}</td>-->
+<!--            <td class='text-center nowrap'>-->
+<!--                {if $vo.is_invite==0}-->
+<!--                <a class="layui-btn layui-btn-danger layui-btn-xs">不允许</a>-->
+<!--                {else}-->
+<!--                <a class="layui-btn layui-btn-normal layui-btn-xs">允许</a>-->
+<!--                {/if}-->
+<!--            </td>-->
+           <!-- <td class='text-left nowrap'>{$vo.addtime|format_datetime}</td>-->
+            <td class='text-center nowrap'>
+                <div>
+                    <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="会员等级" data-modal='{:url("users/edit_users_level")}?id={$vo.id}'>编辑</a>
+                </div>
+                <div>
+                    <a class="layui-btn layui-btn-xs layui-btn" onClick="del_level({$vo.id})" style='background:red;'>删除</a>
+                </div>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    <script>
+        function del_level(id){
+            layer.confirm("确认要删除吗，删除后不能恢复",{ title: "删除确认" },function(index){
+                $.ajax({
+                    type: 'POST',
+                    url: "{:url('del_level')}",
+                    data: {
+                        'id': id,
+                        '_csrf_': "{:systoken('del_level')}"
+                    },
+                    success:function (res) {
+                        layer.msg(res.info,{time:2500});
+                        location.reload();
+                    }
+                });
+            },function(){});
+        }
+    </script>
+    <script>
+        var table = layui.table;
+        //转换静态表格
+        var limit = Number('{$Think.get.limit}');
+        if(limit==0) limit=20;
+        table.init('tab', {
+            cellMinWidth:120,
+            skin: 'line,row',
+            size: 'lg',
+            limit: limit
+        });
+    </script>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

@@ -1,0 +1,130 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body">
+        <input name="id" type="hidden" value="{$single_control.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户</label>
+            <div class="layui-input-block" style="width: 150px;">
+                <input  value="{$user.tel}" readonly disabled class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">抢单权限</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="shuadan_status" lay-skin="switch" lay-text="ON|OFF" lay-filter="shuadan_status" value="{$user.shuadan_status}" {if($user.shuadan_status == 1)}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单控开关</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-filter="single_control_status" name="single_control_status" lay-skin="switch" lay-text="ON|OFF" value="{$single_control.single_control_status}" {if($single_control.single_control_status == 1)}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item set_order_box">
+            <div class="layui-input-block">
+                <div class="layui-form-mid" style="color: red;">固定抢单数量：设置完后用户抢单数量以该数量为准；0不生效</div>
+                <div class="layui-form-mid" style="color: red;">固定佣金比例：设置完后抢单佣金将以这个比例为准；0不生效</div>
+                <div class="layui-form-mid" style="color: red;">启用单数：当前单数大于等于该值则触发配置；0不生效</div>
+                <div class="layui-form-mid" style="color: red;">抢单比例：抢单金额将取这个区间的余额百分比，优先于固定抢单金额</div>
+            </div>
+        </div>
+        <div class="layui-form-item set_order_box">
+            <label class="layui-form-label">固定抢单数量</label>
+            <div class="layui-input-block" style="width: 150px;">
+                <input type="number"  min="1" name="fixed_order_num" value="{$single_control.fixed_order_num}" pattern="^\d*\.?\d+$" placeholder="请输入正数！" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item set_order_box">
+            <label class="layui-form-label">固定佣金比例(%)</label>
+            <div class="layui-input-block" style="width: 150px;">
+                <input type="number" name="fixed_commission_bili" value="{$single_control.fixed_commission_bili}" pattern="^\d*\.?\d+$" placeholder="请输入正数！" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item set_order_box">
+            <label class="layui-form-label">启用单数</label>
+            <div class="layui-inline">
+                <div class="layui-input-inline" style="width: 80px;">
+                    <input type="number" name="enable_order_num" value="{$single_control.enable_order_num}" placeholder="启用单数" autocomplete="off" class="layui-input">
+                </div>
+
+                <div class="layui-form-mid enable_order_num_children order_bili_ctr">固定抢单金额</div>
+                <div class="layui-input-inline enable_order_num_children order_bili_ctr" style="width: 80px;">
+                    <input type="number" name="fixed_order_amount" value="{$single_control.fixed_order_amount}" placeholder="固定抢单金额" autocomplete="off" class="layui-input">
+                </div>
+
+                <div class="layui-form-mid enable_order_num_children fixed_order_amount_ctr order_bili">抢单比例(%)</div>
+                <div class="layui-input-inline enable_order_num_children fixed_order_amount_ctr order_bili" style="width: 80px;">
+                    <input type="number" name="order_min_bili" value="{$single_control.order_min_bili}" placeholder="最小比例" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid enable_order_num_children fixed_order_amount_ctr order_bili">-</div>
+                <div class="layui-input-inline enable_order_num_children fixed_order_amount_ctr order_bili" style="width: 80px;">
+                    <input type="number" name="order_max_bili" placeholder="最大比例" value="{$single_control.order_max_bili}" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type='submit'>提交</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+        </div>
+    </div>
+    <script>
+        window.form.render();
+        $(function (){
+            form.on('switch(shuadan_status)', function (data) {
+                let status = data.elem.checked ? 1 : 0;
+                $('input[name="shuadan_status"]').val(status);
+            });
+
+            form.on('switch(single_control_status)', function (data) {
+                let status = data.elem.checked ? 1 : 0;
+                $('input[name="single_control_status"]').val(status);
+                if(status){
+                    $('.set_order_box').show();
+                }else{
+                    $('.set_order_box').hide();
+                }
+            });
+
+            if($('input[name="enable_order_num"]').val() < 1){
+                $('.enable_order_num_children').hide();
+            }
+
+            if($('input[name="single_control_status"]').val() == 0){
+                $('.set_order_box').hide();
+            }
+
+            $('input[name="enable_order_num"]').change(function (){
+                if($(this).val() >= 1){
+                    $('.enable_order_num_children').show();
+                }else{
+                    $('.enable_order_num_children').hide();
+                }
+            });
+
+            $('input[name="fixed_order_amount"]').focus(function (){
+                $('.fixed_order_amount_ctr').hide();
+            })
+            $('input[name="fixed_order_amount"]').change(function (){
+                if($(this).val() <= 0){
+                    $('.fixed_order_amount_ctr').show();
+                }else{
+                    $('.fixed_order_amount_ctr').hide();
+                }
+            })
+
+            $('input[name="order_min_bili"],input[name="order_max_bili"]').focus(function (){
+                console.log(11)
+                $('.order_bili_ctr').hide();
+            })
+
+            $('input[name="order_min_bili"],input[name="order_max_bili"]').change(function (){
+                if($(this).val() <= 0){
+                    $('.order_bili_ctr').show();
+                }
+            })
+        })
+    </script>
+</form>

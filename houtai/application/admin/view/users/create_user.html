@@ -1,0 +1,162 @@
+
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">基本信息</li>
+    </ul>
+    <div class="layui-tab-content">
+        <!--基本设置-->
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form layui-card" action="{:request()->url()}"  data-auto="false" method="post" autocomplete="off">
+                <div class="layui-card-body">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">登录名</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <input type="text" placeholder="" name="tel" value=""  autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-form-mid">上级推广码</div>
+                            <div class="layui-input-inline" >
+                                <input type="text" placeholder="" name="invite_code" value=""  autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <input type="text" name="pwd" placeholder="密码" value="" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-form-mid">取款密码</div>
+                            <div class="layui-input-inline" >
+                                <input type="text" name="pwd2" placeholder="取款密码" value="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">等级</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <select name="level" class="layui-select"  lay-verify="">
+                                    {volist name="levels" id="le"}
+                                    <option value="{$le.level}">{$le.name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+
+                            <div class="layui-form-mid">平台代理</div>
+                            <div class="layui-input-inline" >
+                                <div class="layui-input-inline" >
+                                    <select name="agent_service_id" class="layui-select"  lay-verify="">
+                                        {volist name="agent_services" id="vo"}
+                                        <option value="{$vo.id}">{$vo.username}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户昵称</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <input type="text" placeholder="" name="username"  value="" autocomplete="off" class="layui-input">
+                            </div>
+
+<!--                            <div class="layui-form-mid">手机号</div>-->
+<!--                            <div class="layui-input-inline" >-->
+<!--                                <input type="text" placeholder=""  value="" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">telegram</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <input type="text" name="telegram" value="" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-form-mid">whatsapp</div>
+                            <div class="layui-input-inline" >
+                                <input type="text" name="whatsapp" value="" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">email</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <input type="text" name="email" value="" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">登录状态</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <input type="checkbox" lay-filter="user_status" name="status" lay-skin="switch" lay-text="ON|OFF" value="1" checked>
+                            </div>
+
+                            <div class="layui-form-mid">提款状态</div>
+                            <div class="layui-input-inline" >
+                                <input type="checkbox" lay-filter="user_withdrawal_status" name="withdrawal_status" lay-skin="switch" lay-text="ON|OFF"  value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" >
+                                <textarea name="remark" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item text-center">
+                    <button  class="layui-btn layui-btn-normal edit_user_data" lay-submit lay-filter="submitForm">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--<script src="__ROOT__/static/plugs/layui/layui.all.js"></script>-->
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var form = layui.form;
+
+        form.on('submit(submitForm)', function(data) {
+            var formData = data.field;
+            $.ajax({
+                type: 'POST',
+                url: "{:url('create_user')}",
+                data: formData,
+                success: function (res) {
+                    layer.msg(res.info, {time: 2500,end:function () {
+                            parent.layer.closeAll();
+                        }
+                    });
+
+                }
+            });
+        })
+
+        form.on('switch(user_status)', function (data) {
+            let status = data.elem.checked ? 1 : 0;
+            $('input[name="status"]').val(status);
+        });
+
+        form.on('switch(user_withdrawal_status)', function (data) {
+            let status = data.elem.checked ? 1 : 0;
+            $('input[name="withdrawal_status"]').val(status);
+        });
+    });
+    window.form.render();
+</script>

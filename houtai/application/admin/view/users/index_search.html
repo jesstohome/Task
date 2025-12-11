@@ -1,0 +1,272 @@
+<style>
+    .checkbox-box .layui-form-checkbox[lay-skin=primary] {
+        margin-top: 0;
+    }
+</style>
+
+<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get"
+      autocomplete="off">
+    <div class="layui-form-item layui-inline">
+        <div class="layui-input-inline">
+            <select name="online">
+                <option value="">选择在线状态</option>
+                <option value="1" {if($online == 1)} selected {/if}>只看在线</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <div class="layui-input-inline">
+            <select name="all_children">
+                <option value="">选择下级</option>
+                <option value="1" {if($all_children == 1)} selected {/if}>所有下级</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">ID</label>-->
+        <div class="layui-input-inline" style=" width: 100px;">
+            <input name="uid" value="{$Think.get.uid|default=''}" placeholder="ID" class="layui-input">
+        </div>
+    </div>
+    
+     <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">登录账号</label>-->
+        <div class="layui-input-inline">
+            <input name="username" value="{$Think.get.username|default=''}" placeholder="登录账号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">注册手机</label>-->
+        <div class="layui-input-inline">
+            <input name="tel" value="{$Think.get.tel|default=''}" placeholder="注册手机" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <!--        <label class="layui-form-label">上级邀请码或户名</label>-->
+        <div class="layui-input-inline">
+            <input name="parent_tel" value="{$Think.get.parent_tel|default=''}" placeholder="上级邀请码或户名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">个人邀请码</label>-->
+        <div class="layui-input-inline">
+            <input name="invite_code" value="{$Think.get.invite_code|default=''}" placeholder="个人邀请码" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <!--        <label class="layui-form-label">内部代理或邀请码</label>-->
+        <div class="layui-input-inline">
+            <input name="internal" value="{$Think.get.internal|default=''}" placeholder="内部代理或邀请码" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <!--        <label class="layui-form-label">注册ip</label>-->
+        <div class="layui-input-inline">
+            <input name="register_ip" value="{$Think.get.register_ip|default=''}" placeholder="注册ip" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">登录ip</label>-->
+        <div class="layui-input-inline">
+            <input name="ip" value="{$Think.get.ip|default=''}" placeholder="登录ip" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">用户类型</label>-->
+        <div class="layui-input-inline">
+            <select name="is_jia">
+                <option value="">用户类型</option>
+                <option value="1">内部</option>
+                <option value="0">外部</option>
+            </select>
+        </div>
+    </div>
+<!--     <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">內部代理</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <select name="agent_service_id">-->
+<!--                <option value="0">全部</option>-->
+<!--                {foreach $agent_service_list as $k=>$v}-->
+<!--                <option value="{$k}"{if $agent_service_id==$k} selected{/if}>{$v}</option>-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">方案组</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <select name="group_id">-->
+<!--                <option value="-1">全部方案组</option>-->
+<!--                {foreach $groupList as $k=>$vo}-->
+<!--                <option value="{$k}" {if $group_id==$k} selected{/if}>{$vo}</option>-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">用户等级</label>-->
+        <div class="layui-input-inline">
+            <select name="level">
+                <option value="">用户等级</option>
+                {foreach $level_list as $vo}
+                <option value="{$vo.level}" {if $level === (string)$vo.level} selected{/if}>{$vo.name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    
+    <!--<div class="layui-form-item layui-inline">-->
+    <!--    <label class="layui-form-label">状态</label>-->
+    <!--    <div class="layui-input-inline">-->
+    <!--        <select name="is_jia" id="selectList">-->
+    <!--            <option value="">所有状态</option>-->
+    <!--            <option value="-1">真人</option>-->
+    <!--            <option value="1">假人</option>-->
+    <!--        </select>-->
+    <!--    </div>-->
+    <!--</div>-->
+    
+    
+    <!--<div class="layui-form-item layui-inline">-->
+    <!--    <label class="layui-form-label">一级代理</label>-->
+    <!--    <div class="layui-input-inline">-->
+    <!--        <select name="agent_id">-->
+    <!--            <option value="0">全部</option>-->
+    <!--            {foreach $agent_list as $k=>$v}-->
+    <!--            <option value="{$k}"{if $agent_id==$k} selected{/if}>{$v}</option>-->
+    <!--            {/foreach}-->
+    <!--        </select>-->
+    <!--    </div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item layui-inline">-->
+    <!--    <label class="layui-form-label">二级代理</label>-->
+    <!--    <div class="layui-input-inline">-->
+    <!--        <select name="agent_service_id">-->
+    <!--            <option value="0">全部</option>-->
+    <!--            {foreach $agent_service_list as $k=>$v}-->
+    <!--            <option value="{$k}"{if $agent_service_id==$k} selected{/if}>{$v}</option>-->
+    <!--            {/foreach}-->
+    <!--        </select>-->
+    <!--    </div>-->
+    <!--</div>-->
+
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">排序方式</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <select name="order">-->
+<!--                <option value="">默认排序</option>-->
+<!--                <option value="recharge" {if $order=='recharge'} selected{-->
+<!--                /if}>充值金额倒序</option>-->
+<!--                <option value="recharge_count" {if $order=='recharge_count'} selected{-->
+<!--                /if}>充值次数倒序</option>-->
+<!--                <option value="deposit" {if $order=='deposit'} selected{-->
+<!--                /if}>提现金额倒序</option>-->
+<!--                <option value="deposit_count" {if $order=='deposit_count'} selected{-->
+<!--                /if}>提现次数倒序</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+   
+    <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">注册时间</label>-->
+        <div class="layui-input-inline">
+            <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="开始日期   -   结束日期"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-normal search-btn"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+
+        {if auth("create_user") }
+        <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="添加用户"
+           data-width="80%;"
+           data-modal='{:url("create_user")}'><i class="layui-icon">&#xe624;</i>添加用户</a>
+        {/if}
+
+        {if auth("batch_create_user") }
+        <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="批量添加用户"
+           data-width="50%;"
+           data-modal='{:url("batch_create_user")}'><i class="layui-icon">&#xe624;</i>批量添加用户</a>
+        {/if}
+
+        {if auth("daochu") }
+        <a href="{:url('daochu')}" class="layui-btn layui-btn-danger"><i class="layui-icon">&#xe609;</i>导 出</a>
+        {/if}
+
+        {if auth("change_user_balance") }
+        <span  data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm getSelectedIds fa fa-database">  批量账变</span>
+        {/if}
+    </div>
+</form>
+<!--<div class="layui-form layui-form-pane form-search">-->
+<!--    {if auth("inyectar/batch_inyectar") }-->
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <label class="layui-form-label">打针幅度</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input id="in_cale" value="" type="number" placeholder="最低 1.1" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item layui-inline">-->
+<!--        <a data-post='{:url("inyectar/batch_inyectar")}'-->
+<!--           data-csrf="{:systoken('inyectar/batch_inyectar')}"-->
+<!--           onclick="set_inyectar(this)"-->
+<!--           class="layui-btn layui-btn-danger">批量打针-->
+<!--        </a>-->
+<!--    </div>-->
+<!--    {/if}-->
+<!--</div>-->
+<script>
+    //批量账变
+    $('.getSelectedIds').on('click', function () {
+        event.preventDefault();
+        var selectedCheckboxes = $('.list-check-box:checked');
+
+        // 提取选中的值
+        var selectedValues = selectedCheckboxes.map(function () {
+            return this.value; // 这里使用 value 属性，可以根据实际情况改为其他属性或文本内容
+        }).get();
+        var selectedString = selectedValues.join(',');
+        if(!selectedString){
+            return $.msg.tips('请选择账变用户！');
+        }
+
+        let url = "{:url('admin/users/change_user_balance')}";
+        $.form.modal(url, "ids="+selectedString,'批量账变');
+        return false;
+    });
+
+    form.on('checkbox(online)', function (data) {
+        let val = data.elem.checked ? 1 : -1;
+        $('input[name="online"]').val(val);
+    });
+
+    form.on('checkbox(all_children)', function (data) {
+        let val = data.elem.checked ? 1 : -1;
+        $('input[name="all_children"]').val(val);
+    });
+    function set_inyectar(el) {
+        var sel = table.checkStatus('userTable');
+        var ids = [];
+        var $this = $(el);
+        for (var i = 0; i < sel.data.length; i++) ids.push(sel.data[i].id);
+        if (ids.length < 1) return $.msg.tips('请选择要打针的用户！');
+        var data = {};
+        data.uids = ids;
+        data.scale = $('#in_cale').val();
+        data.scale = data.scale.length > 0 ? parseFloat(data.scale) : 0;
+        if (data.scale < 1.1) return $.msg.tips('请输入打针比例！');
+        console.log(data);
+
+        $.msg.confirm('确定打针？', function () {
+            $.form.load($this.attr('data-post'), data, 'post',false, true);
+        });
+    }
+
+
+    // $('body').on('click','.search-btn', function () {
+    //     form.reload();
+    // });
+    form.render()
+</script>
