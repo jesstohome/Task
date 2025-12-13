@@ -8,6 +8,7 @@
     系统匹配订单模式优先级：单控 > 方案组 > 普通抢单
 
 代理规则：
+    #处理前端接口
     location ~ ^/(vi|upload)/ {
         proxy_pass http://127.0.0.5;
         proxy_buffer_size 16k;
@@ -28,6 +29,7 @@
         proxy_http_version 1.1;
         proxy_set_header Connection "";
     }
+    #处理前端页面不能刷新的问题
     location / {
         try_files $uri $uri/ /index.html;
     }
