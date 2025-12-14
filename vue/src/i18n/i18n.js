@@ -1,7 +1,7 @@
 import { createI18n } from 'vue-i18n' //引入vue-i18n组件
 import { Locale } from 'vant'
 import messages from './index'
-const lang = localStorage.getItem('lang') || 'fa_ir'
+const lang = localStorage.getItem('lang') || 'en_es' //默认语言设置为英文
 import enUS from 'vant/es/locale/lang/en-US';
 import zhCN from 'vant/lib/locale/lang/zh-CN'
 import thTH from 'vant/lib/locale/lang/th-TH'
@@ -15,7 +15,7 @@ import roRO from 'vant/lib/locale/lang/ro-RO'
 //   (navigator.language ? navigator.language : navigator.userLanguage) || "zh_cn"
 // ).toLowerCase();
 const i18n = createI18n({
-  fallbackLocale: 'zh_cn',
+  fallbackLocale: 'en_es',
   globalInjection:true,
   legacy: false, // you must specify 'legacy: false' option
   locale: lang,
