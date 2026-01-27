@@ -62,7 +62,7 @@ module.exports = defineConfig({
     open: false,
     proxy: {
       '/vi': {
-        target: 'https://admin.gnvcso.com',
+        target: 'https://admin.amazon90.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/vi/, '/')
       }

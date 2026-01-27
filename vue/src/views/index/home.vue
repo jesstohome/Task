@@ -23,8 +23,8 @@
             <!-- 次导航 -->
             <div class="earnings mt-2" style="">
                 <div class="earnings_Info">
-                    <div class="vip_level ft-16" v-if="userinfo?.tel">
-                        <div style="flex: 2 1 0px;">{{userinfo?.tel}}</div>
+                    <div class="vip_level ft-16" v-if="userinfo?.username">
+                        <div style="flex: 2 1 0px;">{{userinfo?.username}}</div>
                         <!-- <div style="flex: 1 1 0px; justify-content: center;">{{userinfo?.invite_code}}</div> -->
                     </div>
                     <div class="balance mt-2 d-flex justify-between">
@@ -77,7 +77,7 @@
             <div class="n_nav">
                 <div class="li nav" @click="toRoute('/service')">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/service.png')" alt="">
+                        <img src="/service.png" alt="">
                     </div>
                     <div class="text">{{$t('msg.tel')}}</div>
                 </div>
@@ -103,7 +103,7 @@
                 <!-- 公司简介 -->
                  <div class="li nav" @click="toDetails(2,$t('msg.gsjj'))">
                     <div class="imge">
-                        <img :src="require('@/assets/images/news/aboult.png')" alt="">
+                        <img src="/aboult.png" alt="">
                     </div>
                     <div class="text"
                     >{{$t('msg.gsjj')}}</div>

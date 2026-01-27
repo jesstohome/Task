@@ -7,30 +7,79 @@
     >
     </van-nav-bar>
     <div class="box_bank"  v-if="info && Object.keys(info).length > 0" v-for="(item,index) in info" :key="index">
-	  <div class="li" v-if="py_status !== 2">
+	  <!-- Bank 模式显示 -->
+	  <template v-if="item.bank_type == 'Bank'">
+		  <div class="li">
+	        <span class="span">{{ $t("msg.txlx") }}：</span>
+	        <span class="span">Bank</span>
+	      </div>
+		  <!-- <div class="li">
+	        <span class="span">{{ $t("msg.aba") }}：</span>
+	        <span class="span">{{ item.bank_branch }}</span>
+	      </div> -->
+	      <div class="li">
+	        <span class="span">{{ $t("msg.yhmc") }}：</span>
+	        <span class="span">{{ item.bankname }}</span>
+	      </div>
+	      <!-- <div class="li">
+	        <span class="span">{{ $t("msg.yhdz") }}：</span>
+	        <span class="span">{{ item.bank_address }}</span>
+	      </div> -->
+	      <div class="li">
+	        <span class="span">{{ $t("msg.yhkh") }}：</span>
+	        <span class="span">{{ item.cardnum ? item.cardnum.slice(0, 3) + '********' + item.cardnum.slice(-4) : '' }}</span>
+	      </div>
+	      <!-- <div class="li">
+	        <span class="span">{{ $t("msg.khxm") }}：</span>
+	        <span class="span">{{ item.name }}</span>
+	      </div> -->
+	      <!-- <div class="li" v-if="item.swift_bic">
+	        <span class="span">{{ $t("msg.swift_bic") }}：</span>
+	        <span class="span">{{ item.swift_bic }}</span>
+	      </div> -->
+	  </template>
+	  
+	  <!-- USDT 模式显示 -->
+	  <template v-else-if="item.bank_type == 'USDT'">
+	      <div class="li">
+	        <span class="span">{{ $t("msg.txlx") }}：</span>
+	        <span class="span">USDT</span>
+	      </div>
+	      <div class="li">
+	        <span class="span">{{ $t("msg.usdt_type") }}：</span>
+	        <span class="span">{{ item.usdt_type }}</span>
+	      </div>
+	      <div class="li">
+	        <span class="span">{{ $t("msg.usdt_address") }}：</span>
+	        <span class="span">{{ item.usdt_diz }}</span>
+	      </div>
+	  </template>
+	  
+	  <!-- 旧的显示逻辑（向后兼容） -->
+	  <!-- <div class="li" v-if="py_status !== 2 && item.bank_type">
         <span class="span">{{ $t("msg.khlx") }}：</span>
         <span class="span">{{ item.bank_type }}</span>
       </div>
-      <div class="li" v-if="py_status !== 2">
+      <div class="li" v-if="py_status !== 2 && item.username">
         <span class="span">{{ $t("msg.khxm") }}：</span>
         <span class="span">{{ item.username }}</span>
       </div>
-      <div class="li" v-if="py_status !== 2">
+      <div class="li" v-if="py_status !== 2 && item.cardnum">
         <span class="span">{{ $t("msg.yhkh") }}：</span>
         <span class="span">{{ item.cardnum.slice(0, 3) + '********' +  item.cardnum.slice(-4)}}</span>
       </div>
-      <div class="li" v-if="py_status !== 2">
+      <div class="li" v-if="py_status !== 2 && item.tel">
         <span class="span">{{ $t("msg.ylsjh") }}：</span>
         <span class="span">{{ item.tel.slice(0, 3) + '****' +  item.tel.slice(-4) }}</span>
       </div>
-      <div class="li" v-if="py_status == 2">
+      <div class="li" v-if="py_status == 2 && item.usdt_type">
         <span class="span">{{ $t("msg.usdt_type") }}：</span>
         <span class="span">{{ item.usdt_type }}</span>
       </div>
-      <div class="li" v-if="py_status == 2">
+      <div class="li" v-if="py_status == 2 && item.usdt_diz">
         <span class="span">{{ $t("msg.usdt_address") }}：</span>
         <span class="span">{{ item.usdt_diz }}</span>
-      </div>
+      </div> -->
       <van-button round  v-if="edit_card_switch == true" type="primary" @click="editShowDialog(index)">
         {{ $t("msg.edit") }}
       </van-button>
@@ -89,7 +138,7 @@
       </div>
     </van-popup>
 	
-	<!-- 修改银行卡 -->
+	<!-- 统一的提现方式对话框 -->
     <van-dialog
       v-model:show="showPwd"
       :title="$t('msg.tkxx')"
@@ -99,91 +148,89 @@
     >
       <van-form>
         <van-cell-group inset>
-          <van-cell @click="showType = true" name="bank_type">
-            <template #title>
-              <span class="khlx">{{ $t("msg.khlx") }}</span>
-              {{ edit_data.bank_type }}
-            </template>
-          </van-cell>
+          <!-- 第一行：提现类型选择 (Bank / USDT) -->
           <van-field
-		    v-if="user_bank_name_switch == true"
             class="zdy"
-            :label="$t('msg.khxm')"
-            v-model="edit_data.username"
-            name="username"
-            :placeholder="$t('msg.khxm')"
-            :rules="[{ required: true, message: $t('msg.input_zsxm') }]"
+            :label="$t('msg.txlx')"
+            :model-value="edit_data.tx_type"
+            @click="showTxType = true"
+            readonly
+            :placeholder="$t('msg.txlx')"
           />
-
-
-<!--          <van-field
-            class="zdy"
-            v-else
-            name="mailbox"
-            :label="$t('msg.ylsjh')"
-            v-model="edit_data.mailbox"
-            :placeholder="$t('msg.ylsjh')"
-            :rules="[{ required: true, message: $t('msg.input_email') }]"
-          /> -->
-          <van-field
-		    v-if="bank_mail_switch == true"
-            class="zdy"
-            name="mailbox"
-            :label="$t('msg.email')"
-            v-model="edit_data.mailbox"
-            :placeholder="$t('msg.email')"
-            :rules="[{ required: true, message: $t('msg.input_email') }]"
-          />
-          <van-cell @click="showHank = true" name="bankname" v-if="bank_name_switch == true">
-            <template #title>
-              <span class="khlx">{{ $t("msg.yhmc") }}</span>
-              {{ edit_data.bankname }}
-            </template>
-          </van-cell>
-		  <van-field
-		    v-if="branch_bank_name_switch == true"
-		    class="zdy"
-		    name="bank_branch"
-		    :label="$t('msg.zhmc')"
-		    v-model="edit_data.bank_branch "
-		    :placeholder="$t('msg.zhmc')"
-		    :rules="[{ required: true, message: $t('msg.zhmc') }]"
-		  />
-          <!-- <van-field
-            class="zdy"
-            v-model="id_number"
-            :label="$t('msg.yhmc')"
-            name="id_number"
-            :placeholder="$t('msg.yhmc')"
-            :rules="[{ required: true, message: $t('msg.input_yhmc') }]"
-            /> -->
-          <van-field
-		    v-if="bank_cardnumber_switch == true"
-            class="zdy"
-            v-model="edit_data.cardnum"
-            :label="$t('msg.yhkh')"
-            name="cardnum"
-            :placeholder="$t('msg.yhkh')"
-            :rules="[{ required: true, message: $t('msg.input_yhkh') }]"
-          />
-          <van-field
-		    v-if="bank_phone_switch == true"
-            class="zdy"
-            v-model="edit_data.tel"
-            :label="$t('msg.ylsjh')"
-            name="tel"
-            :placeholder="$t('msg.ylsjh')"
-            :rules="[{ required: true, message: $t('msg.ylsjh') }]"
-          />
-		  <van-field
-		    v-if="bank_cci_switch == true"
-		    class="zdy"
-		    v-model="edit_data.cci"
-		    label="Cédula"
-		    name="cci"
-		    placeholder="Cédula"
-		    :rules="[{ required: true, message: 'CCI' }]"
-		  />
+          
+          <!-- Bank 模式的字段 -->
+          <template v-if="edit_data.tx_type === 'Bank'">
+            <van-field
+              class="zdy"
+              :label="$t('msg.aba')"
+              v-model="edit_data.routing_number"
+              name="routing_number"
+              :placeholder="$t('msg.aba')"
+              :rules="[{ required: true, message: $t('msg.aba') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.yhmc')"
+              v-model="edit_data.bank_name"
+              name="bank_name"
+              :placeholder="$t('msg.yhmc')"
+              :rules="[{ required: true, message: $t('msg.yhmc') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.yhdz')"
+              v-model="edit_data.bank_address"
+              name="bank_address"
+              :placeholder="$t('msg.yhdz')"
+              :rules="[{ required: true, message: $t('msg.yhdz') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.yhkh')"
+              v-model="edit_data.bank_card_number"
+              name="bank_card_number"
+              :placeholder="$t('msg.yhkh')"
+              :rules="[{ required: true, message: $t('msg.yhkh') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.khxm')"
+              v-model="edit_data.name"
+              name="name"
+              :placeholder="$t('msg.khxm')"
+              :rules="[{ required: true, message: $t('msg.khxm') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.swift_bic')"
+              v-model="edit_data.swift_bic"
+              name="swift_bic"
+              :placeholder="$t('msg.swift_bic')"
+            />
+          </template>
+          
+          <!-- USDT 模式的字段 -->
+          <template v-if="edit_data.tx_type === 'USDT'">
+            <van-field
+              class="zdy"
+              :label="$t('msg.usdt_type')"
+              :model-value="edit_data.usdt_type"
+              @click="showUsdtType = true"
+              readonly
+              :placeholder="$t('msg.usdt_type')"
+              :rules="[{ required: true, message: $t('msg.usdt_type') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.usdt_address')"
+              v-model="edit_data.usdt_address"
+              name="usdt_address"
+              :placeholder="$t('msg.usdt_address')"
+              :rules="[{ required: true, message: $t('msg.usdt_address') }]"
+            />
+          </template>
+          
+          <!-- 通用：交易密码 -->
           <van-field
             v-model="paypassword"
             :label="$t('msg.tx_pwd')"
@@ -193,8 +240,26 @@
         </van-cell-group>
       </van-form>
     </van-dialog>
-	
-	
+
+    <!-- 提现类型选择 (Bank / USDT) -->
+    <van-popup v-model:show="showTxType" position="bottom" round class="custom-popup-bottom">
+      <div class="picker-list">
+        <ul>
+          <li @click="selectTxType('Bank')">Bank</li>
+          <li @click="selectTxType('USDT')">USDT</li>
+        </ul>
+      </div>
+    </van-popup>
+
+    <!-- USDT 类型选择 (TRC20 / ERC20) -->
+    <van-popup v-model:show="showUsdtType" position="bottom" round class="custom-popup-bottom">
+      <div class="picker-list">
+        <ul>
+          <li @click="selectUsdtType('usdt-trc20')">usdt-trc20</li>
+          <li @click="selectUsdtType('usdt-erc20')">usdt-erc20</li>
+        </ul>
+      </div>
+    </van-popup>
 	
     <van-dialog
       v-model:show="showUsdt"
@@ -247,6 +312,8 @@ export default {
     const showUsdt = ref(false);
     const showHank = ref(false);
     const showType = ref(false);
+    const showTxType = ref(false);
+    const showUsdtType = ref(false);
     const showKeyboard = ref(false);
     const bank_name = ref("");
     const bank_code = ref("");
@@ -279,6 +346,15 @@ export default {
 	
 	const edit_data = ref({
 		"id":"",
+		"tx_type":"Bank",
+		"routing_number":"",
+		"bank_name":"",
+		"bank_address":"",
+		"bank_card_number":"",
+		"name":"",
+		"swift_bic":"",
+		"usdt_type":"usdt-trc20",
+		"usdt_address":"",
 		"bankname":"",
 		"cardnum":"",
 		"username":"",
@@ -286,7 +362,6 @@ export default {
 		"document_id":"",
 		"bank_code":"",
 		"bank_branch":"",
-		"bank_branchbank_branch":"",
 		"bank_type":"",
 		"account_digit":"",
 		"wallet_tel":"",
@@ -296,8 +371,6 @@ export default {
 		"tel":"",
 		"address":"",
 		"qq":"",
-		"usdt_type":"",
-		"usdt_diz":"",
 		"mailbox":"",
 		"cci":"",
 	});
@@ -392,12 +465,21 @@ export default {
     };
     const editShowDialog = (i) => {
 	  edit_data.value = { ...info.value[i] };
-	  // console.log(edit_data)
-	  if (py_status.value == 2) {
-		showUsdt.value = true;
+	  // 根据现有数据确定 tx_type
+	  if (info.value[i].bank_type == "USDT") {
+		edit_data.value.tx_type = "USDT";
+		edit_data.value.usdt_type = info.value[i].usdt_type;
+		edit_data.value.usdt_address = info.value[i].usdt_diz;
 	  } else {
-		showPwd.value = true;
+		edit_data.value.tx_type = "Bank";
+    edit_data.value.routing_number = info.value[i].bank_branch;
+    edit_data.value.bank_card_number = info.value[i].cardnum;
+    edit_data.value.bank_name = info.value[i].bankname;
+    edit_data.value.name = info.value[i].username;
+    edit_data.value.swift_bic = info.value[i].account_digit;
+    edit_data.value.bank_address = info.value[i].site;
 	  }
+	  showPwd.value = true;
     };
     const showDialog = () => {
 	  for (const key in edit_data.value) {
@@ -406,6 +488,8 @@ export default {
 	  edit_data.value.bankname = default_bankname;
 	  edit_data.value.bank_type = default_bank_type;
 	  edit_data.value.bank_code = default_bank_code;
+	  edit_data.value.tx_type = "Bank";
+	  edit_data.value.usdt_type = "usdt-trc20";
       if (py_status.value == 2) {
         showUsdt.value = true;
       } else {
@@ -415,32 +499,13 @@ export default {
 
     const confirmPwd = () => {
 	  var submit_data = {};
-      if (py_status.value == 2) {
-        form_.value = {
-          usdt_type: usdt_type.value,
-          usdt_diz: usdt_diz.value,
-        };
-		const info = { ...form_.value, ...{ paypassword: paypassword.value } };
-		submit_data = info
-      } else {
-		
-		edit_data.value = { ...edit_data.value, ...{ paypassword: paypassword.value } }
-		let edit = edit_data.value
-		for (const key in edit) {
-			if (Object.hasOwnProperty.call(edit, key)) {
-			  submit_data[key] = edit[key];
-			}
-		}
-	
-        // form_.value = {
-        //   bank_name: bank_name.value,
-        //   bank_code: bank_code.value,
-        //   bank_type: bank_type.value,
-        //   username: username.value,
-        //   tel: tel.value,
-        //   mailbox: mailbox.value,
-        //   id_number: id_number.value,
-        // };
+      // 统一处理所有提现方式
+      edit_data.value = { ...edit_data.value, ...{ paypassword: paypassword.value } }
+      let edit = edit_data.value
+      for (const key in edit) {
+        if (Object.hasOwnProperty.call(edit, key)) {
+          submit_data[key] = edit[key];
+        }
       }
 
       set_bind_bank(submit_data).then((res) => {
@@ -489,6 +554,16 @@ export default {
       showType.value = false;
     };
 
+    const selectTxType = (type) => {
+      edit_data.value.tx_type = type;
+      showTxType.value = false;
+    };
+
+    const selectUsdtType = (type) => {
+      edit_data.value.usdt_type = type;
+      showUsdtType.value = false;
+    };
+
     const onSubmit = (values) => {
       if (!bank_code.value) {
         proxy.$Message({ type: "error", message: t("msg.input_yhxz") });
@@ -519,6 +594,8 @@ export default {
       bank_name,
       showHank,
       showType,
+      showTxType,
+      showUsdtType,
       bank_type,
       paypassword,
       tel,
@@ -535,6 +612,8 @@ export default {
       tondao_type,
       selectBank,
       selectType,
+      selectTxType,
+      selectUsdtType,
       showKeyboard,
       info,
       showPwd,

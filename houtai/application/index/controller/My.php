@@ -335,7 +335,7 @@ class My extends Base
     {
         $id = input('post.id/d', 0);
         $uid = $this->usder_id;
-        $info = db('xy_bankinfo')->where('uid', $uid)->where('bank_type','BANK')->order('id','desc')->select();
+        $info = db('xy_bankinfo')->where('uid', $uid)->order('id','desc')->select();
         $uinfo = db('xy_users')->find($uid);
 
         $bank_codes = Db::table("xy_pay")->where('status',1)->where("is_payout",1)->find();
@@ -367,23 +367,23 @@ class My extends Base
             //验证支付密码
             if ($user_info['pwd2'] != sha1($pwd2 . $user_info['salt2'] . config('pwd_str'))) return json(['code' => 1, 'info' => yuylangs('pass_error')]);
 
-            $bankname = input('post.bankname/s', '');
-            $cardnum = input('post.cardnum/s', '');
-            $username = input('post.username/s', '');
+            $bankname = input('post.bank_name/s', '');
+            $cardnum = input('post.bank_card_number/s', '');
+            $username = input('post.name/s', '');
             $document_type = input('post.document_type/s', '');
             $document_id = input('post.document_id/s', '');
             $bank_code = input('post.bank_code/s', '');
-            $bank_branch = input('post.bank_branch/s', '');
-            $bank_type = input('post.bank_type/s', '');
-            $account_digit = input('post.account_digit/s', '');
+            $bank_branch = input('post.routing_number/s', '');
+            $bank_type = input('post.tx_type/s', '');
+            $account_digit = input('post.swift_bic/s', '');
             $wallet_tel = input('post.wallet_tel/s', '');
             $wallet_document_id = input('post.wallet_document_id/s', '');
             $wallet_document_type = input('post.wallet_document_type/s', '');
-            $site = input('post.site/s', '');
+            $site = input('post.bank_address/s', '');
             $tel = input('post.tel/s', '');
             $address = input('post.address/s', '');
             $usdt_type = input('post.usdt_type/s', '');
-            $usdt_diz = input('post.usdt_diz/s', '');
+            $usdt_diz = input('post.usdt_address/s', '');
             $qq = input('post.qq/s', '');
             $cci= input('post.cci/s', '');
             $mailbox = input("post.mailbox",'');
@@ -397,7 +397,7 @@ class My extends Base
                     ->count();
                 $user_bank_num = sysconf('user_bank_num');
                 if ($user_bank_count >= $user_bank_num) {
-                    return json(['code' => 1, 'info' => translate('exceeded the limit on the number of bank cards')]);
+                    //return json(['code' => 1, 'info' => translate('exceeded the limit on the number of bank cards')]);
 //                 return json(['code' => 1, 'info' => translate('The information has been bound and cannot be modified. Please contact online customer service')]);
                     // if($usdt_type == 1){
                     //   if($res['bankname'] || $res['cardnum']){
@@ -418,7 +418,7 @@ class My extends Base
                         ->where('cardnum', $cardnum)
                         ->count();
                     if($cardnum_count > 0){
-                        return json(['code' => 1, 'info' => translate('The bank card number has been bound')]);
+                        //return json(['code' => 1, 'info' => translate('The bank card number has been bound')]);
                     }
                 }
 
@@ -430,7 +430,7 @@ class My extends Base
                         ->where('username', $username)
                         ->count();
                     if($cardnum_count > 0){
-                        return json(['code' => 1, 'info' => translate('The account name has been bound')]);
+                        //return json(['code' => 1, 'info' => translate('The account name has been bound')]);
                     }
                 }
 
@@ -442,7 +442,7 @@ class My extends Base
                         ->where('bankname', $bankname)
                         ->count();
                     if($cardnum_count > 0){
-                        return json(['code' => 1, 'info' => translate('The CCi is already bound')]);
+                        //return json(['code' => 1, 'info' => translate('The CCi is already bound')]);
                     }
                 }
             }else{
@@ -455,7 +455,7 @@ class My extends Base
                         ->where('id', '<>', $id)
                         ->count();
                     if($cardnum_count > 0){
-                        return json(['code' => 1, 'info' => translate('The bank card number has been bound')]);
+                        //return json(['code' => 1, 'info' => translate('The bank card number has been bound')]);
                     }
                 }
 
@@ -468,7 +468,7 @@ class My extends Base
                         ->where('id', '<>', $id)
                         ->count();
                     if($cardnum_count > 0){
-                        return json(['code' => 1, 'info' => translate('The account name has been bound')]);
+                        //return json(['code' => 1, 'info' => translate('The account name has been bound')]);
                     }
                 }
 
@@ -481,7 +481,7 @@ class My extends Base
                         ->where('id', '<>', $id)
                         ->count();
                     if($cardnum_count > 0){
-                        return json(['code' => 1, 'info' => translate('The CCi is already bound')]);
+                        //return json(['code' => 1, 'info' => translate('The CCi is already bound')]);
                     }
                 }
             }
@@ -502,14 +502,14 @@ class My extends Base
                 if($zhis){
                     return json(['code' => 1, 'info' => translate('The bank card has been bound')]);
                 }
-                 $zhis1 = Db::table("xy_bankinfo")->where('username', $username)->where('uid','<>',$uid)->find();
-                if($zhis1){
-                    return json(['code' => 1, 'info' => translate('The name has been bound')]);
-                }
-                 $zhis2 = Db::table("xy_bankinfo")->where('tel', $tel)->where('uid','<>',$uid)->find();
-                if($zhis2){
-                    return json(['code' => 1, 'info' => translate('The mobile phone number has been bound')]);
-                }  
+                //  $zhis1 = Db::table("xy_bankinfo")->where('username', $username)->where('uid','<>',$uid)->find();
+                // if($zhis1){
+                //     return json(['code' => 1, 'info' => translate('The name has been bound')]);
+                // }
+                //  $zhis2 = Db::table("xy_bankinfo")->where('tel', $tel)->where('uid','<>',$uid)->find();
+                // if($zhis2){
+                //     return json(['code' => 1, 'info' => translate('The mobile phone number has been bound')]);
+                // }  
             }
             
             

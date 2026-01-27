@@ -12,3 +12,7 @@ location / {
    add_header 'Access-Control-Allow-Credentials' 'true';
    # add_header 'Access-Control-Allow-Origin' 'https://kele1006.space/home';
     add_header 'Access-Control-Allow-Headers' 'language,token,access-control-allow-credentials,access-control-allow-origin';
+
+前端测试环境必看：
+        把src/request/index.js中的baseURL改为后台地址baseURL: 'https://admin.amazon90.com/index/', // 直接请求服务器，不走代理
+        在后端nginx配置文件中添加上面的服务器配置，加到server{}里面，root下面就可以了，可以解决本地代理请求接口速度过慢和直接写后端接口跨域的问题

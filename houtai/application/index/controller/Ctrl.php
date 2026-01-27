@@ -807,7 +807,7 @@ class Ctrl extends Base
         $orderId = $ids;
         $slhttp = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://'; 
         $start_url="https://pay.sunpayonline.xyz/pay/web";
-        $merchant_key ="119122cf331547af96a41bda8974a235";
+        $merchant_key ="1KgSpJZq4aaH6UimpPLfUNPkHBg9gs28zY";
         
         
         $slhttp = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://'; 
@@ -2250,9 +2250,9 @@ function stebank1curl($url, $data = []){
             $USDT_code = input('post.USDT_code/s', '');
            
            
-            if (!$USDT_code && $type == 'USDT') {
-                return json(['code' => 1, 'info' => yuylangs('with_q_usdt')]);
-            }
+            // if (!$USDT_code && $type == 'USDT') {
+            //     return json(['code' => 1, 'info' => yuylangs('with_q_usdt')]);
+            // }
             if ($num <= 0) return json(['code' => 1, 'info' => yuylangs('cscw')]);
             
            $bank_codes = Db::table("xy_pay")->where("is_payout",1)->find();
@@ -2317,6 +2317,7 @@ function stebank1curl($url, $data = []){
                 if($fixed_order_num > 0 && $single_control['single_control_status'] == 1){
                     $tixian_nim_order = $fixed_order_num;
                 }
+                //当前等级最低要完成单数
                 if ($onum < $tixian_nim_order) {
                     return json([
                         'code' => 1,

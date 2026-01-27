@@ -13,7 +13,7 @@ const service = axios.create({
 	baseURL: window.config.api, // 所有的请求地址前缀部分/
 	// baseURL: 'https://ok77168.space/index/', // 所有的请求地址前缀部分
 	// baseURL: 'http://www.jake1006.space/index/', // 所有的请求地址前缀部分
-	timeout: 60000, // 请求超时时间毫秒
+	timeout: 120000, // 请求超时时间毫秒，改为 120 秒以适应代理转发延迟
 	withCredentials: true, // 异步请求携带cookie
 })
 
@@ -70,6 +70,17 @@ service.interceptors.response.use(
 		// 对响应错误做点什么
   		// Toast.clear();  // 清除加载
 		console.log(error)
+		
+		// 处理超时错误
+		if (error.code === 'ECONNABORTED') {
+			Message({ type: 'error', message: t('msg.qingqiuchao') || 'Request timeout, please try again later' });
+		} else if (error.message && error.message.includes('timeout')) {
+			Message({ type: 'error', message: t('msg.qingqiuchao') || 'Request timeout, please try again later' });
+		} else if (!error.response) {
+			// 网络错误
+			Message({ type: 'error', message: t('msg.wljx') || 'Network error' });
+		}
+		
 		return Promise.reject(error)
 	}
 )

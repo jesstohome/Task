@@ -9,7 +9,7 @@
                     <div class="hc-left">
                         <van-image :src="require('@/assets/images/news/users.png')" class="hc-avatar" fit="cover" />
                         <div class="hc-meta">
-                            <div class="hc-name">{{ userinfo.tel }}
+                            <div class="hc-name">{{ userinfo.username }}
                                 <img v-if="userinfo.level" :src="require('@/assets/images/self/vip'+ level +'.png')" class="vip" alt="">
                             </div>
                             
@@ -27,8 +27,8 @@
             <!-- Earnings block copied/adapted from home.vue -->
             <div class="earnings mt-2">
                 <div class="earnings_Info">
-                    <div class="vip_level ft-16" v-if="userinfo?.tel">
-                        <div style="flex: 2 1 0px;">{{userinfo?.tel}}</div>
+                    <div class="vip_level ft-16" v-if="userinfo?.username">
+                        <div style="flex: 2 1 0px;">{{userinfo?.username}}</div>
                     </div>
                     <div class="balance mt-2 d-flex justify-between">
                         <span >{{$t('msg.zhye')}}</span><span >{{$t('msg.djje')}}</span>

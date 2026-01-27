@@ -12,14 +12,14 @@ class Users extends Model
 {
     protected $table = 'xy_users';
     protected $rule = [
-        'tel' => 'require',
+        //'tel' => 'require',
         'username' => 'require',
         //'username' => 'require|length:3,15',
         'pwd' => 'require|length:6,16',
         '__token__' => 'token',
     ];
     protected $info = [
-        'tel.require' => '手机号不能为空！',
+        //'tel.require' => '手机号不能为空！',
         //'tel.mobile' => '手机号格式错误！',
         'username.length' => '用户名长度为3-10字符！',
         'username.require' => '用户名不能为空！',
@@ -245,14 +245,15 @@ class Users extends Model
         }
 
         $tmp = Db::table($this->table)->where(['tel' => $qv.$tel])->count();
-        if ($tmp) {
+        if ($tel && $tmp) {
             return ['code' => 1, 'info' => translate('account already exists')];
         }
         $tmp = Db::table($this->table)->where(['username' => $user_name])->count();
         if ($tmp) {
             return ['code' => 1, 'info' => yuylangs('username_exists')];
         }
-        if (!$user_name) $user_name = get_username();
+        if (!$user_name) $user_name = $tel;
+        //if (!$user_name) $user_name = get_username();
         $data = [
             'tel' => $qv.$tel,
             'username' => $user_name ?: $tel,
@@ -260,6 +261,7 @@ class Users extends Model
             'parent_id' => $parent_id,
             'is_jia' => 0,//0=外部，1=内部
         ];
+        
         if ($token) $data['__token__'] = $token;
         $ini_level = Db::table('xy_level')->order('level','asc')->find();
         $data['level'] = $ini_level['level'];
@@ -386,7 +388,7 @@ class Users extends Model
 //                    ->update(['agent_service_id' => $s['id']]);
 //            }
             
-             Cookie::forever('tel', $tel);
+             Cookie::forever('tel', $user_name);
             Cookie::forever('pwd', $pwd);
             
             $userinfo = Db::table("xy_users")->find($res);

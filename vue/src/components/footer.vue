@@ -13,13 +13,19 @@
     </div>
 </template>
 <script>
-import { ref,reactive,watch } from 'vue';
+import { ref,reactive,watch,computed } from 'vue';
 import store from '@/store/index'
 import { useRouter } from 'vue-router';
 export default {
     setup(){
         const { push } = useRouter();
-        const fooCheck = ref(store.state.fooCheck)
+        // 使用 computed 来直接监听 store 的状态变化
+        const fooCheck = computed({
+            get: () => store.state.fooCheck,
+            set: (value) => {
+                store.dispatch('changefooCheck', value)
+            }
+        })
         const list = reactive([
             {
                 img: require('@/assets/images/footer/homeb.png'),
@@ -50,9 +56,10 @@ export default {
         ])
         const checkList = (key) => {
             fooCheck.value = key
-            store.dispatch('changefooCheck',fooCheck.value)
+            // 无论值是否改变，都进行导航
+            push('/'+key)
         }
-        watch(fooCheck,(newValue)=>{
+        watch(() => fooCheck.value, (newValue) => {
             push('/'+newValue)
         })
         return {list,fooCheck,checkList}

@@ -45,8 +45,8 @@
             <li>账变记录</li>
             <li>提现记录</li>
             <li>充值记录</li>
-            <li>银行账户</li>
-            <li>Tron地址</li>
+            <!--<li>银行账户</li>-->
+            <!--<li>Tron地址</li>-->
         </ul>
         <div class="layui-tab-content">
             <!--基本设置-->
@@ -58,7 +58,7 @@
                             <label class="layui-form-label">登录名</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
-                                    <input type="text" placeholder="" value="{$user.tel}" readonly autocomplete="off" class="layui-input">
+                                    <input type="text" placeholder="" value="{$user.username}" readonly autocomplete="off" class="layui-input">
                                 </div>
 
                                 <div class="layui-form-mid">上级推广码</div>
@@ -104,10 +104,7 @@
                                     </select>
                                 </div>
 
-                                <div class="layui-form-mid">用户昵称</div>
-                                <div class="layui-input-inline" >
-                                    <input type="text" name="username" value="{$user.username}" placeholder="" autocomplete="off" class="layui-input">
-                                </div>
+
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -125,13 +122,8 @@
                         </div>
 
                         <div class="layui-form-item">
-                            <label class="layui-form-label">email</label>
+                            <label class="layui-form-label">平台代理</label>
                             <div class="layui-inline">
-                                <div class="layui-input-inline" >
-                                    <input type="text" name="email" value="{$user.email}" placeholder="" autocomplete="off" class="layui-input">
-                                </div>
-
-                                <div class="layui-form-mid">平台代理</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" value="{$user.service}" readonly placeholder="" autocomplete="off" class="layui-input">
                                 </div>

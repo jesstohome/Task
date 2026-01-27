@@ -1401,7 +1401,7 @@ class Deal extends Base
             ->field('xd.*,u.agent_service_id,u.is_jia,
             u.username,u.wx_ewm,u.zfb_ewm,xd.payout_type,u.level,u.balance,u.agent_id,u.tel as u_tel,
             bk.bankname,bk.username as khname,bk.tel,bk.cardnum,u.id uid,
-            bk.account_digit,bk.bank_branch,bk.bank_type,bk.document_type,bk.document_id,bk.bank_code,
+            bk.account_digit,bk.bank_branch,bk.bank_type,bk.document_type,bk.document_id,bk.bank_code,bk.site,
             bk.wallet_document_type,bk.cci,bk.usdt_diz,bk.usdt_type,bk.wallet_document_id,bk.wallet_tel,xd.`type` as w_type,bk.mailbox,xd.types')
             ->where($where)
             ->order('addtime desc,endtime desc')

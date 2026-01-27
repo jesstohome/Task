@@ -9,42 +9,42 @@
               <div class="t">{{$t('msg.my_yu_e')}}</div>
           </div>
           <div class="check_money">
-              <div class="text">
+              <!-- <div class="text">
                   <span class="tel">{{$t('msg.phone')}}</span>
                   <span>{{tel.slice(0, 3) + '****' +  tel.slice(-4)}}</span>
-              </div>
+              </div> -->
               <div class="text">
-                  <span>{{$t('msg.input_yhxz')}}</span>
+                  <span>{{$t('msg.txlx')}}</span>
               </div>
 			  <div class="text">
 			    <van-radio-group v-model="checked" >
 			        <van-radio v-for="(item,index) in info" :key="index" :name="item.id" >
-			            {{$t('msg.khlx')}} {{item.bank_type}} - {{item.cardnum.slice(0, 3) + '********' +  item.cardnum.slice(-4)}}
+                        <div v-if="item.bank_type == 'Bank'" class="label">
+                            <div class="label"> {{item.bank_type}} - {{item.cardnum.slice(0, 3) + '********' +  item.cardnum.slice(-4)}}</div>
+                        </div>
+                        <div v-else-if="item.bank_type == 'USDT'" class="label">
+                            <div class="label">{{item.bank_type}} - {{item.usdt_diz}}</div>
+                        </div>
 			        </van-radio>
 			    </van-radio-group>
 			  </div>
-<!--              <div class="text"  v-for="(item,index) in info" :key="index">
-                <van-radio-group v-model="checked" >
-                    <van-radio>
-                        <div class="label">{{$t('msg.khlx')}} {{item.bank_type}} - {{item.cardnum}}</div>
-                    </van-radio>
-                </van-radio-group>
-              </div> -->
               <!-- <div class="text">
                   <van-radio-group v-model="types" direction="horizontal">
                     <van-radio name="1">{{$t('msg.bank_tx')}}</van-radio>
                     <van-radio name="2">{{$t('msg.usdt_tx')}}</van-radio>
                   </van-radio-group>
               </div> -->
-              <!-- <span class="span" :class="(money_check == item&&!!money_check && 'check ') +  (!item && ' not_b')" @click="function(){if(item){money_check = item}}" v-for="(item,index) in moneys" :key="index">{{item}}</span>
-              <span class="span" :class="(money_check == money && 'check not_b') " @click="money_check=money">{{$t('msg.all_tx')}}</span> -->
+              <!-- <span class="span" :class="(money_check == item&&!!money_check && 'check ') +  (!item && ' not_b')" @click="function(){if(item){money_check = item}}" v-for="(item,index) in moneys" :key="index">{{item}}</span> -->
           </div>
         <div class="tixian_money">{{$t('msg.tixian_money')}}</div>
-        <van-field
-          class="zdy"
-          v-model="money_check"
-          :placeholder="$t('msg.tixian_money')"
-        />
+        <div class="money_input_wrapper">
+          <van-field
+            class="zdy"
+            v-model="money_check"
+            :placeholder="$t('msg.tixian_money')"
+          />
+          <span class="span" :class="(money_check == money && 'check not_b') " @click="money_check=money">{{$t('msg.all_tx')}}</span>
+        </div>
         <van-field
           class="zdy"
           v-model="paypassword"
@@ -324,7 +324,7 @@ export default {
             background-color: $theme;
             text-align: center;
             .t{
-                font-size: 20px;
+                font-size: 26px;
                 color: #fff;
                 margin-bottom: 10px;
                 opacity: 0.7;
@@ -349,8 +349,9 @@ export default {
                 text-align: left;
                 font-size: 28px;
                 margin-bottom: 25px;
-                height: 40px;
+                // height: 40px;
                 .van-radio{
+                    margin: 30px 0;
                     font-size: 30px;
                     .van-radio__icon{
                         font-size: 30px;
@@ -364,6 +365,34 @@ export default {
                     &.tel{
                         color: #999;
                     }
+                }
+            }
+        }
+        .money_input_wrapper{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            .zdy{
+                flex: 1;
+            }
+            .span{
+                padding: 4px 8px;
+                border-radius: 6px;
+                background-color: #f0f0f0;
+                color: #333;
+                font-size: 14px;
+                white-space: nowrap;
+                cursor: pointer;
+                transition: all 0.3s;
+                &:active{
+                    background-color: #e0e0e0;
+                }
+                &.check{
+                    background-color: $theme;
+                    color: #fff;
+                }
+                &.not_b{
+                    // 按钮样式
                 }
             }
         }

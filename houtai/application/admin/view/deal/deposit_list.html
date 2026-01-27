@@ -167,12 +167,17 @@
             </td>
             <td class='text-left nowrap'>
                 账户类型：{$vo.bank_type}<br>
-                银行名称：{$vo.bankname}<br>
-                银行账号：{$vo.cardnum}<br>
-                开户人：{$vo.khname}<br>
-                手机号：{$vo.tel}<br>
-                银行代码：{$vo.bank_code}<br>
-                Cédula：{$vo.cci ?: '-'}<br>
+                {if($vo.bank_type == 'USDT')}
+                    USDT类型：{$vo.usdt_type}<br>
+                    USDT地址：{$vo.usdt_diz}
+                {else}
+                    银行名称：{$vo.bankname|default='-'}<br>
+                    银行账号：{$vo.cardnum|default='-'}<br>
+                    姓名：{$vo.username|default='-'}<br>
+                    路由号：{$vo.bank_branch|default='-'}<br>
+                    银行地址：{$vo.site|default='-'}<br>
+                    SWIFT / BIC Code：{$vo.account_digit|default='-'}
+                {/if}
             </td>
             <!--<td>-->
             <!--    {$agent_list[$vo.agent_id]|default='---'}-->
@@ -229,11 +234,11 @@
                             </a>
                         {/if}
                     {else}
-                    <a class="layui-btn layui-btn-xs deposit_apply"
-                       data-confirm="确定通过此提现记录吗?"
-                       data-csrf="{:systoken('do_deposit')}"
-                       data-action="{:url('do_deposit')}"
-                       data-value="id#{$vo.id};status#2">第三方通过</a>
+                    <!--<a class="layui-btn layui-btn-xs deposit_apply"-->
+                    <!--   data-confirm="确定通过此提现记录吗?"-->
+                    <!--   data-csrf="{:systoken('do_deposit')}"-->
+                    <!--   data-action="{:url('do_deposit')}"-->
+                    <!--   data-value="id#{$vo.id};status#2">第三方通过</a>-->
                     <a class="layui-btn layui-btn-xs layui-btn-warm"
                        data-prompt="请输入驳回内容"
                        data-csrf="{:systoken('do_deposit')}"
@@ -241,10 +246,10 @@
                        data-value="id#{$vo.id};status#3;uid#{$vo.uid};num#{$vo.num}">驳回</a>
                    
                     <a class="layui-btn layui-btn-xs layui-btn-danger deposit_demo_apply"
-                       data-confirm="确定人工通过吗?此操作不会提交到第三方"
+                       data-confirm="确定通过吗?"
                        data-csrf="{:systoken('do_deposit')}"
                        data-action="{:url('do_deposit')}"
-                       data-value="id#{$vo.id};status#88">人工通过</a>
+                       data-value="id#{$vo.id};status#88">通过</a>
                   
                     {/if}
                 {/if}
