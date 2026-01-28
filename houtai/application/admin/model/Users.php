@@ -306,8 +306,7 @@ class Users extends Model
         $data['ip'] = $ip ?: request()->ip();
 
         $salt = rand(0, 99999);  //生成盐
-       // $invite_code = self::create_invite_code();//生成邀请码
-        $invite_code = rand(100000,999999);
+        $invite_code = self::create_invite_code();//生成邀请码
         
         $ft = config('free_balance_time');
         $ft = floatval($ft) * 3600;
@@ -551,7 +550,8 @@ class Users extends Model
     public static function create_invite_code()
     {
         $str = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-        $rand_str = substr(str_shuffle($str), 0, 6);
+        //$rand_str = substr(str_shuffle($str), 0, 6);
+        $rand_str = rand(100000,999999);
         $num = Db::table('xy_users')->where('invite_code', $rand_str)->count();
         if ($num)
             // return $this->create_invite_code();

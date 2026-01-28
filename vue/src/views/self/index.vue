@@ -172,8 +172,14 @@
             </van-cell>
             <van-cell is-link @click="toRoute(qitalist[1],1)">
                 <template #title>
-                    <img :src="qitalist[1].img" class="img img1" width="30" height="30" alt="">
+                    <img :src="qitalist[1].img" class="img" width="24" height="24" alt="">
                     {{ $t('msg.pwd') }}
+                </template>
+            </van-cell>
+            <van-cell is-link @click="toRoute(qitalist[3],3)">
+                <template #title>
+                    <img :src="qitalist[3].img" class="img" width="24" height="24" alt="">
+                    {{ $t('msg.tdbg') }}
                 </template>
             </van-cell>
             <van-cell is-link @click="toRoute(qitalist[2],2)">
@@ -267,8 +273,9 @@ export default {
         ])
         const qitalist = ref([
             {label: t('msg.tel'), img: require('@/assets/images/self/kefu.png'),path:'/service'},
-            {label: t('msg.pwd'), img: require('@/assets/images/self/tixian.png'),path:'/editPwd'},
-            {label: t('msg.xxgg'), img: require('@/assets/images/self/tongzhi.png'),path:'/message'}
+            {label: t('msg.pwd'), img: require('@/assets/images/self/password.png'),path:'/editPwd'},
+            {label: t('msg.xxgg'), img: require('@/assets/images/self/tongzhi.png'),path:'/message'},
+            {label: t('msg.tdbg'), img: require('@/assets/images/self/teams.png'),path:'/team'}
         ])
         const tuichu = () => {
             proxy.$dialog.confirm({

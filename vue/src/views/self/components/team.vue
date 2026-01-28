@@ -1,7 +1,7 @@
 <template>
     <div class="self home">
         <van-nav-bar :title="$t('msg.tdbg')" left-arrow @click-left="$router.go(-1)"></van-nav-bar>
-        <div class="top">
+        <div class="top" v-if="false">
             <div class="info">
                 <div class="avaitar">
                     <div class="top_s">
@@ -21,18 +21,25 @@
                 </div>
             </div>
         </div>
+
         <div class="list">
             <div class="box">
-                <div class="title">
-                    <span class="l">{{$t('msg.sysj')}}</span>
-                    <span class="r">{{currency + info.team_rebate}}</span>
+                <div class="title" style="height: 20px;">
+                    <!-- <span class="l">{{$t('msg.sysj')}}</span>
+                    <span class="r">{{currency + info.team_rebate}}</span> -->
                 </div>
                 <div class="address">
                     <div class="text">{{$t('msg.tdsl')}} <span class="span">{{info.team_count}}</span></div>
-                    <div class="text">{{$t('msg.tdddyj')}} <span class="span">{{info.team_yj}}</span></div>
+                    <!-- <div class="text">{{$t('msg.tdddyj')}} <span class="span">{{info.team_yj}}</span></div> -->
                 </div>
             </div>
             <div class="box">
+                <div class="title" v-for="item in info.team">
+                    <span class="l">{{formatTime('',item.addtime)}}</span>
+                    <span class="r">{{item.username}}</span>
+                </div>
+            </div>
+            <!-- <div class="box">
                 <div class="title">
                     <span class="l">{{$t('msg.oneLevel')}}</span>
                     <span class="r">{{currency + info.team1_rebate}}</span>
@@ -61,7 +68,7 @@
                     <div class="text">{{$t('msg.tdsl')}} <span class="span">{{info.team3_count}}</span></div>
                     <div class="text">{{$t('msg.tdddyj')}} <span class="span">{{info.team3_yj}}</span></div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -70,6 +77,8 @@ import { ref} from 'vue';
 import {junior} from '@/api/self/index'
 import { useRouter } from 'vue-router';
 import store from '@/store/index'
+import fa from '@/i18n/lang/fa';
+import {formatTime} from '@/api/format.js'
 export default {
     setup(){
         const { push } = useRouter();
@@ -89,7 +98,7 @@ export default {
                 end: end.value
             }
             junior(json).then(res => {
-                info.value = {...(res || {})}
+                info.value = {...(res.data || {})}
             })
         }
         getjunior()
@@ -139,7 +148,7 @@ export default {
             }
             getjunior()
         }
-        return {info,imgCheck,clickLeft,topcheck,showCalendar,time1,onConfirm,topClick,currency}
+        return {info,imgCheck,clickLeft,topcheck,showCalendar,time1,onConfirm,topClick,currency,formatTime}
     }
 }
 </script>
@@ -227,7 +236,7 @@ export default {
         .box{
             width: 100%;
             .title{
-                margin: 30px;
+                margin: 40px;
                 display: flex;
                 justify-content: space-between;
                 padding: 0 30px;
@@ -253,7 +262,7 @@ export default {
                 font-size: 30px;
                 font-weight: 600;
                     &:first-child{
-                        margin-bottom: 40px;
+                        // margin-bottom: 40px;
                     }
                 .span{
                     color: $theme;
