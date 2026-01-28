@@ -3055,7 +3055,16 @@ function stebank1curl($url, $data = []){
             } else {
                 $end = strtotime($end);
             }
-
+            $uidsc = model('admin/Users')->child_user($uid, 1, 1);
+            $uidscdata['team_count'] = count($uidsc);
+            $uidscdata['team'] = Db::name('xy_users')
+                ->where('id', 'in', $uidsc ? $uidsc : [-1])
+                ->field('id,username,addtime')
+                ->select();
+            return json_encode(['code'=>0,'msg'=>'success','data'=>$uidscdata]);
+            // $uidAlls5ss = model('admin/Users')->get_child_user($uid,3);
+            // return json($uidAlls5ss);
+            
             //计算五级团队余额
             $uidAlls5 = model('admin/Users')->child_user($uid, 3, 1);
             //团队业绩

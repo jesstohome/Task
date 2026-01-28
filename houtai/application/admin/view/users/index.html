@@ -156,6 +156,9 @@
                    data-modal='{:url("user_data")}?uid={$vo.id}'>查看</a>
                 {/if}
 
+                <a class="layui-btn layui-btn-xs layui-btn-primary view-children" 
+                   data-username="{$vo.username}">查看下级</a>
+
                 {if auth("offline")}
                 <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="下线"
                    data-action='{:url("offline")}?uid={$vo.id}'
@@ -346,6 +349,15 @@
             skin: 'line,row',
             size: 'lg',
             limit: limit
+        });
+
+        // 处理"查看下级"按钮点击事件
+        $(document).on('click', '.view-children', function() {
+            var username = $(this).attr('data-username');
+            // 将用户名填入搜索框
+            $('input[name="parent_tel"]').val(username);
+            // 提交搜索表单
+            $('.search-btn').click();
         });
     </script>
     {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
