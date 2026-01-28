@@ -4,9 +4,11 @@ application/database.php
 运行目录public 伪静态 thinkphp
 /hzw-system-login admin    aa123456
 
+app.php配置文件中有时差设置
 
-
-
+cp config/app.example.php config/app.php
+注意：
+    1. 配置文件在config/app.php
 
 后端配置
 

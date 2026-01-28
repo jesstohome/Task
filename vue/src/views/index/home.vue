@@ -195,7 +195,7 @@
            
         </div>
         <!-- 系统通知弹窗 -->
-        <van-dialog v-model:show="showA" width="90%" :showConfirmButton="false">
+        <van-dialog v-model:show="showA" width="90%" :showConfirmButton="false" v-if="false">
             <div class="lang_box">
                 <div class="lang_title">{{$t('msg.System_notification')}}</div>
                 <!-- <img :src="require('@/assets/images/register/lang_bg.png')" class="lang_bg" /> -->

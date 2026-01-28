@@ -33,7 +33,7 @@ export default {
     setup(){
         const { push } = useRouter();
         const tel = (row) => {
-            window.location.href= row.url
+            window.location.href= row.url+'&metadata={"name":"'+store.state.userinfo.username+'","comment":"UserID:'+store.state.userinfo.id+'"}'
         }
         const clickRight = () => {
             push('/message')
