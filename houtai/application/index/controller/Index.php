@@ -42,7 +42,7 @@ class Index extends Base
         $info = Db::name('xy_users')->find($uid);
         $parameter['balance'] = number_format($info['balance'],2);
         $parameter['level'] = $info['level'];
-        $parameter['freeze_balance'] = number_format($info['freeze_balance'],2);
+        $parameter['freeze_balance'] = number_format($info['freeze_amount'],2);//目前是以后台账变冻结为依据
         //$parameter['banner'] = Db::name('xy_banner')->select();
         $parameter['banner'] = [];
         

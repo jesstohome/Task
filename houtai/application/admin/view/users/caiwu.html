@@ -89,7 +89,7 @@
                     iasjax:1,
                     level:1,
                     addtime:"{$Think.get.addtime}",
-                    tel:"{$Think.get.tel}",
+                    username:"{$Think.get.username}",
                     type:"{$Think.get.type}",
                     id:{$uid}
                 }
@@ -99,7 +99,7 @@
                 ,page: true //开启分页
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', width:100, sort: true, fixed: 'left'}
-                    ,{field: 'tel', title: '账号',totalRowText: '合计' }
+                    ,{field: 'username', title: '账号',totalRowText: '合计' }
                     ,{field: 'oid', title: '订单编号',sort: true}
                     ,{field: 'balance', title: '之前金额',sort: true,totalRow: true}
                     ,{field: 'num', title: '金额',sort: true,totalRow: true}
