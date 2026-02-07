@@ -33,14 +33,14 @@
               :placeholder="$t('msg.true_pwd')"
               :rules="[{ required: true, message: $t('msg.input_true_pwd') }]"
             />
-            <van-field
+            <!-- <van-field
               label-width="100"
               v-model="depositPwd"
               name="depositPwd"
               :label="$t('msg.tx_pwd')"
               :placeholder="$t('msg.tx_pwd')"
               :rules="[{ required: true, message: $t('msg.input_t_pwd') }]"
-            />
+            /> -->
             <van-field
               style="border-bottom: 1px solid #fff;"
               label-width="100"

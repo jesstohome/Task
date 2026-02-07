@@ -25,10 +25,9 @@ export default {
     .pore{
         flex: 1;
         overflow: auto;
-        padding-bottom:140px;
         display: flex;
         flex-direction: column;
-        padding-bottom: 200px;
+        padding-bottom: 400px;
     }
 
 }

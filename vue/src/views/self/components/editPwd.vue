@@ -7,28 +7,21 @@
     </van-nav-bar>
     
     <van-form @submit="onSubmit">
+      <!-- 选项卡切换 -->
+      <van-tabs v-model:active="type" class="pwd-tabs">
+        <van-tab :title="$t('msg.login_pwd')" name="1">
+          <div class="tab-content"></div>
+        </van-tab>
+        <van-tab :title="$t('msg.tx_pwd')" name="2">
+          <div class="tab-content"></div>
+        </van-tab>
+      </van-tabs>
+      
       <van-cell-group inset>
-        <van-field name="type" class="radio">
-            <template #input>
-                <van-radio-group v-model="checked" direction="horizontal">
-                    <van-radio name="1">
-                        <template #icon="props">
-                            <span class="line" :class="props.checked && 'check'"></span>
-                        </template>
-                        {{$t('msg.login_pwd')}}
-                    </van-radio>
-                    <van-radio name="2">
-                        <template #icon="props">
-                            <span class="line" :class="props.checked && 'check'"></span>
-                        </template>
-                        {{$t('msg.tx_pwd')}}
-                    </van-radio>
-                </van-radio-group>
-            </template>
-        </van-field>
-        
+        <!-- 当 type 不等于 '2' 或 paypwdstatus 不等于 0 时，展示旧密码输入框 -->
         <van-field
           class="zdy"
+          v-if="!(type === '2' && paypwdstatus === 0)"
           v-model="old_pwd"
           type="password"
           name="old_pwd"
@@ -72,7 +65,7 @@
 <script>
 import { ref,getCurrentInstance } from 'vue';
 
-import {set_pwd} from '@/api/self/index.js'
+import {set_pwd, bind_bank} from '@/api/self/index.js'
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n'
 export default {
@@ -81,19 +74,19 @@ export default {
     const { t } = useI18n()
     const { push } = useRouter();
     const {proxy} = getCurrentInstance()
-    const checked = ref('1')
+    const type = ref('1')  // 选项卡激活值，同时作为 type 字段
     const showHank = ref(false)
     const showKeyboard = ref(false)
     const bank_name = ref('')
     const bank_code = ref('')
     const new_pwd = ref('')
     const old_pwd = ref('')
-    const type = ref('')
     const tel = ref('')
     const paypassword = ref('')
     const bank_list = ref([])
     const info = ref({})
     const form_ = ref({})
+    const paypwdstatus = ref(1)
     
     const clickLeft = () => {
         push('/self')
@@ -116,6 +109,7 @@ export default {
 
     const onSubmit = (values) => {
         const json = {...values}
+        json.type = type.value
         delete json.tel
         set_pwd(json).then(res => {
             if(res.code === 0) {
@@ -127,7 +121,11 @@ export default {
         })
     };
 
-
+    bind_bank().then((res) => {
+      if (res.code === 0) {
+        paypwdstatus.value = res.data?.paypwdstatus;
+      };
+    });
 
     return {
         onConfirm,
@@ -145,8 +143,8 @@ export default {
         bank_list,
         showKeyboard,
         info,
-        checked,
-        validator
+        validator,
+        paypwdstatus
     };
   }
 }
@@ -155,6 +153,30 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/theme.scss';
 .home{
+    // 选项卡样式
+    .pwd-tabs{
+        :deep(.van-tabs__nav){
+            background-color: transparent;
+            padding: 0 24px;
+        }
+        :deep(.van-tab){
+            font-size: 30px;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+        :deep(.van-tab--active){
+              color: #fff;
+        }
+        :deep(.van-tabs__line){
+            background-color: #2c7ce700;
+            height: 3px;
+        }
+        .tab-content{
+            min-height: 1px; // 空内容占位
+        }
+    }
+
     :deep(.van-nav-bar){
         background-color: $theme;
         color: #fff;
@@ -182,36 +204,7 @@ export default {
     :deep(.van-form){
         padding: 0;
         padding: 24px;
-        .van-radio{
-            position: relative;
-            // margin-left: 25px;
-            padding: 10px 20px;
-            width: 50%;
-            overflow: hidden;
-            .line.check{
-                position: absolute;
-                width: 100%;
-                height: 3px;
-                background-color: $theme;
-                left:0;
-                bottom: 0;
-            }
-            .van-radio__label{
-                margin-left: 0;
-                width: 100%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                word-break: keep-all;
-                font-size: 30px;
-                line-height: 50px;
-            }
-            .van-radio__icon--checked+.van-radio__label{
-                // font-size: 26px;
-                // font-weight: 600;
-                color: $theme;
-            }
-        }
+        padding-top: 50px;
 
         .van-cell.van-cell--clickable{
             border-left: 5px solid $theme;

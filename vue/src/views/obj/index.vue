@@ -457,7 +457,7 @@ export default {
         overflow: auto;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
-        padding-bottom:140px;
+        padding-bottom:350px;
         color: #333;
         .header-card{
                 margin-top: 20px;

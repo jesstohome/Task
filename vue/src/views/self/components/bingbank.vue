@@ -156,7 +156,11 @@
             @click="showTxType = true"
             readonly
             :placeholder="$t('msg.txlx')"
-          />
+          >
+            <template #right-icon>
+              <span class="chevron">></span>
+            </template>
+          </van-field>
           
           <!-- Bank 模式的字段 -->
           <template v-if="edit_data.tx_type === 'Bank'">
@@ -219,7 +223,11 @@
               readonly
               :placeholder="$t('msg.usdt_type')"
               :rules="[{ required: true, message: $t('msg.usdt_type') }]"
-            />
+            >
+              <template #right-icon>
+                <span class="chevron">></span>
+              </template>
+            </van-field>
             <van-field
               class="zdy"
               :label="$t('msg.usdt_address')"
@@ -255,8 +263,8 @@
     <van-popup v-model:show="showUsdtType" position="bottom" round class="custom-popup-bottom">
       <div class="picker-list">
         <ul>
-          <li @click="selectUsdtType('usdt-trc20')">usdt-trc20</li>
-          <li @click="selectUsdtType('usdt-erc20')">usdt-erc20</li>
+          <li @click="selectUsdtType('USDT-TRC20')">USDT-TRC20</li>
+          <li @click="selectUsdtType('USDT-ERC20')">USDT-ERC20</li>
         </ul>
       </div>
     </van-popup>
@@ -747,6 +755,14 @@ export default {
       .van-checkbox__label {
         font-size: 24px;
       }
+    }
+    
+    /* 选择字段右侧的箭头指示符 */
+    .chevron {
+      font-size: 28px;
+      color: #177be7;
+      font-weight: bold;
+      margin-right: 10px;
     }
     .text_b {
       margin: 150px 60px 40px;

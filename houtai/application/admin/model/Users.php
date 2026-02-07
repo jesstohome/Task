@@ -599,17 +599,16 @@ class Users extends Model
     /**
      * 重置密码
      */
-    public function reset_pwd($tel, $pwd, $type = 1)
+    public function reset_pwd($user_id, $pwd, $type = 1)
     {
         $data = [
-            'tel' => $tel,
             'pwd' => $pwd,
         ];
         unset($this->rule['username']);
-        $validate = \Validate::make($this->rule, $this->info);//验证表单
-        if (!$validate->check($data)) return ['code' => 1, 'info' => $validate->getError()];
+        //$validate = \Validate::make($this->rule, $this->info);//验证表单
+        //if (!$validate->check($data)) return ['code' => 1, 'info' => $validate->getError()];
 
-        $user_id = Db::table($this->table)->where(['tel' => $tel])->value('id');
+        //$user_id = Db::table($this->table)->where(['tel' => $tel])->value('id');
         if (!$user_id) {
             return ['code' => 1, 'info' => yuylangs('not_user')];
         }

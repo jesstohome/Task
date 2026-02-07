@@ -70,7 +70,16 @@ location ~ ^/(vi|upload)/ {
   location / {
         try_files $uri $uri/ /index.html;
     }
+# 0. 锁定
+chattr +i app.js
+# 1. 解除锁定
+chattr -i app.js
 
+# 2. 覆盖新文件
+上传新dist
+
+# 3. 再锁
+chattr +i app.js
 
   <style lang="scss" scoped>
     .footer{

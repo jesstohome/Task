@@ -337,6 +337,13 @@ class My extends Base
         $uid = $this->usder_id;
         $info = db('xy_bankinfo')->where('uid', $uid)->order('id','desc')->select();
         $uinfo = db('xy_users')->find($uid);
+        
+        
+        $parameter['paypwdstatus'] = 1;
+        //支付密码是否设置判断：
+        if(empty($uinfo['pwd2'])){
+            $parameter['paypwdstatus'] = 0;
+        }
 
         $bank_codes = Db::table("xy_pay")->where('status',1)->where("is_payout",1)->find();
      //   $parameter['bank_codes'] = explode("\n",$bank_codes['bank_code']);

@@ -2577,6 +2577,7 @@ function stebank1curl($url, $data = []){
     //修改密码
     public function set_pwd()
     {
+        
         if (!request()->isPost()) return json(['code' => 1, 'info' => yuylangs('qqcw')]);
         $o_pwd = input('old_pwd/s', '');
         $pwd = input('new_pwd/s', '');
@@ -2585,11 +2586,11 @@ function stebank1curl($url, $data = []){
         if($type == 1){
             if ($uinfo['pwd'] != sha1($o_pwd . $uinfo['salt'] . config('pwd_str'))) return json(['code' => 1, 'info' => yuylangs('pass_error')]);
         }elseif($type == 2){
-            if ($uinfo['pwd2'] != sha1($o_pwd . $uinfo['salt2'] . config('pwd_str'))) return json(['code' => 1, 'info' => yuylangs('pass_error')]);
+            if ($uinfo['pwd2'] != sha1($o_pwd . $uinfo['salt2'] . config('pwd_str')) && !empty($uinfo['pwd2'])) return json(['code' => 1, 'info' => yuylangs('pass_error')]);
         }
         
         
-        $res = model('admin/Users')->reset_pwd($uinfo['tel'], $pwd, $type);
+        $res = model('admin/Users')->reset_pwd($this->usder_id, $pwd, $type);
         return json($res);
     }
 

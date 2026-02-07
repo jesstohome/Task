@@ -299,7 +299,7 @@ export default {
                 flex-wrap: wrap;
                 margin: 24px 0;
                 .van-radio {
-                    width: 32%;
+                    width: 30%;
                     height: 180px;
                     border: 1px solid #ccc;
                     position: relative;
