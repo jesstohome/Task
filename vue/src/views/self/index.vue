@@ -11,13 +11,43 @@
                                 <img v-if="level" :src="require('@/assets/images/self/vip'+ level +'.png')" class="vip" alt="">
                             </div>
                             
-                            <div class="hc-score-label">
-                                <div>{{$t('msg.xyf') }}:</div>                              
-                                <van-progress class="jindutiao" :percentage="Number(creditPercent)" pivot-text="" stroke-width="6" color="#fdb824" inactive-color="#ffeedd" />
-                                <div>
-                                    {{ creditPercent }}%
-                                </div>                          
-                            </div>
+                                                        <div class="hc-score-label">
+                                                                <div>{{$t('msg.xyf') }}:</div>
+                                                                <van-progress class="jindutiao" :percentage="Number(creditPercent)" pivot-text="" stroke-width="6" color="#fdb824" inactive-color="#ffeedd" />
+                                                                <div>
+                                                                        {{ creditPercent }}%
+                                                                </div>
+                                                                <div class="auth-btn-area" v-if="idStatus === 2 || idStatus === 4">
+                                                                        <van-button
+                                                                            size="small"                                                                           
+                                                                            style="background:#1a7ae7;color:#fff;height: 28px;"
+                                                                            @click="push('/realNameAuth')"
+                                                                        >
+                                                                            {{ $t('msg.authed') }}
+                                                                        </van-button>
+                                                                </div>
+                                                                <div class="auth-btn-area" v-else-if="idStatus === 5">
+                                                                        <van-button
+                                                                            size="small"                                                                           
+                                                                            style="background:#FFD700;color:#fff;height: 28px;"
+                                                                            @click="push('/realNameAuth')"
+                                                                        >
+                                                                            {{ $t('msg.gaojirenzheng') }}
+                                                                        </van-button>
+                                                                </div>
+                                                                <div class="auth-btn-area" v-else>
+                                                                        <van-button
+                                                                            size="small"                                                                           
+                                                                            style="background:#f2f2f2;color:#999;height: 28px;"
+                                                                            @click="push('/realNameAuth')"
+                                                                        >
+                                                                            {{ $t('msg.auth_not') }}
+                                                                        </van-button>
+                                                                </div>
+                                                                <div class="auth-remark" v-if="idRemark">
+                                                                    <small>{{ idRemark }}</small>
+                                                                </div>
+                                                        </div>
                             <div class="hc-invite">{{$t('msg.code') }}：
                                 <span class="code">{{ userinfo.invite_code }}</span>
                                 <van-button size="mini" class="hc-copy" @click="copyInvite($t('msg.copy_s'))">{{$t('msg.copy')}}</van-button>
@@ -176,6 +206,12 @@
                     {{ $t('msg.pwd') }}
                 </template>
             </van-cell>
+            <van-cell is-link @click="toRoute(qitalist[4],4)">
+                <template #title>
+                    <img :src="qitalist[4].img" class="img" width="24" height="24" alt="">
+                    {{ $t('msg.real_name_auth') }}
+                </template>
+            </van-cell>
             <van-cell is-link @click="toRoute(qitalist[3],3)">
                 <template #title>
                     <img :src="qitalist[3].img" class="img" width="24" height="24" alt="">
@@ -208,7 +244,7 @@
 </template>
 <script>
 import { ref,getCurrentInstance, onMounted} from 'vue';
-import {getself} from '@/api/self/index'
+import {getself, get_id_auth} from '@/api/self/index'
 import {uploadImg,headpicUpdatae,getHomeData} from '@/api/home/index.js'
 import {logout} from '@/api/login/index'
 import store from '@/store/index'
@@ -232,6 +268,8 @@ export default {
     const activeTab = ref(1)
     // credit score and invite code (you can set these values later)
     const creditPercent = ref(store.state.minfo?.credit || 0)
+    const idStatus = ref(0) // default: not certified
+    const idRemark = ref('')
     const inviteCode = ref('TPIAA')
         const is_bind = ref(false)
         store.dispatch('changefooCheck','self')
@@ -275,7 +313,8 @@ export default {
             {label: t('msg.tel'), img: require('@/assets/images/self/kefu.png'),path:'/service'},
             {label: t('msg.pwd'), img: require('@/assets/images/self/password.png'),path:'/editPwd'},
             {label: t('msg.xxgg'), img: require('@/assets/images/self/tongzhi.png'),path:'/message'},
-            {label: t('msg.tdbg'), img: require('@/assets/images/self/teams.png'),path:'/team'}
+            {label: t('msg.tdbg'), img: require('@/assets/images/self/teams.png'),path:'/team'},
+            {label: t('msg.real_name_auth'), img: require('@/assets/images/self/shiming.png'),path:'/realNameAuth'}
         ])
         const tuichu = () => {
             proxy.$dialog.confirm({
@@ -318,6 +357,13 @@ export default {
                     mInfo.value = {...res.data}
                     creditPercent.value = res.data.credit
                     store.dispatch('changeminfo',res.data || {})
+                }
+            })
+            // load id auth status
+            get_id_auth().then(res => {
+                if(res.code === 0){
+                    idStatus.value = res.data?.id_status ?? 0
+                    idRemark.value = res.data?.id_remark || ''
                 }
             })
         })
@@ -390,7 +436,7 @@ export default {
                 document.body.removeChild(ta)
             }
         }
-        return {currency,level,list,qitalist,tuichu,setAvatar,toShare,toRoute,afterRead,upload,clickRight,userinfo,monney,mInfo,activeTab,creditPercent,inviteCode,copyInvite}
+        return {currency,level,list,qitalist,tuichu,setAvatar,toShare,toRoute,afterRead,upload,clickRight,userinfo,monney,mInfo,activeTab,creditPercent,inviteCode,copyInvite,idStatus,idRemark,push}
     }
 }
 </script>
@@ -455,7 +501,7 @@ export default {
                 .code{ background:#f5f5f5; padding:2px 6px; border-radius:6px; margin:0 8px; font-weight:700 }
                 .hc-copy{ background:#fdb824; color:#fff; padding:0 8px;border-radius: 15px;font-size: 30px; height: 40px;}
                 .hc-score-label{ font-size:28px; color:#666;display: flex;flex-direction: row;align-items: center;gap: 20px; }
-                .jindutiao{width: 150px;}
+                .jindutiao{width: 120px;}
                 .vip{width: 55px;}
             }
 

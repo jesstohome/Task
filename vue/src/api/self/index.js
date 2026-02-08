@@ -10,6 +10,20 @@ export const getself = () => {
         return result.data
       })
   }
+// 获取身份认证信息
+export const get_id_auth = () => {
+    return http.get('/my/id_auth')
+      .then((result) => {
+        return result.data
+      })
+  }
+// 提交身份认证信息
+export const save_id_auth = (params) => {
+    return http.post('/my/id_save',qs.stringify(params))
+      .then((result) => {
+        return result.data
+      })
+  }
 // 获取绑定信息
 export const bind_bank = () => {
     return http.get('/my/bind_bank')

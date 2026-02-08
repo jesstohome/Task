@@ -158,6 +158,7 @@ export default {
         :deep(.van-tabs__nav){
             background-color: transparent;
             padding: 0 24px;
+            height: 60px;
         }
         :deep(.van-tab){
             font-size: 30px;

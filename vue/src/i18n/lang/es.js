@@ -319,6 +319,23 @@ module.exports = {
   shangpinmingcheng: "Nombre del producto",
   xiepinglun: "Escribir un comentario",
   bili: "Proporción",
-  qxxyd: "Cancelar pedido de la suerte"
+  qxxyd: "Cancelar pedido de la suerte",
+  real_name_auth: 'Autenticación de nombre real',
+  real_name: 'Nombre completo',
+  input_real_name: 'Por favor ingrese su nombre real',
+  id_card_num: 'Número de cédula',
+  input_id_card: 'Por favor ingrese el número de cédula',
+  top_pic: 'Foto frontal del documento',
+  bot_pic: 'Foto trasera del documento',
+  headpic: 'Foto sosteniendo documento',
+  submit: 'Enviar',
+  id_status_label: 'Estado de autenticación',
+  id_status_0: 'En revisión',
+  id_status_1: 'Aprobado',
+  id_status_2: 'Rechazado',
+  authed: 'Verificado',
+  auth_not: 'No verificado',
+  qingshuruxinxin: 'Por favor suba información completa',
+  gaojirenzheng: 'Autenticación avanzada'
   }
 }

@@ -319,6 +319,23 @@ module.exports = {
   shangpinmingcheng: "نام محصول",
   xiepinglun: "نوشتن نظر",
   bili: "نسبت",
-  qxxyd: "لغو سفارش خوش شانس"
+  qxxyd: "لغو سفارش خوش شانس",
+  real_name_auth: 'احراز هویت نام واقعی',
+  real_name: 'نام کامل',
+  input_real_name: 'لطفا نام واقعی خود را وارد کنید',
+  id_card_num: 'شماره شناسنامه',
+  input_id_card: 'لطفا شماره شناسنامه را وارد کنید',
+  top_pic: 'عکس جلوی مدرک',
+  bot_pic: 'عکس پشت مدرک',
+  headpic: 'عکس دریافت مدرک',
+  submit: 'ارسال',
+  id_status_label: 'وضعیت احراز هویت',
+  id_status_0: 'در حال بررسی',
+  id_status_1: 'تایید شده',
+  id_status_2: 'رد شده',
+  authed: 'تأیید شده',
+  auth_not: 'تأیید نشده',
+  qingshuruxinxin: 'لطفا اطلاعات کامل را بارگذاری کنید',
+  gaojirenzheng: 'احراز هویت پیشرفته'
     }
   }

@@ -318,6 +318,23 @@ module.exports = {
   shangpinmingcheng: "Tên sản phẩm",
   xiepinglun: "Viết bình luận",
   bili: "Tỷ lệ",
-  qxxyd: "Hủy đơn hàng may mắn"
+  qxxyd: "Hủy đơn hàng may mắn",
+  real_name_auth: 'Xác thực tên thật',
+  real_name: 'Tên đầy đủ',
+  input_real_name: 'Vui lòng nhập tên thật của bạn',
+  id_card_num: 'Số CMND',
+  input_id_card: 'Vui lòng nhập số CMND',
+  top_pic: 'Ảnh mặt trước CMND',
+  bot_pic: 'Ảnh mặt sau CMND',
+  headpic: 'Ảnh cầm CMND',
+  submit: 'Gửi',
+  id_status_label: 'Trạng thái xác thực',
+  id_status_0: 'Đang xem xét',
+  id_status_1: 'Đã phê duyệt',
+  id_status_2: 'Bị từ chối',
+  authed: 'Đã xác thực',
+  auth_not: 'Chưa xác thực',
+  qingshuruxinxin: 'Vui lòng tải lên thông tin đầy đủ',
+  gaojirenzheng:'Tối ưu hóa xác thực nâng cao'
   }
 }

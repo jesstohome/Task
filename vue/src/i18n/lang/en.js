@@ -333,5 +333,23 @@ wfsyqtgjgn: "Unable to Use Other Advanced Features",
   xiepinglun: "Write a Comment",
   bili: "Proportion",
   qxxyd: "Cancel Lucky Order"
+ ,
+	real_name_auth: 'Real Name Authentication',
+	real_name: 'Full Name',
+	input_real_name: 'Please enter your real name',
+	id_card_num: 'ID Card Number',
+	input_id_card: 'Please enter ID card number',
+	top_pic: 'ID Front Photo',
+	bot_pic: 'ID Back Photo',
+	headpic: 'Holding ID Photo',
+	submit: 'Submit',
+	id_status_label: 'Authentication Status',
+	id_status_0: 'Under review',
+	id_status_1: 'Approved',
+	id_status_2: 'Rejected',
+	authed: 'Basic',
+	auth_not: 'Not Verified',
+	qingshuruxinxin: 'Please upload complete information',
+	gaojirenzheng:'Advanced verified'
 	}
 }

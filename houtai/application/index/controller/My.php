@@ -330,7 +330,96 @@ class My extends Base
         }
         return json_encode(['code'=>1,"info"=>'error',"data"=>'']);
     }
+    /**
+     * 获取实名认证信息
+     */
+    public function id_auth()
+    {
+        $uid = $this->usder_id;
+        $user = db('xy_users')->where('id', $uid)->field('real_name,id_card_num,top_pic,bot_pic,wx_ewm,id_status')->find();
+        $data = [];
+        if ($user) {
+            $data = [
+                'real_name' => $user['real_name'],
+                'id_card_num' => $user['id_card_num'],
+                'top_pic' => $user['top_pic'],
+                'bot_pic' => $user['bot_pic'],
+                'headpic' => $user['wx_ewm'],
+                'id_status' => isset($user['id_status']) ? intval($user['id_status']) : null,
+                'id_remark' => ''
+            ];
+        }
+        return json(['code' => 0, 'info' => 'success', 'data' => $data]);
+    }
 
+    /**
+     * 提交实名认证
+     */
+    public function id_save()
+    {
+        if (!request()->isPost()) return json(['code' => 1, 'info' => yuylangs('qqcw')]);
+        $uid = $this->usder_id;
+        $real_name = input('post.real_name/s', '');
+        $id_card_num = input('post.id_card_num/s', '');
+        $top_pic = input('post.top_pic/s', '');
+        $bot_pic = input('post.bot_pic/s', '');
+        $headpic = input('post.headpic/s', '');
+
+        if (empty($real_name) || empty($id_card_num)) {
+            return json(['code' => 1, 'info' => yuylangs('sjyc')]);
+        }
+        $id_status = 1;
+        $user = db('xy_users')->where('id', $uid)->field('real_name,id_card_num,top_pic,bot_pic,wx_ewm,id_status')->find();
+        //2是继续输入高级信息
+        if($user['id_status'] == 2 || $user['id_status'] == 6){
+            $id_status = 4;
+        }
+
+        $data = [
+            'real_name' => $real_name,
+            'id_card_num' => $id_card_num,
+            'top_pic' => $top_pic,
+            'bot_pic' => $bot_pic,
+            'wx_ewm' => $headpic,
+            'id_status' => $id_status,
+            //'id_remark' => ''
+        ];
+
+        $res = db('xy_users')->where('id', $uid)->update($data);
+        
+        if ($res !== false) {
+            return json(['code' => 0, 'info' => yuylangs('tjcg')]);
+        } else {
+            return json(['code' => 1, 'info' => yuylangs('czsb')]);
+        }
+    }
+    
+    public function upload()
+    {
+        if (!($file = request()->file('file'))) {
+            return json(['uploaded' => false, 'error' => ['message' => 'no file']]);
+        }
+        $ext = pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
+        $App = new \think\App();
+        $root = $App->getRootPath();
+        $newDir = $root . 'upload' . DIRECTORY_SEPARATOR . 'user' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m-d') . DIRECTORY_SEPARATOR;
+        if (!file_exists($newDir)) mkdir($newDir, 0777, true);
+        $newName = time() . '_' . uniqid() . '.' . $ext;
+        try {
+            $file->move($newDir, $newName);
+        } catch (\Exception $e) {
+            return json(['uploaded' => false, 'error' => ['message' => 'upload failed']]);
+        }
+        $fullPath = str_replace('\\', '/', $newDir . $newName);
+        $pos = strpos($fullPath, '/upload');
+        if ($pos !== false) {
+            $publicPath = substr($fullPath, $pos);
+        } else {
+            $publicPath = '/upload/user/' . date('Y') . '/' . date('m-d') . '/' . $newName;
+        }
+        return json(['uploaded' => true, 'url' => $publicPath]);
+    }
+    
     public function bind_bank()
     {
         $id = input('post.id/d', 0);

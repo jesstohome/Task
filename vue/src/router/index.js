@@ -148,6 +148,16 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: "index" */ '@/views/self/components/editPwd.vue')
       },
+      // 实名认证
+      {
+        path: '/realNameAuth',
+        name: 'realNameAuth',
+        meta: {
+          keepAlive: true,
+          name: 'realNameAuth'
+        },
+        component: () => import(/* webpackChunkName: "index" */ '@/views/self/components/realNameAuth.vue')
+      },
       // 账户明细
       {
         path: '/account_details',

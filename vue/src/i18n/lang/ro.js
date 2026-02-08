@@ -319,6 +319,23 @@ module.exports = {
     shangpinmingcheng: "Numele produsului",
     xiepinglun: "Scrie un comentariu",
     bili: "Proporție",
-    qxxyd: "Anulează comanda norocoasă"
+    qxxyd: "Anulează comanda norocoasă",
+    real_name_auth: 'Autentificare nume real',
+    real_name: 'Nume complet',
+    input_real_name: 'Vă rog introduceți-vă numele real',
+    id_card_num: 'Numărul cărții de identitate',
+    input_id_card: 'Vă rog introduceți numărul cărții de identitate',
+    top_pic: 'Fotografia față document',
+    bot_pic: 'Fotografia spate document',
+    headpic: 'Fotografia ținând document',
+    submit: 'Trimite',
+    id_status_label: 'Status de autentificare',
+    id_status_0: 'În revizuire',
+    id_status_1: 'Aprobat',
+    id_status_2: 'Respins',
+    authed: 'Verificat',
+    auth_not: 'Neverificat',
+    qingshuruxinxin: 'Vă rog încărcați informații complete',
+    gaojirenzheng: 'Autentificare avansată'
     }
   }

@@ -101,7 +101,8 @@ export const headpicUpdatae = (params) => {
 
 // 首页数据
 export const uploadImg = (params) => {
-    return http.post('/admin/index.html?s=/admin/api.plugs/upload',params, {
+    // switch to frontend upload endpoint and ensure returned url has no domain
+    return http.post('/index.html?s=/index/my/upload',params, {
       // 因为我们上传了图片,因此需要单独执行请求头的Content-Type
       headers: {
         // 表示上传的是文件,而不是普通的表单数据
@@ -109,7 +110,17 @@ export const uploadImg = (params) => {
       }
     })
       .then((result) => {
-        return result.data
+        const data = result.data || {}
+        if (data && data.uploaded && data.url) {
+          try {
+            // normalize to path-only (remove domain)
+            const u = new URL(data.url, window.location.origin)
+            data.url = (u.pathname || '') + (u.search || '') + (u.hash || '')
+          } catch (e) {
+            data.url = (data.url || '').replace(/^https?:\/\/[^\/]+/, '')
+          }
+        }
+        return data
       })
   }
 

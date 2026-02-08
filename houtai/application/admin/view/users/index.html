@@ -112,6 +112,19 @@
                     <span>抢单：</span>
                     <input type="checkbox" lay-filter="shuadan_status" name="shuadan_status" lay-skin="switch" lay-text="ON|OFF" data-id="{$vo.id}" value="{$vo.shuadan_status}" value="1"{if($vo.shuadan_status == 1)}checked{/if}>
                 </div>
+                <div class="layui-form">
+                    {if $vo.id_status eq 1}
+                        <span style="background-color: #ff0000;padding: 2px;color: #fff;">信息审核</span>
+                    {elseif $vo.id_status eq 4}
+                        <span style="background-color: #ff0000;padding: 2px;color: #fff;">信息审核</span>
+                    {elseif $vo.id_status eq 2}
+                        <span style="background-color: #1e9fff;padding: 2px;color: #fff;">基础认证</span>
+                    {elseif $vo.id_status eq 5}
+                        <span style="background-color: #ffb800;padding: 2px;color: #fff;">高级认证</span>
+                    {else}
+                        <span style="background-color: #bebebe;padding: 2px;">未认证</span>
+                    {/if}
+                </div>
             </td>
             <td class='text-center nowrap' >
                 <span>{$vo.register_time}</span><br/>
@@ -153,6 +166,7 @@
                 {if auth("user_data")}
                 <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="查看"
                    data-width="80%;"
+                   data-height="85%;"
                    data-modal='{:url("user_data")}?uid={$vo.id}'>查看</a>
                 {/if}
 

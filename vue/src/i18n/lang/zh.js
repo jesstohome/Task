@@ -319,6 +319,23 @@ module.exports = {
     shangpinmingcheng: "商品名称",
     xiepinglun: "写评论",
     bili: "比例",
-    qxxyd: "取消幸运订单"
+    qxxyd: "取消幸运订单",
+    real_name_auth: '实名认证',
+    real_name: '姓名',
+    input_real_name: '请输入真实姓名',
+    id_card_num: '身份证号码',
+    input_id_card: '请输入身份证号码',
+    top_pic: '证件正面照',
+    bot_pic: '证件背面照',
+    headpic: '手持证件照',
+    submit: '提交',
+    id_status_label: '认证状态',
+    id_status_0: '审核中',
+    id_status_1: '审核通过',
+    id_status_2: '审核不通过',
+    authed: '基础认证',
+    auth_not: '未认证',
+    qingshuruxinxin: '请上传完整信息',
+    gaojirenzheng: '高级认证'
     }
   }
