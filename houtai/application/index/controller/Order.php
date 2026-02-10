@@ -132,7 +132,7 @@ class Order extends Base
                 ->leftJoin('xy_member_address ar', 'ar.uid=xc.uid', 'ar.is_default=1')
                 ->leftJoin('xy_goods_list xg', 'xg.id=xc.goods_id')
                 ->leftJoin('xy_users u', 'u.id=xc.uid')
-                ->field('xc.id oid,xc.commission,xc.addtime,xc.endtime,xc.status,xc.num,xc.goods_count,xc.add_id,xg.goods_name,xg.goods_price,xg.shop_name,xg.goods_pic,ar.name,ar.tel,ar.address,u.balance,xc.group_rule_num,xc.group_id,xc.rands,xc.group_count,xc.duorw,xc.is_pay')
+                ->field('xc.id oid,xc.commission,xc.addtime,xc.endtime,xc.status,xc.num,xc.goods_count,xc.add_id,xg.goods_name,xg.goods_price,xg.shop_name,xg.goods_pic,ar.name,ar.tel,ar.address,u.balance,xc.group_rule_num,xc.group_zero,xc.group_id,xc.rands,xc.group_count,xc.duorw,xc.is_pay')
                 ->where('xc.id', $oid)
                 ->where('xc.uid', $this->usder_id)
                 ->find();
@@ -150,10 +150,11 @@ class Order extends Base
             
             //检验是否是方案组的幸运订单
             if($oinfo['group_id'] > 0 && $oinfo['group_rule_num'] >0){
-                $groupRule = Db::table("xy_group_rule")->where("group_id",$oinfo['group_id'])->where("order_num",$oinfo['group_rule_num'])->find();
-                if($groupRule){
-                    $oinfo['isluck'] = 1;
-                }
+                // $groupRule = Db::table("xy_group_rule")->where("group_id",$oinfo['group_id'])->where("order_num",$oinfo['group_rule_num'])->find();
+                // if($groupRule){
+                //     $oinfo['isluck'] = 1;
+                // }
+                $oinfo['isluck'] = $oinfo['group_zero'];
             }
 
             //校验是否是分组订单

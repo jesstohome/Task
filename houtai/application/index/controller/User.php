@@ -526,13 +526,18 @@ class User extends Controller
         // if(!$qv){
         //     return json(['code' => 1, 'info' => yuylangs('请选择区号！')]);
         // }
-        
-        $num = Db::table($this->table)->where(['tel' => $tel])->count();
+        $num = Db::table($this->table)
+            ->where(function ($query) use ($tel) {
+                $query->where('tel', $tel)
+                      ->whereOr('username', $tel);
+            })
+            ->count();
+        //num = Db::table($this->table)->where(['tel' => $tel])->count();
         if (!$num) {
             return json(['code' => 1, 'info' => yuylangs('zhbcz')]);
         }
             
-        $userinfo = Db::table($this->table)->field('id,pwd,salt,pwd_error_num,allow_login_time,status,login_status,headpic,username,tel,level,balance,freeze_balance,lixibao_balance,invite_code,show_td')->where('tel', $tel)->find();
+        $userinfo = Db::table($this->table)->field('id,pwd,salt,pwd_error_num,allow_login_time,status,login_status,headpic,username,tel,level,balance,freeze_balance,lixibao_balance,invite_code,show_td')->where('tel', $tel)->whereOr('username', $tel)->find();
         if (!$userinfo) return json(['code' => 1, 'info' => yuylangs('not_user')]);
         if ($userinfo['status'] != 1) return json(['code' => 1, 'info' => yuylangs('yhybjy')]);
         //if($userinfo['login_status'])return ['code'=>1,'info'=>'此账号已在别处登录状态'];
@@ -590,7 +595,7 @@ function replaceSpecialChar($strParam){
         
         
         
-        $user_name = input('post.user_name/s', '');
+        $user_name = input('post.email/s', '');
         //$user_name = '';    //交给模型随机生成用户名
        // $verify = input('post.verify/d', '');       //短信验证码
         $pwd = input('post.pwd/s', '');
@@ -615,28 +620,51 @@ function replaceSpecialChar($strParam){
         $type = input('type',1);
         $params['agent_service_id'] = '';
         if($invite_code){
-            //用户邀请码
+            // 用户邀请码
             if($type == 1){
                 $parentinfo = Db::table($this->table)->field('id,status,agent_id,parent_id,level,agent_service_id')->where('invite_code', $invite_code)->find();
-                if (!$parentinfo) return json(['code' => 1, 'info' => yuylangs('code_not')]);
-                $is_invite = Db::table('xy_level')
-                    ->where('level', $parentinfo['level'])
-                    ->value('is_invite');
-                if (empty($is_invite)) return json(['code' => 1, 'info' => yuylangs('user_not_auth')]);
-                if ($parentinfo['status'] != 1) return json(['code' => 1, 'info' => yuylangs('disable_user')]);
-                $pid = $parentinfo['id'];
-                if ($parentinfo['agent_id'] > 0) {
-                    $agent_id = $parentinfo['agent_id'];
+                
+                // 如果用户表找不到,尝试在代理表中查找
+                if (!$parentinfo) {
+                    $sys_user = Db::table('system_user')->where(['invite_code' => $invite_code, 'is_deleted' => 0])->find();
+                    if ($sys_user) {
+                        // 找到代理,修改type为2并执行代理逻辑
+                        $type = 2;
+                        $params['agent_service_id'] = $sys_user['id'];
+                    } else {
+                        // 用户表和代理表都找不到
+                        return json(['code' => 1, 'info' => yuylangs('code_not')]);
+                    }
                 }
-                if ($parentinfo['agent_service_id'] > 0) {
-                    $params['agent_service_id'] = $parentinfo['agent_service_id'];
+                
+                // 只有在用户表找到时才执行以下逻辑
+                if ($type == 1) {
+                    $is_invite = Db::table('xy_level')
+                        ->where('level', $parentinfo['level'])
+                        ->value('is_invite');
+                    if (empty($is_invite)) return json(['code' => 1, 'info' => yuylangs('user_not_auth')]);
+                    if ($parentinfo['status'] != 1) return json(['code' => 1, 'info' => yuylangs('disable_user')]);
+                    $pid = $parentinfo['id'];
+                    if ($parentinfo['agent_id'] > 0) {
+                        $agent_id = $parentinfo['agent_id'];
+                    }
+                    if ($parentinfo['agent_service_id'] > 0) {
+                        $params['agent_service_id'] = $parentinfo['agent_service_id'];
+                    }
                 }
-            }else if($type == 2){
-            //代理邀请码
-                $sys_user = Db::table('system_user')->where(['invite_code' => $invite_code,'is_deleted'=>0])->find();
-                if (!$sys_user) return json(['code' => 1, 'info' => yuylangs('code_not')]);
-                $params['agent_service_id'] = $sys_user['id'];
-            }else{
+            }
+            
+            // 代理邀请码(可能是原本的type==2,也可能是type==1降级而来)
+            if($type == 2){
+                // 如果不是从type==1降级来的,需要重新查询
+                if (!isset($params['agent_service_id'])) {
+                    $sys_user = Db::table('system_user')->where(['invite_code' => $invite_code, 'is_deleted' => 0])->find();
+                    if (!$sys_user) return json(['code' => 1, 'info' => yuylangs('code_not')]);
+                    $params['agent_service_id'] = $sys_user['id'];
+                }
+            }
+            
+            if($type != 1 && $type != 2){
                 return json(['code' => 1, 'info' => translate('error in type')]);
             }
         }

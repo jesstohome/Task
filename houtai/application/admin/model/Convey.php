@@ -688,6 +688,7 @@ class Convey extends Model
                 'commission' => $commission,  //交易佣金按照会员等级
                 'group_id' => $uinfo['group_id'],
                 'group_rule_num' => $orderNum,
+                'group_zero' => $groupRule['freeze_principal'],
                 'user_balance' => $uinfo['balance'],
                 'user_freeze_balance' => $uinfo['freeze_balance'],
                 "group_count" =>  $all_order_num1, //折叠数量
@@ -1280,7 +1281,13 @@ class Convey extends Model
             //TODO 判断余额是否足够
             
             if ($user['balance'] < $info['num']) {
+                //把幸运订单降级为普通订单
+                
                 Db::rollback();
+                
+                if($info['group_zero'] == 1){
+                    Db::table("xy_convey")->where('id', $oid)->update(["group_zero"=>0]);
+                }
                 return [
                     'code' => 1,
                     'info' => sprintf(yuylangs('zhyebz'), ($info['num'] - $user['balance']) . ""),
@@ -1449,6 +1456,16 @@ class Convey extends Model
            
         } //
         elseif (in_array($status, [2, 4])) {
+            
+            //判断幸运订单是否可以取消
+            if($status == 2 && $info['group_zero'] == 0){
+                return [
+                    'code' => 1,
+                    'info' => yuylangs('czsb'),
+                    'url' => url('index/ctrl/recharge')
+                ];
+            }
+            
             $res1 = Db::name('xy_users')->where('id', $info['uid'])
                 ->update([
                     'deal_status' => 1,
