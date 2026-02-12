@@ -351,7 +351,7 @@ export default {
                 store.dispatch('changeminfo',res.data || {})
             }
         })
-        if (userinfo.value?.tel) {
+        if (userinfo.value?.username) {
             get_level_list().then(res => {
                 console.log(res)
                 if(res.code === 0) {
