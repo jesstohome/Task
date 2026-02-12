@@ -363,7 +363,7 @@ class Group extends Base
                 $model = $model->where('parent_id','in',$ids);
             }
             if(!empty($username)){
-                $model = $model->where('tel','like',"{$username}%");
+                $model = $model->where('username','like',"{$username}%");
             }
             if(in_array($user_type,[0,1])){
                 $model = $model->where('is_jia',$user_type);
@@ -371,7 +371,7 @@ class Group extends Base
             if($level){
                 $model = $model->where('level',$level);
             }
-            $data = $model->field('id,tel')->limit(50)->select();
+            $data = $model->field('id,tel,username')->limit(50)->select();
             $this->success('ok',$data);
         }
     }
