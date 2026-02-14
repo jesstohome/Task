@@ -124,6 +124,7 @@ import { ref,getCurrentInstance,watch,computed } from 'vue';
 import store from '@/store/index'
 import { useRouter,useRoute } from 'vue-router';
 import {do_register,login} from '@/api/login/index'
+import { useI18n } from 'vue-i18n'
 import { Toast } from 'vant';
 export default {
   name: 'HomeView',
@@ -133,6 +134,7 @@ export default {
     const route = useRoute();
     const {proxy} = getCurrentInstance()
     const baseInfo = ref(store.state.baseInfo)
+    const { t } = useI18n()
 
     const invite_code = ref('');
     if(route.query?.invite_code){
@@ -157,7 +159,8 @@ export default {
     const onSubmit = (values) => {
 	  values.type = type.value
       if (values.pwd != values.pwd2) {
-        Toast.fail('两次输入的密码不正确')
+        proxy.$Message({ type: 'error', message: t('msg.qingbaochimimayizhi')});
+        //Toast.fail(t('msg.qingbaochimimayizhi'))
         return false
       }
       // 根据选中的选项卡确定使用电话还是邮箱

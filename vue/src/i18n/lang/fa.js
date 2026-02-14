@@ -336,6 +336,7 @@ module.exports = {
   authed: 'تأیید شده',
   auth_not: 'تأیید نشده',
   qingshuruxinxin: 'لطفا اطلاعات کامل را بارگذاری کنید',
-  gaojirenzheng: 'احراز هویت پیشرفته'
+  gaojirenzheng: 'احراز هویت پیشرفته',
+  qingbaochimimayizhi: 'لطفا رمز عبور را یکسان نگه دارید'
     }
   }

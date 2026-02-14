@@ -339,6 +339,7 @@ module.exports = {
   authed: 'ยืนยันตัวตนแล้ว',
   auth_not: 'ยังไม่ไดยืนยันตัวตน',
   qingshuruxinxin: 'กรุณาอัปโหลดข้อมูลที่สมบูรณ์',
-  gaojirenzheng: 'การยืนยันขั้นสูง'
+  gaojirenzheng: 'การยืนยันขั้นสูง',
+  qingbaochimimayizhi: 'โปรดรักษารหัสผ่านให้สอดคล้องกัน'
   }
 }

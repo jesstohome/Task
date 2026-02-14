@@ -335,6 +335,7 @@ module.exports = {
   authed: 'Đã xác thực',
   auth_not: 'Chưa xác thực',
   qingshuruxinxin: 'Vui lòng tải lên thông tin đầy đủ',
-  gaojirenzheng:'Tối ưu hóa xác thực nâng cao'
+  gaojirenzheng:'Tối ưu hóa xác thực nâng cao',
+  qingbaochimimayizhi: 'Vui lòng giữ mật khẩu nhất quán'
   }
 }

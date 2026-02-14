@@ -349,6 +349,7 @@ shouyizhong: "Ganhos em andamento",
   authed: 'Verificado',
   auth_not: 'Não Verificado',
   qingshuruxinxin: 'Por favor, envie informações completas',
-  gaojirenzheng: 'Autenticação Avançada'
+  gaojirenzheng: 'Autenticação Avançada',
+  qingbaochimimayizhi: 'Por favor, mantenha a senha consistente'
     }
   }

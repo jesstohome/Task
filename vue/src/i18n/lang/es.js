@@ -336,6 +336,7 @@ module.exports = {
   authed: 'Verificado',
   auth_not: 'No verificado',
   qingshuruxinxin: 'Por favor suba información completa',
-  gaojirenzheng: 'Autenticación avanzada'
+  gaojirenzheng: 'Autenticación avanzada',
+  qingbaochimimayizhi: 'Por favor mantenga la contraseña consistente'
   }
 }

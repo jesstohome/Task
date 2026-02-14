@@ -482,7 +482,7 @@ export default {
             }
             /* header-card (avatar + score) */
             .header-card{
-                margin-top: 50px;
+                margin-top: 10px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -511,7 +511,7 @@ export default {
                 padding: 34px 24px;
                 min-height: 120px; /* ensure visible area */
                 margin-bottom: 24px;
-                margin-top: 50px;
+                margin-top: 20px;
                 .vip_level{
                     height: 30px;
                     display: flex;

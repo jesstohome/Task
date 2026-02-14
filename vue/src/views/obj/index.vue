@@ -457,10 +457,10 @@ export default {
         overflow: auto;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
-        padding-bottom:350px;
+        padding-top: 0px;
+        padding-bottom:650px;
         color: #333;
         .header-card{
-                margin-top: 20px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -565,7 +565,7 @@ export default {
         .earnings{
             background: url('~@/assets/images/news/balance_bg.png') no-repeat;
             background-size: 100% 100%;
-            padding: 54px 34px;
+            padding: 34px 34px;
             margin-bottom: 24px;
             .vip_level{
                 height: 30px;

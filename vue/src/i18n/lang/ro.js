@@ -336,6 +336,7 @@ module.exports = {
     authed: 'Verificat',
     auth_not: 'Neverificat',
     qingshuruxinxin: 'Vă rog încărcați informații complete',
-    gaojirenzheng: 'Autentificare avansată'
+    gaojirenzheng: 'Autentificare avansată',
+    qingbaochimimayizhi: 'Vă rog păstrați parola consistentă'
     }
   }

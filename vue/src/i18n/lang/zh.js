@@ -336,6 +336,7 @@ module.exports = {
     authed: '基础认证',
     auth_not: '未认证',
     qingshuruxinxin: '请上传完整信息',
-    gaojirenzheng: '高级认证'
+    gaojirenzheng: '高级认证',
+    qingbaochimimayizhi: '请保持密码一致'
     }
   }
