@@ -1028,7 +1028,13 @@ class Users extends Base
 
         $agent_id = model('admin/Users')->get_admin_agent_id();
         if ($agent_id) {
-            $this->agent_list = [];
+            //$this->agent_list = [];
+            $this->agent_list = Db::name('system_user')
+                ->field('id,username')
+                ->where('is_deleted', 0)
+                ->where('authorize', 2)
+                ->where('id', $agent_id)
+                ->select();
             $this->agent_service_list = [];
         }else{
             $this->agent_list = Db::name('system_user')
