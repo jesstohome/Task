@@ -61,9 +61,21 @@
                                     <input type="text" placeholder="" value="{$user.username}" readonly autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">上级推广码</div>
+                                <div class="layui-form-mid">推广码</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" value="{$user.invite_code}" readonly autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">平台代理</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline" >
+                                    <select name="agent_service_id" class="layui-select"  lay-verify="">
+                                        {volist name="agent_list" id="al"}
+                                        <option value="{$al.id}" {if $user.agent_service_id == $al.id}selected{/if}>{$al.username}</option>
+                                        {/volist}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -121,14 +133,7 @@
                             </div>
                         </div>
 
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">平台代理</label>
-                            <div class="layui-inline">
-                                <div class="layui-input-inline" >
-                                    <input type="text" value="{$user.service}" readonly placeholder="" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <!--                    <div class="layui-form-item">-->
                         <!--                        <label class="layui-form-label">email</label>-->

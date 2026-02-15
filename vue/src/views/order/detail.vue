@@ -112,8 +112,26 @@
             </div>
 
 			<div style="padding: 20px">
-				<van-button block type="primary" @click="confirmPwd">{{$t('msg.tjdd')}}</van-button>
-				<van-button v-if="onceinfo.data?.isluck === 1" block type="danger" style="margin-top: 20px; background-color: red;" @click="cancelLuckyOrder">{{$t('msg.qxxyd')}}</van-button>
+			<van-button
+				block
+				type="primary"
+				@click="confirmPwd"
+				:loading="confirmLoading"
+				:disabled="confirmLoading"
+			>
+				{{$t('msg.tjdd')}}
+			</van-button>
+			<van-button
+				v-if="onceinfo.data?.isluck === 1"
+				block
+				type="danger"
+				style="margin-top: 20px; background-color: red;"
+				@click="cancelLuckyOrder"
+				:loading="cancelLoading"
+				:disabled="cancelLoading"
+			>
+				{{$t('msg.qxxyd')}}
+			</van-button>
 			</div>
 		</div>
 	</div>
@@ -143,6 +161,10 @@ export default {
 		const pingluntext = ref('')
         const level = ref(store.state.minfo?.level || 0)
 
+        // loading state for buttons to prevent multiple clicks
+        const confirmLoading = ref(false)
+        const cancelLoading = ref(false)
+
 		const fetchDetail = () => {
 			if (!id) return
 			order_info({ id }).then(res => {
@@ -153,6 +175,8 @@ export default {
 		}
 
 		const confirmPwd = () => {
+			if (confirmLoading.value) return
+			confirmLoading.value = true
 			let oid = ''
 			if (onceinfo.value.group_data && onceinfo.value.group_data.length > 0) {
 				let info = onceinfo.value.group_data?.find(rr => rr.is_pay === 0)
@@ -166,28 +190,36 @@ export default {
 				pingfen: pinglun.value,
 				pinglun: pingluntext.value
 			}
-			do_order(json).then(res => {
-				if (res.code === 0) {
-					const group_data = onceinfo.value.group_data || []
-					if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
-						proxy.$Message({ type: 'success', message: res.info })
-						push({ name: 'obj' })
-					} else if (group_data.length == onceinfo.value.data.duorw) {
-						proxy.$Message({ type: 'success', message: res.info })
-						push({ name: 'obj' })
-					} else {
-						submit_order().then(() => {
-							Toast.success(t('msg.tjcg'))
+			do_order(json)
+				.then(res => {
+					if (res.code === 0) {
+						const group_data = onceinfo.value.group_data || []
+						if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
+							proxy.$Message({ type: 'success', message: res.info })
 							push({ name: 'obj' })
-						})
+						} else if (group_data.length == onceinfo.value.data.duorw) {
+							proxy.$Message({ type: 'success', message: res.info })
+							push({ name: 'obj' })
+						} else {
+							submit_order().then(() => {
+								Toast.success(t('msg.tjcg'))
+								push({ name: 'obj' })
+							})
+						}
+					} else {
+						proxy.$Message({ type: 'error', message: res.info })
 					}
-				} else {
-					proxy.$Message({ type: 'error', message: res.info })
-				}
-			})
+				})
+				.catch(err => {
+					console.error(err)
+				})
+				.finally(() => {
+					confirmLoading.value = false
+				})
 		}
-
 		const cancelLuckyOrder = () => {
+			if (cancelLoading.value) return
+			cancelLoading.value = true
 			let oid = ''
 			if (onceinfo.value.group_data && onceinfo.value.group_data.length > 0) {
 				let info = onceinfo.value.group_data?.find(rr => rr.is_pay === 0)
@@ -201,27 +233,33 @@ export default {
 				pingfen: pinglun.value,
 				pinglun: pingluntext.value
 			}
-			do_order(json).then(res => {
-				if (res.code === 0) {
-					const group_data = onceinfo.value.group_data || []
-					if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
-						proxy.$Message({ type: 'success', message: res.info })
-						push({ name: 'obj' })
-					} else if (group_data.length == onceinfo.value.data.duorw) {
-						proxy.$Message({ type: 'success', message: res.info })
-						push({ name: 'obj' })
-					} else {
-						submit_order().then(() => {
-							Toast.success(t('msg.tjcg'))
+			do_order(json)
+				.then(res => {
+					if (res.code === 0) {
+						const group_data = onceinfo.value.group_data || []
+						if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
+							proxy.$Message({ type: 'success', message: res.info })
 							push({ name: 'obj' })
-						})
+						} else if (group_data.length == onceinfo.value.data.duorw) {
+							proxy.$Message({ type: 'success', message: res.info })
+							push({ name: 'obj' })
+						} else {
+							submit_order().then(() => {
+								Toast.success(t('msg.tjcg'))
+								push({ name: 'obj' })
+							})
+						}
+					} else {
+						proxy.$Message({ type: 'error', message: res.info })
 					}
-				} else {
-					proxy.$Message({ type: 'error', message: res.info })
-				}
-			})
+				})
+				.catch(err => {
+					console.error(err)
+				})
+				.finally(() => {
+					cancelLoading.value = false
+				})
 		}
-
 		const generateRandomComment = () => {
 			const comments = [
 				"I absolutely love this product! It exceeded my expectations.",
@@ -254,7 +292,9 @@ export default {
 			confirmPwd,
 			cancelLuckyOrder,
             level,
-            uinfo
+            uinfo,
+            confirmLoading,
+            cancelLoading
 		}
 	}
 }

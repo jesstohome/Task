@@ -746,7 +746,7 @@ class Users extends Model
         }
         if (empty($service)) {
             //查找代理的 客服代码
-            $agent_id = Db::name('xy_users')->where('id', $uid)->value('agent_id');
+            $agent_id = Db::name('xy_users')->where('id', $uid)->value('agent_service_id');
             if (!empty($agent_id)) {
                 $service = Db::name('system_user')->where('id', $agent_id)
                     ->limit(1)->find();

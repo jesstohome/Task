@@ -1036,7 +1036,8 @@ class Users extends Base
                 ->where('is_deleted', 0)
                 ->where('authorize', 2)
                 ->where('user_id', 0)
-                ->column('username', 'id');
+                ->select();
+                //->column('username', 'id');
             $this->agent_service_list = Db::name('system_user')
                 ->where('user_id', '>', 0)
                 ->where('is_deleted', 0)

@@ -279,4 +279,16 @@ class Crontab extends Controller
         }
         exit('结算成功！');
     }
+    
+    //每日美国时间0时0分初始化用户方案组状态
+    public function fanganzu()
+    {
+        
+        $res = Db::name('xy_users')->where('id', '>', 0)->update(['group_id' => 0]);
+        if($res){
+            exit('执行成功！');
+        }else{
+            exit('执行失败！');
+        }
+    }
 }
