@@ -18,15 +18,15 @@ class Support extends Controller
         $tokenData = Db::table("xy_token")->where("token",$token)->order("time desc")->find();
         $uid = $tokenData['uid'];
         $data['info'] = db('xy_cs')->where('status', 1)->select();
-        if (config('open_agent_chat') == 1) {
-            $service = model('admin/Users')->get_user_service_id($uid);
+        // if (config('open_agent_chat') == 1) {
+        //     $service = model('admin/Users')->get_user_service_id($uid);
            
-            if ($service) {
-                foreach ($data['info'] as $k => $v) {
-                    $data['info'][$k]['url'] = $service['chats'];
-                }
-            }
-        }
+        //     if ($service) {
+        //         foreach ($data['info'] as $k => $v) {
+        //             $data['info'][$k]['url'] = $service['chats'];
+        //         }
+        //     }
+        // }
         $list = $data['info'];
         
         //$data["msg"] = db('xy_index_msg')->where('status', 1)->select();
