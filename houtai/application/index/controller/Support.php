@@ -18,6 +18,15 @@ class Support extends Controller
         $tokenData = Db::table("xy_token")->where("token",$token)->order("time desc")->find();
         $uid = $tokenData['uid'];
         $data['info'] = db('xy_cs')->where('status', 1)->select();
+        
+        if($uid){
+            $uinfo = Db::name('xy_users')->field('tel,username')->find($uid);
+            if($uinfo){
+                foreach($data['info'] as $k => $v){
+                    $data['info'][$k]['url'] = $v['url'] . '&identifier=' . $uid . '&name=' . $uinfo['username'];
+                }
+            }
+        }
         // if (config('open_agent_chat') == 1) {
         //     $service = model('admin/Users')->get_user_service_id($uid);
            

@@ -1232,8 +1232,9 @@ class Convey extends Model
             //如果数量 * 单价 > 总价
             if($count * $goods['goods_price'] > $num){
                 //计算差值，并加到总价上
-                $zhis = $count * $goods['goods_price'] - $num;
-                $num = $num + $zhis;
+                // $zhis = $count * $goods['goods_price'] - $num;
+                // $num = $num + $zhis;
+                $count = 1;
             }else{
             //如果数量 * 单价 < 总价
                 //计算差值,在总价上减去
