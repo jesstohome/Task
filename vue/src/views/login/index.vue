@@ -4,15 +4,11 @@
         <template #right>
             <template v-if="$route.name === 'login'">
                 <img @click="$router.push({path: '/service'})" :src="require('@/assets/images/service.png')" class="lang-icon" alt="">
-                <lang-vue v-if="!hideLang" color='white'></lang-vue>
-            </template>
-            <template v-else>
-                <lang-vue v-if="!hideLang" color='white'></lang-vue>
             </template>
         </template>
     </van-nav-bar>
     <img :src="logo" class="logo" alt="" :class="!leftArrow && 'lo'" width="80">
-    <!-- <div class="title">{{app_name}}</div> -->
+    <div class="title">Login Now</div>
 
     <van-dialog v-model:show="show" :showConfirmButton="false">
       <div class="lang_box">
@@ -139,19 +135,21 @@ export default {
     width: 100%;
   }
   .logo{
-    width: 535px;
+    width: 435px;
     display: block;
     margin: 50px auto 10px;
     position: relative;
     z-index: 2;
     &.lo {
-      margin-top: 180px;
+      margin-top: 100px;
     }
   }
   .title{
-    font-size: 32px;
+    font-size: 42px;
     width: 60%;
     margin: 0 auto;
+    margin-top: 150px;
+    font-weight: 900;
   }
   .lang_box{
     width: 100%;

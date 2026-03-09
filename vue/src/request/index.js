@@ -8,11 +8,8 @@ const { t } = i18n.global;
 
 // 创建一个 axios 实例
 const service = axios.create({
-	// baseURL: 'https://shop7779.com/index/', // 所有的请求地址前缀部分
-	// baseURL: 'https://amazonbrazill.world/index/', // 所有的请求地址前缀部分
-	baseURL: window.config.api, // 所有的请求地址前缀部分/
-	//baseURL: 'https://admin.amazon90.com/index/', // 所有的请求地址前缀部分
-	// baseURL: 'http://www.jake1006.space/index/', // 所有的请求地址前缀部分
+	//baseURL: window.config.api, // 所有的请求地址前缀部分/
+	baseURL: 'https://caradmin.aoamazon.com/index/', // 所有的请求地址前缀部分
 	timeout: 120000, // 请求超时时间毫秒，改为 120 秒以适应代理转发延迟
 	withCredentials: true, // 异步请求携带cookie
 })
