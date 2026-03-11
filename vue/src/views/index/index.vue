@@ -27,7 +27,7 @@ export default {
         overflow: auto;
         display: flex;
         flex-direction: column;
-        padding-bottom: 400px;
+        padding-bottom: 160px;
     }
 
 }

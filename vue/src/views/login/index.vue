@@ -1,6 +1,6 @@
 <template>
   <div class="home" :class="$route.name">
-    <van-nav-bar :title="title" :left-arrow="leftArrow" @click-left="$router.go(-1)">
+    <van-nav-bar :title="title" :left-arrow="leftArrow" @click-left="$router.go(-1)" v-if="$route.name === 'login'">
         <template #right>
             <template v-if="$route.name === 'login'">
                 <img @click="$router.push({path: '/service'})" :src="require('@/assets/images/service.png')" class="lang-icon" alt="">
@@ -8,8 +8,8 @@
         </template>
     </van-nav-bar>
     <img :src="logo" class="logo" alt="" :class="!leftArrow && 'lo'" width="80">
-    <div class="title">Login Now</div>
-
+    <div class="title" v-if="$route.name === 'login'">Login Now</div>
+    <div class="title" v-else>Register Now</div>
     <van-dialog v-model:show="show" :showConfirmButton="false">
       <div class="lang_box">
         <img :src="require('@/assets/images/register/lang_bg.png')" class="lang_bg" />
@@ -91,7 +91,7 @@ export default {
 <style scoped lang="scss">
 .home{
   position: relative;
-  padding-top: calc(var(--van-nav-bar-height) + 100px);
+  padding-top: calc(var(--van-nav-bar-height) + 10px);
   
   &.login {
     background-color: white;
@@ -147,8 +147,8 @@ export default {
   .title{
     font-size: 42px;
     width: 60%;
-    margin: 0 auto;
-    margin-top: 150px;
+    margin: 80px auto;
+    margin-bottom: 50px;
     font-weight: 900;
   }
   .lang_box{

@@ -54,7 +54,7 @@
           <p class="tex">{{$t('msg.qljmm')}}</p>
       </div> -->
       <div class="buttons">
-        <van-button round block type="primary" native-type="submit">
+        <van-button round block color="#4c4bc3" native-type="submit">
           {{$t('msg.yes')}}
         </van-button>
       </div>
@@ -188,7 +188,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;

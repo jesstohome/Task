@@ -55,7 +55,7 @@
         />
       </van-cell-group>
       <div class="buttons">
-        <van-button round block type="primary" native-type="submit">
+        <van-button round block color="#4c4bc3" native-type="submit">
           {{$t('msg.true_tx')}}
         </van-button>
       </div>
@@ -202,7 +202,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;
@@ -321,7 +321,7 @@ export default {
             padding: 24px 50px;
             text-align: left;
             // margin-bottom: 35px;
-            background-color: $theme;
+            background: linear-gradient(120deg, #0b2a2d 0%, #0c0d12 100%);
             text-align: center;
             .t{
                 font-size: 26px;

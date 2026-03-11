@@ -22,7 +22,7 @@
       </div>
 
       <div style="margin:26px">
-        <van-button block round type="primary" :disabled="submitDisabled" @click="onSubmit">{{ $t('msg.submit') }}</van-button>
+        <van-button block round color="#4c4bc3" :disabled="submitDisabled" @click="onSubmit">{{ $t('msg.submit') }}</van-button>
         <div class="status-info">
           <small>{{ $t('msg.id_status_label') }}: {{ statusText }}</small>
           <div v-if="id_remark"><small>{{ id_remark }}</small></div>
@@ -128,7 +128,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;

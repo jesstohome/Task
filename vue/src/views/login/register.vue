@@ -1,120 +1,88 @@
 <template>
   <div class="homes">
     <login-top hide-lang :title="$t('msg.register')" left-arrow></login-top>
-    <!-- 注册方式选项卡 -->
-    <van-tabs v-model:active="activeTab" type="card" class="register-tabs">
-      <van-tab :title="$t('msg.email_register')" name="email">
-        <van-form @submit="onSubmit">
-          <van-cell-group inset>
-            <van-field
-              label-width="100"
-              class="zdy"
-              v-model="email"
-              name="email"
-              :label="$t('msg.email')"
-              :placeholder="$t('msg.input_email')"
-              :rules="[{ required: true, message: $t('msg.input_email') }]"
-            />
-            <van-field
-              label-width="100"
-              v-model="pwd"
-              type="password"
-              name="pwd"
-              :label="$t('msg.pwd')"
-              :placeholder="$t('msg.pwd')"
-              :rules="[{ required: true, message: $t('msg.input_pwd') }]"
-            />
-            <van-field
-              label-width="100"
-              v-model="pwd2"
-              type="password"
-              name="pwd2"
-              :label="$t('msg.true_pwd')"
-              :placeholder="$t('msg.true_pwd')"
-              :rules="[{ required: true, message: $t('msg.input_true_pwd') }]"
-            />
-            <!-- <van-field
-              label-width="100"
-              v-model="depositPwd"
-              name="depositPwd"
-              :label="$t('msg.tx_pwd')"
-              :placeholder="$t('msg.tx_pwd')"
-              :rules="[{ required: true, message: $t('msg.input_t_pwd') }]"
-            /> -->
-            <van-field
-              style="border-bottom: 1px solid #fff;"
-              label-width="100"
-              v-model="invite_code"
-              name="invite_code"
-              :label="$t('msg.code')"
-              :placeholder="$t('msg.code')"
-              :rules="[{ required: true, message: $t('msg.input_code') }]"
-            />
-          </van-cell-group>
-          <div class="buttons">
-            <van-button block type="primary" native-type="submit">
-              {{$t('msg.register1')}}
-            </van-button>
-          </div>
-        </van-form>
-      </van-tab>
-      
-      <van-tab :title="$t('msg.phone_register')" name="phone">
-        <van-form @submit="onSubmit">
-          <van-cell-group inset>
-            <van-field
-              label-width="100"
-              class="zdy"
-              v-model="tel"
-              name="tel"
-              :label="$t('msg.phone')"
-              :placeholder="$t('msg.phone')"
-              :rules="[{ required: true, message: $t('msg.input_phone') }]"
-            />
-            <van-field
-              label-width="100"
-              v-model="pwd"
-              type="password"
-              name="pwd"
-              :label="$t('msg.pwd')"
-              :placeholder="$t('msg.pwd')"
-              :rules="[{ required: true, message: $t('msg.input_pwd') }]"
-            />
-            <van-field
-              label-width="100"
-              v-model="pwd2"
-              type="password"
-              name="pwd2"
-              :label="$t('msg.true_pwd')"
-              :placeholder="$t('msg.true_pwd')"
-              :rules="[{ required: true, message: $t('msg.input_true_pwd') }]"
-            />
-            <van-field
-              label-width="100"
-              v-model="depositPwd"
-              name="depositPwd"
-              :label="$t('msg.tx_pwd')"
-              :placeholder="$t('msg.tx_pwd')"
-              :rules="[{ required: true, message: $t('msg.input_t_pwd') }]"
-            />
-            <van-field
-              style="border-bottom: 1px solid #fff;"
-              label-width="100"
-              v-model="invite_code"
-              name="invite_code"
-              :label="$t('msg.code')"
-              :placeholder="$t('msg.code')"
-              :rules="[{ required: true, message: $t('msg.input_code') }]"
-            />
-          </van-cell-group>
-          <div class="buttons">
-            <van-button block type="primary" native-type="submit">
-              {{$t('msg.register1')}}
-            </van-button>
-          </div>
-        </van-form>
-      </van-tab>
-    </van-tabs>
+    <van-form @submit="onSubmit">
+      <van-cell-group inset>
+        <!-- 新增用户名输入框 -->
+        <van-field
+          label-width="100"
+          class="zdy"
+          v-model="userName"
+          name="userName"
+          :label="'Username'"
+          :placeholder="'Username'"
+          input-align="right"
+        />
+        <van-field
+          label-width="100"
+          class="zdy"
+          v-model="tel"
+          name="tel"
+          :label="'Phone'"
+          :placeholder="'Phone'"
+          input-align="right"
+        />
+        <van-field
+          label-width="100"
+          class="zdy"
+          v-model="email"
+          name="email"
+          :label="$t('msg.email')"
+          :placeholder="$t('msg.email')"
+          input-align="right"
+        />
+        <van-field
+          label-width="100"
+          v-model="pwd"
+          type="password"
+          name="pwd"
+          :label="$t('msg.pwd')"
+          :placeholder="$t('msg.pwd')"
+          input-align="right"
+        />
+        <van-field
+          label-width="100"
+          v-model="depositPwd"
+          name="depositPwd"
+          :label="'Withdrawal password'"
+          :placeholder="'Withdrawal password'"
+          input-align="right"
+        />
+        <van-field
+          label-width="100"
+          v-model="gender"
+          name="gender"
+          label="Gender"
+          placeholder="Select Gender"
+          input-align="right"
+          @click="genderPopup = true"
+          readonly
+        />
+        <van-field
+          style="border-bottom: 1px solid #fff;"
+          label-width="100"
+          v-model="invite_code"
+          name="invite_code"
+          :label="$t('msg.code')"
+          :placeholder="$t('msg.code')"
+          input-align="right"
+        />
+      </van-cell-group>
+      <div class="buttons">
+        <van-button block round color="#4c4bc3" native-type="submit">
+          Register
+        </van-button>
+        <div @click="$router.push({path: '/login'})" style="margin-top: 20px; text-align: center; font-size: 20px;text-decoration: underline; cursor: pointer;">
+         Back to Login
+        </div>
+      </div>
+    </van-form>
+    <van-action-sheet
+      v-model:show="genderPopup"
+      :actions="genderActionOptions"
+      cancel-text=""
+      @select="handleGenderSelect"
+    />
   </div>
 </template>
 
@@ -146,38 +114,49 @@ export default {
 	  type.value = route.query?.type
 	}
 	
-    const activeTab = ref('email');  // 默认邮箱注册
     const tel = ref('');
     const email = ref('');
     const pwd = ref('');
     const pwd2 = ref('');
     const depositPwd = ref('');
     const userName = ref('');
+    const gender = ref('');
+    const genderPopup = ref(false);
+    const genderActionOptions = [
+      { name: 'Male', value: 'Male' },
+      { name: 'Female', value: 'Female' }
+    ];
     const option = ref((baseInfo.value?.area_code) || [])
     const area_code = ref(option.value.map(rr => {return {text: rr, value: rr}}))
     
     const onSubmit = (values) => {
-	  values.type = type.value
-      if (values.pwd != values.pwd2) {
-        proxy.$Message({ type: 'error', message: t('msg.qingbaochimimayizhi')});
-        //Toast.fail(t('msg.qingbaochimimayizhi'))
-        return false
-      }
-      // 根据选中的选项卡确定使用电话还是邮箱
-      if (activeTab.value === 'email') {
-        values.email = email.value
-        delete values.tel
-      } else {
-        values.tel = tel.value
-        delete values.email
-      }
-      const json = JSON.parse(JSON.stringify(values))
-      delete json.pwd2
+      // 整理表单数据
+      const formData = {
+        userName: userName.value,
+        tel: tel.value,
+        email: email.value,
+        pwd: pwd.value,
+        depositPwd: depositPwd.value,
+        gender: gender.value,
+        invite_code: invite_code.value,
+        type: type.value
+      };
+      
+      // if (formData.pwd !== formData.pwd2) {
+      //   proxy.$Message({ type: 'error', message: t('msg.qingbaochimimayizhi')});
+      //   return false
+      // }
+      
+      const json = JSON.parse(JSON.stringify(formData))
+      //delete json.pwd2
+      
       do_register(json).then(res => {
         if(res.code === 0) {
           proxy.$Message({ type: 'success', message: res.info});
           let info = {
-            tel: activeTab.value === 'phone' ? tel.value : email.value,
+            tel: tel.value,
+            email: email.value,
+            userName: userName.value,
             pwd: pwd.value,
           }
           login(info).then(red => {
@@ -186,33 +165,37 @@ export default {
               store.dispatch('changeuserinfo',red.userinfo || {})
               proxy.$Message({ type: 'success', message: red.info});
               // 记住密码
-                const useri = {...json,...{checked: true}}
-                store.dispatch('changeUser',useri)
+              const useri = {...json,...{checked: true}}
+              store.dispatch('changeUser',useri)
               push('/')
             } else {
               proxy.$Message({ type: 'error', message: red.info});
             }
-
           })
         } else {
           proxy.$Message({ type: 'error', message: res.info});
         }
       })
-    };
-    const qv = ref(area_code.value[0]?.value || '55');
+    };    const handleGenderSelect = (action) => {
+      gender.value = action.value;
+      genderPopup.value = false;
+    };    const qv = ref(area_code.value[0]?.value || '55');
     watch(() => store.state.baseInfo,(newVal)=>{
       baseInfo.value = {...newVal}
       option.value = (newVal?.area_code) || []
       area_code.value = option.value.map(rr => {return {text: '+ '+rr, value: rr}})
     }, { deep: true })
     return {
-      activeTab,
       tel,
       email,
       pwd,
       pwd2,
       depositPwd,
       userName,
+      gender,
+      genderPopup,
+      genderActionOptions,
+      handleGenderSelect,
       invite_code,
       onSubmit,
       area_code,
@@ -225,19 +208,8 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/theme.scss';
 .homes{
-  margin-bottom: 200px;
+  font-weight: 900;
   //background-image: linear-gradient(rgb(10, 66, 255), rgb(11, 199, 255));
-    :deep(.van-tabs){
-      .van-tabs__content{
-        padding-top: 0;
-      }
-      .van-tabs__nav-bar{
-        background-color: #fff;
-      }
-      .van-tab{
-        font-size: 28px;
-      }
-    }
     :deep(.van-cell){
         font-size: 30px;
         line-height: 30px;
@@ -337,7 +309,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;

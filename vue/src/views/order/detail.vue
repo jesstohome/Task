@@ -114,7 +114,7 @@
 			<div style="padding: 20px">
 			<van-button
 				block
-				type="primary"
+				color="#4c4bc3"
 				@click="confirmPwd"
 				:loading="confirmLoading"
 				:disabled="confirmLoading"
@@ -321,7 +321,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;

@@ -17,7 +17,7 @@
                     <div class="flex">
                         <div class="title">{{item.username}}</div>
                         <div class="time">{{item.btime}}——{{item.etime}}</div>
-                        <van-button block type="primary" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
+                        <van-button block color="#4c4bc3" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;

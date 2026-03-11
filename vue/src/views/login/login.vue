@@ -4,36 +4,39 @@
     <van-form @submit="onSubmit">
       <van-cell-group inset>
         <van-field
+          label="Account"
           class="zdy"
           name="tel"
           v-model="tel"
-          :placeholder="$t('msg.input_username')"
-          :rules="[{ required: true, message: $t('msg.input_username') }]"
-          
+          input-align="right"
+          placeholder="Account"        
         >
         </van-field>
         <van-field
-          style="border-bottom: 1px solid #fff;"
+          label="Password" 
           v-model="pwd"
           type="password"
           name="pwd"
-          :placeholder="$t('msg.input_pwd')"
-          :rules="[{ required: true, message: $t('msg.input_pwd') }]"
+          input-align="right"
+          placeholder="Password"
         />
       </van-cell-group>
       <div class="buttons">
-        <van-button block type="primary" native-type="submit">
-          {{$t('msg.login')}}
+        <van-button block round color="#4c4bc3" native-type="submit">
+          Login
         </van-button>
-        <van-button block type="default" @click="$router.push({path: '/register'})">
-          {{$t('msg.register')}}
-        </van-button>
+        <div @click="$router.push({path: '/register'})" style="margin-top: 20px; text-align: center; font-size: 20px;text-decoration: underline; cursor: pointer;">
+          Register
+        </div>
 <!--        <van-button round block plain  type="primary" @click="toDown()">
           {{$t('msg.appDown')}}
         </van-button> -->
+        
       </div>
     </van-form>
+    <div class="footer-copyright">©1999-2026 skyrise</div>
   </div>
+  
 </template>
 
 <script>
@@ -115,9 +118,13 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/theme.scss';
 .homes{
-margin-bottom: 200px;
+font-weight: 900;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
   //background-image: linear-gradient(180deg,#0a3cff,#0bd3ff);
     :deep(.van-form){
+        flex: 1;
         padding: 40px 0 0;
         .van-cell-group--inset{
             padding: 0 60px;
@@ -181,6 +188,7 @@ margin-bottom: 200px;
         }
         .buttons{
             padding: 0 76px;
+            margin-bottom: auto;
             .van-button{
                 font-size: 30px;
                 padding: 26px 0;
@@ -205,7 +213,7 @@ margin-bottom: 200px;
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;
@@ -214,5 +222,13 @@ margin-bottom: 200px;
                 line-height: 60px;
             }
     }
+}
+
+.footer-copyright {
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+    font-size: 26px;
+    font-weight: 500;
 }
 </style>

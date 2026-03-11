@@ -1,7 +1,7 @@
 <template>
     <div class="footer">
         <div style="display: flex;width: 100%;justify-content: space-around;">
-            <div class="f_li" v-for="item in list" :key="item.key" :class="item.key == 'obj' && 'obj'" @click="checkList(item.key)">
+            <div class="f_li" v-for="item in list" :key="item.key" @click="checkList(item.key)">
                     <div class="span">
                         <img :src="fooCheck == item.key ? item.img_check : item.img" class="img" alt="">
                         <!-- <div class="text" v-if="item.key != 'obj'" :class="fooCheck == item.key && 'check'">{{$t('msg.'+item.key)}}</div> -->
@@ -28,29 +28,24 @@ export default {
         })
         const list = reactive([
             {
-                img: require('@/assets/images/footer/homeb.png'),
-                img_check: require('@/assets/images/footer/homea.png'),
+                img: require('@/assets/images/footer/home_b.png'),
+                img_check: require('@/assets/images/footer/home_a.png'),
                 key: 'home'
-            },
-            {
-                img: require('@/assets/images/footer/serviceb.png'),
-                img_check: require('@/assets/images/footer/servicea.png'),
-                key: 'tel'
             },
             
             {
-                img: require('@/assets/images/footer/startb.png'),
-                img_check: require('@/assets/images/footer/starta.png'),
+                img: require('@/assets/images/footer/starting_b.png'),
+                img_check: require('@/assets/images/footer/starting_a.png'),
                 key: 'obj'
             },
             {
-                img: require('@/assets/images/footer/recordb.png'),
-                img_check: require('@/assets/images/footer/recorda.png'),
+                img: require('@/assets/images/footer/records_b.png'),
+                img_check: require('@/assets/images/footer/records_a.png'),
                 key: 'order'
             },
             {
-                img: require('@/assets/images/footer/myb.png'),
-                img_check: require('@/assets/images/footer/mya.png'),
+                img: require('@/assets/images/footer/my_b.png'),
+                img_check: require('@/assets/images/footer/my_a.png'),
                 key: 'self'
             },
         ])
@@ -87,29 +82,13 @@ export default {
     .f_li{
         width: 20%;
         // 保持原有样式...
-        &.obj{
-            // width: auto;
-            position: relative;
-            padding-top: 0;
-            margin-top: -35px;
-            .span{
-                background: #ffffff00;
-                padding: 5px;
-                height: 220px;
-                .img{
-                    height: 100px;
-                    width: 100px;
-                }
-            }
-        }
         .span{
-            height: 100%;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: center;
-            
+            height: 140px;
             .img{
                 height: 64px;
                 width: 64px;

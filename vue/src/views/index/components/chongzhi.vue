@@ -36,7 +36,7 @@
         <div class="text_b" v-html="content">
         </div>
         <div class="buttons">
-            <van-button round block type="primary" @click="onSubmit">
+            <van-button round block color="#4c4bc3" @click="onSubmit">
             {{$t('msg.chongzhi')}}
             </van-button>
         </div>
@@ -178,7 +178,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;
@@ -215,14 +215,10 @@ export default {
         }
         .buttons{
             padding: 0 24px;
-            .van-button{
+                .van-button{
                 font-size: 30px;
                 padding: 15px 0;
                 height: auto;
-                border-radius: 5px;
-                background-color: rgb(247, 206, 41);
-                border: none;
-                color: #333;
             }
             .van-button--plain{
                 margin-top: 40px;
@@ -236,7 +232,7 @@ export default {
             color: #333;
             .span{
                 width: 30%;
-                line-height: 32px;
+                line-height: 62px;
                 text-align: center;
                 border-radius: 6px;
                 border: 1px solid $theme;
@@ -252,7 +248,8 @@ export default {
                 }
                 &.check{
                     border: none;
-                    background-color: $theme;
+                    //background-color: $theme;
+                    background: linear-gradient(120deg, #0b2a2d 0%, #0c0d12 100%);
                     color: #fff;
                 }
             }
@@ -311,7 +308,7 @@ export default {
                     -webkit-box-orient: vertical;
                     -webkit-box-pack: center;
                     &.check {
-                        background-color:#3f57e8;
+                        background: linear-gradient(120deg, #0b2a2d 0%, #0c0d12 100%);
                         color: #fff;
                         border: none;
                         .van-radio__label{

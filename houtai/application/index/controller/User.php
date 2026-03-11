@@ -591,18 +591,15 @@ function replaceSpecialChar($strParam){
             
             return json(['code' => 1, 'info' => yuylangs('sjhmgzbzq')]);
         } 
-       // $qv = input('post.qv/s', '');
         
-        
-        
-        $user_name = input('post.email/s', '');
+        $user_name = input('post.userName/s', '');
+        $email = input('post.email/s', '');
+        $gender = input('post.gender/s', '');
         //$user_name = '';    //交给模型随机生成用户名
        // $verify = input('post.verify/d', '');       //短信验证码
         $pwd = input('post.pwd/s', '');
         $pwd2 = input('post.depositPwd/s', '');
         $invite_code = input('post.invite_code/s', '');     //邀请码
-        
-        
         // if(!$qv){
         //     return json(['code' => 1, 'info' => yuylangs('请选择区号！')]);
         // }
@@ -619,6 +616,8 @@ function replaceSpecialChar($strParam){
         $agent_id = 0;
         $type = input('type',1);
         $params['agent_service_id'] = '';
+        $params['email'] = $email;
+        $params['whatsapp'] = $gender;
         if($invite_code){
             // 用户邀请码
             if($type == 1){

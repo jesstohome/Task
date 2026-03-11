@@ -56,7 +56,7 @@
                            <span class="value"><van-rate v-model="info.pingfen" readonly color="#ffd21e" void-icon="star" void-color="#d1d1d1" /></span>
                        </div>
                    </div>
-                    <van-button class="tj-btn" round block type="primary" v-if="info.status == 0 || (info.duorw > 0 && info.time_limit > 1)" @click.stop="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
+                    <van-button class="tj-btn" round block color="#4c4bc3" v-if="info.status == 0 || (info.duorw > 0 && info.time_limit > 1)" @click.stop="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
                     <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click.stop="toTei()">{{$t('msg.lxkfjd')}}</van-button>
                     <van-button round block type="danger" v-else-if="info.status == 5" @click.stop="toTei()">{{$t('msg.lxkfjd')}}</van-button>
                </div>

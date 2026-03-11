@@ -89,7 +89,7 @@
     </div>
     <div class="not_box_bank">
       <van-empty v-if="Object.keys(info).length < 1" :description="$t('msg.not_data')" />
-      <van-button round block type="primary" v-if="Object.keys(info).length < 3" class="not" @click="showDialog()">
+      <van-button round block color="#4c4bc3" v-if="Object.keys(info).length < 3" class="not" @click="showDialog()">
         {{ $t("msg.add") }}
       </van-button>
     </div>
@@ -648,7 +648,7 @@ export default {
                 }
             }
             .van-nav-bar__content{
-                height: 60px;
+                height: 80px;
             }
             .van-nav-bar__title{
                 color: #ffffff;
