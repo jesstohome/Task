@@ -156,7 +156,7 @@
       <button class="logout-btn" @click="tuichu">Logout</button>
     </div>
 
-    <div class="copyright">©1999-2026 skyrise</div>
+    <div class="copyright">©1999-2026 AWISEE</div>
 
   </div>
 </template>

@@ -6,7 +6,7 @@
       <van-field v-model="form.id_card_num" :label="$t('msg.id_card_num')" placeholder="" :rules="[{ required: true, message: $t('msg.input_id_card') }]" />
 
 
-      <div class="uploader-group" v-if="id_status !== 0 && id_status !== 1 && id_status !== 3">
+      <div class="uploader-group">
         <div class="uploader-item">
           <div class="uploader-label">{{$t('msg.top_pic')}}</div>
           <slot-uploader v-model="form.top_pic" :width="300" :height="200" />
@@ -52,7 +52,7 @@ export default {
 
     const statusText = computed(() => {
       if(id_status.value === 1) return t('msg.id_status_0')
-      if(id_status.value === 2) return t('msg.gaojirenzheng')
+      if(id_status.value === 2) return t('msg.id_status_1')
       if(id_status.value === 3) return t('msg.id_status_2')
       if(id_status.value === 4) return t('msg.id_status_0')
       if(id_status.value === 5) return t('msg.id_status_1')
@@ -72,7 +72,7 @@ export default {
           id_status.value = d.id_status ?? 0
           id_remark.value = d.id_remark || ''
           // disable submit when under review or approved
-          submitDisabled.value = (id_status.value === 1 || id_status.value === 4 || id_status.value === 5)
+          submitDisabled.value = (id_status.value === 1 || id_status.value === 2 || id_status.value === 4 || id_status.value === 5)
         }
       })
     })
@@ -111,6 +111,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.realname{
+  font-weight: 900;
+}
 .uploader-group{ display:flex; gap:12px; flex-direction:column;padding-top: 60px; }
 .status-info{ margin-top:8px; color:#666 }
 .uploader-label{ margin-bottom:12px;font-size:28px; }

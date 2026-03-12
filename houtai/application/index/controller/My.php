@@ -371,9 +371,9 @@ class My extends Base
         $id_status = 1;
         $user = db('xy_users')->where('id', $uid)->field('real_name,id_card_num,top_pic,bot_pic,wx_ewm,id_status')->find();
         //2是继续输入高级信息
-        if($user['id_status'] == 2 || $user['id_status'] == 6){
-            $id_status = 4;
-        }
+        // if($user['id_status'] == 2 || $user['id_status'] == 6){
+        //     $id_status = 4;
+        // }
 
         $data = [
             'real_name' => $real_name,

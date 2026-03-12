@@ -150,6 +150,7 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/theme.scss';
 .home{
+    font-weight: 900;
     margin-bottom: 100px;
     font-size: 30px;
     :deep(.van-radio__label){

@@ -219,12 +219,12 @@
                                 <div class="layui-input-inline" >
                                     <select name="id_status" class="layui-select"  lay-verify="">
                                         <option value="0" {if $user.id_status == 0}selected{/if}>未填写信息</option>
-                                        <option value="1" {if $user.id_status == 1}selected{/if}>基础认证审核中</option>
-                                        <option value="2" {if $user.id_status == 2}selected{/if}>通过基础认证</option>
-                                        <option value="3" {if $user.id_status == 3}selected{/if}>拒绝基础认证</option>
-                                        <option value="4" {if $user.id_status == 4}selected{/if}>高级认证审核中</option>
-                                        <option value="5" {if $user.id_status == 5}selected{/if}>通过高级认证</option>
-                                        <option value="6" {if $user.id_status == 6}selected{/if}>拒绝高级认证</option>
+                                        <option value="1" {if $user.id_status == 1}selected{/if}>认证审核中</option>
+                                        <option value="2" {if $user.id_status == 2}selected{/if}>通过认证</option>
+                                        <option value="3" {if $user.id_status == 3}selected{/if}>拒绝认证</option>
+                                        <!--<option value="4" {if $user.id_status == 4}selected{/if}>高级认证审核中</option>-->
+                                        <!--<option value="5" {if $user.id_status == 5}selected{/if}>通过高级认证</option>-->
+                                        <!--<option value="6" {if $user.id_status == 6}selected{/if}>拒绝高级认证</option>-->
                                     </select>
                                 </div>
 

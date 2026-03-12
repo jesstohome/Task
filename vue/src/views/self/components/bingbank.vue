@@ -638,6 +638,7 @@ export default {
 <style scoped lang="scss">
 @import "@/styles/theme.scss";
 .home {
+  font-weight: 900;
   :deep(.van-nav-bar) {
     background-color: $theme;
     color: #fff;

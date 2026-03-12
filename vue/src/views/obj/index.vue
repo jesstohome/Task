@@ -115,7 +115,7 @@
       </div>
 
       <!-- 版权信息 -->
-      <div class="copyright">©1999-2026 skyrise</div>
+      <div class="copyright">©1999-2026 AWISEE</div>
 
     </div>
 

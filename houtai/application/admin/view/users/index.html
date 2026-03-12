@@ -28,7 +28,7 @@
             <th lay-data="{field:'addtime',width:150}" class='text-center nowrap'>抢单收益</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>充值/提款</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>理财收益</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>上级代理</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>上级</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>状态</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>注册时间</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>最近登录</th>
@@ -98,6 +98,7 @@
              <td class='text-left nowrap'>
 <!--                 <span style="color: red;">上级：{$vo.parent_tel} - {$vo.parent_invite_code}</span><br/>-->
                  <span style="color: green;">代理：{$vo.service} - {$vo.service_yqm}</span><br/>
+                 <span style="color: green;">上级用户：{$vo.parent_name}</span>
              </td>
             <td class='text-center nowrap' >
                 <div class="layui-form">
@@ -118,7 +119,7 @@
                     {elseif $vo.id_status eq 4}
                         <span style="background-color: #ff0000;padding: 2px;color: #fff;">信息审核</span>
                     {elseif $vo.id_status eq 2}
-                        <span style="background-color: #1e9fff;padding: 2px;color: #fff;">基础认证</span>
+                        <span style="background-color: #1e9fff;padding: 2px;color: #fff;">已认证</span>
                     {elseif $vo.id_status eq 5}
                         <span style="background-color: #ffb800;padding: 2px;color: #fff;">高级认证</span>
                     {else}

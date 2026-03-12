@@ -69,6 +69,9 @@ export default {
         const showMenu = ref(false)
         const logo = ref(store.state.baseInfo?.site_icon)
         const monney = ref(store.state.minfo?.balance)
+        
+        // 设置footer导航选中状态
+        store.dispatch('changefooCheck','home')
 
         // 图片列表
         const imageList = ref([

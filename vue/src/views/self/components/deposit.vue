@@ -84,6 +84,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/theme.scss";
 .tel{
+    font-weight: 900;
     overflow: auto;
     :deep(.van-nav-bar){
         background-color: $theme;
