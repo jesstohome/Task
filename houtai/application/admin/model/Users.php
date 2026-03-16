@@ -323,6 +323,8 @@ class Users extends Model
         $data['invite_code'] = $invite_code;
         $data['register_ip'] = request()->ip();
         $data['shuadan_status'] = 0;
+        //同步增加体验金
+        $data['lottery_money'] = $data['balance'];
 
         $new_user_shuadan_switch = sysconf('new_user_shuadan_switch') ?: 0;
         if($new_user_shuadan_switch == 1){
@@ -349,10 +351,10 @@ class Users extends Model
                 'balance' => Db::raw('balance+' . config('invite_one_money'))
             ];
 
-            $register_promotion_winnings = sysconf('register_promotion_winnings');
-            if($register_promotion_winnings > 0){
-                $up_parent['lottery_money'] = $register_promotion_winnings;
-            }
+            // $register_promotion_winnings = sysconf('register_promotion_winnings');
+            // if($register_promotion_winnings > 0){
+            //     $up_parent['lottery_money'] = $register_promotion_winnings;
+            // }
             $res2 = Db::table($this->table)->where('id', $data['parent_id'])->update($up_parent);
             $balance = Db::name('xy_users')
                         ->where('id', $data['parent_id'])->value("balance");
@@ -369,6 +371,21 @@ class Users extends Model
         } else {
             $res2 = true;
         }
+        
+        //赠送体验金的时候增加记录
+        if($data['balance'] > 0){
+            Db::name('xy_balance_log')->insert([
+                'uid' => $res,
+                'sid' => $res,
+                'oid' => '',
+                'num' => $data['balance'],
+                'type' => 34,
+                'status' => 1,
+                'addtime' => time(),
+                "balance"=>0
+            ]);
+        }
+        
         //生成二维码
         self::create_qrcode($invite_code, $res);
         if ($res && $res2) {

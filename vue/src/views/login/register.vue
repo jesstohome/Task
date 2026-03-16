@@ -159,6 +159,9 @@ export default {
             userName: userName.value,
             pwd: pwd.value,
           }
+          // 去登录页登录
+          push('/login')
+          return false
           login(info).then(red => {
             if(red.code === 0) {
               store.dispatch('changetoken',red.token)

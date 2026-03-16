@@ -5,7 +5,7 @@ return [
 
 
     //是否开启谷歌令牌
-    'open_google_safe' => false,
+    'open_google_safe' => true,
 
     //是否开启多国家手机号
     'open_country_phone' => false,
@@ -31,6 +31,7 @@ return [
 
     'level1_commission'=>'5',//一级佣金比例
 
+    //'equation_of_time' => 13,  //时差（小时）
     'equation_of_time' => 0,  //时差（小时）
 
     'default_timezone' => 'America/New_York',//时区设置

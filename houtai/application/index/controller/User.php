@@ -618,6 +618,7 @@ function replaceSpecialChar($strParam){
         $params['agent_service_id'] = '';
         $params['email'] = $email;
         $params['whatsapp'] = $gender;
+        $params['status'] = 0;  //默认不能登录
         if($invite_code){
             // 用户邀请码
             if($type == 1){

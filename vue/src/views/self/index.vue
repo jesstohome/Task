@@ -21,6 +21,7 @@
         <div class="profile-user-info">
           <div class="profile-username">{{ userinfo.username }}</div>
           <div class="profile-invite">Invitation Code: <span class="profile-invite-code">{{ userinfo.invite_code || 'VRUA37' }}</span></div>
+          <div class="profile-invite">Trial bonus: <span class="profile-invite-code">{{ userinfo.lottery_money || '0' }} {{ currency || 'USD' }}</span></div>
         </div>
       </div>
 

@@ -61,7 +61,7 @@
 				</div>
 			</div>
 
-			<div class="pinglun">
+			<!-- <div class="pinglun">
 				<div class="pingluna">
 					<div>{{ $t('msg.dianjifabiaopinglun') }}</div>
 					<div>
@@ -77,7 +77,7 @@
 						</van-field>
 					</van-cell-group>
 				</div>
-			</div>
+			</div> -->
             <div class="vipinfo">
                 <img v-if="level" :src="require('@/assets/images/self/vip'+ level +'.png')" class="vip" alt="">
                 <div> VIP {{ level }}</div>
@@ -118,6 +118,7 @@
 				@click="confirmPwd"
 				:loading="confirmLoading"
 				:disabled="confirmLoading"
+				round
 			>
 				{{$t('msg.tjdd')}}
 			</van-button>
@@ -129,6 +130,7 @@
 				@click="cancelLuckyOrder"
 				:loading="cancelLoading"
 				:disabled="cancelLoading"
+				round
 			>
 				{{$t('msg.qxxyd')}}
 			</van-button>
@@ -303,7 +305,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/theme.scss';
 .content{
-    background-color: #f3f3f3;
+    // background-color: #f3f3f3;
     font-size: 30px;
     font-weight: 900;
 }
@@ -338,7 +340,6 @@ export default {
 .list{
 		padding: 0 40px;
 		box-shadow: none;
-		max-height: 30vh;
 		overflow: auto;
 		display: flex;
 		flex-direction: column;
@@ -382,7 +383,7 @@ export default {
         display: flex;
         justify-content: flex-start;
         margin: 20px;
-        background-color: #ffe69c;
+        background-color: #f0f0f0;
         border-radius: 10px;
         line-height: 100px;
         align-items: center;

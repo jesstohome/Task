@@ -20,38 +20,55 @@
                     <div class="menu-close" @click="showMenu = false">✕</div>
                 </div>
                 <div class="menu-list">
-                    <div class="menu-item" @click="toRoute('/service'); showMenu = false">
-                        <span>{{ $t('msg.tel') }}</span>
-                        <span class="arrow">›</span>
-                    </div>
-                    <div class="menu-item" @click="toRoute('/libao', monney); showMenu = false">
-                        <span>Web3</span>
-                        <span class="arrow">›</span>
-                    </div>
-                    <div class="menu-item" @click="toRoute('/chongzhi'); showMenu = false">
-                        <span>{{ $t('msg.chongzhi') }}</span>
-                        <span class="arrow">›</span>
-                    </div>
-                    <div class="menu-item" @click="toRoute('/drawing', monney, 2); showMenu = false">
-                        <span>{{ $t('msg.tixian') }}</span>
-                        <span class="arrow">›</span>
-                    </div>
-                    <div class="menu-item" @click="toDetails(2, $t('msg.gsjj')); showMenu = false">
-                        <span>{{ $t('msg.gsjj') }}</span>
-                        <span class="arrow">›</span>
-                    </div>
-                    <div class="menu-item" @click="toDetails(3, $t('msg.gzms')); showMenu = false">
-                        <span>{{ $t('msg.gzms') }}</span>
+                    <div class="menu-item" @click="toRoute('/wfp'); showMenu = false">
+                        <span>WFP</span>
                         <span class="arrow">›</span>
                     </div>
                     <div class="menu-item" @click="toDetails(4, $t('msg.dlhz')); showMenu = false">
                         <span>{{ $t('msg.dlhz') }}</span>
                         <span class="arrow">›</span>
                     </div>
+                    <div class="menu-item" @click="toRoute('/drawing', monney, 2); showMenu = false">
+                        <span>{{ $t('msg.tixian') }}</span>
+                        <span class="arrow">›</span>
+                    </div>
+
+                    <div class="menu-item" @click="toRoute('/chongzhi'); showMenu = false">
+                        <span>{{ $t('msg.chongzhi') }}</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <div class="menu-item" @click="toDetails(3, $t('msg.gzms')); showMenu = false">
+                        <span>{{ $t('msg.gzms') }}</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <div class="menu-item" @click="toDetails(10, 'Event'); showMenu = false">
+                        <span>Event</span>
+                        <span class="arrow">›</span>
+                    </div>
+
+                    <!-- <div class="menu-item" @click="toRoute('/service'); showMenu = false">
+                        <span>{{ $t('msg.tel') }}</span>
+                        <span class="arrow">›</span>
+                    </div> -->
+                    <!-- <div class="menu-item" @click="toRoute('/libao', monney); showMenu = false">
+                        <span>Web3</span>
+                        <span class="arrow">›</span>
+                    </div> -->
+                    
                     <div class="menu-item" @click="toDetails(12, $t('msg.qyzz')); showMenu = false">
                         <span>{{ $t('msg.qyzz') }}</span>
                         <span class="arrow">›</span>
                     </div>
+                    <div class="menu-item" @click="toDetails(2, $t('msg.gsjj')); showMenu = false">
+                        <span>{{ $t('msg.gsjj') }}</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    <div class="menu-item" @click="toDetails(7, 'AML'); showMenu = false">
+                        <span>AML</span>
+                        <span class="arrow">›</span>
+                    </div>
+                    
+                    
                 </div>
             </div>
         </van-popup>
@@ -86,6 +103,10 @@ export default {
         }
         const toRoute = (path,param,type = 1) => {
             if (path){
+                if(path == '/wfp'){
+                    window.location.href= 'https://www.wfp.org/'
+                    return false
+                }
                 push(path + (param? '?param='+param : ''))
             }
         }

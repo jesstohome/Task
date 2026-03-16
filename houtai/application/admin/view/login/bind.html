@@ -2,11 +2,11 @@
 {block name="body"}
 <div class="login-container"
      data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
-    <div class="header notselect layui-hide-xs">
-        <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>
-    </div>
-    <form id="bind-google" class="layui-form">
-        <h2 class="notselect">绑定谷歌令牌</h2>
+    <!--<div class="header notselect layui-hide-xs">-->
+    <!--    <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span class="padding-left-5 font-s10">{:sysconf('app_version')}</span></a>-->
+    <!--</div>-->
+    <form id="bind-google" class="layui-form" style="margin: 100px auto;">
+        <h2 class="notselect">使用谷歌身份验证器扫码绑定</h2>
         <div style="padding: 10px;background: #ffffff">
             <img src="{$googleQrCode}" style="width: 100%">
         </div>

@@ -60,6 +60,7 @@ export default {
             {label: 'Web3' + t('msg.zr'),value: 21},
             {label: 'Web3' + t('msg.out_money'),value: 22},
             {label: 'Web3' + t('msg.get_m'),value: 23},
+            {label: 'Trial bonus',value: 34},
         ])
 
         const clickLeft = () => {

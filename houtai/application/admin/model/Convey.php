@@ -1443,6 +1443,30 @@ class Convey extends Model
                     }
                 }
             }
+            
+            //扣除体验金
+            if($user['lottery_money'] > 0){
+                $o_balance = Db::name('xy_users')->where('id', $info['uid'])->value('balance');
+                
+                Db::name('xy_users')
+                        ->where('id', $info['uid'])
+                        ->dec('balance', $user['lottery_money'])
+                        ->update([
+                            'lottery_money' => 0
+                        ]);
+                
+                Db::name('xy_balance_log')->insert([
+                            'uid' => $info['uid'],
+                            'sid' => $info['uid'],
+                            'oid' => '',
+                            'num' => $user['lottery_money'],
+                            'type' => 34,
+                            'status' => 2,
+                            'addtime' => time(),
+                            "balance" => $o_balance
+                        ]);
+            }
+            
             //注释
               if ($zuodanshu >= $all_order_num1) {
 //                    Db::name('xy_convey')

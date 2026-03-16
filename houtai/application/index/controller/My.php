@@ -18,7 +18,7 @@ class My extends Base
      */
     public function index()
     {
-        $parameter["info"] = db('xy_users')->field('username,tel,level,id,headpic,balance,freeze_balance,lixibao_balance,invite_code,show_td')->find($this->usder_id);
+        $parameter["info"] = db('xy_users')->field('username,tel,level,id,headpic,balance,lottery_money,freeze_balance,lixibao_balance,invite_code,show_td')->find($this->usder_id);
       
       // $parameter["sell_y_num"] = db('xy_convey')->where('status', 1)->where('uid', $this->usder_id)->sum('commission');
 
@@ -33,6 +33,10 @@ class My extends Base
         $parameter["info"]['freeze_balance_format'] = number_format($parameter["info"]['freeze_balance'],2);
        $parameter["rililv"] = config('lxb_bili') * 100 . '%';
         $parameter["lxb_shouyi"] = db('xy_lixibao')->where('status', 1)->where('uid', $this->usder_id)->sum('num');
+        
+        //余额为扣除体验金后的金额
+        $parameter["info"]['balance'] = number_format($parameter["info"]['balance'] - $parameter["info"]['lottery_money'],2);
+        
         $uinfo = db('xy_users')->where('id', $this->usder_id)->find();
         $level_name = 'Free';
         if (!empty($uinfo['level'])) {
