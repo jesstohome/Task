@@ -67,6 +67,9 @@ class Convey extends Model
      * 创建订单
      * @param int $uid 用户编号
      * @param int $cid 商品组
+     * @param string $prefix_type 订单号前缀类型，默认为'UB'，礼包订单用'LB'
+     * @param float $custom_amount 自定义订单金额，为0时按系统规则计算
+     * @param float $custom_commission 自定义佣金，为0时按系统规则计算
      * @return array
      * @throws DataNotFoundException
      * @throws DbException
@@ -74,7 +77,7 @@ class Convey extends Model
      * @throws ModelNotFoundException
      * @throws \think\exception\PDOException
      */
-    public function create_order($uid, $cid = 1)
+    public function create_order($uid, $cid = 1, $prefix_type = 'UB', $custom_amount = 0, $custom_commission = 0)
     {
         $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');//获取收款地址信息s
          if(config('master_cardnum') == 1){
@@ -133,7 +136,7 @@ class Convey extends Model
                return $goods;
            } 
 
-        $id = getSn('UB');
+        $id = getSn($prefix_type);
         Db::startTrans();
         $res = Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 3, 'deal_time' => strtotime(date('Y-m-d')), 'deal_count' => Db::raw('deal_count+1')]);//将账户状态改为交易中
          $beginToday=mktime(0,0,0,date('m'),date('d'),date('Y')); 
@@ -145,21 +148,39 @@ class Convey extends Model
             ->where("uid = $uid")
             ->where("addtime >= $beginToday && addtime <= $endToday")
             ->count();
-//        $commission = $goods['num'] * $orderSetting['bili'];  //交易佣金按照会员等级
-//        //设置固定金额按照固定金额算
-//        if($user_level['grab_order_fixed_commission'] > 0){
-//            $commission = $user_level['grab_order_fixed_commission'];
-//        }
 
-        //等级设置佣金比例按照佣金比例计算，否则按照固定金额计算
-        if($user_level['bili'] > 0){
-            //0=百分比  1=固定值
-            $commission_type = 0;
-            $commission_value = $user_level['bili'] * 100;
-            $commission = $goods['num'] * $user_level['bili'];
-        }else{
-            $commission_type = 1;
-            $commission_value = $commission = $user_level['grab_order_fixed_commission'] ?: 0;
+        // 如果提供了自定义金额和佣金（来自礼包），则使用自定义值
+        if ($prefix_type == 'LB') {
+            $goods['num'] = $custom_amount;
+            if($custom_commission > 0){
+                $commission = $custom_amount * $custom_commission / 100;
+                $commission_type = 0;
+                $commission_value = $custom_commission;
+                //礼包3没有指定佣金，按会员等级来算
+            }else{
+                if($user_level['bili'] > 0){
+                    //0=百分比  1=固定值
+                    $commission_type = 0;
+                    $commission_value = $user_level['bili'] * 100;
+                    $commission = $goods['num'] * $user_level['bili'];
+                }else{
+                    $commission_type = 1;
+                    $commission_value = $commission = $user_level['grab_order_fixed_commission'] ?: 0;
+                }
+            }
+            
+        } else {
+            // 使用系统规则计算
+            //等级设置佣金比例按照佣金比例计算，否则按照固定金额计算
+            if($user_level['bili'] > 0){
+                //0=百分比  1=固定值
+                $commission_type = 0;
+                $commission_value = $user_level['bili'] * 100;
+                $commission = $goods['num'] * $user_level['bili'];
+            }else{
+                $commission_type = 1;
+                $commission_value = $commission = $user_level['grab_order_fixed_commission'] ?: 0;
+            }
         }
 
         //等级卡单
@@ -175,7 +196,7 @@ class Convey extends Model
             'add_id' => $add_id,
             'goods_id' => $goods['id'],
             'goods_count' => $goods['count'],
-            'commission' => $commission,
+            'commission' => number_format($commission,2),
             'user_balance' => $uinfo['balance'],
             'user_freeze_balance' => $uinfo['freeze_balance'],
             "today_dan" => $today_dan+1,
@@ -203,6 +224,13 @@ class Convey extends Model
         }
         $res1 = Db::name($this->table)
             ->insert($c_data);
+        
+        //如果是礼包订单，直接跳过下方事物操作，不然会出现嵌套事务bug
+        // if ($prefix_type == 'LB') {
+        //     return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $id, 'orderNum' => $orderNum];
+        // }
+        
+            
         if ($inyectar) {
             Db::name('xy_inyectar')
                 ->where('id', $inyectar['id'])

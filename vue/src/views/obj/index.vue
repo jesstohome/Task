@@ -189,11 +189,14 @@
       </div>
     </van-dialog>
 
+    <!-- 礼包组件 -->
+    <GiftPackage v-model="showGift" />
+
   </div>
 </template>
 
 <script>
-import { ref, getCurrentInstance, reactive, computed } from 'vue';
+import { ref, getCurrentInstance, reactive, computed, onMounted } from 'vue';
 import { rot_order, submit_order, order_info, do_order } from '@/api/order/index'
 import store from '@/store/index'
 import { getdetailbyid, getHomeData } from '@/api/home/index.js'
@@ -202,9 +205,10 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n'
 import { getsupport } from '@/api/tel/index'
 import AdShowcase from '@/components/adshowcase.vue'
+import GiftPackage from '@/components/gift/index.js'
 
 export default {
-  components: { AdShowcase },
+  components: { AdShowcase, GiftPackage },
   setup() {
     const { t } = useI18n()
     const userinfo = ref(store.state.userinfo)
@@ -227,6 +231,7 @@ export default {
     const showTj = ref(false)
     const content = ref('')
     const support = ref('')
+    const showGift = ref(false)
 
     const status_list = reactive([
       { label: t('msg.dtj'), value: 0 },
@@ -249,6 +254,12 @@ export default {
       })
     }
     initData()
+
+    // 礼包检查逻辑已在GiftPackage组件中自动处理（自动定时轮询）
+    // 初始化时设置showGift为true，组件会自动启动定时检查
+    onMounted(() => {
+        showGift.value = true;
+    })
 
     const tjOrder = (row) => { push({ name: 'detail', params: { id: row.oid } }) }
 
@@ -383,7 +394,7 @@ export default {
       pingluntext, generateRandomComment, pinglun, info, currency, level, level_show,
       loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
       cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
-      userinfo, creditPercent, copyInvite
+      userinfo, creditPercent, copyInvite, showGift
     }
   }
 }

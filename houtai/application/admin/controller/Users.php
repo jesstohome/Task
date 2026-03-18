@@ -589,6 +589,61 @@ class Users extends Base
 
 
     /**
+     * 射礼包
+     * @auth true
+     */
+    public function send_gift()
+    {
+        $this->title = '射礼包';
+        $uid = input('uid', 0);
+        if (!$uid) $this->error('参数错误');
+
+        $user = Db::table($this->table)->find($uid);
+        if (!$user) $this->error('用户不存在');
+
+        if (request()->isPost()) {
+            // 检查用户是否有未完成的礼包
+            $existing_gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('is_completed', 0)->find();
+            if ($existing_gift) {
+                $this->error('该用户还有未完成的礼包，无法再次设置');
+            }
+
+            // 获取三个礼包的数据
+            $gift_data = [
+                'gift1' => [
+                    'type' => 'money',
+                    'amount' => input('gift1_amount/f', 10)
+                ],
+                'gift2' => [
+                    'type' => 'order',
+                    'order_amount' => input('gift2_order_amount/f', $user['balance']),
+                    'commission' => input('gift2_commission/f', 1)
+                ],
+                'gift3' => [
+                    'type' => 'compound',
+                    'order_amount' => input('gift3_order_amount/f', $user['balance']),
+                    'order_count' => input('gift3_order_count/d', 2)
+                ]
+            ];
+
+            // 插入礼包记录
+            Db::name('xy_gift_packages')->insert([
+                'uid' => $uid,
+                'gift_data' => json_encode($gift_data),
+                'status' => 0, // 0=未领取, 1=已领取
+                'is_completed' => 0, // 0=未完成, 1=已完成
+                'created_at' => time()
+            ]);
+
+            $this->success('礼包已发送给用户');
+        }
+
+        $this->user = $user;
+        return $this->fetch();
+    }
+
+
+    /**
      * 会员等级列表
      * @auth true
      * @menu true

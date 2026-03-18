@@ -72,23 +72,38 @@
                 </div>
             </div>
         </van-popup>
+
+        <!-- 礼包组件 -->
+        <GiftPackage v-model="showGift" />
     </div>
 </template>
 <script>
-import { ref, getCurrentInstance } from 'vue';
+import { ref, getCurrentInstance, onMounted } from 'vue';
 import store from '@/store/index'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
+import GiftPackage from '@/components/gift/index.js';
+import { Toast } from 'vant';
 export default {
+    components: {
+        GiftPackage
+    },
     setup(){
         const { push } = useRouter();
         const { t } = useI18n()
         const showMenu = ref(false)
+        const showGift = ref(false)
         const logo = ref(store.state.baseInfo?.site_icon)
         const monney = ref(store.state.minfo?.balance)
         
         // 设置footer导航选中状态
         store.dispatch('changefooCheck','home')
+
+        // 页面加载时初始化礼包检查
+        // 礼包检查逻辑已在GiftPackage组件中自动处理（自动定时轮询）
+        onMounted(() => {
+            showGift.value = true; // 初始化组件，组件会自动启动定时检查
+        })
 
         // 图片列表
         const imageList = ref([
@@ -111,7 +126,7 @@ export default {
             }
         }
 
-        return {showMenu,logo,monney,imageList,toRoute,toDetails}
+        return {showMenu, showGift, logo, monney, imageList, toRoute, toDetails}
     }
 }
 </script>

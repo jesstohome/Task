@@ -1,0 +1,97 @@
+{extend name='main'}
+
+{block name="button"}
+<!--{if auth("add")}-->
+<!--<button data-modal='{:url("add")}' data-title="添加礼包" class='layui-btn layui-btn-sm layui-btn-primary'>添加礼包</button>-->
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table margin-top-15" lay-filter="table">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th lay-data="{field:'id',width:80,fixed:'left'}" class='text-center nowrap'>ID</th>
+            <th lay-data="{field:'username',width:120}" class='text-center nowrap'>用户名</th>
+            <th lay-data="{field:'tel',width:150}" class='text-center nowrap'>手机号</th>
+            <th lay-data="{field:'gift_data',width:300}" class='text-center nowrap'>礼包内容</th>
+            <th lay-data="{field:'status',width:100}" class='text-center nowrap'>状态</th>
+            <th lay-data="{field:'selected_gift',width:120}" class='text-center nowrap'>选择的礼包</th>
+            <th lay-data="{field:'is_completed',width:100}" class='text-center nowrap'>是否完成</th>
+            <th lay-data="{field:'created_at',width:180}" class='text-center nowrap'>创建时间</th>
+            <th lay-data="{field:'claim_time',width:180}" class='text-center nowrap'>领取时间</th>
+            <th lay-data="{field:'completed_time',width:180}" class='text-center nowrap'>完成时间</th>
+            <th lay-data="{edit:'edit',width:150,fixed: 'right'}" class='text-center nowrap'>操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-center nowrap'>{$vo.id}</td>
+            <td class='text-center nowrap'>{$vo.username}</td>
+            <td class='text-center nowrap'>{$vo.tel}</td>
+            <td class='text-left nowrap'>
+                {php}
+                $gift_data = json_decode($vo['gift_data'], true);
+                {/php}
+                {if $gift_data}
+                    <div><strong>礼包1：</strong>金额福利 {$gift_data['gift1']['amount']}元</div>
+                    <div><strong>礼包2：</strong>订单福利 金额:{$gift_data['gift2']['order_amount']}元 佣金:{$gift_data['gift2']['commission']}%</div>
+                    <div><strong>礼包3：</strong>复合奖励 金额:{$gift_data['gift3']['order_amount']}元 数量:{$gift_data['gift3']['order_count']}</div>
+                {/if}
+            </td>
+            <td class='text-center nowrap'>
+                {if $vo.status == 0}
+                    <span class="layui-badge layui-bg-orange">未领取</span>
+                {elseif $vo.status == 1}
+                    <span class="layui-badge layui-bg-green">已领取</span>
+                {/if}
+            </td>
+            <td class='text-center nowrap'>
+                {if $vo.selected_gift}
+                    礼包{$vo.selected_gift}
+                {else}
+                    -
+                {/if}
+            </td>
+            <td class='text-center nowrap'>
+                {if $vo.is_completed == 1}
+                    <span class="layui-badge layui-bg-green">已完成</span>
+                {else}
+                    <span class="layui-badge layui-bg-orange">未完成</span>
+                {/if}
+            </td>
+            <td class='text-center nowrap'>{$vo.created_at|format_datetime}</td>
+            <td class='text-center nowrap'>
+                {if $vo.claim_time}
+                    {$vo.claim_time|format_datetime}
+                {else}
+                    -
+                {/if}
+            </td>
+            <td class='text-center nowrap'>
+                {if $vo.completed_time}
+                    {$vo.completed_time|format_datetime}
+                {else}
+                    -
+                {/if}
+            </td>
+            <td class='text-center nowrap'>
+                <!--{if auth("edit")}-->
+                <!--<a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="编辑"-->
+                <!--   data-modal='{:url("edit")}?id={$vo.id}'>编辑</a>-->
+                <!--{/if}-->
+                {if auth("delete")}
+                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                   data-action="{:url('delete')}?id={$vo.id}"
+                   data-value="id#{$vo.id}">删除</a>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>
+{/block}

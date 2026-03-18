@@ -1,0 +1,66 @@
+
+    <form class="layui-form layui-card" action="{:url('send_gift')}" data-auto="true" method="post" autocomplete="off">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="uid" value="{$user.id}" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" value="{$user.username}" readonly class="layui-input">
+            </div>
+        </div>
+
+        <!-- 礼包1：金额福利 -->
+        <fieldset class="layui-elem-field">
+            <legend>礼包1：金额福利</legend>
+            <div class="layui-form-item">
+                <label class="layui-form-label">赠送金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift1_amount" value="10" step="0.01" class="layui-input" placeholder="请输入赠送金额">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 礼包2：订单福利 -->
+        <fieldset class="layui-elem-field">
+            <legend>礼包2：订单福利</legend>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift2_order_amount" value="{$user.balance}" step="0.01" class="layui-input" placeholder="请输入订单金额">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单佣金(%)</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift2_commission" value="1" step="0.01" class="layui-input" placeholder="请输入佣金百分比">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 礼包3：复合奖励 -->
+        <fieldset class="layui-elem-field">
+            <legend>礼包3：复合奖励</legend>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift3_order_amount" value="{$user.balance}" step="0.01" class="layui-input" placeholder="请输入订单金额">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单数量</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift3_order_count" value="2" min="1" class="layui-input" placeholder="请输入订单数量">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formSubmit">发送礼包</button>
+            </div>
+        </div>
+    </form>

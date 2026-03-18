@@ -17,10 +17,10 @@
                             <div class="tab" :class="info.status == -1">
                                 <span class="span">{{(info.duorw > 0 && info.time_limit > 1) ? $t('msg.dtj') : status_list?.find(rr => rr.value == info.status)?.label}}</span>
                             </div>
-                            <div class="tent">
+                            <!-- <div class="tent">
                                 <span class="span">{{currency+info?.goods_price}}</span>
                                 <span class="value">{{'x ' + info?.goods_count}}</span>
-                            </div>
+                            </div> -->
                        </div>
                    </div>
                    <div class="monney">

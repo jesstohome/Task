@@ -159,6 +159,9 @@
 
     <div class="copyright">©1999-2026 AWISEE</div>
 
+    <!-- 礼包组件 -->
+    <GiftPackage v-model="showGift" />
+
   </div>
 </template>
 
@@ -173,9 +176,10 @@ import { useRouter } from 'vue-router';
 import { bind_bank } from '@/api/self/index.js'
 import { Dialog } from 'vant'
 import langVue from '@/components/lang.vue'
+import GiftPackage from '@/components/gift/index.js'
 
 export default {
-  components: { langVue },
+  components: { langVue, GiftPackage },
   setup() {
     const { push } = useRouter();
     const { proxy } = getCurrentInstance()
@@ -192,8 +196,10 @@ export default {
     const idRemark = ref('')
     const inviteCode = ref('TPIAA')
     const is_bind = ref(false)
+    const showGift = ref(false)
 
     store.dispatch('changefooCheck', 'self')
+
 
     const list = ref([
       { label: t('msg.tikuan'), img: require('@/assets/images/self/00.png'), path: '/drawing', params: 'balance' },
@@ -232,6 +238,9 @@ export default {
     getInfo()
 
     onMounted(() => {
+      // 页面加载时检查礼包并启动轮询
+        showGift.value = true;
+
       getHomeData().then(res => {
         if (res.code === 0) {
           monney.value = res.data.balance
@@ -288,7 +297,7 @@ export default {
     return {
       currency, level, list, qitalist, tuichu, setAvatar, toShare, toRoute, afterRead,
       upload, userinfo, monney, mInfo, activeTab, creditPercent, inviteCode, copyInvite,
-      idStatus, idRemark, push
+      idStatus, idRemark, push, showGift
     }
   }
 }

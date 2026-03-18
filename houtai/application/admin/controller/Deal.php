@@ -67,7 +67,7 @@ class Deal extends Base
             
             ->field('xc.*,u.agent_service_id,u.level,u.is_jia,u.username,u.tel,g.goods_name,g.goods_price,u.balance,u.freeze_balance,z.title as grTitle')
             ->where($where)
-            ->order('id desc')
+            ->order('oid desc')
             ->page();
     }
     

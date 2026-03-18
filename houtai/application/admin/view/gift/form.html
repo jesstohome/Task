@@ -1,0 +1,68 @@
+{extend name='main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <form class="layui-form layui-form-pane" action="{:url('save')}" method="post">
+        {if isset($vo)}
+        <input type="hidden" name="id" value="{$vo.id}">
+        {/if}
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="uid" value="{:isset($vo)?$vo.uid:''}" class="layui-input" placeholder="请输入用户ID">
+            </div>
+        </div>
+
+        <!-- 礼包1：金额福利 -->
+        <fieldset class="layui-elem-field">
+            <legend>礼包1：金额福利</legend>
+            <div class="layui-form-item">
+                <label class="layui-form-label">赠送金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift_data[gift1][amount]" value="{:isset($vo)?$vo.gift_data['gift1']['amount']:10}" step="0.01" class="layui-input" placeholder="请输入赠送金额">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 礼包2：订单福利 -->
+        <fieldset class="layui-elem-field">
+            <legend>礼包2：订单福利</legend>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift_data[gift2][order_amount]" value="{:isset($vo)?$vo.gift_data['gift2']['order_amount']:''}" step="0.01" class="layui-input" placeholder="请输入订单金额">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单佣金(%)</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift_data[gift2][commission]" value="{:isset($vo)?$vo.gift_data['gift2']['commission']:1}" step="0.01" class="layui-input" placeholder="请输入佣金百分比">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 礼包3：复合奖励 -->
+        <fieldset class="layui-elem-field">
+            <legend>礼包3：复合奖励</legend>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift_data[gift3][order_amount]" value="{:isset($vo)?$vo.gift_data['gift3']['order_amount']:''}" step="0.01" class="layui-input" placeholder="请输入订单金额">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单数量</label>
+                <div class="layui-input-block">
+                    <input type="number" name="gift_data[gift3][order_count]" value="{:isset($vo)?$vo.gift_data['gift3']['order_count']:2}" min="1" class="layui-input" placeholder="请输入订单数量">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formSubmit">{:isset($vo)?'编辑':'添加'}</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}

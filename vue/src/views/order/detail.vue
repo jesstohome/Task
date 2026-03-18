@@ -61,7 +61,7 @@
 				</div>
 			</div>
 
-			<!-- <div class="pinglun">
+			<div class="pinglun">
 				<div class="pingluna">
 					<div>{{ $t('msg.dianjifabiaopinglun') }}</div>
 					<div>
@@ -77,7 +77,7 @@
 						</van-field>
 					</van-cell-group>
 				</div>
-			</div> -->
+			</div>
             <div class="vipinfo">
                 <img v-if="level" :src="require('@/assets/images/self/vip'+ level +'.png')" class="vip" alt="">
                 <div> VIP {{ level }}</div>

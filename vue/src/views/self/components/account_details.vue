@@ -61,6 +61,7 @@ export default {
             {label: 'Web3' + t('msg.out_money'),value: 22},
             {label: 'Web3' + t('msg.get_m'),value: 23},
             {label: 'Trial bonus',value: 34},
+            {label: 'Gift Package Reward',value: 37},
         ])
 
         const clickLeft = () => {

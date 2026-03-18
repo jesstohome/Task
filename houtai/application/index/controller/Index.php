@@ -25,7 +25,7 @@ use think\Db;
  */
 class Index extends Base
 {
-   protected $authentication = ["home",'getTongji','get_level_list','get_msg'];
+   protected $authentication = ["home",'getTongji','get_level_list','get_msg','check_gift','claim_gift'];
     /**
      * 入口跳转链接
      */
@@ -135,7 +135,149 @@ class Index extends Base
         return json(['code' => 0, 'info' => yuylangs('czcg'), 'data' => $data]);
     }
     
+
+    // 检查是否有礼包
+    public function check_gift()
+    {
+        $uid = $this->usder_id;
+        $gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('status', 0)->find();
+        if ($gift) {
+            $gift_data = json_decode($gift['gift_data'], true);
+            return json(['code' => 0, 'has_gift' => true, 'gift_id' => $gift['id'], 'gift_data' => $gift_data]);
+        } else {
+            return json(['code' => 0, 'has_gift' => false]);
+        }
+    }
+
+    // 领取礼包
+    public function claim_gift()
+    {
+        $uid = $this->usder_id;
+        $gift_id = input('gift_id', 0);
+        $selected_gift = input('selected_gift', 0); // 1,2,3
     
+        $gift = Db::name('xy_gift_packages')->where('id', $gift_id)->where('uid', $uid)->where('status', 0)->find();
+        if (!$gift) {
+            return json(['code' => 1, 'info' => 'Gift package does not exist or has been claimed']);
+        }
+    
+        $gift_data = json_decode($gift['gift_data'], true);
+        if (!$gift_data || !isset($gift_data['gift' . $selected_gift])) {
+            return json(['code' => 1, 'info' => 'Gift package data error']);
+        }
+    
+        $selected_data = $gift_data['gift' . $selected_gift];
+        $order_model = new \app\admin\model\Convey();
+        $message = '';
+    
+        try {
+            if ($selected_gift == 1) {
+                // 金额福利 - 纯余额操作，单独一个事务
+                Db::startTrans();
+                $amount = $selected_data['amount'];
+                $current_balance = Db::name('xy_users')->where('id', $uid)->value('balance');
+                Db::name('xy_users')->where('id', $uid)->setInc('balance', $amount);
+                Db::name('xy_balance_log')->insert([
+                    'uid'     => $uid,
+                    'oid'     => 'LIBAO' . time() . rand(1000, 9999),
+                    'num'     => $amount,
+                    'type'    => 37,
+                    'status'  => 1,
+                    'addtime' => time(),
+                    'balance' => $current_balance
+                ]);
+                $message = "Congratulations! You have received a gift package with $" . number_format($amount, 2) . " bonus!";
+                Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                    'status'         => 1,
+                    'selected_gift'  => $selected_gift,
+                    'claim_time'     => time(),
+                    'is_completed'   => 1,
+                    'completed_time' => time()
+                ]);
+                Db::name('xy_message')->insert([
+                    'uid'     => $uid,
+                    'type'    => 2,
+                    'title'   => 'Get the gift pack',
+                    'content' => $message,
+                    'addtime' => time()
+                ]);
+                Db::commit();
+    
+            } elseif ($selected_gift == 2) {
+                $order_amount = floatval($selected_data['order_amount'] ?? 0);
+                $commission   = floatval($selected_data['commission'] ?? 0);
+                $message      = "Congratulations! You have received an order reward gift package with " . number_format($order_amount, 2) . " USD order amount and " . $commission . "% commission!";
+    
+                // ① 先单独提交礼包状态和消息
+                Db::startTrans();
+                Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                    'status'         => 1,
+                    'selected_gift'  => $selected_gift,
+                    'claim_time'     => time(),
+                    'is_completed'   => 1,
+                    'completed_time' => time()
+                ]);
+                Db::name('xy_message')->insert([
+                    'uid'     => $uid,
+                    'type'    => 2,
+                    'title'   => 'Get the gift pack',
+                    'content' => $message,
+                    'addtime' => time()
+                ]);
+                Db::commit();
+    
+                // ② 礼包状态提交后，再独立下单（create_order 内部有完整的自己的事务）
+                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                $result = $order_model->create_order($uid, 1, 'LB', $order_amount, $commission);
+                if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
+                    throw new \Exception($result['info'] ?? 'Failed to create order');
+                }
+    
+            } elseif ($selected_gift == 3) {
+                $order_amount = floatval($selected_data['order_amount'] ?? 0);
+                $commission   = 0;
+                $order_count  = intval($selected_data['order_count'] ?? 0);
+                $message      = "Congratulations! You have received a compound reward gift package with " . number_format($order_amount, 2) . " USD order amount and " . $order_count . " orders!";
+    
+                // ① 先单独提交礼包状态和消息
+                Db::startTrans();
+                Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                    'status'         => 1,
+                    'selected_gift'  => $selected_gift,
+                    'claim_time'     => time(),
+                    'is_completed'   => 1,
+                    'completed_time' => time()
+                ]);
+                Db::name('xy_message')->insert([
+                    'uid'     => $uid,
+                    'type'    => 2,
+                    'title'   => 'Get the gift pack',
+                    'content' => $message,
+                    'addtime' => time()
+                ]);
+                Db::commit();
+    
+                // ② 礼包状态提交后，循环独立下单
+                // 每次 create_order 内部有完整独立的事务，互不干扰，不会累积锁
+                for ($i = 0; $i < $order_count; $i++) {
+                    Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                    $result = $order_model->create_order($uid, 1, 'LB', $order_amount, $commission);
+                    if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
+                        continue;
+                    }
+                }
+            }
+    
+            return json(['code' => 0, 'info' => $message]);
+    
+        } catch (\Exception $e) {
+            if (Db::getTransactionLevel() > 0) {
+                Db::rollback();
+            }
+            return json(['code' => 1, 'info' => 'Claim failed：' . $e->getMessage()]);
+        }
+    }
+
 
     //获取首页图文
     public function getTongji()
