@@ -207,18 +207,30 @@ class RotOrder extends Base
         }
 
         //判断vip过期
-        if ($this->vip_expire) {
-            return json(['code' => 1, 'info' => translate('VIP has expired, please recharge')]);
-        }
+        // if ($this->vip_expire) {
+        //     return json(['code' => 1, 'info' => translate('VIP has expired, please recharge')]);
+        // }
         
-        if(config('master_cardnum') == 1){
-           //获取收款地址信息
-            $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');
-            if (!$add_id) return json([
-                'code' => 1,
-                'info' => yuylangs('not_address'),
-               // 'url' => url('/index/my/edit_address')
-            ]); 
+        // if(config('master_cardnum') == 1){
+        //   //获取收款地址信息
+        //     $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');
+        //     if (!$add_id) return json([
+        //         'code' => 1,
+        //         'info' => yuylangs('not_address'),
+        //       // 'url' => url('/index/my/edit_address')
+        //     ]); 
+        // }
+        
+        // 检查是否触发复数订单选项
+        $compound_trigger = model('admin/Convey')->check_compound_order_trigger($uid);
+        if ($compound_trigger) {
+            if ($compound_trigger['type'] === 'immediate_trigger') {
+                $res['data'] = $compound_trigger;
+                $res['code'] = 1;
+                $res['info'] = '';
+                $res['status'] = 1;
+                return json($res);
+            }
         }
         
         //判断商品组
@@ -265,22 +277,107 @@ class RotOrder extends Base
             $res = model('admin/Convey')->create_order($uid, $cid);
         }
 
+        // 检查是否触发复数订单
+        if ($res['code'] == 0 && $compound_trigger) {
+            if ($compound_trigger['type'] === 'continue_order') {
+                    Db::name('xy_compound_order_log')
+                    ->where('id', $compound_trigger['log']['id'])
+                    ->update([
+                        'trigger_count' => $compound_trigger['log']['trigger_count'] - 1,
+                        'update_time' => time()
+                    ]);
+                }
+        }
         return json($res);
     }
 
     /**
-     * 停止抢单
+     * 启动复数订单
      */
-    public function stop_submit_order()
+    public function start_compound_order()
     {
-        $uid = $this->usder_id;
-        $res = Db::name('xy_users')->where('id', $uid)->where('deal_status', 2)->update(['deal_status' => 1]);
-        if ($res) {
-            return json(['code' => 0, 'info' => yuylangs('czcg')]);
-        } else {
-            return json(['code' => 1, 'info' => yuylangs('czsb')]);
+        if (!$this->usder_id) {
+            return json(['code' => 1, 'info' => 'Please log in first.']);
         }
-    }
-  
 
+        $option_id = input('option_id/d');
+        if (!$option_id) {
+            return json(['code' => 1, 'info' => 'Please select an option']);
+        }
+        
+        $uid = $this->usder_id;
+        
+        $existing_log = Db::name('xy_compound_order_log')
+            ->where('uid', $uid)
+            ->where('status', 1) // 进行中
+            ->order('create_time DESC')
+            ->find();
+            
+        if (!$existing_log) {
+            return json(['code' => 1, 'info' => 'Parameter error']);
+        }
+        
+        Db::name('xy_compound_order_log')
+                    ->where('id', $existing_log['id'])
+                    ->update([
+                        'option_id' => $option_id,
+                        'update_time' => time()
+                    ]);
+                    
+        $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+        $order_model = new \app\admin\model\Convey();
+        
+        foreach($existing_log['custom_options'] as $key => $value){
+            if($value['option_id'] == $option_id && $value['order_count'] > 0){
+                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                $result = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
+            }
+        }
+        
+        // 获取最后一次订单ID作为触发订单
+        // $last_order = Db::name('xy_convey')
+        //     ->where('uid', $this->usder_id)
+        //     ->where('status', 1)
+        //     ->order('id DESC')
+        //     ->find();
+
+        // if (!$last_order) {
+        //     return json(['code' => 1, 'info' => '未找到触发订单']);
+        // }
+
+        // $result = model('admin/Convey')->start_compound_order(
+        //     $this->usder_id,
+        //     $option_id,
+        //     0
+        // );
+
+        return json($result);
+    }
+
+    /**
+     * 处理复数订单的下一单（自动调用）
+     */
+    public function process_compound_order_next()
+    {
+        if (!$this->usder_id) {
+            return json(['code' => 1, 'info' => '请先登录']);
+        }
+
+        // 检查用户是否有未完成的复数订单
+        $existing_log = model('admin/Convey')->check_compound_order_trigger($this->usder_id);
+
+        if ($existing_log && $existing_log['type'] === 'immediate_trigger') {
+            // 有未完成的复数订单且需要立即触发
+            return json([
+                'code' => 0,
+                'compound_order_trigger' => $existing_log
+            ]);
+        } elseif ($existing_log && $existing_log['type'] === 'continue_order') {
+            // 有未完成的复数订单但需要继续下单
+            return json(['code' => 0, 'continue_order' => true]);
+        }
+
+        // 没有未完成的复数订单
+        return json(['code' => 0]);
+    }
 }

@@ -1,0 +1,40 @@
+<form onsubmit="return false" data-auto="true" action="{:url('config')}" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body padding-left-40">
+        <input type="hidden" name="id" value="{$config.id}">
+
+        <div class="layui-form-item">
+            <label class="relative block">
+                <span class="color-green font-w7">触发订单数量</span>
+                <input name="trigger_order_count" required type="number" min="1" placeholder="请输入触发复数订单的订单数量" value="{$config.trigger_order_count}" class="layui-input">
+            </label>
+            <p class="help-block">用户完成指定数量的订单后触发复数订单选择</p>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" {if $config.status == 1}checked{/if}>
+                <input type="radio" name="status" value="0" title="禁用" {if $config.status == 0}checked{/if}>
+            </div>
+            <p class="help-block">启用后用户达到触发条件时会弹出复数订单选择</p>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">保存配置</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    // 表单提交处理
+    $('[data-auto="true"]').autoSubmit(function (data) {
+        if (data.code === 0) {
+            $.msg.success(data.info, function () {
+                location.reload();
+            });
+        } else {
+            $.msg.error(data.info);
+        }
+    });
+</script>

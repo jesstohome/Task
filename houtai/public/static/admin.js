@@ -947,4 +947,28 @@ $(function () {
     /*! 初始化事件 */
     $.menu.listen();
     $.vali.listen();
+
+    /*! 表单自动提交插件 */
+    $.fn.autoSubmit = function (callback) {
+        return this.each(function () {
+            var $form = $(this);
+            $form.on('submit', function (e) {
+                e.preventDefault();
+                var data = $form.formToJson();
+                var action = $form.attr('action') || window.location.href;
+                var method = $form.attr('method') || 'POST';
+                var tips = $form.attr('data-tips') || undefined;
+                var time = $form.attr('data-time') || undefined;
+
+                $.form.load(action, data, method, function (ret) {
+                    if (typeof callback === 'function') {
+                        callback.call($form[0], ret);
+                    } else {
+                        $.msg.auto(ret, time);
+                    }
+                    return false;
+                }, true, tips, time);
+            });
+        });
+    };
 });

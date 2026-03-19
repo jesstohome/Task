@@ -192,12 +192,60 @@
     <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />
 
+    <!-- 复数订单选择弹窗 -->
+    <van-dialog
+      v-model:show="showCompoundOrder"
+      title="Multiple orders"
+      :show-cancel-button="false"
+      :show-confirm-button="false"
+      :close-on-click-overlay="false"
+    >
+      <div class="compound-order-modal">
+        <div class="compound-order-header">
+          <div class="celebration-icon">🎉</div>
+          <h3>Congratulations on triggering the multiple order privilege!</h3>
+          <p class="compound-order-desc">
+            You have completed the specified number of orders, unlocking the multiple order privilege!<br>
+            Please select an order sequence, and the system will automatically create multiple orders for you.
+          </p>
+        </div>
+
+        <div class="compound-order-options" v-if="compoundOrderData">
+          <div
+            v-for="option in compoundOrderData.log.custom_options"
+            :key="option.option_id"
+            class="compound-option-card"
+            @click="selectCompoundOrderOption(option.option_id)"
+          >
+            <div class="option-header">
+              <h4>{{ option.title }}</h4>
+            </div>
+
+            <div class="option-desc" v-if="option.description">
+              {{ option.description }}
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="compound-order-footer">
+          <van-button
+            type="default"
+            block
+            @click="skipCompoundOrder"
+            class="skip-btn"
+          >
+            暂时跳过
+          </van-button>
+        </div> -->
+      </div>
+    </van-dialog>
+
   </div>
 </template>
 
 <script>
 import { ref, getCurrentInstance, reactive, computed, onMounted } from 'vue';
-import { rot_order, submit_order, order_info, do_order } from '@/api/order/index'
+import { rot_order, submit_order, order_info, do_order, start_compound_order, process_compound_order_next } from '@/api/order/index'
 import store from '@/store/index'
 import { getdetailbyid, getHomeData } from '@/api/home/index.js'
 import { formatTime } from '@/api/format.js'
@@ -232,6 +280,8 @@ export default {
     const content = ref('')
     const support = ref('')
     const showGift = ref(false)
+    const showCompoundOrder = ref(false)
+    const compoundOrderData = ref(null)
 
     const status_list = reactive([
       { label: t('msg.dtj'), value: 0 },
@@ -317,6 +367,22 @@ export default {
       loading.value = true
       loadText.value = t('msg.zzszsj')
       loadImg.value = require('@/assets/images/1.gif')
+
+      // 先检查是否有未完成的复数订单
+      // try {
+      //   const checkResult = await process_compound_order_next()
+      //   if (checkResult.code === 0 && checkResult.compound_order_trigger) {
+      //     // 有未完成的复数订单且需要立即触发
+      //     compoundOrderData.value = checkResult.compound_order_trigger
+      //     showCompoundOrder.value = true
+      //     loading.value = false
+      //     return
+      //   }
+      //   // 如果有未完成的复数订单但不需要立即触发，继续正常的下单流程
+      // } catch (error) {
+      //   console.log('检查复数订单失败:', error)
+      // }
+
       let submit = null
       let time = (info.value.deal_zhuji_time || 1) * 1000
       let time2 = (info.value.deal_shop_time || 2) * 1000
@@ -331,9 +397,17 @@ export default {
     const setout = (json, time) => {
       setTimeout(() => {
         if (json) {
+          if(json.code === 1 && json.status === 1){
+            compoundOrderData.value = json.data
+            showCompoundOrder.value = true
+            loading.value = false
+            return
+          }
+          
           if (json.code === 0) {
             loadImg.value = require('@/assets/images/3.gif')
             loadText.value = t('msg.ppcg')
+
             setTimeout(() => {
               proxy.$Message({ message: json.info, type: 'success' })
               tjOrder(json)
@@ -346,22 +420,6 @@ export default {
           setout(json, time)
         }
       }, time)
-    }
-
-    const copyInvite = (xinxi) => {
-      try {
-        if (navigator && navigator.clipboard && userinfo.value?.invite_code) {
-          navigator.clipboard.writeText(userinfo.value.invite_code)
-          proxy.$toast?.success && proxy.$toast.success(xinxi)
-        }
-      } catch (e) {
-        const ta = document.createElement('textarea')
-        ta.value = userinfo.value?.invite_code || ''
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand('copy')
-        document.body.removeChild(ta)
-      }
     }
 
     const generateRandomComment = () => {
@@ -390,11 +448,53 @@ export default {
       pingluntext.value = comments[Math.floor(Math.random() * comments.length)];
     };
 
+    const copyInvite = (xinxi) => {
+      try {
+        if (navigator && navigator.clipboard && userinfo.value?.invite_code) {
+          navigator.clipboard.writeText(userinfo.value.invite_code)
+          proxy.$toast?.success && proxy.$toast.success(xinxi)
+        }
+      } catch (e) {
+        const ta = document.createElement('textarea')
+        ta.value = userinfo.value?.invite_code || ''
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+      }
+    }
+
+    const selectCompoundOrderOption = async (optionId) => {
+      try {
+        const result = await start_compound_order({ option_id: optionId })
+        if (result.code === 0) {
+          proxy.$Message({ message: result.info, type: 'success' })
+          showCompoundOrder.value = false
+          compoundOrderData.value = null
+          // 刷新页面数据
+          initData()
+        } else {
+          proxy.$Message({ message: result.info, type: 'error' })
+        }
+      } catch (error) {
+        proxy.$Message({ message: t('msg.czsb'), type: 'error' })
+      }
+    }
+
+    const skipCompoundOrder = () => {
+      showCompoundOrder.value = false
+      compoundOrderData.value = null
+      // 继续正常的下单流程
+      proxy.$Message({ message: '下单成功！', type: 'success' })
+      // 这里可以调用原来的成功处理逻辑
+    }
+
     return {
       pingluntext, generateRandomComment, pinglun, info, currency, level, level_show,
       loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
       cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
-      userinfo, creditPercent, copyInvite, showGift
+      userinfo, creditPercent, copyInvite, showGift, showCompoundOrder, compoundOrderData,
+      selectCompoundOrderOption, skipCompoundOrder
     }
   }
 }
@@ -845,6 +945,145 @@ export default {
     width: 90%;
     border: 1px solid #dadada;
     border-radius: 5px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   ⑤ 复数订单弹窗样式
+   ════════════════════════════════════════════════════════════ */
+
+.compound-order-modal {
+  padding: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.compound-order-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  .celebration-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 16px 0;
+  }
+
+  .compound-order-desc {
+    font-size: 26px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+  }
+}
+
+.compound-order-options {
+  margin-bottom: 30px;
+}
+
+.compound-option-card {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    border-color: #007bff;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+  }
+
+  .option-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    h4 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+
+    .option-badge {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: white;
+      font-size: 20px;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+  }
+
+  .option-desc {
+    font-size: 24px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .option-details {
+    margin-bottom: 20px;
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .detail-label {
+        font-size: 24px;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .detail-value {
+        font-size: 24px;
+        color: #333;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .option-select-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    text-align: center;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-size: 26px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #0056b3, #004085);
+    }
+  }
+}
+
+.compound-order-footer {
+  .skip-btn {
+    background: #f8f9fa;
+    color: #666;
+    border: 1px solid #dee2e6;
+    font-size: 26px;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 16px 0;
+
+    &:hover {
+      background: #e9ecef;
+    }
   }
 }
 </style>

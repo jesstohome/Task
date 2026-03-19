@@ -74,6 +74,9 @@ class My extends Base
         $parameter["msg"] = $content;
         
                 }else{
+                    if(empty($parameter["msg"])){
+                        $parameter["msg"] = '';
+                    }
                    $parameter["msg"] .= str_replace("'", ' ', $v['content']) . '<br>'; 
                 }
                 

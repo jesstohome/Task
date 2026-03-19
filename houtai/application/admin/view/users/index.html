@@ -203,6 +203,11 @@
                    data-modal='{:url("admin/users/send_gift")}?uid={$vo.id}' data-title="射礼包">射礼包</a>
                 {/if}
 
+                {if auth("compound_order")}
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-warm" data-height="95%;" data-title="复数订单"
+                   data-modal='{:url("admin/compound_order/start_user_compound_order")}?uid={$vo.id}' data-title="复数订单">射复数</a>
+                {/if}
+
 <!--                {if auth("edit_level")}-->
 <!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="编辑等级"-->
 <!--                   data-modal='{:url("users/edit_level")}?id={$vo.id}'>等级</a>-->

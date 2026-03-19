@@ -273,6 +273,42 @@ class Order extends Base
             } else {
                 $res = model('admin/Convey')->do_order($oid, $status, $this->usder_id, $add_id, $pingfen, $pinglun);
             }
+            //检查是否有进行中的复数订单，如果有则直接继续创建订单
+            if ($res['code'] == 0) {
+                $existing_log = Db::name('xy_compound_order_log')
+                    ->where('uid', $uid)
+                    ->where('status', 1) // 进行中
+                    ->order('create_time DESC')
+                    ->find();
+                if($existing_log && $existing_log['option_id'] > 0){
+                    $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+                    $order_model = new \app\admin\model\Convey();
+
+                    foreach($existing_log['custom_options'] as $key => $value){
+                        if($value['option_id'] == $existing_log['option_id']){
+                            if($existing_log['completed_orders'] < $value['order_count']){
+                                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+
+                                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'completed_orders' => $existing_log['completed_orders'] + 1,
+                                        'update_time' => time()
+                                    ]);
+
+                                $res = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
+                            }else{
+                                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'status' => 2,
+                                        'update_time' => time()
+                                    ]);
+                            }                           
+                        }
+                    }
+                }
+            }
             return json($res);
         }
         return json(['code' => 1, 'info' => yuylangs('qqcw')]);

@@ -1,0 +1,89 @@
+<form onsubmit="return false" data-auto="true" action="{:url('options')}" method="post" class='layui-form' autocomplete="off">
+    <input type="hidden" name="id" value="{if isset($option)}{$option.id}{/if}">
+    <input type="hidden" name="config_id" value="{$config_id}">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required placeholder="请输入选项标题" class="layui-input" value="{if isset($option)}{$option.title}{/if}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block">
+            <textarea name="description" placeholder="请输入选项描述" class="layui-textarea">{if isset($option)}{$option.description}{/if}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单数量</label>
+        <div class="layui-input-block">
+            <input type="number" name="order_count" required min="1" placeholder="复数订单包含的订单数量" class="layui-input" value="{if isset($option)}{$option.order_count}{/if}">
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+    <!--    <label class="layui-form-label">金额类型</label>-->
+    <!--    <div class="layui-input-block">-->
+    <!--        <input type="radio" name="amount_type" value="1" title="比例" {if !isset($option) || $option.amount_type == 1}checked{/if}>-->
+    <!--        <input type="radio" name="amount_type" value="2" title="固定金额" {if isset($option) && $option.amount_type == 2}checked{/if}>-->
+    <!--    </div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单金额</label>
+        <div class="layui-input-block">
+            <input type="number" name="amount_value" required step="100" min="0" placeholder="比例或固定金额值" class="layui-input" value="{if isset($option)}{$option.amount_value}{/if}">
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+    <!--    <label class="layui-form-label">佣金类型</label>-->
+    <!--    <div class="layui-input-block">-->
+    <!--        <input type="radio" name="commission_type" value="1" title="比例" {if !isset($option) || $option.commission_type == 1}checked{/if}>-->
+    <!--        <input type="radio" name="commission_type" value="2" title="固定金额" {if isset($option) && $option.commission_type == 2}checked{/if}>-->
+    <!--    </div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">佣金比例(%)</label>
+        <div class="layui-input-block">
+            <input type="number" name="commission_value" required step="1" min="0" placeholder="比例" class="layui-input" value="{if isset($option)}{$option.commission_value}{/if}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input type="number" name="sort" required min="0" placeholder="数字越小越靠前" class="layui-input" value="{if isset($option)}{$option.sort}{else}0{/if}">
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+    <!--    <label class="layui-form-label">状态</label>-->
+    <!--    <div class="layui-input-block">-->
+    <!--        <input type="radio" name="status" value="1" title="启用" {if !isset($option) || $option.status == 1}checked{/if}>-->
+    <!--        <input type="radio" name="status" value="0" title="禁用" {if isset($option) && $option.status == 0}checked{/if}>-->
+    <!--    </div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type="submit">{if isset($option)}保存修改{else}保存{/if}</button>
+        <button class="layui-btn layui-btn-primary" type="button" onclick="parent.layer.closeAll()">取消</button>
+    </div>
+</form>
+
+<script>
+    // 表单提交处理
+    // $('[data-auto="true"]').autoSubmit(function (data) {
+    //     if (data.code === 0) {
+    //         $.msg.success(data.info, function () {
+    //             parent.layer.closeAll();
+    //             parent.location.reload();
+    //         });
+    //     } else {
+    //         $.msg.error(data.info);
+    //     }
+    // });
+</script>

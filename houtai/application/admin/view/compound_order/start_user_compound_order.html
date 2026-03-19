@@ -1,0 +1,192 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <span class="layui-breadcrumb">
+            <a href="{:url('users/index')}">用户管理</a>
+            <a><cite>启动复数订单</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form layui-form-pane">
+
+            <form onsubmit="return false" data-auto="true" action="{:url('start_user_compound_order')}" method="post" class='layui-form'>
+                
+                            <input type="hidden" name="uid" value="{$user.id}">
+                            
+                            <div class="layui-form-item">
+                                    <label class="layui-form-label">用户名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="trigger_count" readonly class="layui-input" value="{$user.username}">
+                                    </div>
+                                </div>
+
+                <!-- 复数订单选项配置 -->
+                            <div class="layui-form-item">
+                                    <label class="layui-form-label">触发单数</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="trigger_count" required placeholder="请输入第几单进行触发" class="layui-input" value="1">
+                                    </div>
+                                </div>
+                            {foreach $default_options as $index => $option}
+                            <input type="hidden" name="options[{$index}][option_id]" value="{$option.id}">
+                            <div class="option-item" data-index="{$index}" style="border: 1px solid #e6e6e6; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">选项 {$index+1}</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="options[{$index}][title]" required placeholder="请输入选项标题" class="layui-input" value="{$option.title}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">描述</label>
+                                    <div class="layui-input-block">
+                                        <input name="options[{$index}][description]" placeholder="请输入选项描述" class="layui-input" value="{$option.description}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">订单数量</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="options[{$index}][order_count]" required min="1" placeholder="复数订单包含的订单数量" class="layui-input" value="{$option.order_count}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">订单金额</label>
+                                    <div class="layui-input-block">
+                                        <!--<input type="radio" name="options[{$index}][amount_type]" value="1" title="比例" {if $option.amount_type == 1}checked{/if}>-->
+                                        <!--<input type="radio" name="options[{$index}][amount_type]" value="2" title="固定金额" {if $option.amount_type == 2}checked{/if}>-->
+                                        <input type="number" name="options[{$index}][amount_value]" required step="100" min="0" placeholder="金额值" class="layui-input" style="width: 120px; display: inline-block; margin-left: 10px;" value="{$option.amount_value}">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">佣金比例(%)</label>
+                                    <div class="layui-input-block">
+                                        <!--<input type="radio" name="options[{$index}][commission_type]" value="1" title="比例" {if $option.commission_type == 1}checked{/if}>-->
+                                        <!--<input type="radio" name="options[{$index}][commission_type]" value="2" title="固定金额" {if $option.commission_type == 2}checked{/if}>-->
+                                        <input type="number" name="options[{$index}][commission_value]" required step="1" min="0" placeholder="佣金值" class="layui-input" style="width: 120px; display: inline-block; margin-left: 10px;" value="{$option.commission_value}">
+                                    </div>
+                                </div>
+
+                                <!--<div class="layui-form-item">-->
+                                <!--    <label class="layui-form-label">排序</label>-->
+                                <!--    <div class="layui-input-block">-->
+                                <!--        <input type="number" name="options[{$index}][sort]" required min="0" placeholder="数字越小越靠前" class="layui-input" value="{$option.sort}" style="width: 120px; display: inline-block;">-->
+                                        <!--<button type="button" class="layui-btn layui-btn-danger layui-btn-sm remove-option" style="margin-left: 10px;" {if $index == 0}disabled{/if}>删除选项</button>-->
+                                <!--    </div>-->
+                                <!--</div>-->
+                            </div>
+                            {/foreach}
+
+                        <!--<div class="layui-form-item">-->
+                        <!--    <div class="layui-input-block">-->
+                        <!--        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="add-option">添加选项</button>-->
+                        <!--    </div>-->
+                        <!--</div>-->
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="submit">启动复数订单</button>
+                        <button class="layui-btn layui-btn-primary" type="button" onclick="parent.layer.closeAll()">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 表单提交处理
+    // $('[data-auto="true"]').autoSubmit(function (data) {
+    //     if (data.code === 0) {
+    //         $.msg.success(data.info, function () {
+    //             parent.layer.closeAll();
+    //             parent.location.reload();
+    //         });
+    //     } else {
+    //         $.msg.error(data.info);
+    //     }
+    // });
+
+    // 添加选项
+    // var optionIndex = {$default_options|count};
+    // $('#add-option').on('click', function() {
+    //     var html = '<div class="option-item" data-index="' + optionIndex + '" style="border: 1px solid #e6e6e6; padding: 15px; margin-bottom: 15px; border-radius: 5px;">' +
+    //         '<div class="layui-form-item">' +
+    //             '<label class="layui-form-label">选项 ' + (optionIndex + 1) + '</label>' +
+    //             '<div class="layui-input-block">' +
+    //                 '<input type="text" name="options[' + optionIndex + '][title]" required placeholder="请输入选项标题" class="layui-input" value="新选项 ' + (optionIndex + 1) + '">' +
+    //             '</div>' +
+    //         '</div>' +
+    //         '<div class="layui-form-item">' +
+    //             '<label class="layui-form-label">描述</label>' +
+    //             '<div class="layui-input-block">' +
+    //                 '<textarea name="options[' + optionIndex + '][description]" placeholder="请输入选项描述" class="layui-textarea">新选项描述</textarea>' +
+    //             '</div>' +
+    //         '</div>' +
+    //         '<div class="layui-form-item">' +
+    //             '<label class="layui-form-label">订单数量</label>' +
+    //             '<div class="layui-input-block">' +
+    //                 '<input type="number" name="options[' + optionIndex + '][order_count]" required min="1" placeholder="复数订单包含的订单数量" class="layui-input" value="3">' +
+    //             '</div>' +
+    //         '</div>' +
+    //         '<div class="layui-form-item">' +
+    //             '<label class="layui-form-label">金额设置</label>' +
+    //             '<div class="layui-input-block">' +
+    //                 '<input type="radio" name="options[' + optionIndex + '][amount_type]" value="1" title="比例" checked>' +
+    //                 '<input type="radio" name="options[' + optionIndex + '][amount_type]" value="2" title="固定金额">' +
+    //                 '<input type="number" name="options[' + optionIndex + '][amount_value]" required step="0.01" min="0" placeholder="金额值" class="layui-input" style="width: 120px; display: inline-block; margin-left: 10px;" value="100.00">' +
+    //             '</div>' +
+    //         '</div>' +
+    //         '<div class="layui-form-item">' +
+    //             '<label class="layui-form-label">佣金设置</label>' +
+    //             '<div class="layui-input-block">' +
+    //                 '<input type="radio" name="options[' + optionIndex + '][commission_type]" value="1" title="比例" checked>' +
+    //                 '<input type="radio" name="options[' + optionIndex + '][commission_type]" value="2" title="固定金额">' +
+    //                 '<input type="number" name="options[' + optionIndex + '][commission_value]" required step="0.01" min="0" placeholder="佣金值" class="layui-input" style="width: 120px; display: inline-block; margin-left: 10px;" value="10.00">' +
+    //             '</div>' +
+    //         '</div>' +
+    //         '<div class="layui-form-item">' +
+    //             '<label class="layui-form-label">排序</label>' +
+    //             '<div class="layui-input-block">' +
+    //                 '<input type="number" name="options[' + optionIndex + '][sort]" required min="0" placeholder="数字越小越靠前" class="layui-input" value="' + optionIndex + '" style="width: 120px; display: inline-block;">' +
+    //                 '<button type="button" class="layui-btn layui-btn-danger layui-btn-sm remove-option" style="margin-left: 10px;">删除选项</button>' +
+    //             '</div>' +
+    //         '</div>' +
+    //     '</div>';
+
+    //     $('#options-container').append(html);
+    //     optionIndex++;
+
+    //     // 重新渲染表单元素
+    //     layui.form.render();
+    // });
+
+    // 删除选项
+    $(document).on('click', '.remove-option', function() {
+        if ($(this).prop('disabled')) return;
+
+        var optionItem = $(this).closest('.option-item');
+        var index = optionItem.data('index');
+
+        if (confirm('确定要删除这个选项吗？')) {
+            optionItem.remove();
+
+            // 重新编号剩余选项
+            $('#options-container .option-item').each(function(i) {
+                var newIndex = i;
+                $(this).attr('data-index', newIndex);
+                $(this).find('input, textarea, select').each(function() {
+                    var name = $(this).attr('name');
+                    if (name) {
+                        name = name.replace(/options\[\d+\]/, 'options[' + newIndex + ']');
+                        $(this).attr('name', name);
+                    }
+                });
+                $(this).find('.layui-form-label').first().text('选项 ' + (newIndex + 1));
+            });
+
+            optionIndex = $('#options-container .option-item').length;
+        }
+    });
+</script>

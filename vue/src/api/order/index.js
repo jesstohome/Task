@@ -38,3 +38,10 @@ export const order_info = (params) => {
         return result.data
       })
   }
+//// 复数订单
+export const start_compound_order = (params) => {
+    return http.post('/rot_order/start_compound_order',qs.stringify(params))
+      .then((result) => {
+        return result.data
+      })
+  }

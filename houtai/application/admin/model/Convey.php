@@ -27,6 +27,7 @@ class Convey extends Model
         "level_amount"=>6,//等级卡单
         "superposition"=>7,//方案组叠加模式卡单
         "fixed_replenishment_order"=>8,//方案组固定补单卡单
+        "compound_order"=>9,//复数订单模式
     ];
 
     //映射订单模式
@@ -41,7 +42,8 @@ class Convey extends Model
             '5'=>'方案组固定金额卡单',
             '6'=>'等级卡单',
             '7'=>'方案组叠加模式卡单',
-            '8'=>'方案组固定补单卡单'
+            '8'=>'方案组固定补单卡单',
+            '9'=>'复数订单'
         ];
         return isset($data[$val]) ? $data[$val] : '-' ;
     }
@@ -77,8 +79,10 @@ class Convey extends Model
      * @throws ModelNotFoundException
      * @throws \think\exception\PDOException
      */
-    public function create_order($uid, $cid = 1, $prefix_type = 'UB', $custom_amount = 0, $custom_commission = 0)
+    public function create_order($uid, $cid = 1, $prefix_type = 'UB', $custom_amount = 0, $custom_commission = 0, $compound_option_id = 0)
     {
+        // 检查是否为复数订单
+        $is_compound_order = ($compound_option_id > 0);
         $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');//获取收款地址信息s
          if(config('master_cardnum') == 1){
             if (!$add_id) return ['code' => 1, 'info' => yuylangs('wszshdz')];
@@ -103,20 +107,25 @@ class Convey extends Model
       
          $order_num = Db::table("xy_level")->where("level", $uinfo['level'])->value("order_num");
         
-        if ($count >= $order_num) {
+        // 复数订单跳过每日订单上限检查
+        if (!$is_compound_order && $count >= $order_num) {
             return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
         }
         
        
         if ($uinfo['deal_status'] != 2) return ['code' => 1, 'info' => yuylangs('qdyzz')];
         $level = $uinfo['level'] ? intval($uinfo['level']) : 0;
-        $orderSetting = $this->get_user_order_setting($uid, $level);
-        if ($uinfo['balance'] < $orderSetting['min_money']) {
-            return [
-                'code' => 1,
-                'info' => sprintf(yuylangs('zhyebz'), ($orderSetting['min_money'] - $uinfo['balance']) . ""),
-                'url' => url('index/ctrl/recharge')
-            ];
+
+        // 复数订单跳过余额检查
+        if (!$is_compound_order) {
+            $orderSetting = $this->get_user_order_setting($uid, $level);
+            if ($uinfo['balance'] < $orderSetting['min_money']) {
+                return [
+                    'code' => 1,
+                    'info' => sprintf(yuylangs('zhyebz'), ($orderSetting['min_money'] - $uinfo['balance']) . ""),
+                    'url' => url('index/ctrl/recharge')
+                ];
+            }
         }
         $user_level = Db::table("xy_level")->where("level", $uinfo['level'])->find();
         $min = $user_level['grab_order_min_amount'];
@@ -183,8 +192,8 @@ class Convey extends Model
             }
         }
 
-        //等级卡单
-        $order_mode = $this->order_mode_array['level_amount'];
+        // 设置订单模式
+        $order_mode = $is_compound_order ? $this->order_mode_array['compound_order'] : $this->order_mode_array['level_amount'];
         //插入佣金记录
         $c_data = [
             'id' => $id,
@@ -1564,12 +1573,47 @@ class Convey extends Model
             ->where('id', $oid)
             ->update(['c_status' => 1, 'status' => 1]);
             
-            
-        Db::name('xy_reward_log')->insert(['oid' => $oid, 'uid' => $uid, 'num' => $num, 'addtime' => time(), 'type' => 2, 'status' => 2]);
-            
-            
-        //记录充值返佣订单
-        /************* 发放交易奖励 *********/
+        Db::name('xy_reward_log')->insert(['oid' => $oid, 'uid' => $uid, 'num' => $num, 'addtime' => time(), 'type' => 2, 'status' => 2]);    
+        // 检查是否为复数订单，如果是则自动处理下一单
+        //$order_info = Db::name('xy_convey')->where('id', $oid)->find();
+        //if ($order_info && $order_info['order_mode'] == $this->order_mode_array['compound_order']) {
+            // 查找对应的复数订单记录
+            // $compound_log = Db::name('xy_compound_order_log')
+            //     ->where('uid', $uid)
+            //     ->where('status', 1) // 进行中
+            //     ->order('create_time DESC')
+            //     ->find();
+
+            // if ($compound_log) {
+            //     // 更新已完成订单数
+            //     Db::name('xy_compound_order_log')
+            //         ->where('id', $compound_log['id'])
+            //         ->update([
+            //             'completed_orders' => Db::raw('completed_orders + 1'),
+            //             'update_time' => time()
+            //         ]);
+
+            //     // 检查是否还有下一单需要处理
+            //     $updated_log = Db::name('xy_compound_order_log')
+            //         ->where('id', $compound_log['id'])
+            //         ->find();
+
+            //     if ($updated_log['completed_orders'] < $updated_log['total_orders']) {
+            //         // 还有下一单，自动创建
+            //         $next_result = $this->process_compound_order_next($compound_log['id']);
+            //         if ($next_result['code'] == 0) {
+            //             // 下一单创建成功，可以在这里添加通知逻辑
+            //         }
+            //     } else {
+            //         // 复数订单已完成
+            //         Db::name('xy_compound_order_log')
+            //             ->where('id', $compound_log['id'])
+            //             ->update(['status' => 2, 'update_time' => time()]); // 2=已完成
+            //     }
+            // }
+        //}
+
+
         //之后下单人级别>0 才发放层级奖励
         $level = Db::name('xy_users')->where('id', $uid)->value('level');
         if ($level > 0) {
@@ -1617,5 +1661,192 @@ class Convey extends Model
             }
         }
         /************* 发放交易奖励 *********/
+    }
+
+    /**
+     * 检查用户是否应该触发复数订单选择
+     * @param int $uid 用户ID
+     * @return array|false 返回配置信息或false
+     */
+    public function check_compound_order_trigger($uid)
+    {
+        // 检查用户是否有未完成的复数订单
+        $existing_log = Db::name('xy_compound_order_log')
+            ->where('uid', $uid)
+            ->where('status', 1) // 进行中
+            ->order('create_time DESC')
+            ->find();
+
+        if ($existing_log) {
+            
+            $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+            // 有未完成的复数订单
+            if ($existing_log['trigger_count'] == 0) {
+                // trigger_count为0，立即触发弹窗
+                return [
+                    'type' => 'immediate_trigger',
+                    'log' => $existing_log
+                ];
+            } else {
+                // trigger_count大于0，继续下单并减1
+                
+                return ['type' => 'continue_order','log' => $existing_log];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 开始复数订单流程
+     * @param int $uid 用户ID
+     * @param int $option_id 选择的选项ID
+     * @param string $trigger_order_id 触发订单ID
+     * @return array
+     */
+    public function start_compound_order($uid, $option_id, $trigger_order_id)
+    {
+        // 获取选项信息
+        $option = Db::name('xy_compound_order_options')
+            ->where('id', $option_id)
+            ->where('status', 1)
+            ->find();
+
+        if (!$option) {
+            return ['code' => 1, 'info' => '选项不存在'];
+        }
+
+        // 获取用户今日完成的订单数作为trigger_count
+        $today_start = strtotime(date('Y-m-d'));
+        $trigger_count = Db::name('xy_convey')
+            ->where('uid', $uid)
+            ->where('status', 1)
+            ->where('addtime', '>=', $today_start)
+            ->count();
+
+        // 创建复数订单记录
+        $log_data = [
+            'uid' => $uid,
+            'config_id' => $option['config_id'],
+            'option_id' => $option_id,
+            'trigger_order_id' => $trigger_order_id,
+            'total_orders' => $option['order_count'],
+            'completed_orders' => 0,
+            'status' => 1, // 进行中
+            'custom_options' => json_encode([$option]), // 保存选中的选项
+            'trigger_count' => $trigger_count,
+            'create_time' => time(),
+            'update_time' => time()
+        ];
+
+        $log_id = Db::name('xy_compound_order_log')->insertGetId($log_data);
+
+        if (!$log_id) {
+            return ['code' => 1, 'info' => '创建复数订单记录失败'];
+        }
+
+        // 生成第一张FS订单
+        $result = $this->create_compound_order($uid, $option, 1);
+
+        return ['code' => 0, 'info' => '复数订单开始，第一张订单已生成', 'log_id' => $log_id];
+    }
+
+    /**
+     * 创建复数订单
+     * @param int $uid 用户ID
+     * @param array $option 选项信息
+     * @param int $order_num 当前是第几张订单
+     * @return array
+     */
+    public function create_compound_order($uid, $option, $order_num)
+    {
+        // 计算金额和佣金
+        $amount = $option['amount_type'] == 1 ?
+            ($option['amount_value'] / 100) * 100 : // 比例计算（示例）
+            $option['amount_value']; // 固定金额
+
+        $commission = $option['commission_type'] == 1 ?
+            ($option['commission_value'] / 100) * $amount : // 比例计算
+            $option['commission_value']; // 固定金额
+
+        // 生成FS前缀的订单号
+        $order_id = 'FS' . date('YmdHis') . mt_rand(1000, 9999);
+
+        // 创建订单数据
+        $order_data = [
+            'uid' => $uid,
+            'oid' => $order_id,
+            'cid' => 1, // 默认商品分类
+            'num' => $amount,
+            'commission' => $commission,
+            'addtime' => time(),
+            'status' => 0, // 待处理
+            'endtime' => 0,
+            'image' => '',
+            'is_pay' => 0,
+            'goods_count' => 1,
+            'goods_price' => $amount,
+            'goods_pic' => '',
+            'goods_name' => '复数订单 #' . $order_num,
+            'duorw' => 0,
+            'group_rule_num' => 0,
+            'compound_order_id' => $option['id'] // 关联复数订单选项
+        ];
+
+        $result = Db::name('xy_convey')->insert($order_data);
+
+        if ($result) {
+            return ['code' => 0, 'info' => '复数订单创建成功', 'oid' => $order_id];
+        } else {
+            return ['code' => 1, 'info' => '复数订单创建失败'];
+        }
+    }
+
+    /**
+     * 处理复数订单的下一单
+     * @param int $log_id 复数订单记录ID
+     * @return array
+     */
+    public function process_compound_order_next($log_id)
+    {
+        $log = Db::name('xy_compound_order_log')
+            ->where('id', $log_id)
+            ->where('status', 1)
+            ->find();
+
+        if (!$log) {
+            return ['code' => 1, 'info' => '复数订单记录不存在或已完成'];
+        }
+
+        if ($log['completed_orders'] >= $log['total_orders']) {
+            // 复数订单已完成
+            Db::name('xy_compound_order_log')
+                ->where('id', $log_id)
+                ->update(['status' => 2, 'update_time' => time()]); // 2=已完成
+            return ['code' => 1, 'info' => '复数订单已完成'];
+        }
+
+        // 解析custom_options获取选项信息
+        $custom_options = json_decode($log['custom_options'], true);
+        if (!$custom_options || !isset($custom_options[0])) {
+            return ['code' => 1, 'info' => '选项信息不存在'];
+        }
+
+        $option = $custom_options[0];
+
+        // 生成下一张订单
+        $next_order_num = $log['completed_orders'] + 1;
+        $result = $this->create_compound_order($log['uid'], $option, $next_order_num);
+
+        if ($result['code'] == 0) {
+            // 更新完成数量
+            Db::name('xy_compound_order_log')
+                ->where('id', $log_id)
+                ->update([
+                    'completed_orders' => $next_order_num,
+                    'update_time' => time()
+                ]);
+        }
+
+        return $result;
     }
 } 

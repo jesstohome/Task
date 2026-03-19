@@ -1,0 +1,180 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <!--<button class="layui-btn layui-btn-sm" data-modal="{:url('options')}?config_id={$config_id}" data-title="添加选项">-->
+        <!--    <i class="layui-icon layui-icon-add-1"></i> 添加选项-->
+        <!--</button>-->
+        <button class="layui-btn layui-btn-sm layui-btn-danger" data-reload="">
+            <i class="layui-icon layui-icon-refresh"></i> 刷新
+        </button>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table" lay-skin="line">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>描述</th>
+                    <th>订单数量</th>
+                    <th>金额设置</th>
+                    <th>佣金设置(%)</th>
+                    <th>排序</th>
+                    <!--<th>状态</th>-->
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $options as $option}
+                <tr>
+                    <td>{$option.id}</td>
+                    <td>{$option.title}</td>
+                    <td>{$option.description|default='-'}</td>
+                    <td>{$option.order_count}</td>
+                    <!--<td>-->
+                    <!--    {if $option.amount_type == 1}-->
+                    <!--        比例: {$option.amount_value}%-->
+                    <!--    {else}-->
+                    <!--        固定: {$option.amount_value}-->
+                    <!--    {/if}-->
+                    <!--</td>-->
+                    <!--<td>-->
+                    <!--    {if $option.commission_type == 1}-->
+                    <!--        比例: {$option.commission_value}%-->
+                    <!--    {else}-->
+                    <!--        固定: {$option.commission_value}-->
+                    <!--    {/if}-->
+                    <!--</td>-->
+                    <td>{$option.amount_value}</td>
+                    <td>{$option.commission_value}</td>
+                    <td>{$option.sort}</td>
+                    <!--<td>-->
+                    <!--    {if $option.status == 1}-->
+                    <!--        <span class="layui-badge layui-bg-green">启用</span>-->
+                    <!--    {else}-->
+                    <!--        <span class="layui-badge layui-bg-gray">禁用</span>-->
+                    <!--    {/if}-->
+                    <!--</td>-->
+                    <td>
+                        <button class="layui-btn layui-btn-xs" data-modal="{:url('edit_option')}?id={$option.id}&config_id={$config_id}" data-title="编辑选项">
+                            <i class="layui-icon layui-icon-edit"></i> 编辑
+                        </button>
+                        <!--<button class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('deleteOption')}" data-params="id={$option.id}" data-confirm="确定要删除这个选项吗？">-->
+                        <!--    <i class="layui-icon layui-icon-delete"></i> 删除-->
+                        <!--</button>-->
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 选项编辑模态框 -->
+<div id="option-modal" style="display:none;">
+    <form onsubmit="return false" data-auto="true" action="{:url('options')}" method="post" class='layui-form' autocomplete="off">
+        <input type="hidden" name="id" value="{if isset($option)}{$option.id}{/if}">
+        <input type="hidden" name="config_id" value="{$config_id}">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required placeholder="请输入选项标题" class="layui-input" value="{if isset($option)}{$option.title}{/if}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" placeholder="请输入选项描述" class="layui-textarea">{if isset($option)}{$option.description}{/if}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单数量</label>
+            <div class="layui-input-block">
+                <input type="number" name="order_count" required min="1" placeholder="复数订单包含的订单数量" class="layui-input" value="{if isset($option)}{$option.order_count}{/if}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">金额类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="amount_type" value="1" title="比例" {if !isset($option) || $option.amount_type == 1}checked{/if}>
+                <input type="radio" name="amount_type" value="2" title="固定金额" {if isset($option) && $option.amount_type == 2}checked{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">金额值</label>
+            <div class="layui-input-block">
+                <input type="number" name="amount_value" required step="0.01" min="0" placeholder="比例或固定金额值" class="layui-input" value="{if isset($option)}{$option.amount_value}{/if}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">佣金类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="commission_type" value="1" title="比例" {if !isset($option) || $option.commission_type == 1}checked{/if}>
+                <input type="radio" name="commission_type" value="2" title="固定金额" {if isset($option) && $option.commission_type == 2}checked{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">佣金值</label>
+            <div class="layui-input-block">
+                <input type="number" name="commission_value" required step="0.01" min="0" placeholder="比例或固定金额值" class="layui-input" value="{if isset($option)}{$option.commission_value}{/if}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-block">
+                <input type="number" name="sort" required min="0" placeholder="数字越小越靠前" class="layui-input" value="{if isset($option)}{$option.sort}{else}0{/if}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" {if !isset($option) || $option.status == 1}checked{/if}>
+                <input type="radio" name="status" value="0" title="禁用" {if isset($option) && $option.status == 0}checked{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">{if isset($option)}保存修改{else}保存{/if}</button>
+            <button class="layui-btn layui-btn-primary" type="button" onclick="layer.closeAll()">取消</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 表单提交处理
+    $('[data-auto="true"]').autoSubmit(function (data) {
+        if (data.code === 0) {
+            $.msg.success(data.info, function () {
+                location.reload();
+            });
+        } else {
+            $.msg.error(data.info);
+        }
+    });
+
+    // 删除操作
+    $('[data-action]').on('click', function () {
+        var url = $(this).data('action');
+        var params = $(this).data('params');
+        var confirmText = $(this).data('confirm') || '确定要执行此操作吗？';
+
+        if (confirm(confirmText)) {
+            $.post(url, params, function (data) {
+                if (data.code === 0) {
+                    $.msg.success(data.info, function () {
+                        location.reload();
+                    });
+                } else {
+                    $.msg.error(data.info);
+                }
+            });
+        }
+    });
+</script>

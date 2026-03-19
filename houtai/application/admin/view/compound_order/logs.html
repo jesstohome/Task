@@ -1,0 +1,118 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <form class="layui-form layui-form-pane" action="{:url()}" method="get">
+            <div class="layui-form-item" style="margin-bottom: 0;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户ID</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="uid" value="{:input('uid')}" placeholder="请输入用户ID" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" value="{:input('username')}" placeholder="请输入用户名" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <select name="status" lay-filter="status-select">
+                            <option value="">全部</option>
+                            <option value="1" {if input('status') == '1'}selected{/if}>进行中</option>
+                            <option value="2" {if input('status') == '2'}selected{/if}>已完成</option>
+                            <option value="3" {if input('status') == '3'}selected{/if}>已取消</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layui-btn-sm" type="submit">
+                        <i class="layui-icon layui-icon-search"></i> 搜索
+                    </button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url()}'">
+                        <i class="layui-icon layui-icon-refresh"></i> 重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table" lay-skin="line">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>剩余触发单数</th>
+                    <!--<th>当前单数</th>-->
+                    <th>任务进行单数</th>
+                    <th>选中选项</th>
+                    <th>任务状态</th>
+                    <th>详情</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $logs as $log}
+                <tr>
+                    <td>{$log.id}</td>
+                    <td>{$log.username ?: '未知用户'}</td>
+                    <td>{$log.trigger_count}</td>
+                    <!--<td>{$log.total_orders}</td>-->
+                    <td>{$log.completed_orders}</td>
+                    <td>
+                        {if $log.selected_option}
+                            {$log.selected_option.title}
+                        {else}
+                            -
+                        {/if}
+                    </td>
+                    <td>
+                        {if $log.status == 1}
+                            <span class="layui-badge layui-bg-blue">进行中</span>
+                        {elseif $log.status == 2}
+                            <span class="layui-badge layui-bg-green">已完成</span>
+                        {else}
+                            <span class="layui-badge layui-bg-gray">已取消</span>
+                        {/if}
+                    </td>
+                    <td>
+                        {if $log.custom_options_parsed}
+                            {foreach $log.custom_options_parsed as $option}
+                                <div style="margin-bottom: 5px; padding: 5px; border: 1px solid #f0f0f0; border-radius: 3px;">
+                                    {$option.title}：
+                                    <strong>订单数量:</strong> {$option.order_count}
+                                    <strong> 订单金额:</strong> {$option.amount_value}
+                                    <strong> 佣金比例:</strong> {$option.commission_value}%
+                                </div>
+                            {/foreach}
+                        {else}
+                            无详情数据
+                        {/if}
+                    </td>
+                    <td>{:date('Y-m-d H:i:s', $log['create_time'])}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('deleteLog')}" data-value="id#{$log.id}" data-confirm="确定要删除这条复数订单记录吗？">
+                            <i class="layui-icon layui-icon-delete"></i> 删除
+                        </button>
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+
+        <!-- 分页 -->
+        {$pagination|raw}
+    </div>
+</div>
+
+<script>
+    // 渲染表单元素
+    layui.use(['form'], function(){
+        var form = layui.form;
+        form.render();
+    });
+
+    // 分页样式调整
+    $('.layui-laypage').addClass('layui-clear');
+</script>

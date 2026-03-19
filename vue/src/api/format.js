@@ -22,7 +22,7 @@ export const formatTime = (format = "", num = new Date().getTime()) => {
         if (ret) {
             renum = (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")) //根据复数前面是否补零,如“mm”补零，单“m”前面不补零
             format = format.replace(ret[1], renum)  //替换
-        };
-    };
+        }
+    }
     return format;
 };

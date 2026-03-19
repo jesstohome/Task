@@ -124,7 +124,7 @@ export default {
     bind_bank().then((res) => {
       if (res.code === 0) {
         paypwdstatus.value = res.data?.paypwdstatus;
-      };
+      }
     });
 
     return {
