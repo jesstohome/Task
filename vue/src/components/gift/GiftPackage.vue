@@ -11,10 +11,15 @@
           v-for="(box, index) in giftBoxes"
           :key="index"
           @click="selectGiftBox(index)"
-          :class="{ 'opening': openingIndex === index }"
+          :class="{ 'opening': openingIndex === -2 }"
         >
-          <div class="box-icon">{{ openingIndex === index ? '🎉' : '🎁' }}</div>
-          <div class="box-text">{{ box.text }}</div>
+          <div v-if="openingIndex !== -2" class="box-icon">
+            <img :src="getBoxImage(index)" alt="gift box" />
+          </div>
+          <div v-if="openingIndex === -2" class="opened-content" :class="{ 'selected-gold': selectedBoxIndex === index }">
+            <div class="opened-text">{{ getOpenedText(index) }}</div>
+          </div>
+          <div class="box-text" v-if="openingIndex !== -2">{{ box.text }}</div>
         </div>
       </div>
     </div>
@@ -49,6 +54,7 @@ export default {
     const showGift = ref(false);
     const showResult = ref(false);
     const openingIndex = ref(-1);
+    const selectedBoxIndex = ref(-1); // 记录选中的盒子索引
     const giftId = ref(0);
     const resultMessage = ref('');
     const { proxy } = getCurrentInstance()
@@ -91,11 +97,11 @@ export default {
           showGift.value = true;
         } else {
           // 没有礼物时确保弹窗不显示
-          showGift.value = false;
+          //showGift.value = false;
         }
       } catch (error) {
         console.error('Check gift failed:', error);
-        showGift.value = false;
+        //showGift.value = false;
       }
     };
 
@@ -106,7 +112,7 @@ export default {
       }
       giftCheckTimer = setInterval(() => {
         checkGiftStatus();
-      }, 3000); // 每3秒检查一次
+      }, 5000); // 每5秒检查一次
       
       // 立即执行一次
       checkGiftStatus();
@@ -122,19 +128,20 @@ export default {
 
     // 选择礼包
     const selectGiftBox = async (index) => {
-      openingIndex.value = index;
+      selectedBoxIndex.value = index; // 记录选中的盒子
+      openingIndex.value = -2;
       const selectedIndex = index + 1;
 
       // 开箱动画
       setTimeout(async () => {
         try {
           const res = await claim_gift({ gift_id: giftId.value, selected_gift: selectedIndex });
-          openingIndex.value = -1;
+          
 
           if (res.code === 0) {
             resultMessage.value = res.info;
             showResult.value = true;
-            showGift.value = false;
+            
             // 使用更高的z-index显示成功消息
             proxy.$Message({
               type: 'success',
@@ -145,7 +152,14 @@ export default {
             // 3秒后关闭结果弹窗
             setTimeout(() => {
               showResult.value = false;
-            }, 3000);
+            }, 2000);
+            setTimeout(() => {
+              showGift.value = false;
+            }, 3500);
+            setTimeout(() => {
+              openingIndex.value = -1;
+              selectedBoxIndex.value = -1; // 关闭后重置选中状态，背景恢复原色
+            }, 4500);
           } else {
             // 使用更高的z-index显示错误消息
             proxy.$Message({
@@ -156,6 +170,7 @@ export default {
           }
         } catch (error) {
           openingIndex.value = -1;
+          selectedBoxIndex.value = -1; // 异常时也重置
           console.error('Claim gift failed:', error);
           proxy.$Message({
             type: 'error',
@@ -169,6 +184,33 @@ export default {
     // 关闭礼包
     const onGiftClose = () => {
       showGift.value = false;
+      selectedBoxIndex.value = -1; // 关闭弹窗时重置选中状态
+    };
+
+    // 获取礼盒图片
+    const getBoxImage = (index) => {
+      const images = [
+        require('@/assets/images/home/gifta.png'),
+        require('@/assets/images/home/giftb.png'),
+        require('@/assets/images/home/giftc.png')
+      ];
+      return images[index];
+    };
+
+    // 获取打开后的文本
+    const getOpenedText = (index) => {
+      const box = giftBoxes.value[index];
+      if (!box.data) return box.text;
+      switch (box.type) {
+        case 'money':
+          return `Money Reward: $${box.data.amount}`;
+        case 'order':
+          return `Order Reward: Amount $${box.data.order_amount}, Commission ${box.data.commission}%`;
+        case 'compound':
+          return `Compound Reward: Amount $${box.data.order_amount}, Count ${box.data.order_count}`;
+        default:
+          return box.text;
+      }
     };
 
     // 生命周期钩子
@@ -184,12 +226,15 @@ export default {
       showGift,
       showResult,
       openingIndex,
+      selectedBoxIndex,
       giftBoxes,
       resultMessage,
       selectGiftBox,
       onGiftClose,
       startGiftPolling,
-      stopGiftPolling
+      stopGiftPolling,
+      getBoxImage,
+      getOpenedText
     };
   }
 };
@@ -244,13 +289,13 @@ export default {
 
 .gift-box {
   width: 200px;
-  height: 200px;
-  background: linear-gradient(45deg, #ffd700, #ff8c00);
+  height: 230px;
+  background: linear-gradient(45deg, #4215ff8a, #939393e0);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
@@ -263,7 +308,12 @@ export default {
 }
 
 .gift-box.opening {
-  animation: shake 1s ease-in-out;
+  animation: flip 1s ease-in-out forwards;
+}
+
+/* 选中后背景变金黄色 */
+.opened-content.selected-gold {
+  background: linear-gradient(45deg, #f5a623, #ffd700) !important;
 }
 
 .box-icon {
@@ -272,8 +322,33 @@ export default {
   transition: transform 0.5s;
 }
 
+.box-icon img {
+  width: 120px;
+  height: 120px;
+}
+
 .gift-box.opening .box-icon {
   transform: rotateY(180deg);
+}
+
+.opened-content {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  color: black;
+  font-size: 24px;
+  line-height: 1.4;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: flip-5aec9307 1s ease-in-out forwards;
+}
+
+.opened-text {
+  font-weight: bold;
 }
 
 .box-text {
@@ -299,6 +374,11 @@ export default {
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
   20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes flip {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
 }
 
 .result-wrapper {
