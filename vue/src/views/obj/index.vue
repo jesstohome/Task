@@ -1,50 +1,138 @@
 <template>
   <div class="obj home">
 
-    <!-- ═══════════════════════════════════════════════════════
-         加载遮罩（原有，不动）
-    ═══════════════════════════════════════════════════════ -->
-    <div class="img_loading" v-if="loading">
-      <img :src="loadImg" class="img" alt="">
-      <div>{{ loadText }}</div>
-    </div>
+    <!-- 加载遮罩（优化版） -->
+    <transition name="loading-fade">
+      <div class="img_loading" v-if="loading">
+        <!-- 背景粒子 -->
+        <div class="loading-particles">
+          <div class="particle" v-for="i in 12" :key="i" :style="getParticleStyle(i)"></div>
+        </div>
 
-    <!-- ═══════════════════════════════════════════════════════
-         ① 新增：顶部英雄区（Hero Section）
-         深色半透明背景 + 汽车背景图，底部白色大圆弧过渡
-    ═══════════════════════════════════════════════════════ -->
+        <!-- 主体内容 -->
+        <div class="loading-body">
+          <!-- GIF 图片容器 -->
+          <div class="loading-gif-wrap">
+            <img :src="loadImg" class="loading-gif" alt="" />
+            <!-- 扫光效果 -->
+            <div class="loading-gif-shine"></div>
+          </div>
+
+          <!-- 步骤文字 -->
+          <div class="loading-text-wrap">
+            <div class="loading-step-text">{{ loadText }}</div>
+            <div class="loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <!-- 进度条 -->
+          <div class="loading-progress">
+            <div class="loading-progress-bar" :class="loadProgressClass"></div>
+          </div>
+
+          <!-- 步骤指示器 -->
+          <div class="loading-steps">
+            <div class="step-item" :class="{ active: loadStep >= 1, done: loadStep > 1 }">
+              <div class="step-dot">
+                <span v-if="loadStep > 1">✓</span>
+                <span v-else>1</span>
+              </div>
+              <div class="step-label">Matching</div>
+            </div>
+            <div class="step-line" :class="{ active: loadStep > 1 }"></div>
+            <div class="step-item" :class="{ active: loadStep >= 2, done: loadStep > 2 }">
+              <div class="step-dot">
+                <span v-if="loadStep > 2">✓</span>
+                <span v-else>2</span>
+              </div>
+              <div class="step-label">Pairing</div>
+            </div>
+            <div class="step-line" :class="{ active: loadStep > 2 }"></div>
+            <div class="step-item" :class="{ active: loadStep >= 3 }">
+              <div class="step-dot">
+                <span>3</span>
+              </div>
+              <div class="step-label">Success</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <!-- 抢单成功结果遮罩 -->
+    <transition name="result-slide">
+      <div class="order-result-mask" v-if="showOrderResult">
+        <!-- 背景烟花 -->
+        <div class="result-fireworks">
+          <div class="fw-dot" v-for="i in 16" :key="i" :style="getFwStyle(i)"></div>
+        </div>
+
+        <div class="result-card">
+          <!-- 顶部光晕圆 -->
+          <div class="result-card-halo"></div>
+
+          <!-- 成功图标 -->
+          <div class="result-icon-wrap">
+            <div class="result-icon-ring ring-outer"></div>
+            <div class="result-icon-ring ring-inner"></div>
+            <div class="result-icon">🚀</div>
+          </div>
+
+          <!-- 标题 -->
+          <div class="result-title">Order Matched!</div>
+          <div class="result-subtitle">Your order has been successfully created</div>
+
+          <!-- 分隔线 -->
+          <div class="result-divider">
+            <span class="divider-dot"></span>
+            <span class="divider-line"></span>
+            <span class="divider-dot"></span>
+          </div>
+
+          <!-- 信息展示 -->
+          <div class="result-info-grid">
+            <div class="result-info-item">
+              <div class="info-label">Commission</div>
+              <div class="info-value info-value--highlight">+{{ resultOrderInfo.commission }} {{ currency }}</div>
+            </div>
+            <div class="result-info-item">
+              <div class="info-label">Order Amount</div>
+              <div class="info-value">{{ resultOrderInfo.amount }} {{ currency }}</div>
+            </div>
+          </div>
+
+          <!-- 底部提示 -->
+          <div class="result-tip">Redirecting to order details...</div>
+
+          <!-- 倒计时条 -->
+          <div class="result-countdown-bar">
+            <div class="result-countdown-fill" :style="{ width: resultCountdown + '%' }"></div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <!-- ═══════════════ 以下页面内容完全不动 ═══════════════ -->
+
     <div class="hero-section">
-
-      <!-- 背景图层 -->
       <div class="hero-bg">
         <img :src="require('@/assets/images/starting_bg.png')" alt="" class="hero-bg-img" />
-        <!-- <div class="hero-bg-overlay"></div> -->
       </div>
-
-      <!-- 顶部导航行 -->
       <div class="hero-nav">
-        <!-- 左：头像 + 用户名 -->
         <div class="hero-nav-left">
           <div class="hero-avatar">
             <img :src="userinfo?.headpic" alt="avatar" />
           </div>
           <span class="hero-greeting">Hi, {{userinfo?.username}} 👋</span>
         </div>
-        <!-- 右：等级标签 -->
         <div class="hero-rank">VIP {{ level }}</div>
       </div>
-
-      <!-- 副标题文字 -->
       <div class="hero-subtitle">
         Join <strong>65,000</strong> others and learn the secrets to <strong>SEO</strong> success with our weekly blog posts.
       </div>
-
-      <!-- 两张余额卡片 -->
       <div class="hero-cards">
-
-        <!-- 左卡：Wallet Balance -->
         <div class="hero-card">
-          <!-- 卡片顶部圆形图标 -->
           <div class="hero-card-icon hero-card-icon--wallet">
             <img :src="require('@/assets/images/usdt.png')" alt="" class="hero-bg-img" />
           </div>
@@ -53,14 +141,9 @@
             <span class="hero-card-amount--negative">{{monney}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
-          <div class="hero-card-desc">
-            The total balance reflects both the deposited amount and profits earned
-          </div>
+          <div class="hero-card-desc">The total balance reflects both the deposited amount and profits earned</div>
         </div>
-
-        <!-- 右卡：Advertising salary -->
         <div class="hero-card">
-          <!-- 卡片顶部圆形图标 -->
           <div class="hero-card-icon hero-card-icon--ad">
             <img :src="require('@/assets/images/qianbao.png')" alt="" class="hero-bg-img" />
           </div>
@@ -69,20 +152,12 @@
             <span class="hero-card-amount--zero">{{mInfo.yon3}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
-          <div class="hero-card-desc">
-            Fixed balance where there is a mixed product pending in process.
-          </div>
+          <div class="hero-card-desc">Fixed balance where there is a mixed product pending in process.</div>
         </div>
-
       </div>
-
-      <!-- 底部白色弧形（让hero平滑过渡到白色区域） -->
       <div class="hero-arc"></div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════
-         ② AdShowcase 组件（已有，不改动）
-    ═══════════════════════════════════════════════════════ -->
     <AdShowcase
       v-if="info && mInfo"
       :completed="info.day_completed_count || 0"
@@ -91,20 +166,12 @@
       @match="getDd"
     />
 
-    <!-- ═══════════════════════════════════════════════════════
-         ③ 新增：AdShowcase 下方区块
-         Important Notes + 版权
-    ═══════════════════════════════════════════════════════ -->
     <div class="below-showcase">
-
-      <!-- Important Notes 卡片 -->
       <div class="notes-card">
-        <!-- 背景图（半透明叠加汽车图片） -->
         <div class="notes-card-bg">
           <img :src="require('@/assets/images/notice.png')" alt="" class="notes-bg-img" />
           <div class="notes-bg-overlay"></div>
         </div>
-        <!-- 内容 -->
         <div class="notes-content">
           <div class="notes-title">Important Notes</div>
           <div class="notes-body">
@@ -113,15 +180,9 @@
           </div>
         </div>
       </div>
-
-      <!-- 版权信息 -->
       <div class="copyright">©1999-2026 AWISEE</div>
-
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════
-         原有弹窗（完全保留）
-    ═══════════════════════════════════════════════════════ -->
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">
       <van-swipe class="my-swipe" indicator-color="white">
         <van-swipe-item v-for="item in info.level_list || []" :key="item.id">
@@ -189,10 +250,8 @@
       </div>
     </van-dialog>
 
-    <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />
 
-    <!-- 复数订单选择弹窗 -->
     <van-dialog
       v-model:show="showCompoundOrder"
       title="Multiple orders"
@@ -209,7 +268,6 @@
             Please select an order sequence, and the system will automatically create multiple orders for you.
           </p>
         </div>
-
         <div class="compound-order-options" v-if="compoundOrderData">
           <div
             v-for="option in compoundOrderData.log.custom_options"
@@ -220,23 +278,9 @@
             <div class="option-header">
               <h4>{{ option.title }}</h4>
             </div>
-
-            <div class="option-desc" v-if="option.description">
-              {{ option.description }}
-            </div>
+            <div class="option-desc" v-if="option.description">{{ option.description }}</div>
           </div>
         </div>
-
-        <!-- <div class="compound-order-footer">
-          <van-button
-            type="default"
-            block
-            @click="skipCompoundOrder"
-            class="skip-btn"
-          >
-            暂时跳过
-          </van-button>
-        </div> -->
       </div>
     </van-dialog>
 
@@ -244,7 +288,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, reactive, computed, onMounted } from 'vue';
+import { ref, computed, getCurrentInstance, reactive, onMounted } from 'vue';
 import { rot_order, submit_order, order_info, do_order, start_compound_order, process_compound_order_next } from '@/api/order/index'
 import store from '@/store/index'
 import { getdetailbyid, getHomeData } from '@/api/home/index.js'
@@ -266,6 +310,12 @@ export default {
     const loading = ref(false)
     const loadText = ref('')
     const loadImg = ref('')
+    const loadStep = ref(0)           // 新增：步骤状态 1/2/3
+    const showOrderResult = ref(false) // 新增：成功结果遮罩
+    const resultOrderInfo = ref({ commission: '0.00', amount: '0.00' }) // 新增：结果数据
+    const resultCountdown = ref(100)   // 新增：倒计时进度
+    let resultCountdownTimer = null
+
     const level = ref(store.state.minfo?.level || 0)
     const currency = ref(store.state.baseInfo?.currency)
     const info = ref(store.state.objInfo)
@@ -282,6 +332,14 @@ export default {
     const showGift = ref(false)
     const showCompoundOrder = ref(false)
     const compoundOrderData = ref(null)
+
+    // 进度条 class 根据步骤切换宽度
+    const loadProgressClass = computed(() => {
+      if (loadStep.value === 1) return 'progress-step1'
+      if (loadStep.value === 2) return 'progress-step2'
+      if (loadStep.value === 3) return 'progress-step3'
+      return ''
+    })
 
     const status_list = reactive([
       { label: t('msg.dtj'), value: 0 },
@@ -305,10 +363,8 @@ export default {
     }
     initData()
 
-    // 礼包检查逻辑已在GiftPackage组件中自动处理（自动定时轮询）
-    // 初始化时设置showGift为true，组件会自动启动定时检查
     onMounted(() => {
-        showGift.value = true;
+      showGift.value = true;
     })
 
     const tjOrder = (row) => { push({ name: 'detail', params: { id: row.oid } }) }
@@ -362,33 +418,53 @@ export default {
       }
     })
 
+    // 粒子样式
+    const getParticleStyle = (i) => ({
+      left: `${(i * 31 + 7) % 100}%`,
+      top: `${(i * 47 + 13) % 100}%`,
+      width: `${4 + (i % 5)}px`,
+      height: `${4 + (i % 5)}px`,
+      animationDelay: `${(i * 0.4) % 4}s`,
+      animationDuration: `${3 + (i % 3)}s`,
+      background: i % 3 === 0 ? '#ffd700' : i % 3 === 1 ? '#a855f7' : '#3b82f6'
+    })
+
+    // 烟花点样式
+    const getFwStyle = (i) => ({
+      left: `${(i * 23 + 5) % 90 + 5}%`,
+      top: `${(i * 37 + 11) % 70 + 5}%`,
+      animationDelay: `${(i * 0.15) % 1.5}s`,
+      animationDuration: `${1 + (i % 3) * 0.4}s`,
+      background: ['#ffd700','#ff6b6b','#4ecdc4','#a855f7','#3b82f6','#ff9f43','#48dbfb','#ff6b9d'][i % 8]
+    })
+
+    // 启动成功结果倒计时
+    const startResultCountdown = (duration, onDone) => {
+      resultCountdown.value = 100
+      const step = 100 / (duration / 50)
+      resultCountdownTimer = setInterval(() => {
+        resultCountdown.value = Math.max(0, resultCountdown.value - step)
+      }, 50)
+      setTimeout(() => {
+        clearInterval(resultCountdownTimer)
+        onDone && onDone()
+      }, duration)
+    }
+
     const getDd = async () => {
       if (loading.value) return false
       loading.value = true
+      loadStep.value = 1
       loadText.value = t('msg.zzszsj')
       loadImg.value = require('@/assets/images/1.gif')
-
-      // 先检查是否有未完成的复数订单
-      // try {
-      //   const checkResult = await process_compound_order_next()
-      //   if (checkResult.code === 0 && checkResult.compound_order_trigger) {
-      //     // 有未完成的复数订单且需要立即触发
-      //     compoundOrderData.value = checkResult.compound_order_trigger
-      //     showCompoundOrder.value = true
-      //     loading.value = false
-      //     return
-      //   }
-      //   // 如果有未完成的复数订单但不需要立即触发，继续正常的下单流程
-      // } catch (error) {
-      //   console.log('检查复数订单失败:', error)
-      // }
 
       let submit = null
       let time = (info.value.deal_zhuji_time || 1) * 1000
       let time2 = (info.value.deal_shop_time || 2) * 1000
+
       setTimeout(async () => {
+        loadStep.value = 2
         loadText.value = t('msg.zzppsp')
-        loadImg.value = require('@/assets/images/2.gif')
         submit = await submit_order()
         setout(submit, time2)
       }, time);
@@ -397,24 +473,44 @@ export default {
     const setout = (json, time) => {
       setTimeout(() => {
         if (json) {
-          if(json.code === 1 && json.status === 1){
+          if (json.code === 1 && json.status === 1) {
             compoundOrderData.value = json.data
             showCompoundOrder.value = true
             loading.value = false
+            loadStep.value = 0
             return
           }
-          
+
           if (json.code === 0) {
+            // 步骤3：匹配成功
+            loadStep.value = 3
             loadImg.value = require('@/assets/images/3.gif')
             loadText.value = t('msg.ppcg')
 
             setTimeout(() => {
-              proxy.$Message({ message: json.info, type: 'success' })
-              tjOrder(json)
+              // 关闭加载遮罩，展示成功结果卡片
+              // loading.value = false
+              // loadStep.value = 0
+
+              // // 填充结果数据（如果接口返回了订单信息可以从 json 里取）
+              // resultOrderInfo.value = {
+              //   commission: json.commission || '0.00',
+              //   amount: json.amount || '0.00'
+              // }
+              // showOrderResult.value = true
+
+              // 2秒倒计时后跳转
+              startResultCountdown(2000, () => {
+                showOrderResult.value = false
+                proxy.$Message({ message: json.info, type: 'success' })
+                tjOrder(json)
+              })
             }, 1000)
+
           } else {
             proxy.$Message({ message: json.info, type: 'error' })
             loading.value = false
+            loadStep.value = 0
           }
         } else {
           setout(json, time)
@@ -471,7 +567,6 @@ export default {
           proxy.$Message({ message: result.info, type: 'success' })
           showCompoundOrder.value = false
           compoundOrderData.value = null
-          // 刷新页面数据
           initData()
         } else {
           proxy.$Message({ message: result.info, type: 'error' })
@@ -484,9 +579,7 @@ export default {
     const skipCompoundOrder = () => {
       showCompoundOrder.value = false
       compoundOrderData.value = null
-      // 继续正常的下单流程
       proxy.$Message({ message: '下单成功！', type: 'success' })
-      // 这里可以调用原来的成功处理逻辑
     }
 
     return {
@@ -494,7 +587,10 @@ export default {
       loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
       cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
       userinfo, creditPercent, copyInvite, showGift, showCompoundOrder, compoundOrderData,
-      selectCompoundOrderOption, skipCompoundOrder
+      selectCompoundOrderOption, skipCompoundOrder,
+      // 新增
+      loadStep, loadProgressClass, showOrderResult, resultOrderInfo, resultCountdown,
+      getParticleStyle, getFwStyle
     }
   }
 }
@@ -503,48 +599,503 @@ export default {
 <style lang="scss" scoped>
 
 /* ════════════════════════════════════════════════════════════
-   ① 顶部英雄区 Hero Section
+   加载遮罩 - 优化版
+   ════════════════════════════════════════════════════════════ */
+
+.loading-fade-enter-active { animation: loadingFadeIn 0.4s ease forwards; }
+.loading-fade-leave-active { animation: loadingFadeOut 0.4s ease forwards; }
+
+@keyframes loadingFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes loadingFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.img_loading {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, #0d0d2b 0%, #1a0533 40%, #0a1628 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 888;
+  overflow: hidden;
+}
+
+/* 背景粒子 */
+.loading-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: particleFloat linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+}
+
+/* 主体 */
+.loading-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 88%;
+  max-width: 640px;
+}
+
+/* GIF 容器 */
+.loading-gif-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(168, 85, 247, 0.4), 0 20px 60px rgba(0,0,0,0.6);
+  margin-bottom: 40px;
+
+  // 四周霓虹边框光晕
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 26px;
+    background: linear-gradient(45deg, #a855f7, #3b82f6, #ffd700, #a855f7);
+    background-size: 300% 300%;
+    animation: neonBorder 3s linear infinite;
+    z-index: -1;
+  }
+}
+
+@keyframes neonBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.loading-gif {
+  width: 100%;
+  display: block;
+  border-radius: 22px;
+}
+
+/* GIF 扫光 */
+.loading-gif-shine {
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: skewX(-15deg);
+  animation: gifShine 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gifShine {
+  0%, 50% { left: -80%; }
+  100% { left: 150%; }
+}
+
+/* 文字区域 */
+.loading-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.loading-step-text {
+  font-size: 34px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
+  letter-spacing: 1px;
+}
+
+/* 跳动点 */
+.loading-dots {
+  display: flex;
+  gap: 8px;
+  span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a855f7;
+    display: block;
+    animation: dotBounce 1.2s ease-in-out infinite;
+    &:nth-child(2) { animation-delay: 0.2s; background: #3b82f6; }
+    &:nth-child(3) { animation-delay: 0.4s; background: #ffd700; }
+  }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+}
+
+/* 进度条 */
+.loading-progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #a855f7, #3b82f6, #ffd700);
+  background-size: 200% 100%;
+  animation: progressShimmer 1.5s linear infinite;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.progress-step1 { width: 30%; }
+  &.progress-step2 { width: 65%; }
+  &.progress-step3 { width: 100%; }
+}
+
+@keyframes progressShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* 步骤指示器 */
+.loading-steps {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  gap: 0;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.step-dot {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  transition: all 0.4s ease;
+  background: rgba(255,255,255,0.05);
+
+  .step-item.active & {
+    border-color: #a855f7;
+    color: #fff;
+    background: rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+    animation: stepPulse 1.2s ease-in-out infinite;
+  }
+
+  .step-item.done & {
+    border-color: #ffd700;
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
+    animation: none;
+  }
+}
+
+@keyframes stepPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
+  50% { box-shadow: 0 0 35px rgba(168, 85, 247, 1); }
+}
+
+.step-label {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+  .step-item.active & { color: #fff; }
+  .step-item.done & { color: #ffd700; }
+}
+
+.step-line {
+  width: 80px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  margin-bottom: 32px;
+  transition: background 0.4s ease;
+  &.active { background: linear-gradient(90deg, #ffd700, #a855f7); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   抢单成功结果遮罩
+   ════════════════════════════════════════════════════════════ */
+
+.result-slide-enter-active { animation: resultSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.result-slide-leave-active { animation: resultSlideOut 0.4s ease-in forwards; }
+
+@keyframes resultSlideIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes resultSlideOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.9); }
+}
+
+.order-result-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 5, 30, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 889;
+  backdrop-filter: blur(8px);
+}
+
+/* 烟花 */
+.result-fireworks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fw-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: fwBurst 1.4s ease-out infinite;
+}
+
+@keyframes fwBurst {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0 0 currentColor,
+                18px -18px 0 0 currentColor,
+                -18px -18px 0 0 currentColor,
+                18px 18px 0 0 currentColor,
+                -18px 18px 0 0 currentColor,
+                26px 0 0 0 currentColor,
+                -26px 0 0 0 currentColor;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent,
+                55px -55px 0 0 transparent,
+                -55px -55px 0 0 transparent,
+                55px 55px 0 0 transparent,
+                -55px 55px 0 0 transparent,
+                75px 0 0 0 transparent,
+                -75px 0 0 0 transparent;
+  }
+}
+
+/* 结果卡片 */
+.result-card {
+  position: relative;
+  z-index: 1;
+  width: 80%;
+  max-width: 580px;
+  background: linear-gradient(145deg, #1a0533ee, #0d1a3aee);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 32px;
+  padding: 50px 40px 36px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 60px rgba(255,215,0,0.15);
+  overflow: hidden;
+}
+
+/* 卡片顶部光晕 */
+.result-card-halo {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* 成功图标 */
+.result-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  margin-bottom: 28px;
+}
+
+.result-icon-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+  animation: iconRingExpand 2s ease-out infinite;
+
+  &.ring-outer { width: 130px; height: 130px; animation-delay: 0s; }
+  &.ring-inner { width: 100px; height: 100px; animation-delay: 0.4s; }
+}
+
+@keyframes iconRingExpand {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+.result-icon {
+  font-size: 72px;
+  z-index: 1;
+  animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes iconPop {
+  0% { transform: scale(0) rotate(-30deg); }
+  60% { transform: scale(1.2) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.result-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 0 30px rgba(255,215,0,0.7);
+  margin-bottom: 10px;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from { text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+  to { text-shadow: 0 0 40px rgba(255,215,0,0.9), 0 0 60px rgba(255,215,0,0.4); }
+}
+
+.result-subtitle {
+  font-size: 26px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 28px;
+}
+
+/* 分隔线 */
+.result-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  justify-content: center;
+}
+
+.divider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,215,0,0.5);
+}
+
+.divider-line {
+  flex: 1;
+  max-width: 160px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), transparent);
+}
+
+/* 信息网格 */
+.result-info-grid {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.result-info-item {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 20px 16px;
+}
+
+.info-label {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+
+.info-value {
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffffff;
+
+  &--highlight {
+    color: #4ade80;
+    text-shadow: 0 0 16px rgba(74, 222, 128, 0.5);
+  }
+}
+
+.result-tip {
+  font-size: 22px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 16px;
+}
+
+/* 倒计时条 */
+.result-countdown-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.result-countdown-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #f5a623);
+  border-radius: 2px;
+  transition: width 0.05s linear;
+}
+
+/* ════════════════════════════════════════════════════════════
+   以下为原有样式，完全不动
    ════════════════════════════════════════════════════════════ */
 
 .hero-section {
   position: relative;
   width: 100%;
-  /* 底部留出足够空间给白色卡片下沿 */
   padding-bottom: 0;
-  /* 底部白色弧形需要overflow: visible让卡片探出 */
   overflow: visible;
   z-index: 0;
 }
-
-/* 背景图 + 深色遮罩 */
 .hero-bg {
   position: absolute;
   inset: 0;
-  /* 底部弧形裁切：让英雄区视觉上呈圆弧底边 */
   border-bottom-left-radius: 48px;
   border-bottom-right-radius: 48px;
   overflow: hidden;
   z-index: 0;
 }
-.hero-bg-img {
-  width: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-  display: block;
-}
+.hero-bg-img { width: 100%; object-fit: cover; object-position: center 30%; display: block; }
 .hero-bg-overlay {
   position: absolute;
   inset: 0;
-  /* 深色半透明叠加，与图中一致：深蓝灰色调 */
-  background: linear-gradient(
-    160deg,
-    rgba(18, 28, 45, 0.82) 0%,
-    rgba(15, 22, 38, 0.70) 60%,
-    rgba(10, 16, 30, 0.60) 100%
-  );
+  background: linear-gradient(160deg, rgba(18,28,45,0.82) 0%, rgba(15,22,38,0.70) 60%, rgba(10,16,30,0.60) 100%);
 }
-
-/* 顶部导航行 */
 .hero-nav {
   position: relative;
   z-index: 2;
@@ -553,537 +1104,136 @@ export default {
   justify-content: space-between;
   padding: 48px 32px 20px;
 }
-.hero-nav-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
+.hero-nav-left { display: flex; align-items: center; gap: 18px; }
 .hero-avatar {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid rgba(255,255,255,0.6);
-  flex-shrink: 0;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  width: 88px; height: 88px; border-radius: 50%; overflow: hidden;
+  border: 3px solid rgba(255,255,255,0.6); flex-shrink: 0;
+  img { width: 100%; height: 100%; object-fit: cover; }
 }
-.hero-greeting {
-  font-size: 34px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.3px;
-}
-.hero-rank {
-  font-size: 30px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-  /* 图中右侧等级文字白色、粗体 */
-}
-
-/* 副标题文字 */
+.hero-greeting { font-size: 34px; font-weight: 700; color: #ffffff; letter-spacing: 0.3px; }
+.hero-rank { font-size: 30px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; }
 .hero-subtitle {
-  position: relative;
-  z-index: 2;
-  padding: 16px 32px 28px;
-  font-size: 28px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.90);
-  text-align: left;
-  strong {
-    color: #ffffff;
-    font-weight: 800;
-  }
+  position: relative; z-index: 2; padding: 16px 32px 28px;
+  font-size: 28px; line-height: 1.55; color: rgba(255,255,255,0.90);
+  strong { color: #ffffff; font-weight: 800; }
 }
-
-/* 两张余额卡片行 */
-.hero-cards {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  gap: 20px;
-  padding: 0 24px;
-  /* 卡片底部探出英雄区，形成"悬浮"感 */
-  padding-bottom: 60px;
-  top: 70px;
-}
-
-/* 单张卡片 */
+.hero-cards { position: relative; z-index: 2; display: flex; gap: 20px; padding: 0 24px; padding-bottom: 60px; top: 70px; }
 .hero-card {
-  flex: 1;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 28px 24px 28px;
-  position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  text-align: left;
-  overflow: visible;
+  flex: 1; background: #ffffff; border-radius: 24px; padding: 28px 24px 28px;
+  position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.18); text-align: left; overflow: visible;
 }
-
-/* 卡片顶部圆形图标（探出卡片上边缘） */
 .hero-card-icon {
-  position: absolute;
-  top: -48px;
-  left: 80%;
-  transform: translateX(-50%);
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  font-weight: 800;
-  color: #fff;
+  position: absolute; top: -48px; left: 80%; transform: translateX(-50%);
+  width: 86px; height: 86px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 16px rgba(0,0,0,0.22);
-  &--wallet {
-    /* 美元图标：紫色/蓝紫 */
-    background: linear-gradient(135deg, #7b6cf6 0%, #5b4fcf 100%);
-  }
-  &--ad {
-    /* 广告图标：紫色偏深 */
-    background: linear-gradient(135deg, #8b6cf6 0%, #6a3fcf 100%);
-  }
+  &--wallet { background: linear-gradient(135deg, #7b6cf6 0%, #5b4fcf 100%); }
+  &--ad { background: linear-gradient(135deg, #8b6cf6 0%, #6a3fcf 100%); }
 }
+.hero-card-label { font-size: 26px; font-weight: 700; color: #1a1a2e; margin-top: 8px; margin-bottom: 10px; }
+.hero-card-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.hero-card-amount--negative { font-size: 38px; font-weight: 800; color: #4c4cef; }
+.hero-card-amount--zero { font-size: 38px; font-weight: 800; color: #4c4cef; }
+.hero-card-currency { font-size: 26px; font-weight: 600; color: #555; }
+.hero-card-desc { font-size: 24px; line-height: 1.5; color: #000; }
+.hero-arc { position: relative; z-index: 1; width: 100%; height: 0; }
+:deep(.ad-showcase) { margin-top: -20px; }
 
-.hero-card-label {
-  font-size: 26px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-top: 8px;
-  margin-bottom: 10px;
-}
-
-.hero-card-amount {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.hero-card-amount--negative {
-  /* 负数金额：蓝紫色 */
-  font-size: 38px;
-  font-weight: 800;
-  color: #4c4cef;
-}
-.hero-card-amount--zero {
-  /* 零余额：蓝紫色，与左卡一致 */
-  font-size: 38px;
-  font-weight: 800;
-  color: #4c4cef;
-}
-.hero-card-currency {
-  font-size: 26px;
-  font-weight: 600;
-  color: #555;
-}
-
-.hero-card-desc {
-  font-size: 24px;
-  line-height: 1.5;
-  color: #000;
-}
-
-/* 英雄区底部白色弧形过渡
-   让英雄区与AdShowcase之间平滑衔接 */
-.hero-arc {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 0;
-  /* 弧形由 hero-section 的 padding-bottom + 卡片定位实现
-     此元素不需要额外高度 */
-}
-
-/* ════════════════════════════════════════════════════════════
-   ② AdShowcase 上方的间距补偿
-   （卡片探出hero-section，需要给AdShowcase留出空白）
-   ════════════════════════════════════════════════════════════ */
-/* AdShowcase组件内部已有 Start Promoting 标题，
-   给整个页面的AdShowcase容器加上顶部margin */
-:deep(.ad-showcase) {
-  margin-top: -20px;  /* 微调让弧形区域和AdShowcase平滑衔接 */
-}
-
-/* ════════════════════════════════════════════════════════════
-   ③ AdShowcase 下方区块
-   ════════════════════════════════════════════════════════════ */
-
-.below-showcase {
-  width: 100%;
-  padding: 0 24px 40px;
-  box-sizing: border-box;
-  background: #ffffff;
-}
-
-/* Important Notes 卡片 */
-.notes-card {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 32px;
-  min-height: 180px;
-}
+.below-showcase { width: 100%; padding: 0 24px 40px; box-sizing: border-box; background: #ffffff; }
+.notes-card { position: relative; border-radius: 20px; overflow: hidden; margin-bottom: 32px; min-height: 180px; }
 .notes-card-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  img.notes-bg-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 40%;
-    display: block;
-  }
-  /* 深色半透明叠加，颜色比英雄区略浅，偏蓝灰 */
-  .notes-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, rgb(0 0 0 / 16%) 0%, rgb(0 0 0 / 31%) 100%);
-  }
+  position: absolute; inset: 0; z-index: 0;
+  img.notes-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
+  .notes-bg-overlay { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.31) 100%); }
 }
-.notes-content {
-  position: relative;
-  z-index: 1;
-  padding: 32px 28px;
-  text-align: left;
-}
-.notes-title {
-  font-size: 32px;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 18px;
-}
-.notes-body {
-  font-size: 26px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.88);
-  p {
-    margin: 0 0 6px;
-  }
-}
-
-/* 版权信息 */
-.copyright {
-  text-align: center;
-  font-size: 24px;
-  color: #aaaaaa;
-  padding: 8px 0 24px;
-}
-
-/* ════════════════════════════════════════════════════════════
-   ④ 原有 .obj / .content 样式（完全保留）
-   ════════════════════════════════════════════════════════════ */
+.notes-content { position: relative; z-index: 1; padding: 32px 28px; text-align: left; }
+.notes-title { font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 18px; }
+.notes-body { font-size: 26px; line-height: 1.7; color: rgba(255,255,255,0.88); p { margin: 0 0 6px; } }
+.copyright { text-align: center; font-size: 24px; color: #aaaaaa; padding: 8px 0 24px; }
 
 .obj {
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 160px !important;
-
+  display: flex; flex-direction: column; padding-bottom: 160px !important;
   .content {
-    flex: 1;
-    background-color: #fff;
-    padding: 30px;
-    overflow: auto;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    padding-top: 0px;
-    padding-bottom: 650px;
-    color: #333;
-
-
-    .qd {
-      margin-top: 40px;
-      text-align: left;
+    flex: 1; background-color: #fff; padding: 30px; overflow: auto;
+    border-top-left-radius: 30px; border-top-right-radius: 30px;
+    padding-top: 0px; padding-bottom: 650px; color: #333;
+    .qd { margin-top: 40px; text-align: left;
       .title { font-size: 28px; font-weight: 600; color: #333; }
       .sub { font-size: 24px; line-height: 30px; margin-top: 10px; color: #333; }
     }
   }
-
   .hy_box {
-    height: 230px;
-    width: 100%;
-    padding: 25px;
-    color: #fff;
+    height: 230px; width: 100%; padding: 25px; color: #fff;
     background-image: url('~@/assets/images/home/hybj.png');
-    background-size: 100% 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    text-align: left;
-    .t {
-      margin-bottom: 18px;
-      .img { width: 65px; height: auto; margin-right: 20px; vertical-align: middle; }
-      .text { font-size: 27px; }
-    }
-    .b {
-      padding-left: 85px;
-      font-size: 18px;
-      .sub { .line { margin: 0 22px; } }
-    }
+    background-size: 100% 100%; border-radius: 10px; overflow: hidden; position: relative; text-align: left;
+    .t { margin-bottom: 18px; .img { width: 65px; height: auto; margin-right: 20px; vertical-align: middle; } .text { font-size: 27px; } }
+    .b { padding-left: 85px; font-size: 18px; .sub { .line { margin: 0 22px; } } }
     .txlevel {
-      position: absolute;
-      right: 25px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 150px;
-      height: 60px;
-      padding: 0;
-      font-size: 24px;
-      color: #2620ce;
-      background-color: #e2e6ff;
-      border-radius: 20px;
-      border: none;
+      position: absolute; right: 25px; top: 50%; transform: translateY(-50%);
+      width: 150px; height: 60px; padding: 0; font-size: 24px;
+      color: #2620ce; background-color: #e2e6ff; border-radius: 20px; border: none;
     }
   }
-
   :deep(.van-dialog) {
     .van-dialog__header { text-align: left; padding: 20px 40px; font-weight: 600; }
     .list {
-      padding: 0 40px;
-      box-shadow: none;
-      max-height: 40vh;
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
+      padding: 0 40px; box-shadow: none; max-height: 40vh; overflow: auto;
+      display: flex; flex-direction: column;
       .tops { margin-bottom: 0; color: #333; .span { margin-right: 24px; } }
       .box {
-        padding: 15px;
-        border: 2px solid #ccc;
-        margin-top: 24px;
+        padding: 15px; border: 2px solid #ccc; margin-top: 24px;
         &:first-child { margin-top: 0; }
         .value0 { padding: 3px 10px; background-color: red; color: #fff; }
         .value1 { padding: 3px 10px; background-color: #07c160; color: #fff; }
       }
     }
     .van-dialog__content { max-height: 60vh; overflow: auto; }
-    .van-dialog__footer {
-      margin-top: 40px;
-      .van-dialog__confirm { color: $theme; }
-    }
+    .van-dialog__footer { margin-top: 40px; .van-dialog__confirm { color: $theme; } }
   }
-
   .list {
-    padding: 30px;
-    box-shadow: $shadow;
-    color: $subtext;
-    text-align: left;
-    margin-top: 40px;
-    border-radius: 10px;
-    .top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 35px;
-      .time { font-size: 16px; }
-      .tab { font-size: 20px; color: $theme; }
-    }
-    .cet {
-      display: flex;
-      background-color: #fafafa;
-      padding: 10px 0;
-      .img { width: 100%; height: 180PX; }
-      .text { font-size: 20px; }
-    }
-    .monney {
-      margin-top: 30px;
-      .tent {
-        display: flex;
-        justify-content: space-between;
-        font-size: 24px;
-        .span { width: 120px; color: #333; }
-      }
-    }
+    padding: 30px; box-shadow: $shadow; color: $subtext; text-align: left;
+    margin-top: 40px; border-radius: 10px;
+    .top { display: flex; justify-content: space-between; margin-bottom: 35px; .time { font-size: 16px; } .tab { font-size: 20px; color: $theme; } }
+    .cet { display: flex; background-color: #fafafa; padding: 10px 0; .img { width: 100%; height: 180PX; } .text { font-size: 20px; } }
+    .monney { margin-top: 30px; .tent { display: flex; justify-content: space-between; font-size: 24px; .span { width: 120px; color: #333; } } }
     .van-button { font-size: 32px; margin-top: 50px; }
   }
 }
 
 .img_loading {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(151, 151, 151, 0.821);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  font-size: 32px;
-  font-weight: 600;
-  .img {
-    width: 80%;
-    background-color: rgba(0, 0, 0, 0.5);
-    margin: 0 auto 30px;
-    border-radius: 12px;
-  }
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  background-color: rgba(151,151,151,0.821); color: #fff;
+  display: flex; flex-direction: column; justify-content: center;
+  text-align: center; font-size: 32px; font-weight: 600;
+  .img { width: 80%; background-color: rgba(0,0,0,0.5); margin: 0 auto 30px; border-radius: 12px; }
   z-index: 888;
 }
 
 .pinglun {
-  margin: 20px 30px;
-  margin-bottom: 0px;
-  font-size: 26px;
-  color: #000000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: 900;
-  .pingluna {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  .pinglunb {
-    margin-top: 20px;
-    width: 90%;
-    border: 1px solid #dadada;
-    border-radius: 5px;
-  }
+  margin: 20px 30px; margin-bottom: 0px; font-size: 26px; color: #000000;
+  display: flex; flex-direction: column; align-items: center; font-weight: 900;
+  .pingluna { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; }
+  .pinglunb { margin-top: 20px; width: 90%; border: 1px solid #dadada; border-radius: 5px; }
 }
 
-/* ════════════════════════════════════════════════════════════
-   ⑤ 复数订单弹窗样式
-   ════════════════════════════════════════════════════════════ */
-
-.compound-order-modal {
-  padding: 20px;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
+.compound-order-modal { padding: 20px; max-height: 70vh; overflow-y: auto; }
 .compound-order-header {
-  text-align: center;
-  margin-bottom: 30px;
-
-  .celebration-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-
-  h3 {
-    font-size: 32px;
-    font-weight: 700;
-    color: #333;
-    margin: 0 0 16px 0;
-  }
-
-  .compound-order-desc {
-    font-size: 26px;
-    line-height: 1.6;
-    color: #666;
-    margin: 0;
-  }
+  text-align: center; margin-bottom: 30px;
+  .celebration-icon { font-size: 48px; margin-bottom: 16px; }
+  h3 { font-size: 32px; font-weight: 700; color: #333; margin: 0 0 16px 0; }
+  .compound-order-desc { font-size: 26px; line-height: 1.6; color: #666; margin: 0; }
 }
-
-.compound-order-options {
-  margin-bottom: 30px;
-}
-
+.compound-order-options { margin-bottom: 30px; }
 .compound-option-card {
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-
-  &:hover {
-    border-color: #007bff;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+  background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 16px;
+  padding: 24px; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease;
+  &:hover { border-color: #007bff; background: #fff; box-shadow: 0 4px 12px rgba(0,123,255,0.15); }
+  .option-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+    h4 { font-size: 28px; font-weight: 600; color: #333; margin: 0; }
   }
-
-  .option-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-
-    h4 {
-      font-size: 28px;
-      font-weight: 600;
-      color: #333;
-      margin: 0;
-    }
-
-    .option-badge {
-      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-      color: white;
-      font-size: 20px;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-weight: 600;
-    }
-  }
-
-  .option-desc {
-    font-size: 24px;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 16px;
-  }
-
-  .option-details {
-    margin-bottom: 20px;
-
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-
-      .detail-label {
-        font-size: 24px;
-        color: #666;
-        font-weight: 500;
-      }
-
-      .detail-value {
-        font-size: 24px;
-        color: #333;
-        font-weight: 600;
-      }
-    }
-  }
-
-  .option-select-btn {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    text-align: center;
-    padding: 12px 0;
-    border-radius: 8px;
-    font-size: 26px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: linear-gradient(135deg, #0056b3, #004085);
-    }
-  }
+  .option-desc { font-size: 24px; color: #666; line-height: 1.5; margin-bottom: 16px; }
 }
-
 .compound-order-footer {
-  .skip-btn {
-    background: #f8f9fa;
-    color: #666;
-    border: 1px solid #dee2e6;
-    font-size: 26px;
-    font-weight: 500;
-    border-radius: 8px;
-    padding: 16px 0;
-
-    &:hover {
-      background: #e9ecef;
-    }
-  }
+  .skip-btn { background: #f8f9fa; color: #666; border: 1px solid #dee2e6; font-size: 26px; border-radius: 8px; padding: 16px 0; }
 }
 </style>

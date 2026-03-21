@@ -251,7 +251,7 @@ class Convey extends Model
         }
         if ($res && $res1) {
             Db::commit();
-            return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $id, 'orderNum' => $orderNum];
+            return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $id, 'orderNum' => $orderNum, 'commission'=>$c_data['commission'], 'amount'=>$c_data['num']];
         } else {
             Db::rollback();
             return ['code' => 1, 'info' => yuylangs('qd_sb')];
@@ -789,7 +789,7 @@ class Convey extends Model
         }
         if ($res && $res1) {
             Db::commit();
-            return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $ids[0], 'orderNum' => $orderNum];
+            return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $ids[0], 'orderNum' => $orderNum, 'commission'=>$c_data['commission'], 'amount'=>$c_data['num']];
         } else {
             Db::rollback();
             return ['code' => 1, 'info' => yuylangs('qd_sb')];
