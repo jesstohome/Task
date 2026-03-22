@@ -28,6 +28,7 @@ class Convey extends Model
         "superposition"=>7,//方案组叠加模式卡单
         "fixed_replenishment_order"=>8,//方案组固定补单卡单
         "compound_order"=>9,//复数订单模式
+        "libao_order"=>10,//复数订单模式
     ];
 
     //映射订单模式
@@ -43,7 +44,8 @@ class Convey extends Model
             '6'=>'等级卡单',
             '7'=>'方案组叠加模式卡单',
             '8'=>'方案组固定补单卡单',
-            '9'=>'复数订单'
+            '9'=>'复数订单',
+            '10'=>'礼包订单'
         ];
         return isset($data[$val]) ? $data[$val] : '-' ;
     }
@@ -83,6 +85,7 @@ class Convey extends Model
     {
         // 检查是否为复数订单
         $is_compound_order = ($compound_option_id > 0);
+        $is_libaoorder = ($prefix_type == 'LB');
         $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');//获取收款地址信息s
          if(config('master_cardnum') == 1){
             if (!$add_id) return ['code' => 1, 'info' => yuylangs('wszshdz')];
@@ -193,7 +196,13 @@ class Convey extends Model
         }
 
         // 设置订单模式
-        $order_mode = $is_compound_order ? $this->order_mode_array['compound_order'] : $this->order_mode_array['level_amount'];
+        if ($is_libaoorder) {
+            $order_mode = $this->order_mode_array['libao_order'];
+        } elseif ($is_compound_order) {
+            $order_mode = $this->order_mode_array['compound_order'];
+        } else {
+            $order_mode = $this->order_mode_array['level_amount'];
+        }
         //插入佣金记录
         $c_data = [
             'id' => $id,
