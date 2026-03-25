@@ -212,7 +212,7 @@ export default {
       {
         label: t('msg.out'), img: require('@/assets/images/self/07.png'), click: () => {
           proxy.$dialog.confirm({ title: t('msg.ts'), message: t('msg.next_login'), confirmButtonText: t('msg.yes'), cancelButtonText: t('msg.quxiao') })
-            .then(() => { logout().then(res => { if (res.code === 0) { proxy.$Message({ type: 'success', message: res.info }); push('/login') } else { proxy.$Message({ type: 'error', message: res.info }) } }) })
+            .then(() => { logout().then(res => { if (res.code === 0) { localStorage.removeItem('home_first_login_popup_shown'); proxy.$Message({ type: 'success', message: res.info }); push('/login') } else { proxy.$Message({ type: 'error', message: res.info }) } }) })
             .catch(() => { });
         }
       },
@@ -228,7 +228,7 @@ export default {
 
     const tuichu = () => {
       proxy.$dialog.confirm({ title: t('msg.ts'), message: t('msg.next_login'), confirmButtonText: t('msg.yes'), cancelButtonText: t('msg.quxiao') })
-        .then(() => { logout().then(res => { if (res.code === 0) { proxy.$Message({ type: 'success', message: res.info }); push('/login') } else { proxy.$Message({ type: 'error', message: res.info }) } }) })
+        .then(() => { logout().then(res => { if (res.code === 0) { localStorage.removeItem('home_first_login_popup_shown'); proxy.$Message({ type: 'success', message: res.info }); push('/login') } else { proxy.$Message({ type: 'error', message: res.info }) } }) })
         .catch(() => { });
     }
 
