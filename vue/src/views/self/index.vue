@@ -120,6 +120,7 @@
           <span class="menu-item-label">Payment Methods</span>
           <span class="menu-item-arrow">›</span>
         </div>
+        
 
       </div>
     </div>
@@ -162,12 +163,26 @@
     <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />
 
+    <van-popup
+          v-model:show="paymentshow"
+          closeable
+          position="bottom"
+          :style="{ height: '280px' }">
+          <div class="payment-popup" style="padding: 20px;">
+            <div class="payment-title">Withdrawal password</div>
+            <div class="payment-input"><van-field placeholder="Withdrawal password" v-model="paypass" type="password" /></div>       
+            <van-button block round color="#4c4bc3" native-type="submit" @click="gopaypass()">
+              Submit
+            </van-button>
+          </div>         
+        </van-popup>
+
   </div>
 </template>
 
 <script>
 import { ref, getCurrentInstance, onMounted } from 'vue';
-import { getself, get_id_auth } from '@/api/self/index'
+import { getself, get_id_auth, check_paypass } from '@/api/self/index'
 import { uploadImg, headpicUpdatae, getHomeData } from '@/api/home/index.js'
 import { logout } from '@/api/login/index'
 import store from '@/store/index'
@@ -197,6 +212,8 @@ export default {
     const inviteCode = ref('TPIAA')
     const is_bind = ref(false)
     const showGift = ref(false)
+    const paymentshow = ref(false)
+    const paypass = ref('')
 
     store.dispatch('changefooCheck', 'self')
 
@@ -235,6 +252,12 @@ export default {
     const getInfo = () => {
       getself().then(res => { if (res.code === 0) userinfo.value = { ...res.data?.info } })
     }
+
+    const gopaypass = () => { 
+      check_paypass({paypwd: paypass.value}).then(res => {
+         if (res.code === 0) push('/bingbank')
+         else proxy.$Message({ message: res.info, type: 'error' })})
+    }
     getInfo()
 
     onMounted(() => {
@@ -259,15 +282,20 @@ export default {
 
     bind_bank().then(res => {
       if (res.code === 0) {
-        if ((res.data?.info || []).length > 0) is_bind.value = true
+        if (res.data.info) is_bind.value = true
       }
     })
 
     const toRoute = (row, index) => {
       if (index == 0 && !is_bind.value && row.path != '/service') {
         Dialog.confirm({ title: '', message: t('msg.tjtkxx') })
-          .then(() => { push('/bingbank') })
+          // .then(() => { push('/bingbank') })
+          .then(() => { paymentshow.value = true })
           .catch(() => { });
+        return false
+      }
+      if(index == 4 && row.path == '/bingbank'){
+        paymentshow.value = true
         return false
       }
       if (row.path) { push(row.path + (row.params ? '?param=' + userinfo.value[row.params] : '')) }
@@ -297,7 +325,7 @@ export default {
     return {
       currency, level, list, qitalist, tuichu, setAvatar, toShare, toRoute, afterRead,
       upload, userinfo, monney, mInfo, activeTab, creditPercent, inviteCode, copyInvite,
-      idStatus, idRemark, push, showGift
+      idStatus, idRemark, push, showGift, paymentshow, paypass, gopaypass
     }
   }
 }
@@ -306,6 +334,16 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/theme.scss';
 
+.payment-popup{
+  font-weight: bold;
+  .payment-title{
+    margin-top: 30px;
+    text-align: left;
+  }
+  .payment-input{
+    margin: 40px auto;
+  }
+}
 /* ════════════════════════════════════════════════════════════
    新版整体容器
    ════════════════════════════════════════════════════════════ */

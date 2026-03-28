@@ -116,3 +116,11 @@ export const do_deposit = (params) => {
         return result.data
       })
   }
+
+// 检查提现密码
+export const check_paypass = (params) => {
+    return http.post('/ctrl/check_paypass',qs.stringify(params))
+      .then((result) => {
+        return result.data
+      })
+  }

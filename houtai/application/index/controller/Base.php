@@ -81,48 +81,48 @@ class Base extends Controller
         $userData = Db::name("xy_users")->find($uid);
         $user_level = Db::name('xy_level')->where('level',$userData['level'])->find();
         //自动购买利息宝
-        if($user_level['auto_buy_finance'] == 1 && !empty($user_level['lixibao_id'])){
-            $buy_lixibao = Db::name("xy_lixibao")->where('uid',$uid)->where('sid',$user_level['lixibao_id'])->find();
-            if(empty($buy_lixibao)){
-                $lixibao = Db::name("xy_lixibao_list")->where('id',$user_level['lixibao_id'])->find();
-                if (!empty($lixibao) && $userData['balance'] >= $lixibao['min_num']) {
-                    $yuji = $lixibao['min_num'] * $lixibao['bili'] * $lixibao['day'];
-                    Db::startTrans();
-                    try {
-                        Db::name('xy_users')->where('id', $uid)->setInc('lixibao_balance', $lixibao['min_num']);  //利息宝月 +
-                        Db::name('xy_users')->where('id', $uid)->setDec('balance', $lixibao['min_num']);  //余额 -
-                        $endtime = time() + $lixibao['day'] * 24 * 60 * 60;
-                        Db::name('xy_lixibao')->insert([
-                            'uid' => $uid,
-                            'num' => $lixibao['min_num'],
-                            'addtime' => time(),
-                            'endtime' => $endtime,
-                            'sid' => $user_level['lixibao_id'],
-                            'yuji_num' => $yuji,
-                            'type' => 1,
-                            'status' => 0,
-                        ]);
-                        $oid = Db::name('xy_lixibao')->getLastInsID();
-                        Db::name('xy_balance_log')->insert([
-                            //记录返佣信息
-                            'uid' => $uid,
-                            'oid' => $oid,
-                            'num' => $lixibao['min_num'],
-                            'type' => 21,
-                            'status' => 2,
-                            'addtime' => time(),
-                            "balance" => $userData['balance']
-                        ]);
-                        Db::commit();
-                    } catch (\Exception $e) {
-                        Db::rollback();
-                    }
-                }
-            }
-        }
-
-        if(config('master_bank') == 2){
-             $level_list = Db::name('xy_level')
+        // if($user_level['auto_buy_finance'] == 1 && !empty($user_level['lixibao_id'])){
+        //     $buy_lixibao = Db::name("xy_lixibao")->where('uid',$uid)->where('sid',$user_level['lixibao_id'])->find();
+        //     if(empty($buy_lixibao)){
+        //         $lixibao = Db::name("xy_lixibao_list")->where('id',$user_level['lixibao_id'])->find();
+        //         if (!empty($lixibao) && $userData['balance'] >= $lixibao['min_num']) {
+        //             $yuji = $lixibao['min_num'] * $lixibao['bili'] * $lixibao['day'];
+        //             Db::startTrans();
+        //             try {
+        //                 Db::name('xy_users')->where('id', $uid)->setInc('lixibao_balance', $lixibao['min_num']);  //利息宝月 +
+        //                 Db::name('xy_users')->where('id', $uid)->setDec('balance', $lixibao['min_num']);  //余额 -
+        //                 $endtime = time() + $lixibao['day'] * 24 * 60 * 60;
+        //                 Db::name('xy_lixibao')->insert([
+        //                     'uid' => $uid,
+        //                     'num' => $lixibao['min_num'],
+        //                     'addtime' => time(),
+        //                     'endtime' => $endtime,
+        //                     'sid' => $user_level['lixibao_id'],
+        //                     'yuji_num' => $yuji,
+        //                     'type' => 1,
+        //                     'status' => 0,
+        //                 ]);
+        //                 $oid = Db::name('xy_lixibao')->getLastInsID();
+        //                 Db::name('xy_balance_log')->insert([
+        //                     //记录返佣信息
+        //                     'uid' => $uid,
+        //                     'oid' => $oid,
+        //                     'num' => $lixibao['min_num'],
+        //                     'type' => 21,
+        //                     'status' => 2,
+        //                     'addtime' => time(),
+        //                     "balance" => $userData['balance']
+        //                 ]);
+        //                 Db::commit();
+        //             } catch (\Exception $e) {
+        //                 Db::rollback();
+        //             }
+        //         }
+        //     }
+        // }
+        
+        //根据余额自动调整会员等级
+        $level_list = Db::name('xy_level')
                 ->field('level,`num`')
                 ->where('num', '>', 0)
                 ->order('level desc')->select();
@@ -133,15 +133,14 @@ class Base extends Controller
                     break;
                 }
             }
-            Db::table("xy_users")->where(['id'=>$uid])->update(['level'=>$new_vip_level]);  
-        }
+        Db::table("xy_users")->where(['id'=>$uid])->update(['level'=>$new_vip_level]); 
 
         //vip过期判断
-        if($userData['vip_expire_time'] != 0){
-            if($userData['vip_expire_time'] < time()){
-                $this->vip_expire = true;
-            }
-        }
+        // if($userData['vip_expire_time'] != 0){
+        //     if($userData['vip_expire_time'] < time()){
+        //         $this->vip_expire = true;
+        //     }
+        // }
         
         $uChats = url('support/index');
         $this->assign('user_service_chats', $uChats);
@@ -298,39 +297,39 @@ class Base extends Controller
             $isRoll = Db::name('xy_group')
                 ->where('id', $uinfo['group_id'])->value('is_roll');
             //如果不允许轮回 做单，目前isroll一直是1，所以下面的代码不执行
-            if ($isRoll == 0) {
-                //order_num
-                // $max_order_num = Db::name('xy_group_rule')
-                //     ->where('group_id', $uinfo['group_id'])
-                //     ->order('order_num desc')
-                //     ->value('order_num');
-                  list($day_d_count, $groupRule, $all_order_num) = Convey::instance()->get_user_group_rule2($uinfo['id'], $uinfo['group_id']);
+            // if ($isRoll == 0) {
+            //     //order_num
+            //     // $max_order_num = Db::name('xy_group_rule')
+            //     //     ->where('group_id', $uinfo['group_id'])
+            //     //     ->order('order_num desc')
+            //     //     ->value('order_num');
+            //       list($day_d_count, $groupRule, $all_order_num) = Convey::instance()->get_user_group_rule2($uinfo['id'], $uinfo['group_id']);
                 
-                // if (empty($all_order_num)) {
-                //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-                // }
-                $u_order_num = Db::name('xy_convey')
-                    ->where("qkon = 1")
-                    ->where('group_id', $uinfo['group_id'])
-                    ->where('uid', $uinfo['id'])
-                    ->order('addtime desc')
-                    ->limit(1)
-                    ->value('group_rule_num');
-                //如果是最后一单
-                 $xy_group_rule1 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->count();
-                 $xy_group_rule2 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->sum("add_orders1");
-                $all_order_num1 = $xy_group_rule1 + $xy_group_rule2;
-                $zuodanshu = Db::table("xy_convey")->where(["uid"=>$uinfo['id'],'group_id'=>$uinfo['group_id'],"qkon"=>1])->count();
+            //     // if (empty($all_order_num)) {
+            //     //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            //     // }
+            //     $u_order_num = Db::name('xy_convey')
+            //         ->where("qkon = 1")
+            //         ->where('group_id', $uinfo['group_id'])
+            //         ->where('uid', $uinfo['id'])
+            //         ->order('addtime desc')
+            //         ->limit(1)
+            //         ->value('group_rule_num');
+            //     //如果是最后一单
+            //      $xy_group_rule1 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->count();
+            //      $xy_group_rule2 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->sum("add_orders1");
+            //     $all_order_num1 = $xy_group_rule1 + $xy_group_rule2;
+            //     $zuodanshu = Db::table("xy_convey")->where(["uid"=>$uinfo['id'],'group_id'=>$uinfo['group_id'],"qkon"=>1])->count();
              
          
-              if($zuodanshu >= $all_order_num1){
-                  return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-              }
+            //   if($zuodanshu >= $all_order_num1){
+            //       return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            //   }
              
-                // if ($u_order_num >= $all_order_num) {
-                //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-                // }
-            }
+            //     // if ($u_order_num >= $all_order_num) {
+            //     //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            //     // }
+            // }
         } else {
             //普通组
             $where1 = "1=1";

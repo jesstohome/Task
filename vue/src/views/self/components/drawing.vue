@@ -13,10 +13,10 @@
                   <span class="tel">{{$t('msg.phone')}}</span>
                   <span>{{tel.slice(0, 3) + '****' +  tel.slice(-4)}}</span>
               </div> -->
-              <div class="text">
+              <!-- <div class="text">
                   <span>{{$t('msg.txlx')}}</span>
-              </div>
-			  <div class="text">
+              </div> -->
+			  <!-- <div class="text">
 			    <van-radio-group v-model="checked" >
 			        <van-radio v-for="(item,index) in info" :key="index" :name="item.id" >
                         <div v-if="item.bank_type == 'Bank'" class="label">
@@ -27,7 +27,7 @@
                         </div>
 			        </van-radio>
 			    </van-radio-group>
-			  </div>
+			  </div> -->
               <!-- <div class="text">
                   <van-radio-group v-model="types" direction="horizontal">
                     <van-radio name="1">{{$t('msg.bank_tx')}}</van-radio>
@@ -95,7 +95,7 @@ export default {
 			let infoData = res.data?.info || [];
 			info.value = infoData;
 			
-			if (infoData.length > 0) {
+			if (res.data?.info) {
 			  is_bind.value = true
 			  checked.value = infoData[0]?.id || null;
 			}

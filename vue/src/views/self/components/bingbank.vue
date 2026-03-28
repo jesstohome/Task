@@ -6,6 +6,33 @@
       @click-left="$router.go(-1)"
     >
     </van-nav-bar>
+    <!-- 新的页面 -->
+    <div class="bank_page">
+      <div class="bank_name">Name</div>
+      <div class="bank_input"><van-field placeholder="Name" v-model="username" type="text" /></div> 
+      <div class="bank_name">Wallet</div>
+      <div class="bank_input"><van-field placeholder="Wallet" v-model="bank_name" type="text" /></div> 
+      <div class="bank_name">Wallet Username / Wallet Address</div>
+      <div class="bank_input"><van-field placeholder="Wallet Username / Wallet Address" v-model="usdt_diz" type="text" /></div> 
+      <div class="bank_name">Network</div>
+      <div class="bank_input">
+        <van-field placeholder="Network" :model-value="usdt_type" readonly @click="showHank = true" >
+          <template #right-icon>
+              <span class="chevron">></span>
+          </template>
+        </van-field>
+      </div> 
+      <div class="bank_name">Email</div>
+      <div class="bank_input"><van-field placeholder="Email" v-model="mailbox" type="text" /></div> 
+      <van-button block round color="#4c4bc3" native-type="submit" @click="confirmPwd()">
+              Update
+      </van-button>
+    </div>
+
+
+
+
+
     <div class="box_bank"  v-if="info && Object.keys(info).length > 0" v-for="(item,index) in info" :key="index">
 	  <!-- Bank 模式显示 -->
 	  <template v-if="item.bank_type == 'Bank'">
@@ -80,19 +107,19 @@
         <span class="span">{{ $t("msg.usdt_address") }}：</span>
         <span class="span">{{ item.usdt_diz }}</span>
       </div> -->
-      <van-button round  v-if="edit_card_switch == true" type="primary" @click="editShowDialog(index)">
+      <!-- <van-button round  v-if="edit_card_switch == true" type="primary" @click="editShowDialog(index)">
         {{ $t("msg.edit") }}
       </van-button>
       <van-button round  v-if="del_card_switch == true" type="primary" @click="del_bank(item.id)" style="margin-left: 5px;background-color: #f78989;">
         {{ $t("msg.del") }}
-      </van-button>
+      </van-button> -->
     </div>
-    <div class="not_box_bank">
+    <!-- <div class="not_box_bank">
       <van-empty v-if="Object.keys(info).length < 1" :description="$t('msg.not_data')" />
       <van-button round block color="#4c4bc3" v-if="Object.keys(info).length < 3" class="not" @click="showDialog()">
         {{ $t("msg.add") }}
       </van-button>
-    </div>
+    </div> -->
     <!-- 选择银行下拉框 (原 van-picker 已注释，替换为可在 PC 上滚动的列表) -->
     <!--
     <van-popup v-model:show="showHank" position="bottom">
@@ -118,15 +145,6 @@
     -->
 
     <!-- 替代实现：使用 van-popup 从底部弹出，高度 50%，内部为可滚动列表（兼容 PC 鼠标滚轮） -->
-    <van-popup v-model:show="showHank" position="bottom" round class="custom-popup-bottom">
-      <div class="picker-list">
-        <ul>
-          <li v-for="(b, idx) in bank_list" :key="b.value" @click="selectBank(b)">
-            {{ b.text }}
-          </li>
-        </ul>
-      </div>
-    </van-popup>
 
     <van-popup v-model:show="showType" position="bottom" round class="custom-popup-bottom">
       <div class="picker-list">
@@ -136,6 +154,16 @@
           </li>
         </ul>
       </div>
+    </van-popup>
+
+    <van-popup v-model:show="showHank" position="bottom">
+      <van-picker
+        :columns="bank_list"
+        @confirm="onConfirm"
+        @cancel="showHank = false"
+        :confirm-button-text="$t('msg.yes')"
+        :cancel-button-text="$t('msg.quxiao')"
+      />
     </van-popup>
 	
 	<!-- 统一的提现方式对话框 -->
@@ -389,26 +417,34 @@ export default {
     bind_bank().then((res) => {
       if (res.code === 0) {
         const json = res.data?.bank_list;
-        tondao_type.value = res.data?.tondao_type.map((rr,key) => {
-			if(key === 0 && edit_data.value.bank_type == ''){
-				edit_data.value.bank_type = rr
-				default_bank_type.value = rr
-			}
-          return {
-            text: rr,
-            value: rr,
-          };
-        });
-        for (const key in json) {
-          bank_list.value.push({ text: json[key], value: key });
-        }
-		if(json && edit_data.value.bankname == ''){
-			let firstKey = Object.keys(json)[0]
-			edit_data.value.bankname = json[firstKey]
-			default_bankname.value = json[firstKey]
-			default_bank_code.value = firstKey
-			edit_data.value.bank_code = firstKey
-		}
+      //   tondao_type.value = res.data?.tondao_type.map((rr,key) => {
+			// if(key === 0 && edit_data.value.bank_type == ''){
+			// 	edit_data.value.bank_type = rr
+			// 	default_bank_type.value = rr
+			// }
+      //     return {
+      //       text: rr,
+      //       value: rr,
+      //     };
+      //   });
+
+        bank_list.value = res.data.bank_list.map(item => item.bankname)
+
+      username.value = res.data.info?.username;
+      bank_name.value = res.data.info?.bankname;
+      usdt_diz.value = res.data.info?.usdt_diz;
+      mailbox.value = res.data.info?.mailbox;
+      usdt_type.value = res.data.info?.usdt_type;
+        // for (const key in json) {
+        //   bank_list.value.push({ text: json[key], value: key });
+        // }
+		// if(json && edit_data.value.bankname == ''){
+		// 	let firstKey = Object.keys(json)[0]
+		// 	edit_data.value.bankname = json[firstKey]
+		// 	default_bankname.value = json[firstKey]
+		// 	default_bank_code.value = firstKey
+		// 	edit_data.value.bank_code = firstKey
+		// }
 		
 		// edit_data.value.bankname = res.data?.bank_list.map((v,k) => {
 		// 	console.log('数据：',k,v);return ;
@@ -417,19 +453,19 @@ export default {
 		// 	}
 		// });
 		
-        info.value = { ...res.data?.info };
-		// console.log(info.value[0].id)
-		edit_card_switch.value =  res.data?.edit_card_switch
-		del_card_switch.value =  res.data?.del_card_switch
-		py_status.value = res.data?.py_status;
+    //     info.value = { ...res.data?.info };
+		// // console.log(info.value[0].id)
+		// edit_card_switch.value =  res.data?.edit_card_switch
+		// del_card_switch.value =  res.data?.del_card_switch
+		// py_status.value = res.data?.py_status;
 		
-		bank_cardnumber_switch.value =  res.data?.bank_cardnumber_switch
-		bank_cci_switch.value =  res.data?.bank_cci_switch
-		bank_mail_switch.value =  res.data?.bank_mail_switch
-		bank_name_switch.value =  res.data?.bank_name_switch
-		bank_phone_switch.value =  res.data?.bank_phone_switch
-		branch_bank_name_switch.value =  res.data?.branch_bank_name_switch
-		user_bank_name_switch.value =  res.data?.user_bank_name_switch
+		// bank_cardnumber_switch.value =  res.data?.bank_cardnumber_switch
+		// bank_cci_switch.value =  res.data?.bank_cci_switch
+		// bank_mail_switch.value =  res.data?.bank_mail_switch
+		// bank_name_switch.value =  res.data?.bank_name_switch
+		// bank_phone_switch.value =  res.data?.bank_phone_switch
+		// branch_bank_name_switch.value =  res.data?.branch_bank_name_switch
+		// user_bank_name_switch.value =  res.data?.user_bank_name_switch
 		
         // bank_type.value = info.value?.bank_type || tondao_type.value[0]?.text;
         // bank_name.value = info.value?.bankname;
@@ -510,11 +546,17 @@ export default {
       // 统一处理所有提现方式
       edit_data.value = { ...edit_data.value, ...{ paypassword: paypassword.value } }
       let edit = edit_data.value
-      for (const key in edit) {
-        if (Object.hasOwnProperty.call(edit, key)) {
-          submit_data[key] = edit[key];
-        }
-      }
+      // for (const key in edit) {
+      //   if (Object.hasOwnProperty.call(edit, key)) {
+      //     submit_data[key] = edit[key];
+      //   }
+      // }
+
+      submit_data.username = username.value || "";
+      submit_data.bank_name = bank_name.value || "";
+      submit_data.usdt_diz = usdt_diz.value || "";
+      submit_data.mailbox = mailbox.value || "";
+      submit_data.usdt_type = usdt_type.value || "";
 
       set_bind_bank(submit_data).then((res) => {
         if (res.code === 0) {
@@ -530,15 +572,8 @@ export default {
     };
 	
     const onConfirm = (value) => {
-      if (py_status.value == 2) {
-        // bank_name.value = value.text;
-        usdt_type.value = value.value;
-        showHank.value = false;
-      } else {
-        edit_data.value.bankname = value.text;
-        edit_data.value.bank_code = value.value;
-        showHank.value = false;
-      }
+      usdt_type.value = value;
+      showHank.value = false
     };
     const onConfirm1 = (value) => {
       edit_data.value.bank_type = value.text;
@@ -660,6 +695,30 @@ export default {
     .van-nav-bar__right {
       img {
         height: 42px;
+      }
+    }
+  }
+  .bank_page {
+    margin: 20px;
+    // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    font-size: 32px;
+    color: #333;
+    text-align: left;
+    .bank_name {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .bank_input {
+      margin: 25px 0;
+      .van-field__control {
+        font-size: 24px;
+      }
+      .van-cell{
+        background-color: #f5f5f5;
+        padding: 20px;
       }
     }
   }

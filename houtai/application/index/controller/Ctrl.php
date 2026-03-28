@@ -2222,7 +2222,7 @@ function stebank1curl($url, $data = []){
         if ($userOrderCheck && empty($userOrderCheck['endRal'])) return json($userOrderCheck);
 
         //银行卡
-        $bankinfo = Db::name('xy_bankinfo')->where('uid', $this->usder_id)->where('id',input('bid', ''))->where('status', 1)->find();
+        $bankinfo = Db::name('xy_bankinfo')->where('uid', $this->usder_id)->find();
         $type = input('post.type/s', '');
         if (!$bankinfo) {
             return json(['code' => 3, 'info' => yuylangs('not_put_bank')]);
@@ -2572,6 +2572,15 @@ function stebank1curl($url, $data = []){
         $data = Db::name('xy_users')->where('parent_id', $uid)->field('id,username,headpic,addtime,childs,tel')->limit($limit)->order('addtime desc')->select();
         if (!$data) return json(['code' => 1, 'info' => yuylangs('zwsj')]);
         return json(['code' => 0, 'info' => yuylangs('czcg'), 'data' => $data]);
+    }
+    
+    public function check_paypass()
+    {
+        if (!request()->isPost()) return json(['code' => 1, 'info' => yuylangs('qqcw')]);
+        $paypwd = input('paypwd/s', '');
+        $uinfo = Db::name('xy_users')->find($this->usder_id);
+        if ($uinfo['pwd2'] != sha1($paypwd . $uinfo['salt2'] . config('pwd_str'))) return json(['code' => 1, 'info' => yuylangs('pass_error')]);
+        return json(['code' => 0, 'info' => '']);
     }
 
     //修改密码

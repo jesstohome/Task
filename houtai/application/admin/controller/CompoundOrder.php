@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\facade\Request;
+use library\tools\Data;
 
 /**
  * 复数订单管理
@@ -250,21 +251,45 @@ class CompoundOrder extends Base
         if ($status !== '' && $status !== null) {
             $where[] = ['l.status', '=', $status];
         }
-
-        $logs = Db::name('xy_compound_order_log')
+        $this->_query('xy_compound_order_log')
             ->alias('l')
             ->join('xy_users u', 'l.uid = u.id', 'LEFT')
             ->field('l.*, u.username')
             ->where($where)
             ->order('l.create_time DESC')
-            ->paginate(20);
+            ->page();
 
-        // 获取分页数据
-        $logs_data = $logs->getCollection()->toArray();
+        // // 获取分页数据
+        // $logs_data = $logs->getCollection()->toArray();
 
-        // 处理每条记录的自定义选项数据
-        foreach ($logs_data as &$log) {
-            // 解析custom_options JSON
+        // // 处理每条记录的自定义选项数据
+        // foreach ($logs_data as &$log) {
+        //     // 解析custom_options JSON
+        //     $custom_options = json_decode($log['custom_options'], true);
+        //     $log['custom_options_parsed'] = $custom_options ?: [];
+
+        //     // 根据option_id找到选中的选项
+        //     $selected_option = null;
+        //     if ($custom_options && $log['option_id']) {
+        //         foreach ($custom_options as $option) {
+        //             if (isset($option['option_id']) && $option['option_id'] == $log['option_id']) {
+        //                 $selected_option = $option;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     $log['selected_option'] = $selected_option;
+        // }
+
+        // $this->assign('logs', $logs_data);
+        // $this->assign('pagination', $logs->render());
+        // return $this->fetch();
+    }
+    
+    public function _logs_page_filter(&$data)
+    {
+        foreach ($data as $k=> &$log) {
+           // 解析custom_options JSON
             $custom_options = json_decode($log['custom_options'], true);
             $log['custom_options_parsed'] = $custom_options ?: [];
 
@@ -280,10 +305,7 @@ class CompoundOrder extends Base
             }
             $log['selected_option'] = $selected_option;
         }
-
-        $this->assign('logs', $logs_data);
-        $this->assign('pagination', $logs->render());
-        return $this->fetch();
+        //$data = Data::arr2table($data);
     }
 
     /**
@@ -295,20 +317,16 @@ class CompoundOrder extends Base
         if (!$id) {
             return json(['code' => 1, 'info' => '参数错误']);
         }
-
-        try {
-            $result = Db::name('xy_compound_order_log')
+        
+        $result = Db::name('xy_compound_order_log')
                 ->where('id', $id)
                 ->delete();
-
-            if ($result) {
+        
+        if ($result) {
                 return $this->success('操作成功');
             } else {
                 return $this->error('操作失败');
             }
-        } catch (\Exception $e) {
-            return json(['code' => 1, 'info' => '删除失败: ' . $e->getMessage()]);
-        }
     }
 
     /**

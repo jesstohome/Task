@@ -246,11 +246,15 @@ class Users extends Model
 
         $tmp = Db::table($this->table)->where(['tel' => $qv.$tel])->count();
         if ($tel && $tmp) {
-            return ['code' => 1, 'info' => translate('account already exists')];
+            return ['code' => 1, 'info' => 'The phone number already exists.'];
         }
         $tmp = Db::table($this->table)->where(['username' => $user_name])->count();
         if ($tmp) {
-            return ['code' => 1, 'info' => yuylangs('username_exists')];
+            return ['code' => 1, 'info' => 'Username already exists.'];
+        }
+        $tmp = Db::table($this->table)->where(['email' => $params['email']])->count();
+        if ($tmp) {
+            return ['code' => 1, 'info' => 'The email address already exists.'];
         }
         if (!$user_name) $user_name = $tel;
         //if (!$user_name) $user_name = get_username();

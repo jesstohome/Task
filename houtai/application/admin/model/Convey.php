@@ -120,7 +120,7 @@ class Convey extends Model
         $level = $uinfo['level'] ? intval($uinfo['level']) : 0;
 
         // 复数订单跳过余额检查
-        if (!$is_compound_order) {
+        if (!$is_compound_order && $prefix_type != 'LB') {
             $orderSetting = $this->get_user_order_setting($uid, $level);
             if ($uinfo['balance'] < $orderSetting['min_money']) {
                 return [
@@ -162,7 +162,7 @@ class Convey extends Model
             ->count();
 
         // 如果提供了自定义金额和佣金（来自礼包），则使用自定义值
-        if ($prefix_type == 'LB') {
+        if ($prefix_type == 'LB' || $prefix_type == 'FS') {
             $goods['num'] = $custom_amount;
             if($custom_commission > 0){
                 $commission = $custom_amount * $custom_commission / 100;
@@ -1308,9 +1308,6 @@ class Convey extends Model
         if ($uid && $info['uid'] != $uid) return ['code' => 1, 'info' => yuylangs('cscw')];
         if (!in_array($info['status'], [0, 5])) return ['code' => 1, 'info' => yuylangs('ddycl')];
 
-//        if(time() > $info['endtime'] ){
-//            return ['code' => 1, 'info' => yuylangs('ddycl')];
-//        }
         $user = Db::name('xy_users')->where('id', $info['uid'])->find();
 
         $tmp = [
@@ -1328,7 +1325,21 @@ class Convey extends Model
         if (in_array($status, [1, 3])) {
             //TODO 判断余额是否足够
             
-            if ($user['balance'] < $info['num']) {
+            // if ($user['balance'] < $info['num']) {
+            //     //把幸运订单降级为普通订单
+                
+            //     Db::rollback();
+                
+            //     if($info['group_zero'] == 1){
+            //         Db::table("xy_convey")->where('id', $oid)->update(["group_zero"=>0]);
+            //     }
+            //     return [
+            //         'code' => 1,
+            //         'info' => sprintf(yuylangs('zhyebz'), ($info['num'] - $user['balance']) . ""),
+            //         'url' => url('index/ctrl/recharge')
+            //     ];
+            // }
+            if ($user['balance'] <= 0) {
                 //把幸运订单降级为普通订单
                 
                 Db::rollback();
@@ -1338,7 +1349,7 @@ class Convey extends Model
                 }
                 return [
                     'code' => 1,
-                    'info' => sprintf(yuylangs('zhyebz'), ($info['num'] - $user['balance']) . ""),
+                    'info' => yuylangs('money_not'),
                     'url' => url('index/ctrl/recharge')
                 ];
             }
@@ -1443,7 +1454,7 @@ class Convey extends Model
             if (!$isMultipleOrder) {
                 $c_status = Db::name('xy_convey')->where('id', $oid)->value('c_status');
                 //判断是否已返还佣金
-                if ($c_status === 0) $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);
+                if ($c_status === 0 && $user['balance'] >= $info['num']) $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);
             } else {
                 
                  
@@ -1458,7 +1469,7 @@ class Convey extends Model
                       if($order_num1 >= $info["duorw"]){
                          $oList = Db::table("xy_convey")->where("rands",$info['rands'])->where('qkon',1)->select(); 
                          foreach($oList as $val){
-                              if (  $val['c_status'] == 0) {   //注释的
+                              if (  $val['c_status'] == 0 && $user['balance'] >= $info['num']) {   //注释的
                                   $this->deal_reward($val['uid'], $val['id'], $val['num'], $val['commission']);
                                } 
                          } 
@@ -1466,7 +1477,10 @@ class Convey extends Model
                       
                      }   
                  }else{
-                      $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);  //测试给他 使用的
+                     if($user['balance'] >= $info['num']){
+                         $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);  //测试给他 使用的
+                     }
+                      
                  }
                   
             }
@@ -1521,9 +1535,17 @@ class Convey extends Model
 //                        ->update([
 //                            'group_is_active' => 0
 //                        ]);
-                }  
-            
-            return ['code' => 0, 'info' => yuylangs('czcg')];
+                }
+            if($user['balance'] >= $info['num']){
+                return ['code' => 0, 'info' => yuylangs('czcg')];
+            }else{
+                //防止出现负数金额的时候再派负数订单
+                return [
+                    'code' => 1,
+                    'info' => yuylangs('money_not'),
+                    'url' => url('index/ctrl/recharge')
+                ];
+            }
             
            
         } //
@@ -1573,6 +1595,13 @@ class Convey extends Model
      */
     public function deal_reward($uid, $oid, $num, $cnum)
     {
+        $freeze_balance = Db::name('xy_users')->where('id', $uid)->value('freeze_balance');
+        
+        //防止冻结金额出现负数
+        $znum = $num + $cnum;
+        if($znum > $freeze_balance){
+            $znum = $freeze_balance;
+        }
         Db::name('xy_users')->where('id', $uid)->setInc('balance', $num + $cnum);
         Db::name('xy_users')->where('id', $uid)->setDec('freeze_balance', $num + $cnum);
         //Db::name('xy_balance_log')->where('oid', $oid)->update(['status' => 1]);

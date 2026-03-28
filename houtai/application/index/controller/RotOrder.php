@@ -225,11 +225,48 @@ class RotOrder extends Base
         $compound_trigger = model('admin/Convey')->check_compound_order_trigger($uid);
         if ($compound_trigger) {
             if ($compound_trigger['type'] === 'immediate_trigger') {
-                $res['data'] = $compound_trigger;
-                $res['code'] = 1;
-                $res['info'] = '';
-                $res['status'] = 1;
-                return json($res);
+                //如果当前复数选项已经开始做，直接派发复数订单
+                
+                $existing_log = $compound_trigger['log'];
+                if($existing_log && $existing_log['option_id'] > 0){
+                    $order_model = new \app\admin\model\Convey();
+
+                    foreach($existing_log['custom_options'] as $key => $value){
+                        if($value['option_id'] == $existing_log['option_id']){
+                            if($existing_log['completed_orders'] < $value['order_count']){
+                                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+
+                                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'completed_orders' => $existing_log['completed_orders'] + 1,
+                                        'update_time' => time()
+                                    ]);
+
+                                $res = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
+                                
+                                return json($res);
+                                
+                            }else{
+                                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'status' => 2,
+                                        'update_time' => time()
+                                    ]);
+                                //不去终止，自动开始下面的正常抢单动作。
+                            }                           
+                        }
+                    }
+                }else{
+                    $res['data'] = $compound_trigger;
+                    $res['code'] = 1;
+                    $res['info'] = '';
+                    $res['status'] = 1;
+                    return json($res);
+                }
+                
+                
             }
         }
         
@@ -287,6 +324,13 @@ class RotOrder extends Base
                         'update_time' => time()
                     ]);
                 }
+        }
+        $gift = Db::name('xy_gift_packages')->where('uid',$uid)->where('status', 0)->find();
+        //存在未完成的礼包的时候触发单数减1
+        if($gift){
+            if($gift['start_num'] > 0){
+                Db::name('xy_gift_packages')->where('id',$gift['id'])->setDec('start_num',1);
+            }
         }
         return json($res);
     }

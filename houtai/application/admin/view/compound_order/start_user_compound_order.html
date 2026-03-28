@@ -55,7 +55,14 @@
                                     <div class="layui-input-block">
                                         <!--<input type="radio" name="options[{$index}][amount_type]" value="1" title="比例" {if $option.amount_type == 1}checked{/if}>-->
                                         <!--<input type="radio" name="options[{$index}][amount_type]" value="2" title="固定金额" {if $option.amount_type == 2}checked{/if}>-->
-                                        <input type="number" name="options[{$index}][amount_value]" required step="100" min="0" placeholder="金额值" class="layui-input" style="width: 120px; display: inline-block; margin-left: 10px;" value="{$option.amount_value}">
+                                        <input type="number" name="options[{$index}][amount_value]" required step="100" min="0" placeholder="金额值" class="layui-input" style="width: 120px; display: inline-block; margin-left: 10px;" value="{$option.amount_value + $user.balance}">
+                                    </div>
+                                </div>
+                                
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">预计负数约：</label>
+                                    <div class="layui-input-block">
+                                    <input style="color:red;" type="text" readonly class="layui-input" value="{$option.amount_value}">
                                     </div>
                                 </div>
 
@@ -96,6 +103,32 @@
 </div>
 
 <script>
+    var userBalance = {$user.balance};
+
+    // 实时计算预计负数约
+    function calcNegative(index) {
+        var amountInput = $('input[name="options[' + index + '][amount_value]"]');
+        var negativeInput = amountInput.closest('.option-item').find('input[readonly][style*="color:red"]');
+        var inputVal = parseFloat(amountInput.val()) || 0;
+        var result = userBalance - inputVal;
+        negativeInput.val(result.toFixed(2));
+    }
+
+    // 绑定每个选项的订单金额输入事件
+    $(document).on('input change', 'input[name*="[amount_value]"]', function() {
+        var name = $(this).attr('name');
+        var match = name.match(/options\[(\d+)\]/);
+        if (match) {
+            var index = match[1];
+            calcNegative(index);
+        }
+    });
+
+    // 页面加载时初始化所有选项的预计负数约
+    $('.option-item').each(function() {
+        var index = $(this).data('index');
+        calcNegative(index);
+    });
     // 表单提交处理
     // $('[data-auto="true"]').autoSubmit(function (data) {
     //     if (data.code === 0) {

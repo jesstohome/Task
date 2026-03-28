@@ -102,6 +102,7 @@ class Index extends Base
         
         //团队收益
         $parameter['Teambenefits'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where(" type = 5 || type = 6")->sum('num'),2);
+        $parameter['dongjiejine'] = $info['freeze_balance'];
         
         
         
@@ -140,10 +141,10 @@ class Index extends Base
     public function check_gift()
     {
         $uid = $this->usder_id;
-        $gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('status', 0)->find();
+        $gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('start_num', 0)->where('status', 0)->find();
         if ($gift) {
             $gift_data = json_decode($gift['gift_data'], true);
-            return json(['code' => 0, 'has_gift' => true, 'gift_id' => $gift['id'], 'gift_data' => $gift_data]);
+            return json(['code' => 0, 'has_gift' => true, 'gift_id' => $gift['id'], 'selected' => $gift['selected_gift'], 'gift_data' => $gift_data]);
         } else {
             return json(['code' => 0, 'has_gift' => false]);
         }
@@ -154,13 +155,15 @@ class Index extends Base
     {
         $uid = $this->usder_id;
         $gift_id = input('gift_id', 0);
-        $selected_gift = input('selected_gift', 0); // 1,2,3
+        //$selected_gift = input('selected_gift', 0); // 1,2,3
     
         $gift = Db::name('xy_gift_packages')->where('id', $gift_id)->where('uid', $uid)->where('status', 0)->find();
         if (!$gift) {
             return json(['code' => 1, 'info' => 'Gift package does not exist or has been claimed']);
         }
-    
+        
+        $selected_gift = $gift['selected_gift']; // 1,2,3
+        
         $gift_data = json_decode($gift['gift_data'], true);
         if (!$gift_data || !isset($gift_data['gift' . $selected_gift])) {
             return json(['code' => 1, 'info' => 'Gift package data error']);
@@ -267,8 +270,12 @@ class Index extends Base
                     }
                 }
             }
+            if($result['code'] == 0){
+                $result['info'] = $message;
+            }
+            
     
-            return json(['code' => 0, 'info' => $message]);
+            return json($result);
     
         } catch (\Exception $e) {
             if (Db::getTransactionLevel() > 0) {

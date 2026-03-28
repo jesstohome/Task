@@ -44,7 +44,7 @@
             <div class="box-icon">
               <img :src="getBoxImage(index)" alt="gift box" />
             </div>
-            <div class="box-text">{{ box.text }}</div>
+            <!-- <div class="box-text">{{ box.text }}</div> -->
             <div class="box-shine"></div>
           </template>
 
@@ -93,6 +93,7 @@
 <script>
 import { ref, watch, getCurrentInstance, onMounted, onUnmounted } from 'vue';
 import { check_gift, claim_gift } from '@/api/gift/index';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'GiftPackage',
@@ -101,6 +102,7 @@ export default {
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
+    const { push } = useRouter();
     const showGift = ref(false);
     const openingIndex = ref(-1);
     const selectedBoxIndex = ref(-1);
@@ -108,14 +110,15 @@ export default {
     const wrapperEnter = ref(false);
     const giftId = ref(0);
     const resultMessage = ref('');
+    const selected = ref(1);
     const countdownWidth = ref(100);
     const { proxy } = getCurrentInstance();
     let giftCheckTimer = null;
     let countdownTimer = null;
 
     const giftBoxes = ref([
-      { text: 'Money Reward', type: 'money' },
-      { text: 'Order Reward', type: 'order' },
+      { text: 'Money Reward',    type: 'money' },
+      { text: 'Order Reward',    type: 'order' },
       { text: 'Compound Reward', type: 'compound' }
     ]);
 
@@ -139,11 +142,12 @@ export default {
           giftId.value = res.gift_id;
           if (res.gift_data) {
             giftBoxes.value = [
-              { text: 'Money Reward', type: 'money', data: res.gift_data.gift1 },
-              { text: 'Order Reward', type: 'order', data: res.gift_data.gift2 },
+              { text: 'Money Reward',    type: 'money',    data: res.gift_data.gift1 },
+              { text: 'Order Reward',    type: 'order',    data: res.gift_data.gift2 },
               { text: 'Compound Reward', type: 'compound', data: res.gift_data.gift3 }
             ];
           }
+          selected.value = res.selected;
           showGift.value = true;
         }
       } catch (error) {
@@ -153,7 +157,6 @@ export default {
 
     const startGiftPolling = () => {
       if (giftCheckTimer) return;
-      giftCheckTimer = setInterval(checkGiftStatus, 5000);
       checkGiftStatus();
     };
 
@@ -177,37 +180,52 @@ export default {
       if (openingIndex.value !== -1) return;
       selectedBoxIndex.value = index;
       openingIndex.value = -2;
-      const selectedIndex = index + 1;
 
       setTimeout(async () => {
         try {
-          const res = await claim_gift({ gift_id: giftId.value, selected_gift: selectedIndex });
-
-          if (res.code === 0) {
-            resultMessage.value = res.info;
-
-            // 接口成功后，三个盒子全部翻开展示
-            claimSuccess.value = true;
-
-            // 启动5秒倒计时
-            startCountdown(5000);
-
-            // 5秒后关闭弹窗
-            setTimeout(() => {
-              showGift.value = false;
-              setTimeout(() => {
-                claimSuccess.value = false;
-                openingIndex.value = -1;
-                selectedBoxIndex.value = -1;
-                countdownWidth.value = 100;
-              }, 600);
-            }, 5000);
-
-          } else {
+          // 通知后台用户点击了，不依赖它的返回值做数据处理
+          const res = await claim_gift({ gift_id: giftId.value, selected_gift: index + 1 });
+          if (res.code !== 0) {
             openingIndex.value = -1;
             selectedBoxIndex.value = -1;
             proxy.$Message({ type: 'error', message: res.info, zIndex: 9999 });
+            return;
           }
+          resultMessage.value = res.info; // 用接口返回的提示语
+
+          // selected.value 是 check_gift 时存好的 1/2/3，转成 0-indexed
+          const realWinDataIndex = selected.value - 1;
+
+          // 把用户点击的盒子和预设中奖数据的位置互换
+          if (index !== realWinDataIndex) {
+            const boxes = [...giftBoxes.value];
+            [boxes[index], boxes[realWinDataIndex]] = [boxes[realWinDataIndex], boxes[index]];
+            giftBoxes.value = boxes;
+          }
+
+          // 高亮用户点击的那个盒子
+          selectedBoxIndex.value = index;
+          //resultMessage.value = '🎁 Congratulations!';
+
+          claimSuccess.value = true;
+          startCountdown(5000);
+
+          proxy.$Message({ type: 'success', message: res.info, zIndex: 9999 });
+          
+          setTimeout(() => {
+            showGift.value = false;
+            setTimeout(() => {
+              claimSuccess.value = false;
+              openingIndex.value = -1;
+              selectedBoxIndex.value = -1;
+              countdownWidth.value = 100;
+              if(selected.value == 2 || selected.value == 3){
+                
+                push({ name: 'detail', params: { id: res.oid } });
+              }
+            }, 600);
+          }, 5000);
+
         } catch (error) {
           openingIndex.value = -1;
           selectedBoxIndex.value = -1;
@@ -251,12 +269,12 @@ export default {
 
     const getOpenedText = (index) => {
       const box = giftBoxes.value[index];
-      if (!box.data) return box.text;
+      if (!box || !box.data) return box?.text ?? '';
       switch (box.type) {
-        case 'money': return `$${box.data.amount} Bonus`;
-        case 'order': return `$${box.data.order_amount} Order\n${box.data.commission}% Commission`;
+        case 'money':    return `$${box.data.amount} Bonus`;
+        case 'order':    return `$${box.data.order_amount} Order\n${box.data.commission}% Commission`;
         case 'compound': return `$${box.data.order_amount} Order\n× ${box.data.order_count} Times`;
-        default: return box.text;
+        default:         return box.text;
       }
     };
 
@@ -506,7 +524,7 @@ export default {
   margin-bottom: 14px;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
   animation: iconFloat 3s ease-in-out infinite;
-  img { width: 110px; height: 110px; }
+  img { width: 160px; height: 160px; }
 }
 
 @keyframes iconFloat {

@@ -126,7 +126,7 @@
           </div>
           <span class="hero-greeting">Hi, {{userinfo?.username}} 👋</span>
         </div>
-        <div class="hero-rank">VIP {{ level }}</div>
+        <div class="hero-rank">{{ info?.level_name }}</div>
       </div>
       <div class="hero-subtitle">
         Join <strong>65,000</strong> others and learn the secrets to <strong>SEO</strong> success with our weekly blog posts.
@@ -156,6 +156,10 @@
         </div>
       </div>
       <div class="hero-arc"></div>
+    </div>
+    <div class="hero-info">
+      <div>Frozen amount：<span style="color: #4c4cef;">{{ mInfo.dongjiejine }}</span></div>
+      <div>Today's earnings：<span style="color: #4c4cef;">{{ mInfo.yon1 }}</span></div>
     </div>
 
     <AdShowcase
@@ -568,6 +572,7 @@ export default {
           showCompoundOrder.value = false
           compoundOrderData.value = null
           initData()
+          tjOrder(result)
         } else {
           proxy.$Message({ message: result.info, type: 'error' })
         }
@@ -597,6 +602,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.hero-info{
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 30px;
+    font-size: 28px;
+    color: #000;
+    font-weight: 500;
+}
 
 /* ════════════════════════════════════════════════════════════
    加载遮罩 - 优化版
@@ -1139,7 +1153,7 @@ export default {
 .hero-arc { position: relative; z-index: 1; width: 100%; height: 0; }
 :deep(.ad-showcase) { margin-top: -20px; }
 
-.below-showcase { width: 100%; padding: 0 24px 40px; box-sizing: border-box; background: #ffffff; }
+.below-showcase { width: 100%; padding: 0 24px 40px; box-sizing: border-box; background: #ffffff;margin-top: 80px; }
 .notes-card { position: relative; border-radius: 20px; overflow: hidden; margin-bottom: 32px; min-height: 180px; }
 .notes-card-bg {
   position: absolute; inset: 0; z-index: 0;

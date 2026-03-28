@@ -196,20 +196,38 @@ export default {
 				.then(res => {
 					if (res.code === 0) {
 						const group_data = onceinfo.value.group_data || []
+						// if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
+						// 	proxy.$Message({ type: 'success', message: res.info })
+						// 	push({ name: 'order' })
+						// } else if (group_data.length == onceinfo.value.data.duorw) {
+						// 	proxy.$Message({ type: 'success', message: res.info })
+						// 	push({ name: 'order' })
+						// } else {
+						// 	submit_order().then(() => {
+						// 		Toast.success(t('msg.tjcg'))
+						// 		push({ name: 'order' })
+						// 	})
+						// }
+
 						if ((!onceinfo.value.data || onceinfo.value.data.duorw === 0)) {
 							proxy.$Message({ type: 'success', message: res.info })
-							push({ name: 'order' })
 						} else if (group_data.length == onceinfo.value.data.duorw) {
 							proxy.$Message({ type: 'success', message: res.info })
-							push({ name: 'order' })
 						} else {
 							submit_order().then(() => {
 								Toast.success(t('msg.tjcg'))
-								push({ name: 'order' })
 							})
 						}
+						if(res.o_status > 0){
+							push({ name: 'order' })
+						}else{
+							push({ name: 'obj' })
+
+						}
+
 					} else {
 						proxy.$Message({ type: 'error', message: res.info })
+						push({ name: 'order' })
 					}
 				})
 				.catch(err => {

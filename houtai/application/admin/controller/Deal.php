@@ -1136,13 +1136,21 @@ class Deal extends Base
     public function edit_recharge()
     {
         if (request()->isPost()) {
-           
             // $this->applyCsrfToken();
             $oid = input('post.id/s', '');
             $status = input('post.status/d', 1);
             $oinfo = Db::name('xy_recharge')->find($oid);
             if ($status == 2) {
                 $res = model('admin/Users')->recharge_success($oid);
+                //处理冻结的订单
+                $convey = Db::name('xy_convey')->where('uid',$oinfo['uid'])->where('status', 5)->where('is_pay', 1)->find();
+                
+                $balance = Db::name('xy_users')->where('id', $oinfo['uid'])->value('balance');
+
+                if($convey && $oinfo['num'] + $balance >= 0){
+                    $res2 = model('admin/Convey')->deal_reward($oinfo['uid'], $convey['id'], $convey['num'], $convey['commission']);
+                }
+                
                 if ($res) {
                     sysoplog('审核充值订单', json_encode($_POST, JSON_UNESCAPED_UNICODE));
                     $this->success('操作成功!');

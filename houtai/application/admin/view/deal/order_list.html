@@ -173,8 +173,8 @@
                    data-modal="{:url('order_commission_list',['oid'=>$vo['id']])}">资金流水</a>
                 {/if}
                 {if $vo.status==5}
-                <a data-csrf="{:systoken('order_status')}" class="layui-btn layui-btn-xs layui-btn"
-                   data-action="{:url('order_status')}" data-value="id#{$vo.id};status#0">解冻</a>
+                <!--<a data-csrf="{:systoken('order_status')}" class="layui-btn layui-btn-xs layui-btn"-->
+                <!--   data-action="{:url('order_status')}" data-value="id#{$vo.id};status#0">解冻</a>-->
                 {/if}
 
                 {/if}

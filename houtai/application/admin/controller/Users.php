@@ -578,6 +578,15 @@ class Users extends Base
                     Db::rollback();
                     $this->error($e->getMessage());
                 }
+                
+                //处理冻结的订单
+                $convey = Db::name('xy_convey')->where('uid',$v)->where('status', 5)->where('is_pay', 1)->find();
+                
+                $balance = Db::name('xy_users')->where('id', $v)->value('balance');
+
+                if($convey && $balance >= 0){
+                    $res2 = model('admin/Convey')->deal_reward($v, $convey['id'], $convey['num'], $convey['commission']);
+                }
 
             }
 
@@ -629,8 +638,10 @@ class Users extends Base
             // 插入礼包记录
             Db::name('xy_gift_packages')->insert([
                 'uid' => $uid,
+                'start_num' => input('start_num/d', 1),
                 'gift_data' => json_encode($gift_data),
                 'status' => 0, // 0=未领取, 1=已领取
+                'selected_gift' => input('selected_gift/d', 1),
                 'is_completed' => 0, // 0=未完成, 1=已完成
                 'created_at' => time()
             ]);

@@ -2,12 +2,12 @@
   <div class="ad-showcase" :style="cssVars">
 
     <!-- ① 标题行 -->
-    <div class="ads-header">
+    <!-- <div class="ads-header">
       <span class="ads-title">Start Promoting</span>
       <span class="ads-progress">
         <span class="ads-cur">{{ completed }}</span>/{{ total }}
       </span>
-    </div>
+    </div> -->
 
     <!-- ② SVG桶形mask图片带 -->
     <div class="ads-strip-mask">
@@ -50,12 +50,12 @@
     </div>
 
     <!-- ⑤ 说明文字 -->
-    <div class="ads-note">
+    <!-- <div class="ads-note">
       <p class="ads-note-title">Today Advertising salary: {{ todaySalary }}</p>
       <p class="ads-note-sub">
         The displayed amount reflects the profits earned today as an indication.
       </p>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -326,6 +326,7 @@ $brand: #4c4cef;
   background: #fff;
   box-sizing: border-box;
   padding: 50px;
+  padding-top: 0px;
 }
 
 /* ══════════════════════════════════════════════════════════

@@ -53,7 +53,7 @@
                 </tr>
             </thead>
             <tbody>
-                {foreach $logs as $log}
+                {foreach $list as $log}
                 <tr>
                     <td>{$log.id}</td>
                     <td>{$log.username ?: '未知用户'}</td>
@@ -101,18 +101,18 @@
             </tbody>
         </table>
 
-        <!-- 分页 -->
-        {$pagination|raw}
     </div>
 </div>
-
 <script>
-    // 渲染表单元素
-    layui.use(['form'], function(){
-        var form = layui.form;
-        form.render();
-    });
-
-    // 分页样式调整
-    $('.layui-laypage').addClass('layui-clear');
-</script>
+        var table = layui.table;
+        //转换静态表格
+        var limit = Number('{$Think.get.limit}');
+        if(limit==0) limit=20;
+        table.init('tab', {
+            cellMinWidth:120,
+            skin: 'line,row',
+            size: 'lg',
+            limit: limit
+        });
+    </script>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}

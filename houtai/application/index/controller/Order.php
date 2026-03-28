@@ -259,11 +259,16 @@ class Order extends Base
                 if (empty($oidList)) {
                     return json(['code' => 1, 'info' => yuylangs('qqcw')]);
                 }
-                if ($uinfo['balance'] < $all_amount) return [
+                if ($uinfo['balance'] <= 0) return [
                     'code' => 1,
-                    'info' => sprintf(yuylangs('zhyebz'), ($all_amount - $uinfo['balance']) . ""),
+                    'info' => yuylangs('money_not'),
                     'url' => url('index/ctrl/recharge')
                 ];
+                // if ($uinfo['balance'] < $all_amount) return [
+                //     'code' => 1,
+                //     'info' => sprintf(yuylangs('zhyebz'), ($all_amount - $uinfo['balance']) . ""),
+                //     'url' => url('index/ctrl/recharge')
+                // ];
                 foreach ($oidList as $v) {
                     $res = model('admin/Convey')->do_order($v, $status, $this->usder_id, $add_id, $pingfen, $pinglun);
                     if ($res['code'] == 1) {
@@ -309,6 +314,8 @@ class Order extends Base
                     }
                 }
             }
+            //当没有未完成订单时跳转到抢单页
+            $res['o_status'] = Db::name('xy_convey')->where('uid', $uid)->where('status', 0)->count();
             return json($res);
         }
         return json(['code' => 1, 'info' => yuylangs('qqcw')]);
