@@ -15,8 +15,10 @@
     <div class="layui-form-item">
         <label class="layui-form-label">触发单数</label>
         <div class="layui-input-block">
-            <input type="text" name="start_num" value="1" class="layui-input">
+            <input type="text" name="start_num" value="{$yizuo + 1}" class="layui-input">
+            <span style="color:green;">用户总单数：{$ordersetting} </span> <span style="color:red;"> 当前已做单数：{$yizuo}</span>
         </div>
+        
     </div>
     
     <div class="layui-form-item">
@@ -91,6 +93,7 @@
         </div>
     </div>
 </form>
+
 <script>
     
     window.form.render();

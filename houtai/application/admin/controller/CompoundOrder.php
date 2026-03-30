@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use think\Db;
+use app\admin\model\Convey;
 use think\facade\Request;
 use library\tools\Data;
 
@@ -384,6 +385,19 @@ class CompoundOrder extends Base
         if (!$user) {
             return json(['code' => 0, 'info' => '用户不存在']);
         }
+        
+        $where = [
+                    ['uid', '=', $uid],
+                    ['qkon', '=', 1],
+                    ['order_mode', '=', 6],
+                ];
+        //已做单数
+        $yizuo = Db::name('xy_convey')
+                    ->where($where)
+                    ->where('status', 'in', [1, 3, 5])
+                    ->count('id');
+        //总单数
+        $ordersetting = Convey::instance()->get_user_order_setting($uid, $user['level']);
 
         if (Request::isPost()) {
             $data = Request::post();
@@ -402,6 +416,8 @@ class CompoundOrder extends Base
             if ($existing_log) {
                 return json(['code' => 0, 'info' => '该用户已有进行中的复数订单']);
             }
+            
+            if($data['trigger_count'] < $yizuo) return json(['code' => 0, 'info' => '触发单数过低！']);
 
             // 获取用户今日完成的订单数作为触发单数
             // $today_start = strtotime(date('Y-m-d'));
@@ -422,7 +438,8 @@ class CompoundOrder extends Base
                 'completed_orders' => 0,//当前复数任务做到了第几单
                 'status' => 1, // 进行中
                 'custom_options' => json_encode($options), // 保存自定义选项数据
-                'trigger_count' => $data['trigger_count'], // 触发时的订单数,接下来的第几单触发
+                'trigger_count' => $data['trigger_count'], // 触发时的订单数
+                'now_num' => $yizuo, // 触发时的订单数
                 'create_time' => time(),
                 'update_time' => time()
             ];
@@ -465,7 +482,8 @@ class CompoundOrder extends Base
         //     ->where('status', 1)
         //     ->where('addtime', '>=', $today_start)
         //     ->count();
-
+        $this->assign('yizuo', $yizuo);
+        $this->assign('ordersetting', $ordersetting['order_num']);
         $this->assign('user', $user);
         $this->assign('default_options', $default_options);
         //$this->assign('trigger_count', $trigger_count);

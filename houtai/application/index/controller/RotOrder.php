@@ -41,7 +41,7 @@ class RotOrder extends Base
                 ['uid', '=', $uid],
                 ['qkon', '=', 1],
                 //   ['level_id', '=', $uinfo['level']],
-                ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
+                // ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
             ];
 
             $parameter['day_deal'] = number_format(Db::name('xy_convey')
@@ -96,7 +96,7 @@ class RotOrder extends Base
                     ['uid', '=', $uid],
                     ['qkon', '=', 1],
                     //   ['level_id', '=', $uinfo['level']],
-                    ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
+                    // ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
                 ];
                 
 
@@ -118,12 +118,12 @@ class RotOrder extends Base
                     ['qkon', '=', 1],
                     ['order_mode', '=', 6],
                     //   ['level_id', '=', $uinfo['level']],
-                    ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
+                    // ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
                 ];
 
-                if(config('3_d_reward') == 1){
-                    $where[] = ['level_id', '=', $uinfo['level']];
-                }
+                // if(config('3_d_reward') == 1){
+                //     $where[] = ['level_id', '=', $uinfo['level']];
+                // }
 
                 //已做单数量
                 $parameter['day_deal'] = number_format(Db::name('xy_convey')
@@ -209,13 +209,17 @@ class RotOrder extends Base
         }
         
         // 检查是否触发复数订单选项
-        $compound_trigger = model('admin/Convey')->check_compound_order_trigger($uid);
-        if ($compound_trigger) {
-            if ($compound_trigger['type'] === 'immediate_trigger') {
+        $existing_log = Db::name('xy_compound_order_log')
+            ->where('uid', $uid)
+            ->where('status', 1) // 进行中
+            ->order('create_time DESC')
+            ->find();
+        //$compound_trigger = model('admin/Convey')->check_compound_order_trigger($uid);
+        if ($existing_log) {
+            $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+            if ($existing_log['now_num'] >= $existing_log['trigger_count']) {
                 //如果当前复数选项已经开始做，直接派发复数订单
-                
-                $existing_log = $compound_trigger['log'];
-                if($existing_log && $existing_log['option_id'] > 0){
+                if($existing_log['option_id'] > 0){
                     $order_model = new \app\admin\model\Convey();
 
                     foreach($existing_log['custom_options'] as $key => $value){
@@ -246,6 +250,10 @@ class RotOrder extends Base
                         }
                     }
                 }else{
+                    $compound_trigger = [
+                        'type' => 'immediate_trigger',
+                        'log' => $existing_log
+                    ];
                     $res['data'] = $compound_trigger;
                     $res['code'] = 1;
                     $res['info'] = '';
@@ -285,23 +293,47 @@ class RotOrder extends Base
         }
 
         // 检查是否触发复数订单
-        if ($res['code'] == 0 && $compound_trigger) {
-            if ($compound_trigger['type'] === 'continue_order') {
-                    Db::name('xy_compound_order_log')
-                    ->where('id', $compound_trigger['log']['id'])
-                    ->update([
-                        'trigger_count' => $compound_trigger['log']['trigger_count'] - 1,
-                        'update_time' => time()
-                    ]);
-                }
+        if ($res['code'] == 0 && $existing_log) {
+            $where = [
+                        ['uid', '=', $uid],
+                        ['qkon', '=', 1],
+                        ['order_mode', '=', 6],
+                    ];
+            //已做单数
+            $yizuo = Db::name('xy_convey')
+                        ->where($where)
+                        ->where('status', 'in', [0,1, 3, 5])
+                        ->count('id');
+                        
+            Db::name('xy_compound_order_log')
+            ->where('id', $existing_log['id'])
+            ->update([
+                'now_num' => $yizuo,
+                'update_time' => time()
+            ]);
         }
         $gift = Db::name('xy_gift_packages')->where('uid',$uid)->where('status', 0)->find();
-        //存在未完成的礼包的时候触发单数减1
+        //存在未完成的礼包的时候更新已完成单数
         if($gift){
-            if($gift['start_num'] > 0){
-                Db::name('xy_gift_packages')->where('id',$gift['id'])->setDec('start_num',1);
-            }
+            
+            $where = [
+                        ['uid', '=', $uid],
+                        ['qkon', '=', 1],
+                        ['order_mode', '=', 6],
+                    ];
+            //已做单数
+            $yizuo = Db::name('xy_convey')
+                        ->where($where)
+                        ->where('status', 'in', [0,1, 3, 5])
+                        ->count('id');
+            Db::name('xy_gift_packages')
+            ->where('id',$gift['id'])
+            ->update([
+                'now_num' => $yizuo
+            ]);
+            
         }
+        
         return json($res);
     }
 

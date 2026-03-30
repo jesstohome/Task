@@ -271,26 +271,26 @@ class Base extends Controller
         }
         
         //是否昨天做过相同级别的任务
-        if (config('is_same_yesterday_order') == 0 && $uinfo['group_id'] == 0) {
-            $d1 = strtotime(date('Y-m-d')) - 86400;
-            $d2 = strtotime(date('Y-m-d'));
-            $oTd = Db::name('xy_convey')
-                ->where('status', 1)
-                ->where('uid', $uinfo['id'])
-                ->where('level_id', $uinfo['level'])
-                ->where('addtime', 'between', [$d1, $d2])
-                //->where('addtime', '<', $d2)
-                ->value('id');
+        // if (config('is_same_yesterday_order') == 0 && $uinfo['group_id'] == 0) {
+        //     $d1 = strtotime(date('Y-m-d')) - 86400;
+        //     $d2 = strtotime(date('Y-m-d'));
+        //     $oTd = Db::name('xy_convey')
+        //         ->where('status', 1)
+        //         ->where('uid', $uinfo['id'])
+        //         ->where('level_id', $uinfo['level'])
+        //         ->where('addtime', 'between', [$d1, $d2])
+        //         //->where('addtime', '<', $d2)
+        //         ->value('id');
 
-            if ($oTd) {
-                return [
-                    'code' => 1,
-                    'info' => yuylangs('order_error_level_num'),
-                    'url' => url('/index/support/index'),
-                    'endRal' => true
-                ];
-            }
-        }
+        //     if ($oTd) {
+        //         return [
+        //             'code' => 1,
+        //             'info' => yuylangs('order_error_level_num'),
+        //             'url' => url('/index/support/index'),
+        //             'endRal' => true
+        //         ];
+        //     }
+        // }
 
         if ($uinfo['group_id'] > 0) {
             //杀猪组，方案组模式
@@ -332,27 +332,27 @@ class Base extends Controller
             // }
         } else {
             //普通组
-            $where1 = "1=1";
-            if(config('3_d_reward') == 1){
-                $where1 = ["level_id"=>$uinfo['level']];
-            }
+        //     $where1 = "1=1";
+        //     if(config('3_d_reward') == 1){
+        //         $where1 = ["level_id"=>$uinfo['level']];
+        //     }
             
             
-            $count = Db::name('xy_convey')
-                ->where("qkon = 1")
-                ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
-                ->where('uid', $uinfo['id'])
-                ->where($where1)
-                ->where('status', 1)
-                ->count('id');//统计当天完成交易的订单
+        //     $count = Db::name('xy_convey')
+        //         ->where("qkon = 1")
+        //         ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
+        //         ->where('uid', $uinfo['id'])
+        //         ->where($where1)
+        //         ->where('status', 1)
+        //         ->count('id');//统计当天完成交易的订单
                  
-            //获取可交易情况
-         //  $orderSetting = Convey::instance()->get_user_order_setting($uid, $uinfo['level']);
-           $order_num = $user_level["order_num"];
+        //     //获取可交易情况
+        //  //  $orderSetting = Convey::instance()->get_user_order_setting($uid, $uinfo['level']);
+        //   $order_num = $user_level["order_num"];
         
-            if ($count >= $order_num) {
-                return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-            }
+        //     if ($count >= $order_num) {
+        //         return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+        //     }
         }
         return false;
     }

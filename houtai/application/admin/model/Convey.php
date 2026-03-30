@@ -94,24 +94,25 @@ class Convey extends Model
          }
          
           $uinfo = Db::name('xy_users')->find($uid);
-         $where1 = "1=1";
-         if(config('3_d_reward') == 1){
-                $where1 = ["level_id"=>$uinfo['level']];
-            }
+        //  $where1 = "1=1";
+        //  if(config('3_d_reward') == 1){
+        //         $where1 = ["level_id"=>$uinfo['level']];
+        //     }
             
            
           $count = Db::name('xy_convey')
                 ->where("qkon = 1")
-                ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
+                // ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
                 ->where('uid', $uinfo['id'])
-                ->where($where1)
-                ->where('status', 1)
+                // ->where($where1)
+                ->where('status', 'in', [1, 3, 5])
+                ->where('order_mode', 6)
                 ->count('id');//统计当天完成交易的订单
       
          $order_num = Db::table("xy_level")->where("level", $uinfo['level'])->value("order_num");
         
-        // 复数订单跳过每日订单上限检查
-        if (!$is_compound_order && $count >= $order_num) {
+        // 复数订单和礼包订单跳过订单上限检查
+        if (!($is_compound_order || $is_libaoorder) && $count >= $order_num) {
             return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
         }
         
@@ -296,9 +297,9 @@ class Convey extends Model
 
         $count = Db::name('xy_convey')
             ->where("qkon = 1")
-            ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
+            // ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
             ->where('uid', $uinfo['id'])
-            ->where($where1)
+            // ->where($where1)
             ->where('status', 1)
             ->count('id');//统计当天完成交易的订单
 
@@ -1019,8 +1020,9 @@ class Convey extends Model
                 ->where([
                     ['uid', '=', $uid],
                     ["qkon",'=','1'],
-                    ['level_id', '=', $uinfo['level']],
-                    ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
+                    // ['level_id', '=', $uinfo['level']],
+                    ["order_mode",'=','6'],
+                    // ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
                 ])
                 ->where('status', 'in', [0, 1, 3, 5])
                 ->count('id');
@@ -1505,7 +1507,18 @@ class Convey extends Model
             }
             
             //扣除体验金
-            if($user['lottery_money'] > 0){
+            $where = [
+                        ['uid', '=', $info['uid']],
+                        ['qkon', '=', 1],
+                        ['order_mode', '=', 6],
+                    ];
+            //已做单数
+            $yizuo = Db::name('xy_convey')
+                        ->where($where)
+                        ->where('status', 'in', [1, 3, 5])
+                        ->count('id');
+                        
+            if($user['lottery_money'] > 0 && $yizuo >= 30){
                 $o_balance = Db::name('xy_users')->where('id', $info['uid'])->value('balance');
                 
                 Db::name('xy_users')
@@ -1719,7 +1732,7 @@ class Convey extends Model
             
             $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
             // 有未完成的复数订单
-            if ($existing_log['trigger_count'] == 0) {
+            if ($existing_log['now_num'] >= $existing_log['trigger_count']) {
                 // trigger_count为0，立即触发弹窗
                 return [
                     'type' => 'immediate_trigger',

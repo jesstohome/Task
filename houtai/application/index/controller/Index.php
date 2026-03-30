@@ -141,7 +141,19 @@ class Index extends Base
     public function check_gift()
     {
         $uid = $this->usder_id;
-        $gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('start_num', 0)->where('status', 0)->find();
+        
+        $where = [
+                    ['uid', '=', $uid],
+                    ['qkon', '=', 1],
+                    ['order_mode', '=', 6],
+                ];
+        //已做单数
+        $yizuo = Db::name('xy_convey')
+                    ->where($where)
+                    ->where('status', 'in', [1, 3, 5])
+                    ->count('id');
+                    
+        $gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('start_num', '<=', $yizuo)->where('status', 0)->find();
         if ($gift) {
             $gift_data = json_decode($gift['gift_data'], true);
             return json(['code' => 0, 'has_gift' => true, 'gift_id' => $gift['id'], 'selected' => $gift['selected_gift'], 'gift_data' => $gift_data]);
@@ -205,6 +217,7 @@ class Index extends Base
                     'addtime' => time()
                 ]);
                 Db::commit();
+                $result = ['code' => 0, 'info' => 'Gift pack successfully claimed'];
     
             } elseif ($selected_gift == 2) {
                 $order_amount = floatval($selected_data['order_amount'] ?? 0);
@@ -278,8 +291,10 @@ class Index extends Base
             return json($result);
     
         } catch (\Exception $e) {
-            if (Db::getTransactionLevel() > 0) {
+            try {
                 Db::rollback();
+            } catch (\Exception $re) {
+                // 没有活跃事务时 rollback 会抛异常，忽略即可
             }
             return json(['code' => 1, 'info' => 'Claim failed：' . $e->getMessage()]);
         }

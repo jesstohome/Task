@@ -14,6 +14,7 @@
         <tr>
             <th lay-data="{field:'id',width:80,fixed:'left'}" class='text-center nowrap'>ID</th>
             <th lay-data="{field:'username',width:120}" class='text-center nowrap'>用户名</th>
+            <th lay-data="{field:'status',width:100}" class='text-center nowrap'>已做单数</th>
             <th lay-data="{field:'status',width:100}" class='text-center nowrap'>触发单数</th>
             <th lay-data="{field:'gift_data',width:300}" class='text-center nowrap'>礼包内容</th>
             <th lay-data="{field:'status',width:100}" class='text-center nowrap'>状态</th>
@@ -31,6 +32,7 @@
         <tr>
             <td class='text-center nowrap'>{$vo.id}</td>
             <td class='text-center nowrap'>{$vo.username}</td>
+            <td class='text-center nowrap'>{$vo.now_num}</td>
             <td class='text-center nowrap'>{$vo.start_num}</td>
             <td class='text-left nowrap'>
                 {php}

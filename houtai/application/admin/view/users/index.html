@@ -27,7 +27,7 @@
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>余额</th>
             <th lay-data="{field:'addtime',width:150}" class='text-center nowrap'>抢单收益</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>充值/提款</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>理财收益</th>
+            <!--<th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>理财收益</th>-->
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>上级</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>状态</th>
             <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>注册时间</th>
@@ -66,15 +66,19 @@
                  抢单冻结：{$vo.order_freeze_balance}<br/>
 
 <!--                 佣金：{$vo.com}<br/>-->
-                 体验金：{$vo.lottery_money}
+                 体验金：{$vo.lottery_money}<br/>
+                 总单数：{$vo.zon_order_num}<br/>
+                 已抢单数：<span style="color: red;">{$vo.today_order_grabbing_num_zon}</span>
 
              </td>
              <td class='text-left nowrap'>
-                 今日已抢单：{$vo.today_order_grabbing_num}次 <span style="color: red;">（成功：{$vo.today_success_count}次）</span><br/>
+                 今日已抢会员单：{$vo.today_order_grabbing_num}次 <span style="color: red;">（完成：{$vo.today_success_count}次）</span><br/>
+                 今日复数单：{$vo.today_order_grabbing_num_fs}次 <span style="color: red;">（完成：{$vo.today_success_count_fs}次）</span><br/>
+                 今日礼包单：{$vo.today_order_grabbing_num_lb}次 <span style="color: red;">（完成：{$vo.today_success_count_lb}次）</span><br/>
                  今日收益： {$vo.today_income}/{$vo.today_income_count}次<br/>
-                 累计收益：{$vo.sum_income}/{$vo.sum_income_count}次 <span style="color: red;">（成功：{$vo.sum_income_count}次）</span><br/>
+                 累计收益：{$vo.sum_income}/{$vo.sum_income_count}次 <span style="color: red;">（完成：{$vo.sum_income_count}次）</span><br/>
                  昨日收益： {$vo.sum_yesterday_income}<br/>
-                 累计推广佣金：{$vo.promotion_income}<br/>
+                 <!--累计推广佣金：{$vo.promotion_income}<br/>-->
 
 <!--                 已完成订单总数:{$vo.day_d_count}<br/>-->
 <!--                 全部订单总数:{$vo.order_num}<br/>-->
@@ -84,17 +88,17 @@
              <td class='text-left nowrap' >
                  日提款：{$vo.today_withdrawal_sum}/{$vo.today_withdrawal_count}次<br/>
                  总提款：{$vo.all_deposit_num}/{$vo.all_deposit_count}次<br/>
-                 日充值：{$vo.today_recharge_sum}<br/>
-                 日在线充值：{$vo.today_onlin_recharge_sum}<br/>
+                 <!--日充值：{$vo.today_recharge_sum}<br/>-->
+                 <!--日在线充值：{$vo.today_onlin_recharge_sum}<br/>-->
                  总充值：{$vo.recharge_sum}<br/>
                  总在线充值：{$vo.online_recharge_sum}/{$vo.online_recharge_count}次<br/>
                  总赠送：{$vo.give_amount_sum}<br/>
 <!--                 总充值：{$vo.all_recharge_num}/{$vo.all_recharge_count}次<br/>-->
              </td>
-            <td class='text-left nowrap' >
-                余额宝金额：{$vo.lixibao_balance}<br/>
-                累计收益：{$vo.lixbao_income}<br/>
-            </td>
+            <!--<td class='text-left nowrap' >-->
+            <!--    余额宝金额：{$vo.lixibao_balance}<br/>-->
+            <!--    累计收益：{$vo.lixbao_income}<br/>-->
+            <!--</td>-->
              <td class='text-left nowrap'>
 <!--                 <span style="color: red;">上级：{$vo.parent_tel} - {$vo.parent_invite_code}</span><br/>-->
                  <span style="color: green;">代理：{$vo.service} - {$vo.service_yqm}</span><br/>

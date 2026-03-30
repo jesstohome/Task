@@ -23,7 +23,8 @@
                             <div class="layui-form-item">
                                     <label class="layui-form-label">触发单数</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="trigger_count" required placeholder="请输入第几单进行触发" class="layui-input" value="1">
+                                        <input type="text" name="trigger_count" required placeholder="请输入第几单进行触发" class="layui-input" value="{$yizuo + 1}">
+                                        <span style="color:green;">用户总单数：{$ordersetting} </span> <span style="color:red;"> 当前已做单数：{$yizuo}</span>
                                     </div>
                                 </div>
                             {foreach $default_options as $index => $option}

@@ -2263,7 +2263,9 @@ function stebank1curl($url, $data = []){
            }
             
             
-            $uinfo = Db::name('xy_users')->field('id,withdrawal_status,recharge_num,deal_time,balance,level,group_id')->find($uid);
+            $uinfo = Db::name('xy_users')->field('id,withdrawal_status,recharge_num,deal_time,balance,lottery_money,level,group_id')->find($uid);
+            $uinfo['balance'] = $uinfo['balance'] - $uinfo['lottery_money'];
+            
             $level = !empty($uinfo['level']) ? intval($uinfo['level']) : 0;
             $ulevel = Db::name('xy_level')->where('level', $level)->find();
             //用户未开启提现
@@ -2308,7 +2310,9 @@ function stebank1curl($url, $data = []){
                 $onum = Db::name('xy_convey')
                     ->where('uid', $uid)
                   //  ->where('level_id', $level)
-                    ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
+                    // ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
+                    ->where('status', 'in', [1, 3, 5])
+                    ->where('order_mode', 6)
                     ->count('id');
                    // dump($onum);die;
                 $tixian_nim_order = $ulevel['tixian_nim_order'];

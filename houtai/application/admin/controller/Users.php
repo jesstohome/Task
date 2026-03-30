@@ -16,6 +16,7 @@
 namespace app\admin\controller;
 
 use library\tools\Data;
+use app\admin\model\Convey;
 use think\Db;
 use PHPExcel;
 
@@ -330,7 +331,7 @@ class Users extends Base
         
         
         
-        $query->field('u.id,u.level,u.agent_service_id,u.agent_id,u.tel,u.username,u.group_id,le.name as level_name,u.freeze_amount,
+        $query->field('u.id,u.level,u.agent_service_id,u.agent_id,u.tel,u.username,u.group_id,le.name as level_name,u.freeze_amount,le.order_num as zon_order_num,
         u.lixibao_balance,u.id_status,u.ip,u.is_jia,u.addtime,u.invite_code,u.register_ip,u.login_status,u.withdrawal_status,
         u.all_recharge_num,u.all_deposit_num,u.all_recharge_count,u.all_deposit_count,
         u.freeze_balance,u.status,u.balance,u1.username as parent_name,u1.tel as parent_tel,u1.invite_code as parent_invite_code,u.login_time,u.deal_time,u.lottery_money,u.shuadan_status')
@@ -392,10 +393,26 @@ class Users extends Base
 
             //抢单冻结金额
             $vo['order_freeze_balance'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',0)->sum(Db::raw('num + commission'));
-            //今日已抢单
-            $vo['today_order_grabbing_num'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('addtime','>=',$today_start)->count('id');
-            //今日已抢单成功次数
-            $vo['today_success_count'] = Db::name('xy_convey')->whereIn('status',[1,3,5])->where('uid',$vo['id'])->where('addtime','>=',$today_start)->count('id');
+            
+            //总已做单数
+            $vo['today_order_grabbing_num_zon'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',6)->where('status', 'in', [1, 3, 5])->count('id');
+            
+            
+            //今日已抢单普通单
+            $vo['today_order_grabbing_num'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',6)->where('addtime','>=',$today_start)->count('id');
+            //今日已抢单成功次数普通单
+            $vo['today_success_count'] = Db::name('xy_convey')->whereIn('status',[1,3,5])->where('order_mode',6)->where('uid',$vo['id'])->where('uid',$vo['id'])->where('addtime','>=',$today_start)->count('id');
+            
+            //今日复数订单
+            $vo['today_order_grabbing_num_lb'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',10)->where('addtime','>=',$today_start)->count('id');
+            //今日已抢单成功次数礼包订单
+            $vo['today_success_count_lb'] = Db::name('xy_convey')->whereIn('status',[1,3,5])->where('order_mode',10)->where('uid',$vo['id'])->where('uid',$vo['id'])->where('addtime','>=',$today_start)->count('id');
+            
+            //今日复数订单
+            $vo['today_order_grabbing_num_fs'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',9)->where('addtime','>=',$today_start)->count('id');
+            //今日已抢单成功次数礼包订单
+            $vo['today_success_count_fs'] = Db::name('xy_convey')->whereIn('status',[1,3,5])->where('order_mode',9)->where('uid',$vo['id'])->where('uid',$vo['id'])->where('addtime','>=',$today_start)->count('id');
+            
 
             //今日收益
             $vo['today_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime','>=',$today_start)->sum(Db::raw('num + commission'));
@@ -609,8 +626,24 @@ class Users extends Base
 
         $user = Db::table($this->table)->find($uid);
         if (!$user) $this->error('用户不存在');
+        
+        $where = [
+                    ['uid', '=', $uid],
+                    ['qkon', '=', 1],
+                    ['order_mode', '=', 6],
+                ];
+        //已做单数
+        $yizuo = Db::name('xy_convey')
+                    ->where($where)
+                    ->where('status', 'in', [1, 3, 5])
+                    ->count('id');
+        //总单数
+        $ordersetting = Convey::instance()->get_user_order_setting($uid, $user['level']);
 
         if (request()->isPost()) {
+            $start_num = input('start_num/d', 1);
+            if($start_num < $yizuo) $this->error('触发单数过低');
+            
             // 检查用户是否有未完成的礼包
             $existing_gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('is_completed', 0)->find();
             if ($existing_gift) {
@@ -638,7 +671,8 @@ class Users extends Base
             // 插入礼包记录
             Db::name('xy_gift_packages')->insert([
                 'uid' => $uid,
-                'start_num' => input('start_num/d', 1),
+                'start_num' => $start_num,
+                'now_num' => $yizuo,
                 'gift_data' => json_encode($gift_data),
                 'status' => 0, // 0=未领取, 1=已领取
                 'selected_gift' => input('selected_gift/d', 1),
@@ -648,7 +682,8 @@ class Users extends Base
 
             $this->success('礼包已发送给用户');
         }
-
+        $this->yizuo = $yizuo;
+        $this->ordersetting = $ordersetting['order_num'];
         $this->user = $user;
         return $this->fetch();
     }
