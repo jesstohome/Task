@@ -32,6 +32,13 @@
                            <span class="span">{{$t('msg.yonj2')}}</span>
                            <span class="value">{{currency+info.commission}}</span>
                        </div>
+                       <div class="tent">
+                           <span class="span">Type</span>
+                           <span class="value" v-if="info.order_mode == 10">Gift pack orders</span>
+                           <span class="value" v-else-if="info.order_mode == 9">Lucky Orders</span>
+                           <span class="value" v-else-if="info.order_mode == 6">Member orders</span>
+                           <span class="value" v-else >Solution group orders</span>
+                       </div>
                        <div class="tent" v-if="info.duorw && info.time_limit < 1">
                            <span class="span">{{$t('msg.djje')}}</span>
                            <span class="value">{{currency+info.user_freeze_balance}}</span>

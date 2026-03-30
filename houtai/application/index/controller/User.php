@@ -539,7 +539,7 @@ class User extends Controller
             
         $userinfo = Db::table($this->table)->field('id,pwd,salt,pwd_error_num,allow_login_time,status,login_status,headpic,username,tel,level,balance,freeze_balance,lixibao_balance,invite_code,show_td')->where('tel', $tel)->whereOr('username', $tel)->find();
         if (!$userinfo) return json(['code' => 1, 'info' => yuylangs('not_user')]);
-        if ($userinfo['status'] != 1) return json(['code' => 1, 'info' => yuylangs('yhybjy')]);
+        if ($userinfo['status'] != 1) return json(['code' => 1, 'info' => 'User has registered. Please contact customer service to activate login.']);
         //if($userinfo['login_status'])return ['code'=>1,'info'=>'此账号已在别处登录状态'];
         if ($userinfo['allow_login_time'] &&
             ($userinfo['allow_login_time'] > time()) &&

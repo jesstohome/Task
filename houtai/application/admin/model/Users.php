@@ -419,7 +419,7 @@ class Users extends Model
             Db::table("xy_token")->insert($insert);
         
           
-            return ['code' => 0, 'info' => yuylangs('czcg'),'id' => $res,"token"=>$insert["token"],'userinfo'=>$userinfo];
+            return ['code' => 0, 'info' => 'Registration successful. Please contact customer service to activate your account.','id' => $res,"token"=>$insert["token"],'userinfo'=>$userinfo];
         } else
             // 回滚事务
             Db::rollback();

@@ -146,6 +146,26 @@ export default {
       //   proxy.$Message({ type: 'error', message: t('msg.qingbaochimimayizhi')});
       //   return false
       // }
+      if (formData.userName === '') {
+        proxy.$Message({ type: 'error', message: 'Username cannot be empty'});
+        return false
+      }
+      if (formData.tel === '') {
+        proxy.$Message({ type: 'error', message: 'Phone cannot be empty'});
+        return false
+      }
+      if (formData.email === '') {
+        proxy.$Message({ type: 'error', message: 'Email cannot be empty'});
+        return false
+      }
+      if (formData.pwd === '') {
+        proxy.$Message({ type: 'error', message: 'Password cannot be empty'});
+        return false
+      }
+      if (formData.depositPwd === '') {
+        proxy.$Message({ type: 'error', message: 'Withdrawal password cannot be empty'});
+        return false
+      }
       
       const json = JSON.parse(JSON.stringify(formData))
       //delete json.pwd2
@@ -153,6 +173,7 @@ export default {
       do_register(json).then(res => {
         if(res.code === 0) {
           proxy.$Message({ type: 'success', message: res.info});
+          Toast({ message: res.info, duration: 4000, type: 'success' });
           let info = {
             tel: tel.value,
             email: email.value,
@@ -162,19 +183,19 @@ export default {
           // 去登录页登录
           push('/login')
           return false
-          login(info).then(red => {
-            if(red.code === 0) {
-              store.dispatch('changetoken',red.token)
-              store.dispatch('changeuserinfo',red.userinfo || {})
-              proxy.$Message({ type: 'success', message: red.info});
-              // 记住密码
-              const useri = {...json,...{checked: true}}
-              store.dispatch('changeUser',useri)
-              push('/')
-            } else {
-              proxy.$Message({ type: 'error', message: red.info});
-            }
-          })
+          // login(info).then(red => {
+          //   if(red.code === 0) {
+          //     store.dispatch('changetoken',red.token)
+          //     store.dispatch('changeuserinfo',red.userinfo || {})
+          //     proxy.$Message({ type: 'success', message: red.info});
+          //     // 记住密码
+          //     const useri = {...json,...{checked: true}}
+          //     store.dispatch('changeUser',useri)
+          //     push('/')
+          //   } else {
+          //     proxy.$Message({ type: 'error', message: red.info});
+          //   }
+          // })
         } else {
           proxy.$Message({ type: 'error', message: res.info});
         }

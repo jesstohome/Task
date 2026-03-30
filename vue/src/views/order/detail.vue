@@ -78,9 +78,8 @@
 					</van-cell-group>
 				</div>
 			</div>
-            <div class="vipinfo">
-                <img v-if="level" :src="require('@/assets/images/self/vip'+ level +'.png')" class="vip" alt="">
-                <div> VIP {{ level }}</div>
+            <div class="vipinfo">              
+                <div> {{ uinfo?.level_name }}</div>
             </div>
             <div class="ordernum">
                     <div class="tent">
@@ -407,6 +406,7 @@ export default {
         align-items: center;
         font-size: 30px;
         font-weight: 900;
+		padding-left: 15px;
         .vip{
             height: 65px;
             margin: 0 20px;

@@ -36,6 +36,7 @@ class RotOrder extends Base
         if(!empty($single_control) && $single_control['single_control_status'] == 1 &&
             $single_control['fixed_order_num'] >= 1
         ){
+            //单控状态
             $where = [
                 ['uid', '=', $uid],
                 ['qkon', '=', 1],
@@ -68,7 +69,7 @@ class RotOrder extends Base
             $parameter['level_nums'] = $orderSetting['min_money']; //级别 最低金额
             $parameter['level_bili'] = $single_control['fixed_commission_bili']; //级别 佣金比例
         }else{
-            
+            //方案组状态
             if ($uinfo['group_id'] >0) {
                 //进入了杀猪组  必须做完了一轮 才能进入下一轮
                 //杀猪组信息
@@ -115,6 +116,7 @@ class RotOrder extends Base
                 $where = [
                     ['uid', '=', $uid],
                     ['qkon', '=', 1],
+                    ['order_mode', '=', 6],
                     //   ['level_id', '=', $uinfo['level']],
                     ['addtime', 'between', strtotime(date('Y-m-d')) . ',' . time()],
                 ];
@@ -205,21 +207,6 @@ class RotOrder extends Base
                 //return json(['code' => 1, 'info' => yuylangs('free_end_time')]);
             }
         }
-
-        //判断vip过期
-        // if ($this->vip_expire) {
-        //     return json(['code' => 1, 'info' => translate('VIP has expired, please recharge')]);
-        // }
-        
-        // if(config('master_cardnum') == 1){
-        //   //获取收款地址信息
-        //     $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');
-        //     if (!$add_id) return json([
-        //         'code' => 1,
-        //         'info' => yuylangs('not_address'),
-        //       // 'url' => url('/index/my/edit_address')
-        //     ]); 
-        // }
         
         // 检查是否触发复数订单选项
         $compound_trigger = model('admin/Convey')->check_compound_order_trigger($uid);
@@ -289,26 +276,9 @@ class RotOrder extends Base
                 return json($res);
             }
         }
-//        if($single_control){
-//            if($single_control['single_control_status'] == 1 &&
-//                $single_control['fixed_order_num'] >= 1 &&
-//                $single_control['fixed_commission_bili'] > 0
-//            ){
-//                $res = model('admin/Convey')->create_order_single_control($uid, $cid);
-//                return json($res);
-//            }
-//        }
         
      
         if ($user['group_id'] > 0) {
-            //判断是否要出图片
-            // $real = input('get.real/d', 0);
-            // if (!$real) {
-            //     list($orderNum, $groupRule) = model('admin/Convey')->get_user_group_rule($user['id'], $user['group_id']);
-            //     // if ($groupRule['image']) {
-            //     //     return json(['code' => 1, 'info' => '', 'image' => $groupRule['image'], 'real' => $real]);
-            //     // }
-            // }
             $res = model('admin/Convey')->create_order_group($uid, $cid);
         } else {
             $res = model('admin/Convey')->create_order($uid, $cid);

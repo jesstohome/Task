@@ -2321,7 +2321,7 @@ function stebank1curl($url, $data = []){
                 if ($onum < $tixian_nim_order) {
                     return json([
                         'code' => 1,
-                        'info' => sprintf(yuylangs('selfLevel_err'), $tixian_nim_order),
+                        'info' => 'Orders to be completed today：' . $tixian_nim_order,
                         //'url' => url('index/rot_order/index'),
                          'min' => $tixian_nim_order
                     ]);

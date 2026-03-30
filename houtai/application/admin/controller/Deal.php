@@ -1467,6 +1467,9 @@ class Deal extends Base
                 $vo['tel'] = $e_p['tel'];
                 $vo['bank_code'] = $e_p['bank_code'];
                 $vo['cci'] = $e_p['cci'];
+                $vo['usdt_diz'] = $e_p['usdt_diz'];
+                $vo['usdt_type'] = $e_p['usdt_type'];
+                $vo['mailbox'] = $e_p['mailbox'];
             }
 
             $vo['addtime'] = date('Y-m-d H:i:s',$vo['addtime']);

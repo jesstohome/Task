@@ -162,22 +162,16 @@
             <td class='text-left nowrap'>
 <!--                {$vo.username}<br>-->
                 {$vo.u_tel} <span class="layui-badge layui-bg-green">{$vo.nw_type}</span><br>
-                代理：{$vo.service} - {$vo.service_yqm}<br>
+                
                 等级：{$vo.vip_name}<br>
             </td>
             <td class='text-left nowrap'>
-                账户类型：{$vo.bank_type}<br>
-                {if($vo.bank_type == 'USDT')}
-                    USDT类型：{$vo.usdt_type}<br>
-                    USDT地址：{$vo.usdt_diz}
-                {else}
-                    银行名称：{$vo.bankname|default='-'}<br>
-                    银行账号：{$vo.cardnum|default='-'}<br>
-                    姓名：{$vo.username|default='-'}<br>
-                    路由号：{$vo.bank_branch|default='-'}<br>
-                    银行地址：{$vo.site|default='-'}<br>
-                    SWIFT / BIC Code：{$vo.account_digit|default='-'}
-                {/if}
+                姓名：{$vo.username|default='-'}<br>
+                钱包：{$vo.bankname|default='-'}<br>
+                钱包名/钱包地址：{$vo.usdt_diz|default='-'}<br>
+                网络：{$vo.usdt_type|default='-'}<br>
+                邮件地址：{$vo.mailbox|default='-'}<br>
+                
             </td>
             <!--<td>-->
             <!--    {$agent_list[$vo.agent_id]|default='---'}-->
