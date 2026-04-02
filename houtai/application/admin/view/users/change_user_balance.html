@@ -6,7 +6,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label label-required">用户</label>
             <div class="layui-input-block">
-                <input  value="{$user.tel}" readonly disabled class="layui-input">
+                <input  value="{$user.username}" readonly disabled class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -17,6 +17,7 @@
             </div>
         </div>
         {/if}
+        
         <div class="layui-form-item">
             <label class="layui-form-label label-required">账变类型</label>
             <div class="layui-input-block">
@@ -24,8 +25,8 @@
                     <option value="32">后台充值</option>
                     <!--<option value="34">免费赠送</option>-->
                     <option value="31">手动扣款</option>
-                    <option value="35">冻结本金</option>
-                    <option value="36">解冻本金</option>
+                    <!--<option value="35">冻结本金</option>-->
+                    <!--<option value="36">解冻本金</option>-->
                 </select>
             </div>
         </div>
@@ -36,18 +37,18 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label label-required">账变说明</label>
-            <div class="layui-input-block">
-                <textarea class="layui-textarea" name="remark"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label label-required">用户端账变说明</label>
-            <div class="layui-input-block">
-                <textarea class="layui-textarea" name="user_remark"></textarea>
-            </div>
-        </div>
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label label-required">账变说明</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <textarea class="layui-textarea" name="remark"></textarea>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label label-required">用户端账变说明</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <textarea class="layui-textarea" name="user_remark"></textarea>-->
+        <!--    </div>-->
+        <!--</div>-->
 
         <div class="hr-line-dashed"></div>
 

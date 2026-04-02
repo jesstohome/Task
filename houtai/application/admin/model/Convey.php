@@ -109,11 +109,11 @@ class Convey extends Model
                 ->where('order_mode', 6)
                 ->count('id');//统计当天完成交易的订单
       
-         $order_num = Db::table("xy_level")->where("level", $uinfo['level'])->value("order_num");
+         $order_num = $uinfo['order_num'];
         
         // 复数订单和礼包订单跳过订单上限检查
         if (!($is_compound_order || $is_libaoorder) && $count >= $order_num) {
-            return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            return ['code' => 1, 'info' => 'Task completed. Please contact customer service for further assistance!', 'endRal' => true];
         }
         
        

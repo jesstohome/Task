@@ -38,7 +38,7 @@ module.exports = defineConfig({
   /**
    * 多域名 / 子路径部署安全写法
    */
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 
   /**
    * 静态资源目录

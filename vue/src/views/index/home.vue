@@ -141,7 +141,7 @@ export default {
             require('@/assets/images/h1.png'),
             require('@/assets/images/h2.png'),
             require('@/assets/images/h3.png'),
-            require('@/assets/images/h4.png')
+            // require('@/assets/images/h4.png')
         ])
 
         const toDetails = (id,title) => {

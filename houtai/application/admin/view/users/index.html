@@ -50,7 +50,7 @@
             <td class='text-left nowrap'>
 
                   {$vo.username}<br>
-                  <span class="{$vo.is_jia == 0 ? 'layui-badge layui-bg-green' : 'layui-badge layui-bg-blue'}">{$vo.is_jia == 0 ? '外部' : '内部'}</span><br>
+                  <!--<span class="{$vo.is_jia == 0 ? 'layui-badge layui-bg-green' : 'layui-badge layui-bg-blue'}">{$vo.is_jia == 0 ? '外部' : '内部'}</span><br>-->
                   <span style="color: #1E9FFF;">当前等级：{$vo.level_name}</span><br>
                   <span style="color: #FF5722;">推广码:{$vo.invite_code}</span><br>
                   <span style="color: #009688;">用户ID：{$vo.id}</span><br>
@@ -67,7 +67,7 @@
 
 <!--                 佣金：{$vo.com}<br/>-->
                  体验金：{$vo.lottery_money}<br/>
-                 总单数：{$vo.zon_order_num}<br/>
+                 总单数：{$vo.order_num}<br/>
                  已抢单数：<span style="color: red;">{$vo.today_order_grabbing_num_zon}</span>
 
              </td>
@@ -186,7 +186,7 @@
                 {/if}
 
                 {if auth("change_user_balance")}
-                <a data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm" data-title="账变"
+                <a data-dbclick data-height="30%" class="layui-btn layui-btn-xs layui-btn-warm" data-title="账变"
                    data-modal='{:url("admin/users/change_user_balance")}?id={$vo.id}'>账变</a><br/>
                 {/if}
 
@@ -195,12 +195,12 @@
                    data-value="id#{$vo.id};status#2" >{:lang("清空抢单次数")}
                 </a>
 
-                {if auth("set_single_control")}
-                <a class="layui-btn layui-btn-xs layui-btn-normal"
-                   data-dbclick data-height="70%;"
-                   data-modal="{:url('set_single_control')}?uid={$vo.id}" data-title="设置单控方案">{:lang("设置单控方案")}
-                </a>
-                {/if}
+                <!--{if auth("set_single_control")}-->
+                <!--<a class="layui-btn layui-btn-xs layui-btn-normal"-->
+                <!--   data-dbclick data-height="70%;"-->
+                <!--   data-modal="{:url('set_single_control')}?uid={$vo.id}" data-title="设置单控方案">{:lang("设置单控方案")}-->
+                <!--</a>-->
+                <!--{/if}-->
 
                 {if auth("send_gift")}
                 <a data-dbclick class="layui-btn layui-btn-xs layui-btn-success" data-title="射礼包"

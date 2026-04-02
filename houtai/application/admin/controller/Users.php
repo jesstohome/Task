@@ -331,7 +331,7 @@ class Users extends Base
         
         
         
-        $query->field('u.id,u.level,u.agent_service_id,u.agent_id,u.tel,u.username,u.group_id,le.name as level_name,u.freeze_amount,le.order_num as zon_order_num,
+        $query->field('u.id,u.level,u.order_num,u.agent_service_id,u.agent_id,u.tel,u.username,u.group_id,le.name as level_name,u.freeze_amount,le.order_num as zon_order_num,
         u.lixibao_balance,u.id_status,u.ip,u.is_jia,u.addtime,u.invite_code,u.register_ip,u.login_status,u.withdrawal_status,
         u.all_recharge_num,u.all_deposit_num,u.all_recharge_count,u.all_deposit_count,
         u.freeze_balance,u.status,u.balance,u1.username as parent_name,u1.tel as parent_tel,u1.invite_code as parent_invite_code,u.login_time,u.deal_time,u.lottery_money,u.shuadan_status')
@@ -387,7 +387,7 @@ class Users extends Base
             $vo['tj_com'] = Db::name('xy_balance_log')->where('uid', $vo['id'])
                 ->where('type', 6)->where('status', 1)->sum('num');
             $vo['day_d_count'] = Db::name('xy_convey')->where('uid',$vo['id'])->where("qkon = 1")->where('status','in',[0,1,3,5])->count('id');
-            $vo['order_num'] = Db::name('xy_convey')->where('uid',$vo['id'])->count('id'); 
+            
             $vo['order_incomplete_num'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('status','in',[0,2,4,5])->count('id');  
 
 
@@ -587,6 +587,7 @@ class Users extends Base
                         'type'=>$type,
                         'status'=>$status,//收入1 支出2
                         'addtime'=>time(),
+                        "balance" => $user['balance'],
                         'remark'=>$remark,
                         'user_remark'=>$user_remark,//用户端备注
                     ]);
@@ -2270,9 +2271,9 @@ class Users extends Base
                     $data['auto_buy_finance'] = 0;
                 }
             }
-            if(empty($data['pic'])){
-                return $this->error('图标不能为空');
-            }
+            // if(empty($data['pic'])){
+            //     return $this->error('图标不能为空');
+            // }
             if(empty($data['name'])){
                 return $this->error('名称不能为空');
             }

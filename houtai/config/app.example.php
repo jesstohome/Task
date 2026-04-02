@@ -39,7 +39,7 @@ return [
     'open_agent_chat' => 1,
     //货币符号
     'currency'=>'USD',
-    'recharge_money_list'=>'10/30/50/100/200/500/1000/2000/3000',
+    'recharge_money_list'=>'100/200/500/1000/2000/3000',
     'first_deposit_upgrade_level'=>'', //首次提现后升级到指定级别
     'withdrawal_fee_rate'=>'5', //提现手续费%
     'clean_recharge_hour'=>'1',//自动清理未支付订单
@@ -93,7 +93,7 @@ return [
     'app_url'=>'',          //app下载地址
     'version'=>'',        //版本号
     "langs" => "3242",
-    'free_balance'=>'0', //账户体验金。需要在第一次充值对时候扣掉。
+    'free_balance'=>'300', //账户体验金。需要在第一次充值对时候扣掉。
     'free_balance_time'=>'0',
     'invite_one_money'=>'0', //邀请一个用户得到多少钱
     'invite_recharge_money'=>'0.001', //邀请一个用户首次充值得到多少钱 5%
@@ -108,7 +108,7 @@ return [
     'deal_count'=>'2000',                 //当日交易次数限制
     'deal_reward_count'=>'0',          //推荐新用户获得额外的交易次数
     'deal_timeout'=>'3600',              //订单超时时间
-    'deal_feedze'=>'10800',              //交易冻结时长
+    'deal_feedze'=>'0',              //交易冻结时长
     'deal_error'=>'0',                  //允许违规操作次数
     'vip_1_commission'=>'',          //交易佣金
     'min_deposit' => '100',               //最低提现额度
@@ -120,12 +120,12 @@ return [
     '3_d_reward'=>'1',               //上三级会员获得交易奖励
     '4_d_reward'=>'0',               //上四级会员获得交易奖励
     '5_d_reward'=>'20',                  //上五级会员获得交易奖励
-    'master_cardnum'=>'2',             //银行卡号
+    'master_cardnum'=>'',             //银行卡号
     'master_name'=>'',                              //收款人
     'master_bank'=>'2',                          //所属银行（后改会员升级模式）
-    'master_bk_address'=>'2',         //银行地址
-    'deal_zhuji_time'=>'1',         //远程主机分配时间
-    'deal_shop_time'=>'2',          //等待商家响应时间
+    'master_bk_address'=>'1',         //银行地址
+    'deal_zhuji_time'=>'',         //远程主机分配时间
+    'deal_shop_time'=>'',          //等待商家响应时间
     'tixian_time_1'=>'00',           //提现开始时间
     'tixian_time_2'=>'24',          //提现结束时间
 
@@ -150,7 +150,7 @@ return [
 
     // "recharge_times" => "1",
 
-    'shop_status'=>'1',         //商城状态',
+    'shop_status'=>'',         //商城状态',
 
 
     'db_config2'      => [

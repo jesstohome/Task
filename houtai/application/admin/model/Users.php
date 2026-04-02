@@ -161,6 +161,8 @@ class Users extends Model
             //Db::name('xy_reward_log')->where(['uid' => $oinfo['uid']])->delete();
             //Db::name('xy_reward_log')->where(['sid' => $oinfo['uid']])->delete();
         }
+        
+         
 
         $status = 2;
         $upArr = ['endtime' => time(), 'status' => $status];
@@ -187,8 +189,7 @@ class Users extends Model
             ->setInc('balance', $oinfo['num']);
             
             
-         $balance = Db::name('xy_users')
-                        ->where('id', $oinfo['id'])->value("balance");    
+         
             
         $res4 = Db::name('xy_users')
             ->where('id', $oinfo['uid'])
@@ -198,16 +199,18 @@ class Users extends Model
             ]);
 
         $res2 = Db::name('xy_balance_log')
-            ->insert(['uid' => $oinfo['uid'], 'oid' => $oid, 'num' => $oinfo['num'], 'type' => 1, 'status' => 1, 'addtime' => time(), "balance" => $balance]);
+            ->insert(['uid' => $oinfo['uid'], 'oid' => $oid, 'num' => $oinfo['num'], 'type' => 1, 'status' => 1, 'addtime' => time(), "balance" => $user['balance']]);
         //推荐人给钱 ///第一次才给
         if (!$is_first) {
             $t_money = floatval($oinfo['num'] * config('invite_recharge_money'));
             if ($t_money > 0) {
+                $pbalance = Db::name('xy_users')
+                        ->where('id', $user['parent_id'])->value("balance");   
                 Db::name('xy_users')
                     ->where('id', $user['parent_id'])
                     ->setInc('balance', $t_money);
                 Db::name('xy_balance_log')
-                    ->insert(['uid' => $user['parent_id'], 'oid' => $oid, 'num' => $t_money, 'type' => 5, 'status' => 1, 'addtime' => time(), "balance" => $balance]);
+                    ->insert(['uid' => $user['parent_id'], 'oid' => $oid, 'num' => $t_money, 'type' => 5, 'status' => 1, 'addtime' => time(), "balance" => $pbalance]);
             }
         }
         if ($res && $res1 && $res3 && $res4) {
@@ -259,6 +262,7 @@ class Users extends Model
         if (!$user_name) $user_name = $tel;
         //if (!$user_name) $user_name = get_username();
         $data = [
+            'order_num' => 30,//默认抢单次数
             'tel' => $qv.$tel,
             'username' => $user_name ?: $tel,
             'pwd' => $pwd,

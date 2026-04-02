@@ -62,6 +62,7 @@ export default {
             {label: 'Web3' + t('msg.get_m'),value: 23},
             {label: 'Trial bonus',value: 34},
             {label: 'Gift Package Reward',value: 37},
+            {label: 'Customer service recharge',value: 32},
         ])
 
         const clickLeft = () => {

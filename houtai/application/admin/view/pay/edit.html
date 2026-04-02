@@ -64,47 +64,47 @@
             <label class="layui-col-xs9 relative">
                 <span class="color-green">手续费</span>
                 <input name="pay_commission" required class="layui-input" placeholder="请输入手续费" value="{$info.pay_commission}">
-                <p class="help-block">第三方收取的收费，如10%，填写 0.1</p>
+                <!--<p class="help-block">第三方收取的收费，如10%，填写 0.1</p>-->
             </label>
         </div>
         
         
-         {if($info.py_status==3 || $info.py_status==1)}
-        <div class="layui-form-item layui-row layui-col-space15">
-            <label class="layui-form-item block relative">
-                        <span class="color-green margin-right-10">通道类型</span>
-                        <textarea style="min-height: 130px;line-height:16px" name="tondao_type"  class="layui-input">{$info.tondao_type}</textarea>
-                        <p class="help-block">一行一个, 通道</p>
-                    </label>
-        </div>
-       {/if}
+       <!--  {if($info.py_status==3 || $info.py_status==1)}-->
+       <!-- <div class="layui-form-item layui-row layui-col-space15">-->
+       <!--     <label class="layui-form-item block relative">-->
+       <!--                 <span class="color-green margin-right-10">通道类型</span>-->
+       <!--                 <textarea style="min-height: 130px;line-height:16px" name="tondao_type"  class="layui-input">{$info.tondao_type}</textarea>-->
+       <!--                 <p class="help-block">一行一个, 通道</p>-->
+       <!--             </label>-->
+       <!-- </div>-->
+       <!--{/if}-->
         
         
-        <div class="layui-form-item layui-row layui-col-space15">
-            <label class="layui-form-item block relative">
-                        <span class="color-green margin-right-10">银行设置/usdt类型设置</span>
-                        <textarea style="min-height: 130px;line-height:16px" name="bank_code"  class="layui-input">{$info.bank_code}</textarea>
-                        <p class="help-block">一行一个, 银行代码|银行名称</p>
-                    </label>
-        </div>
+        <!--<div class="layui-form-item layui-row layui-col-space15">-->
+        <!--    <label class="layui-form-item block relative">-->
+        <!--                <span class="color-green margin-right-10">银行设置/usdt类型设置</span>-->
+        <!--                <textarea style="min-height: 130px;line-height:16px" name="bank_code"  class="layui-input">{$info.bank_code}</textarea>-->
+        <!--                <p class="help-block">一行一个, 银行代码|银行名称</p>-->
+        <!--            </label>-->
+        <!--</div>-->
        
        
       
        
         
         
-        <div class="layui-form-item layui-row layui-col-space15">
-            <label class="layui-col-xs9 relative">
-                <span class="color-green">{if $info.id==8}充值汇率率{elseif $info.id==10}银行卡号{else}商户号{/if}</span>
-                <input name="mch_id" class="layui-input" placeholder="" value="{$info.mch_id}">
-            </label>
-        </div>
-        <div class="layui-form-item layui-row layui-col-space15">
-            <label class="layui-col-xs9 relative">
-                <span class="color-green">{if $info.id==8}提现汇率{elseif $info.id==10 }开户真实姓名{else}商户密钥{/if}</span>
-                <input name="secret" class="layui-input" placeholder="" value="{$info.secret}">
-            </label>
-        </div>
+        <!--<div class="layui-form-item layui-row layui-col-space15">-->
+        <!--    <label class="layui-col-xs9 relative">-->
+        <!--        <span class="color-green">{if $info.id==8}充值汇率率{elseif $info.id==10}银行卡号{else}商户号{/if}</span>-->
+        <!--        <input name="mch_id" class="layui-input" placeholder="" value="{$info.mch_id}">-->
+        <!--    </label>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item layui-row layui-col-space15">-->
+        <!--    <label class="layui-col-xs9 relative">-->
+        <!--        <span class="color-green">{if $info.id==8}提现汇率{elseif $info.id==10 }开户真实姓名{else}商户密钥{/if}</span>-->
+        <!--        <input name="secret" class="layui-input" placeholder="" value="{$info.secret}">-->
+        <!--    </label>-->
+        <!--</div>-->
 
         {if($info.py_status == 1)}
         <div class="layui-form-item layui-row layui-col-space15">

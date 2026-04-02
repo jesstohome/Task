@@ -22,7 +22,7 @@ class RotOrder extends Base
         $uid = $this->usder_id;
         
         
-        $uinfo = Db::name('xy_users')->field("id,tel,username,invite_code,balance,freeze_balance,group_id,level")->find($uid);
+        $uinfo = Db::name('xy_users')->field("id,order_num,tel,username,invite_code,balance,freeze_balance,group_id,level")->find($uid);
        
         $uinfo['level'] = $uinfo['level'] > 0 ? intval($uinfo['level']) : 0;
         $uinfo['balance_format'] = number_format($uinfo['balance'],2);
@@ -145,7 +145,8 @@ class RotOrder extends Base
 
                 $orderSetting = Convey::instance()->get_user_order_setting($uid, $uinfo['level']);
 
-                $parameter['order_num'] = $orderSetting['order_num']; //级别 订单数量
+                // $parameter['order_num'] = $orderSetting['order_num']; //级别 订单数量
+                $parameter['order_num'] = $uinfo['order_num']; //级别 订单数量
                 $parameter['level_nums'] = number_format($orderSetting['min_money'],2); //级别 最低金额
                 $parameter['level_bili'] = $orderSetting['bili']; //级别 佣金比例
             }

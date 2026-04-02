@@ -31,7 +31,8 @@ class My extends Base
         $parameter["info"]['balance_all_format'] = number_format($parameter["info"]['balance']+$parameter["info"]['freeze_balance'],2);
         $parameter["info"]['balance_format'] = number_format($parameter["info"]['balance'],2);
         $parameter["info"]['freeze_balance_format'] = number_format($parameter["info"]['freeze_balance'],2);
-       $parameter["rililv"] = config('lxb_bili') * 100 . '%';
+    //   $parameter["rililv"] = config('lxb_bili') * 100 . '%';
+    $parameter["rililv"] = 0;
         $parameter["lxb_shouyi"] = db('xy_lixibao')->where('status', 1)->where('uid', $this->usder_id)->sum('num');
         
         //余额为扣除体验金后的金额

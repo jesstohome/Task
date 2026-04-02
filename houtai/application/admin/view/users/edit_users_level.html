@@ -9,19 +9,19 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <input type="hidden" name="id" value="{$vo.id}">
     <div class="layui-card-body">
-        <div class="layui-form-item">
-            <label class="layui-form-label label-required">图标</label>
-            <div class="layui-input-block">
-                <table class="layui-table">
-                    <thead>
-                    <tr>
-                        <td width="90px" class="text-center"><input name="pic" value="{$vo.pic}" type="hidden"></td>
-                    </tr>
-                    </thead>
-                </table>
-                <script>$('[name="pic"]').uploadOneImage();</script>
-            </div>
-        </div>
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label label-required">图标</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <table class="layui-table">-->
+        <!--            <thead>-->
+        <!--            <tr>-->
+        <!--                <td width="90px" class="text-center"><input name="pic" value="{$vo.pic}" type="hidden"></td>-->
+        <!--            </tr>-->
+        <!--            </thead>-->
+        <!--        </table>-->
+        <!--        <script>$('[name="pic"]').uploadOneImage();</script>-->
+        <!--    </div>-->
+        <!--</div>-->
         <div class="layui-form-item">
             <label class="layui-form-label label-required">名称</label>
             <div class="layui-input-block">
@@ -117,7 +117,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"></label>
             <div class="layui-inline">
-                <label class="layui-form-label">提现抢单次数/天：</label>
+                <label class="layui-form-label">提现抢单次数：</label>
                 <div class="layui-input-inline" style="width: 100px;">
                     <input type="number" value="{$vo.tixian_nim_order}" name="tixian_nim_order" placeholder="提现抢单次数要求" autocomplete="off" class="layui-input">
                 </div>

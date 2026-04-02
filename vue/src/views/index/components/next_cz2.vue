@@ -15,7 +15,7 @@
             {{$t('msg.scfkjt')}}
         </div>
         <div class="buttons">
-            <van-button round block type="primary" @click="onSubmit">
+            <van-button round block color="#4c4bc3" @click="onSubmit">
             {{$t('msg.yjfk')}}
             </van-button>
         </div>

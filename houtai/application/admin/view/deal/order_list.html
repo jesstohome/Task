@@ -38,11 +38,7 @@
             <td class='text-center nowrap'>
                 {$vo.username}
                 <span style="margin-left:5px"></span>
-                {if($vo.is_jia == 1)}
-                <span class="layui-badge layui-bg-green">外部</span>
-                {else}
-                <span class="layui-badge layui-bg-blue">内部</span>
-                {/if}
+                
                 <span class="layui-badge layui-bg-orange">{$vo.user_level}</span>
             </td>
             <!--卡单模式-->
@@ -157,12 +153,12 @@
                 {else}
 
                 {if $vo.status==0}
-                <a data-csrf="{:systoken('order_status')}" class="layui-btn layui-btn-xs layui-btn-danger"
-                   data-action="{:url('order_status')}" data-value="id#{$vo.id};status#5">冻结</a>
+                <!--<a data-csrf="{:systoken('order_status')}" class="layui-btn layui-btn-xs layui-btn-danger"-->
+                <!--   data-action="{:url('order_status')}" data-value="id#{$vo.id};status#5">冻结</a>-->
 
 
-                <a data-csrf="{:systoken('do_user_order')}" class="layui-btn layui-btn-xs layui-btn"
-                   data-action="{:url('do_user_order')}" data-value="id#{$vo.id};status#3">强制付款</a>
+                <!--<a data-csrf="{:systoken('do_user_order')}" class="layui-btn layui-btn-xs layui-btn"-->
+                <!--   data-action="{:url('do_user_order')}" data-value="id#{$vo.id};status#3">强制付款</a>-->
 
 
                 <a data-csrf="{:systoken('qxs')}" class="layui-btn layui-btn-xs layui-btn-warm"

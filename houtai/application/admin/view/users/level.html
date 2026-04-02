@@ -17,7 +17,7 @@
         <thead>
         <tr>
             <th lay-data="{field:'id',width:50}" class='text-left nowrap'>编号</th>
-            <th lay-data="{field:'pic',width:80}" class='text-center nowrap'>图标</th>
+            <!--<th lay-data="{field:'pic',width:80}" class='text-center nowrap'>图标</th>-->
             <th lay-data="{field:'name',width:80}" class='text-center nowrap'>名称</th>
             <th lay-data="{field:'level',width:80}" class='text-center nowrap'>等级值</th>
             <th lay-data="{field:'',width:80}" class='text-left nowrap'>提款限制</th>
@@ -48,9 +48,9 @@
         <tr>
 
             <td class='text-left nowrap'>{$vo.id}</td>
-            <td class='text-center nowrap'>
-                <img src="{$vo.pic}" alt="" style="width: 40%;height: 40%;">
-            </td>
+            <!--<td class='text-center nowrap'>-->
+            <!--    <img src="{$vo.pic}" alt="" style="width: 40%;height: 40%;">-->
+            <!--</td>-->
             <td class='text-center nowrap'>{$vo.name}</td>
             <td class='text-center nowrap'>{$vo.level}</td>
             <td class='text-left nowrap'>
@@ -59,11 +59,11 @@
                 <p>超次数提款手续费：{$vo.tixian_shouxu * 100}%</p>
                 <p>提现最低金额：{$vo.tixian_min}</p>
                 <p>提现最高金额：{$vo.tixian_max}</p>
-                <p>提现抢单次数：{$vo.tixian_nim_order}次/天</p>
+                <p>提现抢单次数：{$vo.tixian_nim_order}次</p>
             </td>
             <td class='text-left nowrap'>
                 <p>余额限制：{$vo.num_min}次/天</p>
-                <p>每日次数：{$vo.order_num}次/天</p>
+                <p>抢单次数：{$vo.order_num}次</p>
                 <p>佣金比例：{$vo.bili * 100}%</p>
                 <p>抢单金额：{$vo.grab_order_min_amount} - {$vo.grab_order_max_amount}</p>
             </td>
