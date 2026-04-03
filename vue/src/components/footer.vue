@@ -100,7 +100,7 @@ export default {
                 white-space: wrap;
                 line-height: 1;
                 &.check{
-                    color: #2c7ce7;
+                    color: #991aff;
                 }
             }
         }

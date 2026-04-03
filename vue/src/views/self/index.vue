@@ -171,7 +171,7 @@
           <div class="payment-popup" style="padding: 20px;">
             <div class="payment-title">Withdrawal password</div>
             <div class="payment-input"><van-field placeholder="Withdrawal password" v-model="paypass" type="password" /></div>       
-            <van-button block round color="#4c4bc3" native-type="submit" @click="gopaypass()">
+            <van-button block round color="#991aff" native-type="submit" @click="gopaypass()">
               Submit
             </van-button>
           </div>         
@@ -457,7 +457,7 @@ export default {
 .profile-credit-fill {
   height: 100%;
   /* 蓝紫色渐变进度条，与图中一致 */
-  background: linear-gradient(90deg, #4c4cef 0%, #7b6cf6 100%);
+  background: linear-gradient(90deg, #991aff 0%, #4f1595 100%);
   border-radius: 999px;
   transition: width 0.6s ease;
 }
@@ -607,7 +607,7 @@ export default {
   width: 100%;
   height: 90px;
   /* 蓝紫色，与图中一致 */
-  background: linear-gradient(90deg, #4c4cef 0%, #6a5cf6 100%);
+  background: linear-gradient(90deg, #991aff 0%, #4f1595 100%);
   color: #ffffff;
   border: none;
   border-radius: 50px;

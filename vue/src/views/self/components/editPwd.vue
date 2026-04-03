@@ -54,7 +54,7 @@
           <p class="tex">{{$t('msg.qljmm')}}</p>
       </div> -->
       <div class="buttons">
-        <van-button round block color="#4c4bc3" native-type="submit">
+        <van-button round block color="#991aff" native-type="submit">
           {{$t('msg.yes')}}
         </van-button>
       </div>

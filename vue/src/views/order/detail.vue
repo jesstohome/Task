@@ -113,7 +113,7 @@
 			<div style="padding: 20px">
 			<van-button
 				block
-				color="#4c4bc3"
+				color="#991aff"
 				@click="confirmPwd"
 				:loading="confirmLoading"
 				:disabled="confirmLoading"

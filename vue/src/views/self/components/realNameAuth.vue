@@ -22,7 +22,7 @@
       </div>
 
       <div style="margin:26px">
-        <van-button block round color="#4c4bc3" :disabled="submitDisabled" @click="onSubmit">{{ $t('msg.submit') }}</van-button>
+        <van-button block round color="#991aff" :disabled="submitDisabled" @click="onSubmit">{{ $t('msg.submit') }}</van-button>
         <div class="status-info">
           <small>{{ $t('msg.id_status_label') }}: {{ statusText }}</small>
           <div v-if="id_remark"><small>{{ id_remark }}</small></div>

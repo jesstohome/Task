@@ -22,7 +22,7 @@
         />
       </van-cell-group>
       <div class="buttons">
-        <van-button block round color="#4c4bc3" native-type="submit">
+        <van-button block round color="#991aff" native-type="submit">
           Login
         </van-button>
         <div @click="$router.push({path: '/register'})" style="margin-top: 20px; text-align: center; font-size: 20px;text-decoration: underline; cursor: pointer;">

@@ -315,7 +315,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-$brand: #4c4cef;
+$brand: #991aff;
 
 /* ══════════════════════════════════════════════════════════
    整体

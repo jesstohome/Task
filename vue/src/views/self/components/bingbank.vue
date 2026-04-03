@@ -24,7 +24,7 @@
       </div> 
       <div class="bank_name">Email</div>
       <div class="bank_input"><van-field placeholder="Email" v-model="mailbox" type="text" /></div> 
-      <van-button block round color="#4c4bc3" native-type="submit" @click="confirmPwd()">
+      <van-button block round color="#991aff" native-type="submit" @click="confirmPwd()">
               Update
       </van-button>
     </div>
@@ -116,7 +116,7 @@
     </div>
     <!-- <div class="not_box_bank">
       <van-empty v-if="Object.keys(info).length < 1" :description="$t('msg.not_data')" />
-      <van-button round block color="#4c4bc3" v-if="Object.keys(info).length < 3" class="not" @click="showDialog()">
+      <van-button round block color="#991aff" v-if="Object.keys(info).length < 3" class="not" @click="showDialog()">
         {{ $t("msg.add") }}
       </van-button>
     </div> -->

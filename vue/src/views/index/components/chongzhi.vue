@@ -36,7 +36,7 @@
         <div class="text_b" v-html="content">
         </div>
         <div class="buttons">
-            <van-button round block color="#4c4bc3" @click="onSubmit">
+            <van-button round block color="#991aff" @click="onSubmit">
             {{$t('msg.chongzhi')}}
             </van-button>
         </div>

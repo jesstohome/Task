@@ -17,7 +17,7 @@
                     <div class="flex">
                         <div class="title">{{item.username}}</div>
                         <div class="time">{{item.btime}}——{{item.etime}}</div>
-                        <van-button block color="#4c4bc3" style="padding: 5px;margin: 5px;" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
+                        <van-button block color="#991aff" style="padding: 5px;margin: 5px;" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
                     </div>
                 </div>
             </div>

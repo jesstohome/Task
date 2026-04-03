@@ -158,8 +158,8 @@
       <div class="hero-arc"></div>
     </div>
     <div class="hero-info">
-      <div>Frozen amount：<span style="color: #4c4cef;">{{ mInfo.dongjiejine }}</span></div>
-      <div>Today's earnings：<span style="color: #4c4cef;">{{ mInfo.yon1 }}</span></div>
+      <div>Frozen amount：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
+      <div>Today's earnings：<span style="color: #991aff;">{{ mInfo.yon1 }}</span></div>
     </div>
 
     <AdShowcase
@@ -1146,8 +1146,8 @@ export default {
 }
 .hero-card-label { font-size: 26px; font-weight: 700; color: #1a1a2e; margin-top: 8px; margin-bottom: 10px; }
 .hero-card-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-.hero-card-amount--negative { font-size: 38px; font-weight: 800; color: #4c4cef; }
-.hero-card-amount--zero { font-size: 38px; font-weight: 800; color: #4c4cef; }
+.hero-card-amount--negative { font-size: 38px; font-weight: 800; color: #991aff; }
+.hero-card-amount--zero { font-size: 38px; font-weight: 800; color: #991aff; }
 .hero-card-currency { font-size: 26px; font-weight: 600; color: #555; }
 .hero-card-desc { font-size: 24px; line-height: 1.5; color: #000; }
 .hero-arc { position: relative; z-index: 1; width: 100%; height: 0; }
