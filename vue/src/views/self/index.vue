@@ -158,7 +158,7 @@
       <button class="logout-btn" @click="tuichu">Logout</button>
     </div>
 
-    <div class="copyright">©1999-2026 AWISEE</div>
+    <div class="copyright">©2018-2026 AWISEE</div>
 
     <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />

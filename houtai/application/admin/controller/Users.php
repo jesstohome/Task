@@ -978,7 +978,7 @@ class Users extends Base
                 'day_withdraw_num'=>input('day_withdraw_num',1),
                 'day_withdraw_free_num'=>input('day_withdraw_free_num',1),
                 'withdraw_fixed_fee'=>input('withdraw_fixed_fee',0),
-                'tixian_shouxu'=>input('tixian_shouxu',0),
+                'tixian_shouxu'=>input('tixian_shouxu',1),
                 'tixian_nim_order'=>input('tixian_nim_order',0),
                 'grab_order_min_amount'=>input('grab_order_min_amount',0),
                 'grab_order_max_amount'=>input('grab_order_max_amount',''),
@@ -1030,9 +1030,9 @@ class Users extends Base
             if($data['status'] === 'on'){
                 $data['status'] = 1;
             }
-            if(empty($data['pic'])){
-                return $this->error('图标不能为空');
-            }
+            // if(empty($data['pic'])){
+            //     return $this->error('图标不能为空');
+            // }
             if(empty($data['name'])){
                 return $this->error('名称不能为空');
             }

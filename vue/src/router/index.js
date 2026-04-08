@@ -284,7 +284,7 @@ router.beforeEach((to, from, next) => {
   // 2. 要合理的搭配条件语句，避免出现路由死循环。
   var token = localStorage.getItem('token')
   console.log(to)
-  if (to.name == 'home' || to.name == 'login' || to.name == 'register' || to.name == 'service') {
+  if (to.name == 'home' || to.name == 'login' || to.name == 'register' || to.name == 'service' || to.name == 'content') {
     next()
   } else if (!token) {
     next('/login')

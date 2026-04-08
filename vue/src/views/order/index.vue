@@ -17,10 +17,10 @@
                             <div class="tab" :class="info.status == -1">
                                 <span class="span">{{(info.duorw > 0 && info.time_limit > 1) ? $t('msg.dtj') : status_list?.find(rr => rr.value == info.status)?.label}}</span>
                             </div>
-                            <!-- <div class="tent">
+                            <div class="tent" v-if="info?.goods_count > 0">
                                 <span class="span">{{currency+info?.goods_price}}</span>
                                 <span class="value">{{'x ' + info?.goods_count}}</span>
-                            </div> -->
+                            </div>
                        </div>
                    </div>
                    <div class="monney">
@@ -39,14 +39,14 @@
                            <span class="value" v-else-if="info.order_mode == 6">Member orders</span>
                            <span class="value" v-else >Solution group orders</span>
                        </div>
-                       <div class="tent" v-if="info.duorw && info.time_limit < 1">
+                       <!-- <div class="tent" v-if="info.duorw && info.time_limit < 1">
                            <span class="span">{{$t('msg.djje')}}</span>
                            <span class="value">{{currency+info.user_freeze_balance}}</span>
                        </div>
                        <div class="tent" v-else-if="info.status == 5">
                            <span class="span">{{$t('msg.djje')}}</span>
                            <span class="value">{{currency+info.user_freeze_balance}}</span>
-                       </div>
+                       </div> -->
                        <div class="tent" v-if="info.duorw">
                            <span class="span">{{$t('msg.dqjd')}}</span>
                            <span class="value">{{(info.completedquantity || 0) + '/' + (info.duorw || 0)}}</span>
@@ -64,8 +64,8 @@
                        </div>
                    </div>
                     <van-button class="tj-btn" round block color="#991aff" v-if="info.status == 0 || (info.duorw > 0 && info.time_limit > 1)" @click.stop="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
-                    <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click.stop="toTei()">{{$t('msg.lxkfjd')}}</van-button>
-                    <van-button round block type="danger" v-else-if="info.status == 5" @click.stop="toTei()">{{$t('msg.lxkfjd')}}</van-button>
+                    <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click.stop="toTei()">Contact customer service to complete your order.</van-button>
+                    <van-button round block type="danger" v-else-if="info.status == 5" @click.stop="toTei()">Contact customer service to complete your order.</van-button>
                </div>
                <van-empty v-if="list.length == 0" :description="$t('msg.zwdd')" />
             </van-tab>

@@ -142,7 +142,13 @@ class Convey extends Model
         if ($inyectar) {
             $min = $max = $uinfo['balance'] * $inyectar['scale'];
         }
-        $goods = $this->rand_order($min, $max,$uid,$cid);
+        
+        if ($prefix_type == 'LB' || $prefix_type == 'FS') {
+            $goods = $this->rand_order($custom_amount, $custom_amount,$uid,$cid);
+        }else{
+            $goods = $this->rand_order($min, $max,$uid,$cid);
+        }
+        
         
         
         if($goods['code'] == 1){
@@ -164,7 +170,6 @@ class Convey extends Model
 
         // 如果提供了自定义金额和佣金（来自礼包），则使用自定义值
         if ($prefix_type == 'LB' || $prefix_type == 'FS') {
-            $goods['num'] = $custom_amount;
             if($custom_commission > 0){
                 $commission = $custom_amount * $custom_commission / 100;
                 $commission_type = 0;

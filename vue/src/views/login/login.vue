@@ -34,7 +34,7 @@
         
       </div>
     </van-form>
-    <div class="footer-copyright">©1999-2026 AWISEE</div>
+    <div class="footer-copyright">©2018-2026 AWISEE</div>
   </div>
   
 </template>

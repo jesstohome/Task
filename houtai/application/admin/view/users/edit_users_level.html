@@ -44,21 +44,21 @@
                 <input name="num" required value="{$vo.num}" placeholder="请输入升级价格" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label label-required">余额最低金额</label>
-            <div class="layui-input-block">
-                <input name="balance_min_amount" required value="{$vo.balance_min_amount}" placeholder="余额最低金额" class="layui-input">
-                <p class="help-block">购买等级时，要求用户账户余额必须大于等于该金额</p>
-            </div>
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label label-required">余额最低金额</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <input name="balance_min_amount" required value="{$vo.balance_min_amount}" placeholder="余额最低金额" class="layui-input">-->
+        <!--        <p class="help-block">购买等级时，要求用户账户余额必须大于等于该金额</p>-->
+        <!--    </div>-->
 
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label label-required">余额最高金额</label>
-            <div class="layui-input-block">
-                <input name="balance_max_amount" required value="{$vo.balance_max_amount}" placeholder="余额最高金额" class="layui-input">
-                <p class="help-block">购买等级时，要求用户账户余额不能大于该金额</p>
-            </div>
-        </div>
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label label-required">余额最高金额</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <input name="balance_max_amount" required value="{$vo.balance_max_amount}" placeholder="余额最高金额" class="layui-input">-->
+        <!--        <p class="help-block">购买等级时，要求用户账户余额不能大于该金额</p>-->
+        <!--    </div>-->
+        <!--</div>-->
         <div class="layui-form-item">
             <label class="layui-form-label">提款配置</label>
             <div class="layui-inline">
@@ -203,45 +203,45 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否自动开启理财产品</label>
-            <div class="layui-input-block">
-                <input type="radio" name="auto_buy_finance" value="1" title="开启" {if $vo.auto_buy_finance == 1} checked {/if} lay-filter="genderRadio">
-                <input type="radio" name="auto_buy_finance" value="0" title="关闭" {if $vo.auto_buy_finance == 0} checked {/if} lay-filter="genderRadio">
-            </div>
-        </div>
-        <div class="layui-form-item lixibao_id" style="display: {if $vo.auto_buy_finance == 1} block {else} none {/if};">
-            <label class="layui-form-label">选择理财产品</label>
-            <div class="layui-input-block">
-                <select name="lixibao_id" class="layui-select"  lay-verify="">
-                    <option value="">请选择理财产品</option>
-                    {volist name="list" id="vo2"}
-                    <option value="{$vo2.id}" {if $vo2.id == $vo.lixibao_id} selected {/if}>{$vo2.min_num}-{$vo2.max_num}/{$vo2.day}天/{$vo2.bili*100}%收益/{$vo2.shouxu*100}%手续费</option>
-                    {/volist}
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">有效天数</label>
-            <div class="layui-input-block">
-                <input type="number" name="expire_day" value="{$vo.expire_day}" class="layui-input">
-                <p class="help-block">购买等级后，有效天数后过期，0为不限制</p>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否享受推广佣金</label>
-            <div class="layui-input-block">
-                <input type="radio" name="promotion_commisssion" value="1" title="开启" {if $vo.promotion_commisssion == 1} checked {/if}>
-                <input type="radio" name="promotion_commisssion" value="0" title="关闭" {if $vo.promotion_commisssion == 0} checked {/if}>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">到期是否退回本金</label>
-            <div class="layui-input-block">
-                <input type="radio" name="expire_return_principal" value="1" title="开启" {if $vo.expire_return_principal == 1} checked {/if}>
-                <input type="radio" name="expire_return_principal" value="0" title="关闭" {if $vo.expire_return_principal == 0} checked {/if}>
-            </div>
-        </div>
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label">是否自动开启理财产品</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <input type="radio" name="auto_buy_finance" value="1" title="开启" {if $vo.auto_buy_finance == 1} checked {/if} lay-filter="genderRadio">-->
+        <!--        <input type="radio" name="auto_buy_finance" value="0" title="关闭" {if $vo.auto_buy_finance == 0} checked {/if} lay-filter="genderRadio">-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item lixibao_id" style="display: {if $vo.auto_buy_finance == 1} block {else} none {/if};">-->
+        <!--    <label class="layui-form-label">选择理财产品</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <select name="lixibao_id" class="layui-select"  lay-verify="">-->
+        <!--            <option value="">请选择理财产品</option>-->
+        <!--            {volist name="list" id="vo2"}-->
+        <!--            <option value="{$vo2.id}" {if $vo2.id == $vo.lixibao_id} selected {/if}>{$vo2.min_num}-{$vo2.max_num}/{$vo2.day}天/{$vo2.bili*100}%收益/{$vo2.shouxu*100}%手续费</option>-->
+        <!--            {/volist}-->
+        <!--        </select>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label">有效天数</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <input type="number" name="expire_day" value="{$vo.expire_day}" class="layui-input">-->
+        <!--        <p class="help-block">购买等级后，有效天数后过期，0为不限制</p>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label">是否享受推广佣金</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <input type="radio" name="promotion_commisssion" value="1" title="开启" {if $vo.promotion_commisssion == 1} checked {/if}>-->
+        <!--        <input type="radio" name="promotion_commisssion" value="0" title="关闭" {if $vo.promotion_commisssion == 0} checked {/if}>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <!--<div class="layui-form-item">-->
+        <!--    <label class="layui-form-label">到期是否退回本金</label>-->
+        <!--    <div class="layui-input-block">-->
+        <!--        <input type="radio" name="expire_return_principal" value="1" title="开启" {if $vo.expire_return_principal == 1} checked {/if}>-->
+        <!--        <input type="radio" name="expire_return_principal" value="0" title="关闭" {if $vo.expire_return_principal == 0} checked {/if}>-->
+        <!--    </div>-->
+        <!--</div>-->
         <div class="layui-form-item">
             <label class="layui-form-label" autocomplete="off">排序</label>
             <div class="layui-input-block">

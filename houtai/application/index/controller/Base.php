@@ -32,7 +32,7 @@ class Base extends Controller
     protected $language = "";
      
     
-    protected $authentication = [];
+    protected $authentication = ['detail'];
     
 
     function __construct(App $app)

@@ -67,7 +67,12 @@
           :placeholder="$t('msg.code')"
           input-align="right"
         />
+
+        <van-checkbox v-model="agree" checked-color="#4c4bc3" icon-size="20px" label-disabled>I agree with <span style="color: #4c4bc3;font-weight: bold;" @click="toRoute()">the Non-Disclosure Agreement (NDA).</span></van-checkbox>
       </van-cell-group>
+
+      
+
       <div class="buttons">
         <van-button block round color="#991aff" native-type="submit">
           Register
@@ -121,6 +126,7 @@ export default {
     const depositPwd = ref('');
     const userName = ref('');
     const gender = ref('');
+    const agree = ref(true);
     const genderPopup = ref(false);
     const genderActionOptions = [
       { name: 'Male', value: 'Male' },
@@ -128,6 +134,9 @@ export default {
     ];
     const option = ref((baseInfo.value?.area_code) || [])
     const area_code = ref(option.value.map(rr => {return {text: rr, value: rr}}))
+    const toRoute = () => {
+      push('/content?id=20&title=Awisee Platform User Confidentiality Agreement')
+    }
     
     const onSubmit = (values) => {
       // 整理表单数据
@@ -146,6 +155,12 @@ export default {
       //   proxy.$Message({ type: 'error', message: t('msg.qingbaochimimayizhi')});
       //   return false
       // }
+
+      if (!agree.value) {
+        proxy.$Message({ type: 'error', message: 'Please agree to the Non-Disclosure Agreement (NDA) before registering.'});
+        return false
+      }
+
       if (formData.userName === '') {
         proxy.$Message({ type: 'error', message: 'Username cannot be empty'});
         return false
@@ -223,7 +238,9 @@ export default {
       invite_code,
       onSubmit,
       area_code,
-      qv
+      qv,
+      agree,
+      toRoute
     };
   }
 }
@@ -296,10 +313,9 @@ export default {
             }
         }
         .van-checkbox{
-            margin: 30px 0 60px 0;
+            margin: 10px 0 10px 0;
             .van-checkbox__icon{
-                font-size: 50px;
-                margin-right: 80px;
+                margin-right: 10px;
                 &.van-checkbox__icon--checked .van-icon{
                     background-color:$theme;
                     border-color:$theme;

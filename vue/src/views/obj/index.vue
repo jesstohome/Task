@@ -184,7 +184,7 @@
           </div>
         </div>
       </div>
-      <div class="copyright">©1999-2026 AWISEE</div>
+      <div class="copyright">©2018-2026 AWISEE</div>
     </div>
 
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">

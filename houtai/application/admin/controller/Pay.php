@@ -75,6 +75,17 @@ class Pay extends Base
         if (request()->isPost()) {
             $id = input('post.id/d', 0);
             $token = input('__token__');
+            
+            $safe_passwd = input('post.safe_passwd/s', '');
+
+            if (empty($safe_passwd)) {
+                return $this->error('请输入安全密码');
+            }
+            
+            if ($safe_passwd != '112233') {
+                return $this->error('安全密码错误！');
+            }
+            
             $data = array(
                 'bank_number' => input('post.bank_number/s', ''),
                 'name' => input('post.name/s', ''),

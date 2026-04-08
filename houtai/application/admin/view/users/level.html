@@ -23,7 +23,7 @@
             <th lay-data="{field:'',width:80}" class='text-left nowrap'>提款限制</th>
             <th lay-data="{field:'',width:80}" class='text-left nowrap'>抢单限制</th>
             <th lay-data="{field:'num',width:110}" class='text-center nowrap'>升级价格</th>
-            <th lay-data="{field:'',width:110}" class='text-center nowrap'>购买余额限制</th>
+            <!--<th lay-data="{field:'',width:110}" class='text-center nowrap'>购买余额限制</th>-->
             <th lay-data="{field:'sort',width:80}" class='text-center nowrap'>排序</th>
             <th lay-data="{field:'show_status',width:80}" class='text-center nowrap'>显示状态</th>
             <th lay-data="{field:'status',width:80}" class='text-center nowrap'>开启状态</th>
@@ -70,9 +70,9 @@
 
             <td class='text-center nowrap'><span style="color:rgb(103,194,58);">{$vo.num}</span></td>
 <!--            <td class='text-center nowrap'>{$vo.bili}</td>-->
-            <td class='text-center nowrap'>
-                {$vo.balance_min_amount} - {$vo.balance_max_amount}
-            </td>
+            <!--<td class='text-center nowrap'>-->
+            <!--    {$vo.balance_min_amount} - {$vo.balance_max_amount}-->
+            <!--</td>-->
             <td class='text-center nowrap'>{$vo.sort}</td>
             <td class='text-center nowrap'>
                 {$vo.show_status == 1 ? '显示' : '隐藏'}

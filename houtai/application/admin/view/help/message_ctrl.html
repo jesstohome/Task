@@ -52,35 +52,35 @@
 </div>
 
 
-<div class="layui-row layui-col-space15" id="banner">加载中....</div>
+<!--<div class="layui-row layui-col-space15" id="banner">加载中....</div>-->
 
-<div class="layui-row layui-col-space15" id="home_msg">加载中....</div>
+<!--<div class="layui-row layui-col-space15" id="home_msg">加载中....</div>-->
 
 <script>
 
-$(function () {
-        $.ajax({
-            url: "{:url('banner')}",
-            data: {type: "shop"},
-            type: 'get',
-            success: function (res) {
-                $('#banner').html(res);
-                get_agent();
-            }
-        });
-        function get_agent()
-        {
-            $.ajax({
-                url: "{:url('home_msg')}",
-                data: {type: "agent"},
-                type: 'get',
-                success: function (res) {
-                    $('#home_msg').html(res);
-                    $.form.reInit();
-                }
-            });
-        }
-    });
+// $(function () {
+//         $.ajax({
+//             url: "{:url('banner')}",
+//             data: {type: "shop"},
+//             type: 'get',
+//             success: function (res) {
+//                 $('#banner').html(res);
+//                 get_agent();
+//             }
+//         });
+//         function get_agent()
+//         {
+//             $.ajax({
+//                 url: "{:url('home_msg')}",
+//                 data: {type: "agent"},
+//                 type: 'get',
+//                 success: function (res) {
+//                     $('#home_msg').html(res);
+//                     $.form.reInit();
+//                 }
+//             });
+//         }
+//     });
     
 
 
