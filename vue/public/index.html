@@ -4,6 +4,21 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, location=no ">
+    <style>
+      /* 解决不同设备背景颜色不一致问题 */
+      html, body {
+        background-color: #fff;
+      }
+      #app {
+        background-color: #fff;
+      }
+      /* LiveChat 按钮位置调高 */
+      /* .lcw_float_button,
+      #livechat-compact-container {
+        bottom: 80px !important;
+      } */
+
+    </style>
     <!-- <meta name='apple-mobile-web-app-capable' content='yes' />
     <meta name='full-screen' content='true' />
     <meta name='x5-fullscreen' content='true' />
@@ -18,5 +33,28 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+     <!-- Start of LiveChat (www.livechat.com) code -->
+  <script>
+      window.__lc = window.__lc || {};
+      window.__lc.license = 19636179;
+      window.__lc.integration_name = "manual_channels";
+      window.__lc.product_name = "livechat";
+      // 防止 LiveChat 全屏打开，保持浮窗显示
+      // window.__lc.group_id = 1;
+      // window.__lc.mobile_friendly = true;
+      ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e}(window,document,[].slice))
+      // 在 LiveChat 加载完成后，监听关闭事件，防止切走导航
+      // window.addEventListener('load', function() {
+      //   if (window.LC_API) {
+      //     // 点击外部或 Escape 键时关闭聊天窗口
+      //     window.LC_API.on_after_load = function() {
+      //       // 允许用户通过 X 按钮关闭
+      //       window.LC_API.close_chat();
+      //     };
+      //   }
+      // });
+  </script>
+  <noscript><a href="https://www.livechat.com/chat-with/19636179/" rel="nofollow">Chat with us</a>, powered by <a href="https://www.livechat.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a></noscript>
+  <!-- End of LiveChat code -->
   </body>
 </html>

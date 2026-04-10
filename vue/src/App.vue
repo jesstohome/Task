@@ -150,5 +150,8 @@ export default {
   user-select: none;
   /* 防止 iOS 上的双击延迟 */
   touch-action: pan-y;
+  /* 修复背景颜色不一致 - 确保所有设备显示白色背景 */
+  background-color: #ffffff;
+  background: #ffffff;
 }
 </style>

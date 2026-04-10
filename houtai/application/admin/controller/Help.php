@@ -136,7 +136,7 @@ class Help extends Base
         $this->title = '编辑前台首页文本';
         $id = intval($id);
         if (request()->isPost()) {
-            $this->applyCsrfToken();
+            // $this->applyCsrfToken();
             $content = input('post.content/s', '');
             $id = input('post.id/d', 0);
             $title = input('post.title/s', '');
@@ -147,40 +147,40 @@ class Help extends Base
             $update['addtime'] = time();
             $update['content'] = $content;
             $update['title'] = $title;
-            $update['zh_cn'] = input('zh');
-            $update['pt_br'] = input('pt');
-            $update['es_mx'] = input('es');
-            $update['en_id'] = input('en_id');
-            $update['iv_vn'] = input('iv_vn');
-            $update['tr_tr'] = input('tr_tr');
-            $update['tw_tw'] = input('tw_tw');
-            $update['hy_hy'] = input('hy_hy');
-            $update['rus_rus'] = input('rus_rus');
-            $update['prs_prs'] = input('prs_prs');
-            $update['jp_jp'] = input('jp_jp');
-            $update['en_au'] = input('en_au');
+            // $update['zh_cn'] = input('zh');
+            // $update['pt_br'] = input('pt');
+            // $update['es_mx'] = input('es');
+            // $update['en_id'] = input('en_id');
+            // $update['iv_vn'] = input('iv_vn');
+            // $update['tr_tr'] = input('tr_tr');
+            // $update['tw_tw'] = input('tw_tw');
+            // $update['hy_hy'] = input('hy_hy');
+            // $update['rus_rus'] = input('rus_rus');
+            // $update['prs_prs'] = input('prs_prs');
+            // $update['jp_jp'] = input('jp_jp');
+            // $update['en_au'] = input('en_au');
             
-            $update['t_zh_cn'] = input('t_zh_cn');
-            $update['t_pt_br'] = input('t_pt_br');
-            $update['t_es_mx'] = input('t_es_mx');
-            $update['t_en_id'] = input('t_en_id');
-            $update['t_iv_vn'] = input('t_iv_vn');
-            $update['t_tr_tr'] = input('t_t_tr_tr');
-            $update['t_tw_tw'] = input('t_tw_tw');
-            $update['t_hy_hy'] = input('t_hy_hy');
-            $update['t_rus_rus'] = input('t_rus_rus');
-            $update['t_prs_prs'] = input('t_prs_prs');
-            $update['t_jp_jp'] = input('t_jp_jp');
-            $update['t_en_au'] = input('t_en_au');
+            // $update['t_zh_cn'] = input('t_zh_cn');
+            // $update['t_pt_br'] = input('t_pt_br');
+            // $update['t_es_mx'] = input('t_es_mx');
+            // $update['t_en_id'] = input('t_en_id');
+            // $update['t_iv_vn'] = input('t_iv_vn');
+            // $update['t_tr_tr'] = input('t_t_tr_tr');
+            // $update['t_tw_tw'] = input('t_tw_tw');
+            // $update['t_hy_hy'] = input('t_hy_hy');
+            // $update['t_rus_rus'] = input('t_rus_rus');
+            // $update['t_prs_prs'] = input('t_prs_prs');
+            // $update['t_jp_jp'] = input('t_jp_jp');
+            // $update['t_en_au'] = input('t_en_au');
             
              $update['en_es'] = input('en_es');
-            $update['t_en_es'] = input('t_en_es');
+            // $update['t_en_es'] = input('t_en_es');
             
-            $update['fa_ir'] = input('fa_ir');
-            $update['t_fa_ir'] = input('t_fa_ir');
+            // $update['fa_ir'] = input('fa_ir');
+            // $update['t_fa_ir'] = input('t_fa_ir');
             
-             $update['rom'] = input('rom');
-            $update['t_rom'] = input('t_rom');
+            //  $update['rom'] = input('rom');
+            // $update['t_rom'] = input('t_rom');
             
             
             $res = Db::table('xy_index_msg')->where('id', $id)->update($update);

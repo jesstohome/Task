@@ -35,7 +35,7 @@
                        <div class="tent">
                            <span class="span">Type</span>
                            <span class="value" v-if="info.order_mode == 10">Gift pack orders</span>
-                           <span class="value" v-else-if="info.order_mode == 9">Lucky Orders</span>
+                           <span class="value" v-else-if="info.order_mode == 9">Multiple Order</span>
                            <span class="value" v-else-if="info.order_mode == 6">Member orders</span>
                            <span class="value" v-else >Solution group orders</span>
                        </div>
