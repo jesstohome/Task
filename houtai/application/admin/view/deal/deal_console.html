@@ -61,7 +61,7 @@
     <div class="layui-tab layui-tab-card sys-setings">
         <ul class="layui-tab-title">
             <li class="layui-this">站点设置</li>
-            <!--<li>提款设置</li>-->
+            <li>提现设置</li>
             <li>充值设置</li>
             <li>抢单设置</li>
             <!--<li>利息宝设置</li>-->
@@ -290,15 +290,15 @@
 
 
 
-<!--                    <label class="layui-form-item margin-top-20 block relative">-->
-<!--                        <span class="color-green margin-right-10">提现时间</span>-->
-<!--                        <input style="width: 120px;display: inline-block" name="tixian_time_1" -->
-<!--                               placeholder="提现开始时间" value="{:config('tixian_time_1')}" class="layui-input">-->
-<!--                        - -->
-<!--                        <input style="width: 120px;display: inline-block" name="tixian_time_2" -->
-<!--                               placeholder="提现结束时间" value="{:config('tixian_time_2')}" class="layui-input">-->
-<!--                        <p class="help-block">只支持整点, 如08:00-20:00,请直接输入 8 - 20</p>-->
-<!--                    </label>-->
+                    <!--<label class="layui-form-item margin-top-20 block relative">-->
+                    <!--    <span class="color-green margin-right-10">提现时间</span>-->
+                    <!--    <input style="width: 120px;display: inline-block" name="tixian_time_1" -->
+                    <!--           placeholder="提现开始时间" value="{:config('tixian_time_1')}" class="layui-input">-->
+                    <!--    - -->
+                    <!--    <input style="width: 120px;display: inline-block" name="tixian_time_2" -->
+                    <!--           placeholder="提现结束时间" value="{:config('tixian_time_2')}" class="layui-input">-->
+                    <!--    <p class="help-block">只支持整点, 如08:00-20:00,请直接输入 8 - 20</p>-->
+                    <!--</label>-->
 
 
                     <!--<div class="layui-form-item">-->
@@ -361,8 +361,8 @@
                 </div>
 
             </div>
-<!--            <div class="layui-tab-item">-->
-<!--                <div class="layui-card-body padding-40 layui-col-md8">-->
+            <div class="layui-tab-item">
+                <div class="layui-card-body padding-40 layui-col-md8">
                     <!--<label class="layui-form-item margin-top-20 block relative">-->
                     <!--    <span class="color-green margin-right-10">提现到钱包</span>-->
                     <!--    <input name="payout_wallet" placeholder="提现到钱包"-->
@@ -370,203 +370,203 @@
                     <!--    <p class="help-block">提现到钱包: 1开启 0关闭</p>-->
                     <!--</label>-->
 
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提款账户类型</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_account_type"-->
-<!--                                   placeholder="提款账户类型" value="{:sysconf('withdrawal_account_type')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">用户提款开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="withdrawal_switch">-->
-<!--                                <option value="0" {if(sysconf('withdrawal_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('withdrawal_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">注册推广彩金奖励</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="register_promotion_winnings"  value="{:sysconf('register_promotion_winnings')}" type="number"-->
-<!--                                   class="layui-input">-->
-<!--                        </div>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <div class="layui-form-mid"><p class="help-block">大于0有效，注册后平台奖励给推广人的彩金</p></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提款功能关闭提醒</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_close_msg" placeholder="提款功能关闭提醒"  value="{:sysconf('withdrawal_close_msg')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提款功能关闭提醒文章ID</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_close_article_id" placeholder="提款功能关闭提醒文章ID"  value="{:sysconf('withdrawal_close_article_id')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提款最低金额</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_min_amount" placeholder="提款最低金额"  value="{:sysconf('withdrawal_min_amount')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提款最高金额</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_max_amount" placeholder="提款最高金额"  value="{:sysconf('withdrawal_max_amount')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">每日提现金额限制</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="day_withdrawal_amount" placeholder="每日提现金额限制"  value="{:sysconf('day_withdrawal_amount')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">免费提现次数</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="free_withdrawal_count" placeholder="免费提现次数"  value="{:sysconf('free_withdrawal_count')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">每日最多提款次数</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="day_max_withdrawal_count" placeholder="每日最多提款次数"  value="{:sysconf('day_max_withdrawal_count')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提现超额费率</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_excess_rate" placeholder="提现超额费率"  value="{:sysconf('withdrawal_excess_rate')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">用户银行卡数量限制</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="user_bank_num" placeholder="用户银行卡数量限制"  value="{:sysconf('user_bank_num')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">银行设置</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <textarea style="min-height: 130px;line-height:16px" name="bank"  class="layui-input">{$bank}</textarea>-->
-<!--                        </div>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <div class="layui-form-mid"><p class="help-block">一行一个, 银行代码|银行名称</p></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">修改卡号开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="edit_card_switch">-->
-<!--                                <option value="0" {if(sysconf('edit_card_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('edit_card_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">删除卡号开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="del_card_switch">-->
-<!--                                <option value="0" {if(sysconf('del_card_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('del_card_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">银行名称显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_name_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_name_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_name_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">支行名称显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="branch_bank_name_switch">-->
-<!--                                <option value="0" {if(sysconf('branch_bank_name_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('branch_bank_name_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">银行卡号显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_cardnumber_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_cardnumber_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_cardnumber_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">银行账号唯一开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_cardnumber_only_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_cardnumber_only_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_cardnumber_only_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">开户人显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="user_bank_name_switch">-->
-<!--                                <option value="0" {if(sysconf('user_bank_name_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('user_bank_name_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">银行预留手机号显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_phone_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_phone_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_phone_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">邮箱显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_mail_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_mail_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_mail_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">银行用户名唯一开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_name_only_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_name_only_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_name_only_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">秘鲁cci显示开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_cci_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_cci_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_cci_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">秘鲁cci唯一开关</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <select name="bank_cci_only_switch">-->
-<!--                                <option value="0" {if(sysconf('bank_cci_only_switch') == 0)} selected {/if}>关闭</option>-->
-<!--                                <option value="1" {if(sysconf('bank_cci_only_switch') == 1)} selected {/if}>开启</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">提款账户类型</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="withdrawal_account_type"-->
+                    <!--               placeholder="提款账户类型" value="{:sysconf('withdrawal_account_type')}" class="layui-input">-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户提款开关</label>
+                        <div class="layui-input-block">
+                            <select name="withdrawal_switch">
+                                <option value="0" {if(sysconf('withdrawal_switch') == 0)} selected {/if}>关闭</option>
+                                <option value="1" {if(sysconf('withdrawal_switch') == 1)} selected {/if}>开启</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">注册推广彩金奖励</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="register_promotion_winnings"  value="{:sysconf('register_promotion_winnings')}" type="number"-->
+                    <!--               class="layui-input">-->
+                    <!--    </div>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <div class="layui-form-mid"><p class="help-block">大于0有效，注册后平台奖励给推广人的彩金</p></div>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">提款功能关闭提醒</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="withdrawal_close_msg" placeholder="提款功能关闭提醒"  value="{:sysconf('withdrawal_close_msg')}" class="layui-input">-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">提款功能关闭提醒文章ID</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="withdrawal_close_article_id" placeholder="提款功能关闭提醒文章ID"  value="{:sysconf('withdrawal_close_article_id')}" class="layui-input">-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提款最低金额</label>
+                        <div class="layui-input-block">
+                            <input name="withdrawal_min_amount" placeholder="提款最低金额"  value="{:sysconf('withdrawal_min_amount')}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提款最高金额</label>
+                        <div class="layui-input-block">
+                            <input name="withdrawal_max_amount" placeholder="提款最高金额"  value="{:sysconf('withdrawal_max_amount')}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">每日提现金额限制</label>
+                        <div class="layui-input-block">
+                            <input name="day_withdrawal_amount" placeholder="每日提现金额限制"  value="{:sysconf('day_withdrawal_amount')}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">免费提现次数</label>
+                        <div class="layui-input-block">
+                            <input name="free_withdrawal_count" placeholder="免费提现次数"  value="{:sysconf('free_withdrawal_count')}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">每日最多提款次数</label>
+                        <div class="layui-input-block">
+                            <input name="day_max_withdrawal_count" placeholder="每日最多提款次数"  value="{:sysconf('day_max_withdrawal_count')}" class="layui-input">
+                        </div>
+                    </div>
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">提现超额费率</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="withdrawal_excess_rate" placeholder="提现超额费率"  value="{:sysconf('withdrawal_excess_rate')}" class="layui-input">-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">用户银行卡数量限制</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="user_bank_num" placeholder="用户银行卡数量限制"  value="{:sysconf('user_bank_num')}" class="layui-input">-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">银行设置</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <textarea style="min-height: 130px;line-height:16px" name="bank"  class="layui-input">{$bank}</textarea>-->
+                    <!--    </div>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <div class="layui-form-mid"><p class="help-block">一行一个, 银行代码|银行名称</p></div>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">修改卡号开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="edit_card_switch">-->
+                    <!--            <option value="0" {if(sysconf('edit_card_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('edit_card_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">删除卡号开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="del_card_switch">-->
+                    <!--            <option value="0" {if(sysconf('del_card_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('del_card_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">银行名称显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_name_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_name_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_name_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">支行名称显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="branch_bank_name_switch">-->
+                    <!--            <option value="0" {if(sysconf('branch_bank_name_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('branch_bank_name_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">银行卡号显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_cardnumber_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_cardnumber_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_cardnumber_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">银行账号唯一开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_cardnumber_only_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_cardnumber_only_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_cardnumber_only_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">开户人显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="user_bank_name_switch">-->
+                    <!--            <option value="0" {if(sysconf('user_bank_name_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('user_bank_name_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">银行预留手机号显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_phone_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_phone_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_phone_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">邮箱显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_mail_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_mail_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_mail_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">银行用户名唯一开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_name_only_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_name_only_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_name_only_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">秘鲁cci显示开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_cci_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_cci_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_cci_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-item">-->
+                    <!--    <label class="layui-form-label">秘鲁cci唯一开关</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <select name="bank_cci_only_switch">-->
+                    <!--            <option value="0" {if(sysconf('bank_cci_only_switch') == 0)} selected {/if}>关闭</option>-->
+                    <!--            <option value="1" {if(sysconf('bank_cci_only_switch') == 1)} selected {/if}>开启</option>-->
+                    <!--        </select>-->
+                    <!--    </div>-->
+                    <!--</div>-->
 
 
 
@@ -583,40 +583,40 @@
 
 
 
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提现时间</label>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <div class="layui-input-inline" style="width: 125px;">-->
-<!--                                <input style="width: 120px;display: inline-block" name="tixian_time_1"-->
-<!--                                       placeholder="提现开始时间" value="{:config('tixian_time_1')}" class="layui-input">-->
-<!--                            </div>-->
-<!--                            <div class="layui-form-mid">-</div>-->
-<!--                            <div class="layui-input-inline" style="width: 150px;">-->
-<!--                                <input style="width: 120px;display: inline-block" name="tixian_time_2"-->
-<!--                                       placeholder="提现结束时间" value="{:config('tixian_time_2')}" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <div class="layui-form-mid">只支持整点, 如08:00-20:00,请直接输入 8 - 20</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <label class="layui-form-label">提现手续费（%）</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="withdrawal_fee_rate"  type="number" value="{:config('withdrawal_fee_rate')}"-->
-<!--                                   class="layui-input">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="layui-form-item layui-hide">-->
-<!--                        <label class="layui-form-label">提现方式</label>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <input name="payout_bank"-->
-<!--                                   placeholder="提现到银行卡" value="{:config('payout_bank')}" class="layui-input">-->
-<!--                        </div>-->
-<!--                        <div class="layui-input-block">-->
-<!--                            <p class="help-block">提现到银行卡: 1银行卡 2USDT 3两个都行</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提现时间</label>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline" style="width: 125px;">
+                                <input style="width: 120px;display: inline-block" name="tixian_time_1"
+                                       placeholder="提现开始时间" value="{:config('tixian_time_1')}" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">-</div>
+                            <div class="layui-input-inline" style="width: 150px;">
+                                <input style="width: 120px;display: inline-block" name="tixian_time_2"
+                                       placeholder="提现结束时间" value="{:config('tixian_time_2')}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-input-block">
+                            <div class="layui-form-mid">只支持整点, 如08:00-20:00,请直接输入 8 - 20</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">提现手续费（%）</label>
+                        <div class="layui-input-block">
+                            <input name="withdrawal_fee_rate"  type="number" value="{:config('withdrawal_fee_rate')}"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <!--<div class="layui-form-item layui-hide">-->
+                    <!--    <label class="layui-form-label">提现方式</label>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <input name="payout_bank"-->
+                    <!--               placeholder="提现到银行卡" value="{:config('payout_bank')}" class="layui-input">-->
+                    <!--    </div>-->
+                    <!--    <div class="layui-input-block">-->
+                    <!--        <p class="help-block">提现到银行卡: 1银行卡 2USDT 3两个都行</p>-->
+                    <!--    </div>-->
+                    <!--</div>-->
 
                     <!--<label class="layui-form-item margin-top-20 block relative">-->
                     <!--    <span class="color-green margin-right-10">提现到usdt</span>-->
@@ -632,8 +632,8 @@
                     <!--                        <p class="help-block">用户首次提现后，升级到指定级别，如： 1，那么就是升级到VIP1，0为不升级</p>-->
                     <!--                    </label>-->
 
-<!--                </div>-->
-<!--            </div>-->
+                </div>
+            </div>
             <div class="layui-tab-item">
                 <div class="layui-card-body padding-40 layui-col-md8">
                     <div class="layui-form-item">

@@ -1151,6 +1151,43 @@ class Deal extends Base
                     $res2 = model('admin/Convey')->deal_reward($oinfo['uid'], $convey['id'], $convey['num'], $convey['commission']);
                 }
                 
+                //检查还有没有未完成的负数订单，有的话自动进行派单
+                $uid = $oinfo['uid'];
+                $existing_log = Db::name('xy_compound_order_log')
+                    ->where('uid', $uid)
+                    ->where('status', 1) // 进行中
+                    ->order('create_time DESC')
+                    ->find();
+                //只有出现冻结订单的时候才去自动派单，不能每次充值就派单
+                if($convey && $existing_log && $existing_log['option_id'] > 0){
+                    $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+                    $order_model = new \app\admin\model\Convey();
+
+                    foreach($existing_log['custom_options'] as $key => $value){
+                        if($value['option_id'] == $existing_log['option_id']){
+                            if($existing_log['completed_orders'] < $value['order_count']){
+                                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+
+                                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'completed_orders' => $existing_log['completed_orders'] + 1,
+                                        'update_time' => time()
+                                    ]);
+
+                                $res = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
+                            }else{
+                                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'status' => 2,
+                                        'update_time' => time()
+                                    ]);
+                            }                           
+                        }
+                    }
+                }
+                
                 if ($res) {
                     sysoplog('审核充值订单', json_encode($_POST, JSON_UNESCAPED_UNICODE));
                     $this->success('操作成功!');
