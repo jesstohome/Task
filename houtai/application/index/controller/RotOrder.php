@@ -377,6 +377,14 @@ class RotOrder extends Base
         foreach($existing_log['custom_options'] as $key => $value){
             if($value['option_id'] == $option_id && $value['order_count'] > 0){
                 Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                
+                Db::name('xy_compound_order_log')
+                                    ->where('id', $existing_log['id'])
+                                    ->update([
+                                        'completed_orders' => $existing_log['completed_orders'] + 1,
+                                        'update_time' => time()
+                                    ]);
+                                    
                 $result = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
             }
         }

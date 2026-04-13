@@ -102,7 +102,7 @@ class Index extends Base
         
         //团队收益
         $parameter['Teambenefits'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where(" type = 5 || type = 6")->sum('num'),2);
-        $parameter['dongjiejine'] = $info['freeze_balance'];
+        $parameter['dongjiejine'] = number_format($info['freeze_balance'],2);
         
         
         

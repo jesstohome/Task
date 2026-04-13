@@ -379,8 +379,8 @@ class Ctrl extends Base
         $str = config('chongzhi_time_1') . ":00  - " . config('chongzhi_time_2') . ":00";
        if ($res) return json(['code' => 1, 'info' => yuylangs('ctrl_jzz') . $str . yuylangs('ctrl_ywsjd')]);
 
-        $recharge_sum = Db::table("xy_recharge")->where(['uid'=>$uid,"status"=>0])->count();
-        if($recharge_sum >= config('5_d_reward')){
+        $recharge_sum = Db::table("xy_recharge")->where(['uid'=>$uid,"status"=>1])->count();
+        if($recharge_sum >= 1){
             return json(['code' => 1, 'info' => lang("You have an unapproved recharge order, please try again later, or contact online customer service")]);
         }
         
@@ -2331,7 +2331,7 @@ function stebank1curl($url, $data = []){
                     ]);
                 }
             }
-
+            
             $tixian_min = sysconf('withdrawal_min_amount');
             if($ulevel['tixian_min'] > 0){
                 $tixian_min = $ulevel['tixian_min'];
@@ -2409,12 +2409,12 @@ function stebank1curl($url, $data = []){
             if($ulevel['day_withdraw_free_num'] > 0){
                 $free_withdrawal_count = $ulevel['day_withdraw_free_num'];
             }
+            
             if ($tixianCi + 1 >= $free_withdrawal_count) {
                 $shouxu_type = 1;//手续费类型：1-比例，2-固定金额
                 $withdrawal_excess_rate = sysconf('withdrawal_excess_rate') / 100;
                 $real_num = $num - ($num * $withdrawal_excess_rate);//比例计算手续费
                 $tixian_shouxu = $withdrawal_excess_rate;
-
                 //如果等级设置固定手续费或者比例手续费
                 if($ulevel['withdraw_fixed_fee'] > 0 || $ulevel['tixian_shouxu'] > 0){
                     //如果存在固定手续费，按照固定手续费计算,否则按照比例计算
@@ -2429,6 +2429,7 @@ function stebank1curl($url, $data = []){
                     }
                 }
             }
+            
             $usdt_pay_info = Db::name('xy_pay')->where('name2', 'bit')->find();
             $id = getSn('CO');
 
