@@ -84,9 +84,23 @@ class Convey extends Model
          }
          
           $uinfo = Db::name('xy_users')->find($uid);
+          
+          //新增加每日降级订单量不重置，升级后重置逻辑
+            $todayStart = strtotime(date('Y-m-d'));
+            $isToday = !empty($uinfo['today_max_level_date']) 
+                       && $uinfo['today_max_level_date'] > $todayStart;
+            
+            // 判断当前是否处于降级状态
+            $isDemotion = $isToday && $uinfo['today_max_level'] > $uinfo['level'];
+            
          $where1 = "1=1";
          if(config('3_d_reward') == 1){
-                $where1 = ["level_id"=>$uinfo['level']];
+             if ($isDemotion) {
+                        // 降级状态：不过滤level_id，统计今日所有等级的订单
+                    } else {
+                        // 正常/升级状态：只统计当前等级的订单
+                        $where1 = ["level_id"=>$uinfo['level']];
+                    }
             }
             
            

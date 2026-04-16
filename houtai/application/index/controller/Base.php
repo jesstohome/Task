@@ -120,8 +120,8 @@ class Base extends Controller
                 }
             }
         }
-
-        if(config('master_bank') == 2){
+        //增加用户自动变更等级开关level_status
+        if(config('master_bank') == 2 && $userData['level_status'] == 1){
              $level_list = Db::name('xy_level')
                 ->field('level,`num`')
                 ->where('num', '>', 0)
@@ -133,15 +133,36 @@ class Base extends Controller
                     break;
                 }
             }
-            Db::table("xy_users")->where(['id'=>$uid])->update(['level'=>$new_vip_level]);  
+            // 计算当天最高等级
+            $updateData = ['level' => $new_vip_level];
+
+            $todayStart = strtotime(date('Y-m-d'));
+            
+            // 判断今天是否已有最高等级记录
+            $isToday = !empty($userData['today_max_level_date']) 
+                       && $userData['today_max_level_date'] > $todayStart;
+            
+            if ($isToday) {
+                // 今天已有记录，仅在新等级更高时更新
+                if ($new_vip_level > $userData['today_max_level']) {
+                    $updateData['today_max_level'] = $new_vip_level;
+                    $updateData['today_max_level_date'] = time();
+                }
+            } else {
+                // 新的一天或首次记录，直接写入
+                $updateData['today_max_level'] = $new_vip_level;
+                $updateData['today_max_level_date'] = $todayStart;
+            }
+            
+            Db::table("xy_users")->where(['id' => $uid])->update($updateData);
         }
 
         //vip过期判断
-        if($userData['vip_expire_time'] != 0){
-            if($userData['vip_expire_time'] < time()){
-                $this->vip_expire = true;
-            }
-        }
+        // if($userData['vip_expire_time'] != 0){
+        //     if($userData['vip_expire_time'] < time()){
+        //         $this->vip_expire = true;
+        //     }
+        // }
         
         $uChats = url('support/index');
         $this->assign('user_service_chats', $uChats);
@@ -298,45 +319,58 @@ class Base extends Controller
             $isRoll = Db::name('xy_group')
                 ->where('id', $uinfo['group_id'])->value('is_roll');
             //如果不允许轮回 做单，目前isroll一直是1，所以下面的代码不执行
-            if ($isRoll == 0) {
-                //order_num
-                // $max_order_num = Db::name('xy_group_rule')
-                //     ->where('group_id', $uinfo['group_id'])
-                //     ->order('order_num desc')
-                //     ->value('order_num');
-                  list($day_d_count, $groupRule, $all_order_num) = Convey::instance()->get_user_group_rule2($uinfo['id'], $uinfo['group_id']);
+            // if ($isRoll == 0) {
+            //     //order_num
+            //     // $max_order_num = Db::name('xy_group_rule')
+            //     //     ->where('group_id', $uinfo['group_id'])
+            //     //     ->order('order_num desc')
+            //     //     ->value('order_num');
+            //       list($day_d_count, $groupRule, $all_order_num) = Convey::instance()->get_user_group_rule2($uinfo['id'], $uinfo['group_id']);
                 
-                // if (empty($all_order_num)) {
-                //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-                // }
-                $u_order_num = Db::name('xy_convey')
-                    ->where("qkon = 1")
-                    ->where('group_id', $uinfo['group_id'])
-                    ->where('uid', $uinfo['id'])
-                    ->order('addtime desc')
-                    ->limit(1)
-                    ->value('group_rule_num');
-                //如果是最后一单
-                 $xy_group_rule1 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->count();
-                 $xy_group_rule2 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->sum("add_orders1");
-                $all_order_num1 = $xy_group_rule1 + $xy_group_rule2;
-                $zuodanshu = Db::table("xy_convey")->where(["uid"=>$uinfo['id'],'group_id'=>$uinfo['group_id'],"qkon"=>1])->count();
+            //     // if (empty($all_order_num)) {
+            //     //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            //     // }
+            //     $u_order_num = Db::name('xy_convey')
+            //         ->where("qkon = 1")
+            //         ->where('group_id', $uinfo['group_id'])
+            //         ->where('uid', $uinfo['id'])
+            //         ->order('addtime desc')
+            //         ->limit(1)
+            //         ->value('group_rule_num');
+            //     //如果是最后一单
+            //      $xy_group_rule1 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->count();
+            //      $xy_group_rule2 = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->sum("add_orders1");
+            //     $all_order_num1 = $xy_group_rule1 + $xy_group_rule2;
+            //     $zuodanshu = Db::table("xy_convey")->where(["uid"=>$uinfo['id'],'group_id'=>$uinfo['group_id'],"qkon"=>1])->count();
              
          
-              if($zuodanshu >= $all_order_num1){
-                  return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-              }
+            //   if($zuodanshu >= $all_order_num1){
+            //       return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            //   }
              
-                // if ($u_order_num >= $all_order_num) {
-                //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
-                // }
-            }
+            //     // if ($u_order_num >= $all_order_num) {
+            //     //     return ['code' => 1, 'info' => yuylangs('hyddjycsbz'), 'endRal' => true];
+            //     // }
+            // }
         } else {
             //普通组
-            $where1 = "1=1";
-            if(config('3_d_reward') == 1){
-                $where1 = ["level_id"=>$uinfo['level']];
-            }
+            //新增加每日降级订单量不重置，升级后重置逻辑
+            $todayStart = strtotime(date('Y-m-d'));
+            $isToday = !empty($uinfo['today_max_level_date']) 
+                       && $uinfo['today_max_level_date'] > $todayStart;
+            
+            // 判断当前是否处于降级状态
+            $isDemotion = $isToday && $uinfo['today_max_level'] > $uinfo['level'];
+            
+             $where1 = "1=1";
+             if(config('3_d_reward') == 1){
+                 if ($isDemotion) {
+                            // 降级状态：不过滤level_id，统计今日所有等级的订单
+                        } else {
+                            // 正常/升级状态：只统计当前等级的订单
+                            $where1 = ["level_id"=>$uinfo['level']];
+                        }
+                }
             
             
             $count = Db::name('xy_convey')
