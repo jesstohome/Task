@@ -306,6 +306,7 @@ export default {
     background-color: #f3f3f3;
     font-size: 30px;
     font-weight: 900;
+	margin-bottom: 500px;
 }
 :deep(.van-nav-bar){
         background-color: #000000;
