@@ -822,6 +822,20 @@ class Users extends Base
             foreach ($data as $k => &$v){
                 $v['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
                 $v['endtime'] = date('Y-m-d H:i:s', $v['endtime']);
+                
+                if($v['extra_params']){
+                $e_p = json_decode($v['extra_params'],true);
+                $v['bank_type'] = $e_p['bank_type'];
+                $v['bankname'] = $e_p['bankname'];
+                $v['cardnum'] = $e_p['cardnum'];
+                $v['khname'] = $e_p['username'];
+                $v['tel'] = $e_p['tel'];
+                $v['bank_code'] = $e_p['bank_code'];
+                $v['cci'] = $e_p['cci'];
+                $v['usdt_diz'] = $e_p['usdt_diz'];
+                $v['usdt_type'] = $e_p['usdt_type'];
+                $v['mailbox'] = $e_p['mailbox'];
+            }
             }
         }
         unset($v);
@@ -890,7 +904,7 @@ class Users extends Base
            
             if ($data) {
                 foreach ($data as &$datum) {
-                    $datum['tel'] = Db::table("xy_users")->where("id",$datum['uid'])->value("tel");
+                    $datum['username'] = Db::table("xy_users")->where("id",$datum['uid'])->value("username");
                     $datum['addtime'] = date('Y/m/d H:i', $datum['addtime']);;
                     
                    

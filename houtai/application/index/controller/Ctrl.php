@@ -2412,7 +2412,12 @@ function stebank1curl($url, $data = []){
             
             if ($tixianCi + 1 >= $free_withdrawal_count) {
                 $shouxu_type = 1;//手续费类型：1-比例，2-固定金额
-                $withdrawal_excess_rate = sysconf('withdrawal_excess_rate') / 100;
+                if(empty(sysconf('withdrawal_excess_rate'))){
+                    $withdrawal_excess_rate = 0;
+                }else{
+                    $withdrawal_excess_rate = sysconf('withdrawal_excess_rate');
+                }
+                $withdrawal_excess_rate = $withdrawal_excess_rate / 100;
                 $real_num = $num - ($num * $withdrawal_excess_rate);//比例计算手续费
                 $tixian_shouxu = $withdrawal_excess_rate;
                 //如果等级设置固定手续费或者比例手续费

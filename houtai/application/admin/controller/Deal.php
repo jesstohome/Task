@@ -1614,6 +1614,8 @@ class Deal extends Base
             $msg = input('post.prompt/s', '');
             //驳回订单的业务逻辑
             Db::startTrans();
+            $balance = Db::name('xy_users')
+                        ->where('id', $oinfo['uid'])->value("balance");
             $res1 = Db::name('xy_users')
                 ->where('id', $oinfo['uid'])
                 ->setInc('balance', $oinfo['num']);
@@ -1624,8 +1626,7 @@ class Deal extends Base
                     'endtime' => time(),
                     'payout_err_msg' => $msg
                 ]);
-                 $balance = Db::name('xy_users')
-                        ->where('id', $oinfo['uid'])->value("balance");
+                 
                         
             $res3 = Db::name('xy_balance_log')->insert([
                 'uid' => $oinfo['uid'],

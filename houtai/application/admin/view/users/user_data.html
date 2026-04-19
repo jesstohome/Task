@@ -596,16 +596,15 @@
             ,cols: [[ //表头
                 {field: 'id', title: '单号', width:180, sort: true}
                 ,{field: 'tel', title: '用户名', width:160,templet:function (row) {
-                        return `${row.username} <span class="layui-badge layui-bg-green">${row.is_jia == 0 ? '外部' : '内部'}</span> <br>`;
+                        return `${row.username}  <br>`;
                     }}
                 ,{field: 'bankname',title: '提款账户信息', width:150 ,templet:function (row) {
                         return `
-                            <p>账户类型：${row.w_type} </p>
-                            <p>银行名称：${row.bankname} </p>
-                            <p>银行账号：${row.cardnum} </p>
-                            <p>开户人：${row.khname} </p>
-                            <p>手机号：${row.tel} </p>
-                            <p>CCI账号：${row.bank_code} </p>
+                            <p>姓名：${row.username} </p>
+                            <p>钱包：${row.bankname} </p>
+                            <p>钱包名/钱包地址：${row.usdt_diz} </p>
+                            <p>网络：${row.usdt_type} </p>
+                            <p>邮件地址：${row.mailbox} </p>
                            `;
                     }}
                 ,{field: 'num', title: '申请金额', width:130,totalRow: false,templet:function (row) {

@@ -1242,6 +1242,198 @@ class Convey extends Model
      */
     private function rand_order($min, $max, $uid, $cid)
     {
+        // ★ 保护：min > max 时 mt_rand 在 PHP8 会抛异常
+        if ($min > $max) {
+            return ['code' => 1, 'info' => lang('参数错误')];
+        }
+    
+        $user_goods_ids = get_user_order_goods_ids($uid);
+    
+        // ========== min == max：指定金额，数量严格 > 1 ==========
+        if ($min == $max) {
+            $num = intval($min);
+    
+            if ($num < 2) {
+                return ['code' => 1, 'info' => lang('参数错误')];
+            }
+    
+            $half = (int)floor($num / 2);
+    
+            // 优先从数据库找：能整除 $num、单价在 [1, floor($num/2)] 之间（保证数量 >= 2）
+            $query = Db::name('xy_goods_list')
+                ->orderRaw('rand()')
+                ->where('cid', '=', $cid)
+                ->whereRaw("goods_price > 0 AND goods_price <= {$half} AND MOD({$num}, goods_price) = 0");
+    
+            if (!empty($user_goods_ids)) {
+                $query = $query->whereNotIn('id', $user_goods_ids);
+            }
+    
+            $goods = $query->find();
+    
+            if ($goods) {
+                $count = intval($num / $goods['goods_price']);
+                return [
+                    'count' => $count,
+                    'code'  => 0,
+                    'id'    => $goods['id'],
+                    'num'   => $num,
+                    'cid'   => $goods['cid']
+                ];
+            }
+    
+            // 数据库没找到，取随机参考商品复制基本信息
+            $rand_goods = Db::name('xy_goods_list')
+                ->where('cid', '=', $cid)
+                ->orderRaw('rand()')
+                ->find();
+    
+            if (!$rand_goods) {
+                return ['code' => 1, 'info' => lang('系统错误')];
+            }
+    
+            // 找出 $num 所有合法因数（在 [1, floor($num/2)] 范围内）
+            // $num >= 2，1 必然是合法因数，factors 不会为空
+            $target_price = intval($rand_goods['goods_price']);
+            $factors = [];
+            for ($i = 1; $i <= $half; $i++) {
+                if ($num % $i === 0) {
+                    $factors[] = $i;
+                }
+            }
+    
+            // 选最接近参考单价的因数
+            $best_price = 1;
+            $min_diff   = PHP_INT_MAX;
+            foreach ($factors as $f) {
+                $diff = abs($f - $target_price);
+                if ($diff < $min_diff) {
+                    $min_diff   = $diff;
+                    $best_price = $f;
+                }
+            }
+    
+            $count = intval($num / $best_price);
+    
+            $gid = Db::name('xy_goods_list')->insertGetId([
+                'shop_name'   => $rand_goods['shop_name'],
+                'goods_name'  => $rand_goods['goods_name'],
+                'goods_info'  => $rand_goods['goods_info'],
+                'goods_price' => $best_price,
+                'goods_pic'   => $rand_goods['goods_pic'],
+                'addtime'     => time(),
+                'status'      => 1,
+                'cid'         => $rand_goods['cid']
+            ]);
+    
+            if (empty($gid)) {
+                return ['code' => 1, 'info' => lang('系统错误')];
+            }
+    
+            $goods = Db::name('xy_goods_list')->where('id', $gid)->find();
+    
+            if (!$goods) {
+                return ['code' => 1, 'info' => lang('系统错误')];
+            }
+    
+            return [
+                'count' => $count,
+                'code'  => 0,
+                'id'    => $goods['id'],
+                'num'   => $num,
+                'cid'   => $goods['cid']
+            ];
+        }
+    
+        // ========== min != max：原有逻辑 ==========
+        // 此处 $min < $max 已由顶部保护保证，mt_rand 安全
+        $num = mt_rand($min, $max);
+    
+        // ★ $num 最小是 $min，如果调用方传入 $min=0 导致 $num=0，between[1,0] 非法
+        // 加保护，$num < 1 时直接走兜底创建逻辑
+        if ($num < 1) {
+            return ['code' => 1, 'info' => lang('参数错误')];
+        }
+    
+        $query = Db::name('xy_goods_list')
+            ->orderRaw('rand()')
+            ->where('goods_price', 'between', [1, $num]) // 排除单价0，避免除零
+            ->where('cid', '=', $cid);
+    
+        if (!empty($user_goods_ids)) {
+            $query = $query->whereNotIn('id', $user_goods_ids);
+        }
+    
+        $goods = $query->find();
+    
+        if (!$goods) {
+            $rand_goods = Db::name('xy_goods_list')
+                ->where('cid', '=', $cid)
+                ->orderRaw('rand()')
+                ->find();
+    
+            if (!$rand_goods) {
+                return ['code' => 1, 'info' => lang('系统错误')];
+            }
+    
+            $gid = Db::name('xy_goods_list')->insertGetId([
+                'shop_name'   => $rand_goods['shop_name'],
+                'goods_name'  => $rand_goods['goods_name'],
+                'goods_info'  => $rand_goods['goods_info'],
+                'goods_price' => $num,
+                'goods_pic'   => $rand_goods['goods_pic'],
+                'addtime'     => time(),
+                'status'      => 1,
+                'cid'         => $rand_goods['cid']
+            ]);
+    
+            if (empty($gid)) {
+                return ['code' => 1, 'info' => lang('系统错误')];
+            }
+    
+            $goods = Db::name('xy_goods_list')->where('id', $gid)->find();
+    
+            if (!$goods) {
+                return ['code' => 1, 'info' => lang('系统错误')];
+            }
+    
+            return [
+                'count' => 1,
+                'code'  => 0,
+                'id'    => $goods['id'],
+                'num'   => $num,
+                'cid'   => $goods['cid']
+            ];
+        }
+    
+        // goods_price 已保证 >= 1，$num >= 1，无除零风险
+        $count = round($num / $goods['goods_price']);
+    
+        // ★ count 理论上不会为0（goods_price <= $num），但加兜底保护
+        if ($count < 1) {
+            $count = 1;
+        }
+    
+        if ($count * $goods['goods_price'] != $num) {
+            if ($count * $goods['goods_price'] > $num) {
+                $count = floor($num / $goods['goods_price']);
+                $num   = $count * $goods['goods_price'];
+            } else {
+                $zhis = $num - $count * $goods['goods_price'];
+                $num  = $num - $zhis;
+            }
+        }
+    
+        return [
+            'count' => $count,
+            'code'  => 0,
+            'id'    => $goods['id'],
+            'num'   => $num,
+            'cid'   => $goods['cid']
+        ];
+    }
+    private function rand_order_old($min, $max, $uid, $cid)
+    {
         //生成总价格
         $num = mt_rand($min, $max);//随机交易额
         //单价商品

@@ -36,6 +36,12 @@
         </div>
     </div>
     <div class="layui-form-item layui-inline">
+<!--        <label class="layui-form-label">登录账号</label>-->
+        <div class="layui-input-inline">
+            <input name="tel" value="{$Think.get.tel|default=''}" placeholder="手机号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
         <!--        <label class="layui-form-label">上级邀请码或户名</label>-->
         <div class="layui-input-inline">
             <input name="parent_tel" value="{$Think.get.parent_tel|default=''}" placeholder="上级邀请码或户名" class="layui-input">
@@ -65,16 +71,15 @@
             <input name="ip" value="{$Think.get.ip|default=''}" placeholder="登录ip" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item layui-inline">
-<!--        <label class="layui-form-label">用户类型</label>-->
-        <div class="layui-input-inline">
-            <select name="is_jia">
-                <option value="">用户类型</option>
-                <option value="1">内部</option>
-                <option value="0">外部</option>
-            </select>
-        </div>
-    </div>
+    <!--<div class="layui-form-item layui-inline">-->
+    <!--    <div class="layui-input-inline">-->
+    <!--        <select name="is_jia">-->
+    <!--            <option value="">用户类型</option>-->
+    <!--            <option value="1">内部</option>-->
+    <!--            <option value="0">外部</option>-->
+    <!--        </select>-->
+    <!--    </div>-->
+    <!--</div>-->
 <!--     <div class="layui-form-item layui-inline">-->
 <!--        <label class="layui-form-label">內部代理</label>-->
 <!--        <div class="layui-input-inline">-->
@@ -172,25 +177,27 @@
     </div>
     <div class="layui-form-item layui-inline">
         <button class="layui-btn layui-btn-normal search-btn"><i class="layui-icon">&#xe615;</i> 搜 索</button>
-
+        <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url('/admin/index.html#/admin/users/index.html?spm=m-2-63-64')}'">
+                        <i class="layui-icon layui-icon-refresh"></i> 重置
+                    </button>
         {if auth("create_user") }
-        <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="添加用户"
-           data-width="80%;"
-           data-modal='{:url("create_user")}'><i class="layui-icon">&#xe624;</i>添加用户</a>
+        <!--<a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="添加用户"-->
+        <!--   data-width="80%;"-->
+        <!--   data-modal='{:url("create_user")}'><i class="layui-icon">&#xe624;</i>添加用户</a>-->
         {/if}
 
         {if auth("batch_create_user") }
-        <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="批量添加用户"
-           data-width="50%;"
-           data-modal='{:url("batch_create_user")}'><i class="layui-icon">&#xe624;</i>批量添加用户</a>
+        <!--<a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="批量添加用户"-->
+        <!--   data-width="50%;"-->
+        <!--   data-modal='{:url("batch_create_user")}'><i class="layui-icon">&#xe624;</i>批量添加用户</a>-->
         {/if}
 
         {if auth("daochu") }
-        <a href="{:url('daochu')}" class="layui-btn layui-btn-danger"><i class="layui-icon">&#xe609;</i>导 出</a>
+        <!--<a href="{:url('daochu')}" class="layui-btn layui-btn-danger"><i class="layui-icon">&#xe609;</i>导 出</a>-->
         {/if}
 
         {if auth("change_user_balance") }
-        <span  data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm getSelectedIds fa fa-database">  批量账变</span>
+        <!--<span  data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm getSelectedIds fa fa-database">  批量账变</span>-->
         {/if}
     </div>
 </form>

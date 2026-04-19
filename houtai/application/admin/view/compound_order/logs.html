@@ -1,6 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">
-        <form class="layui-form layui-form-pane" action="{:url()}" method="get">
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false"
+              method="get" autocomplete="off">
             <div class="layui-form-item" style="margin-bottom: 0;">
                 <div class="layui-inline">
                     <label class="layui-form-label">用户ID</label>
@@ -29,13 +30,14 @@
                     <button class="layui-btn layui-btn-sm" type="submit">
                         <i class="layui-icon layui-icon-search"></i> 搜索
                     </button>
-                    <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url()}'">
-                        <i class="layui-icon layui-icon-refresh"></i> 重置
-                    </button>
+                    <!--<button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url()}'">-->
+                    <!--    <i class="layui-icon layui-icon-refresh"></i> 重置-->
+                    <!--</button>-->
                 </div>
             </div>
         </form>
     </div>
+    
     <div class="layui-card-body">
         <table class="layui-table" lay-skin="line">
             <thead>
