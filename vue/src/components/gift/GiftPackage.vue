@@ -101,7 +101,7 @@ export default {
     modelValue: { type: Boolean, default: false }
   },
   emits: ['update:modelValue'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const { push } = useRouter();
     const showGift = ref(false);
     const openingIndex = ref(-1);
@@ -284,6 +284,7 @@ export default {
       if (countdownTimer) clearInterval(countdownTimer);
     });
 
+    expose({ checkGiftStatus })
     return {
       showGift, openingIndex, selectedBoxIndex, claimSuccess,
       wrapperEnter, giftBoxes, resultMessage, countdownWidth,

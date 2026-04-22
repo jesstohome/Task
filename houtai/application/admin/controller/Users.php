@@ -414,21 +414,25 @@ class Users extends Base
             $vo['today_success_count_fs'] = Db::name('xy_convey')->whereIn('status',[1,3,5])->where('order_mode',9)->where('uid',$vo['id'])->where('uid',$vo['id'])->where('addtime','>=',$today_start)->count('id');
             
 
+            // //今日收益
+            // $vo['today_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime','>=',$today_start)->sum(Db::raw('num + commission'));
+            // //今日收益次数
+            // $vo['today_income_count'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime','>=',$today_start)->count('id');
             //今日收益
-            $vo['today_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime','>=',$today_start)->sum(Db::raw('num + commission'));
+            $vo['today_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime','>=',$today_start)->sum('commission');
             //今日收益次数
-            $vo['today_income_count'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime','>=',$today_start)->count('id');
+            $vo['today_income_count'] = 0;
 
             //累计收益
-            $vo['sum_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->sum(Db::raw('num + commission'));
+            $vo['sum_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->sum('commission');
             //累计次数
-            $vo['sum_income_count'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->count('id');
+            $vo['sum_income_count'] = 0;
 
             //昨日收益
             $yesterday = date('Y-m-d', strtotime('-1 day'));
             $yesterdayStart = strtotime($yesterday . ' 00:00:00');
             $yesterdayEnd = strtotime($yesterday . ' 23:59:59');
-            $vo['sum_yesterday_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime', 'between', [$yesterdayStart, $yesterdayEnd])->sum(Db::raw('num + commission'));
+            $vo['sum_yesterday_income'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',1)->where('addtime', 'between', [$yesterdayStart, $yesterdayEnd])->sum('commission');
 
             //累计推广佣金
             $vo['promotion_income'] = Db::name('xy_convey')->where('parent_uid',$vo['id'])->where('c_status',1)->sum(Db::raw('parent_commission'));
@@ -444,7 +448,7 @@ class Users extends Base
             $vo['today_onlin_recharge_sum'] = 0;
 
             //总充值
-            $vo['recharge_sum'] = Db::name('xy_recharge')->where('status', 2)->sum('num');
+            $vo['recharge_sum'] = Db::name('xy_recharge')->where('uid',$vo['id'])->where('status', 2)->sum('num');
             //总在线充值
             $vo['online_recharge_sum'] = 0;
             //总在线充值次数

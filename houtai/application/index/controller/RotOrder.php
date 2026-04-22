@@ -209,6 +209,23 @@ class RotOrder extends Base
             }
         }
         
+        //检查是否有没做的礼包
+        $where = [
+                    ['uid', '=', $uid],
+                    ['qkon', '=', 1],
+                    ['order_mode', '=', 6],
+                ];
+        //已做单数
+        $yizuo = Db::name('xy_convey')
+                    ->where($where)
+                    ->where('status', 'in', [1, 3, 5])
+                    ->count('id');
+                    
+        $gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('start_num', '<=', $yizuo)->where('status', 0)->find();
+        if ($gift) {
+            return json(['code' => 1, 'info' => 'You have an unclaimed gift pack. Please claim it first.', 'endRal' => true]);
+        }
+        
         // 检查是否触发复数订单选项
         $existing_log = Db::name('xy_compound_order_log')
             ->where('uid', $uid)

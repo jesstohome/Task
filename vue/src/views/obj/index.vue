@@ -254,7 +254,7 @@
       </div>
     </van-dialog>
 
-    <GiftPackage v-model="showGift" />
+    <GiftPackage v-model="showGift" ref="giftRef" />
 
     <van-dialog
       v-model:show="showCompoundOrder"
@@ -307,6 +307,7 @@ export default {
   components: { AdShowcase, GiftPackage },
   setup() {
     const { t } = useI18n()
+    const giftRef = ref(null)
     const userinfo = ref(store.state.userinfo)
     const { push } = useRouter();
     const { proxy } = getCurrentInstance()
@@ -482,6 +483,7 @@ export default {
             showCompoundOrder.value = true
             loading.value = false
             loadStep.value = 0
+            giftRef.value?.checkGiftStatus()  // ← 触发礼包检查
             return
           }
 
@@ -515,6 +517,8 @@ export default {
             proxy.$Message({ message: json.info, type: 'error' })
             loading.value = false
             loadStep.value = 0
+            giftRef.value?.checkGiftStatus()  // ← 触发礼包检查
+            return
           }
         } else {
           setout(json, time)
@@ -594,7 +598,7 @@ export default {
       userinfo, creditPercent, copyInvite, showGift, showCompoundOrder, compoundOrderData,
       selectCompoundOrderOption, skipCompoundOrder,
       // 新增
-      loadStep, loadProgressClass, showOrderResult, resultOrderInfo, resultCountdown,
+      giftRef,loadStep, loadProgressClass, showOrderResult, resultOrderInfo, resultCountdown,
       getParticleStyle, getFwStyle
     }
   }
