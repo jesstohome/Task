@@ -1226,6 +1226,34 @@ class Deal extends Base
             $this->error('操作失败');
         }
     }
+    /**
+     * 提现请求
+     * @auth true
+     * @menu true
+     */
+   public function deposit_request()
+    {
+        $agent_id = model('admin/Users')->get_admin_agent_id();
+        $this->agent_id = $agent_id;
+
+        $condition = [];
+        if($agent_id > 0){
+            $condition[] = ['u.agent_service_id', '=', $agent_id];
+        }
+        $tixain = Db::name('xy_deposit c')
+            ->leftJoin('xy_users u', 'u.id=c.uid')
+            ->where($condition)
+            ->where('c.status', 1)
+            ->count();
+        $chongzhi = Db::name('xy_recharge c')
+            ->leftJoin('xy_users u', 'u.id=c.uid')
+            ->where($condition)
+            ->where('c.status', 1)
+            ->count();
+        $data['tixian'] = $tixain;
+        $data['chongzhi'] = $chongzhi;
+        return $this->success('获取成功!',$data);
+    }
 
     /**
      * 提现管理

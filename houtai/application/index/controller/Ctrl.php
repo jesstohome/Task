@@ -2364,9 +2364,11 @@ function stebank1curl($url, $data = []){
                 }
             }
             
-            if ($num > $uinfo['balance']) return json(['code' => 1, 'info' => yuylangs('money_not')]);
+            if (bccomp((string)$num, (string)$uinfo['balance'], 2) > 0) {
+                return json(['code' => 1, 'info' => yuylangs('money_not')]);
+            }
             
-            $zhis = $uinfo['balance']  - $num;
+            $zhis = bcsub((string)$uinfo['balance'], (string)$num, 2);
             
             if(config('master_bk_address') == 1){
                 if($zhis <= config('free_balance')){
@@ -2376,7 +2378,7 @@ function stebank1curl($url, $data = []){
             
             
             //ruguo
-            $new_balance = $uinfo['balance'] - $num;
+            $new_balance = bcsub((string)$uinfo['balance'], (string)$num, 2);
             if(config('lxb_sy_bili5') == 1){
                 if ($new_balance < $ulevel['num_min']) return json(['code' => 1, 'info' => yuylangs('with_ok_money') . config('currency') . ($uinfo['balance'] - $ulevel['num_min'])]);
             }

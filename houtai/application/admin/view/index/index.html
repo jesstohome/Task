@@ -151,7 +151,6 @@
             background-color: #fff !important;
         }
 
-
         .layui-table tbody tr:hover, .layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-hover, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even) {
             background-color: #f5f7fa;
         }
@@ -162,6 +161,16 @@
         /*.layui-nav-tree .layui-nav-title a:hover {*/
         /*      color: #fff!important;*/
         /*  }*/
+        @keyframes flashRed {
+            0%, 100% { background-color: #d9534f; color: #fff; }
+            50%       { background-color: #fff;    color: #d9534f; }
+        }
+        @keyframes flashBlue {
+            0%, 100% { background-color: #297adc; color: #fff; }
+            50%       { background-color: #fff;    color: #297adc; }
+        }
+        .flash-red  { animation: flashRed  0.8s infinite; border-radius: 2px; }
+        .flash-blue { animation: flashBlue 0.8s infinite; border-radius: 2px; }
     </style>
 </head>
 
@@ -301,7 +310,6 @@
         </div>
         <!-- 左则菜单 结束 -->
 
-
         <!-- 主体内容 开始 -->
         <div class="layui-body" style="background-color: #fff!important;">
             <div class="layui-tab layui-tab-card" lay-allowClose="true" lay-filter="menuItem">
@@ -327,94 +335,133 @@
 </body>
 <script type="text/javascript" charset="utf-8">
     $(function () {
-        $('.top-msg').on('click', function () {
-            $.get("{:url('index/index/get_msg')}?lang=zh_cn", function (res) {
-                if(res.code == 0){
-                    layer.open({
-                        title: '通知',
-                        type: 1,
-                        content: res.data,
-                        area: ['50%', '70%']
-                    });
-                }
-            })
-        });
-
-        $('.fullscreenButton').on('click', function() {
-            toggleFullScreen();
-        });
-
-        function toggleFullScreen() {
-            var doc = window.document;
-            var docEl = doc.documentElement;
-
-            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-            var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-            if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-                requestFullScreen.call(docEl);
-            } else {
-                cancelFullScreen.call(doc);
+    // 通知弹窗
+    $('.top-msg').on('click', function () {
+        $.get("{:url('index/index/get_msg')}?lang=zh_cn", function (res) {
+            if (res.code == 0) {
+                layer.open({
+                    title: '通知',
+                    type: 1,
+                    content: res.data,
+                    area: ['50%', '70%']
+                });
             }
+        });
+    });
+
+    // 全屏切换
+    $('.fullscreenButton').on('click', function () {
+        toggleFullScreen();
+    });
+
+    function toggleFullScreen() {
+        var doc = window.document;
+        var docEl = doc.documentElement;
+        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+        var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+            requestFullScreen.call(docEl);
+        } else {
+            cancelFullScreen.call(doc);
         }
-        // if(!localStorage.asid){
-        //     localStorage.asid = 1;
-        // }
-        //
-        //  $('.licssid'+localStorage.asid).attr('style',"float: left;width:6%;height:44px;text-align:center; font-size:16px; border-bottom:3px solid rgb(64,158,255);");
-        //  $('.acssid'+localStorage.asid).attr('style',"color:rgb(64,158,255) !important;");
+    }
 
-        //     function getStatus() {
-        //         $.get("{:url('index/order_info')}", function (result) {
-        //             if (typeof result == 'string') result = JSON.parse(result);
-        //             console.log(result);
-        //             $('.recharge').html(result.recharge)
-        //             $('.deposit').html(result.deposit);
-        //             $('.recharge1').html(result.recharge1)
-        //             $('.deposit1').html(result.deposit1);
+    // ===== 响铃核心函数 =====
+    var audioCtx = null;
+    var ringingTimer = null;
+    var ringingInterval = null;
 
+    function getAudioCtx() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        // 浏览器可能把 AudioContext 挂起，需要恢复
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        return audioCtx;
+    }
 
-        //             if(result.recharge > 0){
-        //                  var strAudio = "<audio id='audioPlay' src='/public/cz.mp3' hidden='true'>";
-        //                 if ($("body").find("audio").length <= 0)
-        //                     $("body").append(strAudio);
-        //                 var audio = document.getElementById("audioPlay");
-        //                 //浏览器支持 audion
-        //                 audio.play();
-        //             }
-        //             if(result.recharge1 > 0){
-        //                  var strAudio = "<audio id='audioPlay' src='/public/cz_jia.mp3' hidden='true'>";
-        //                 if ($("body").find("audio").length <= 0)
-        //                     $("body").append(strAudio);
-        //                 var audio = document.getElementById("audioPlay");
-        //                 //浏览器支持 audion
-        //                 audio.play();
-        //             }
+    function playDingDong() {
+        var ctx = getAudioCtx();
 
-        //             if (result.deposit > 0) {
-        //                 var strAudio = "<audio id='audioPlay' src='/public/tx.mp3' hidden='true'>";
-        //                 if ($("body").find("audio").length <= 0)
-        //                     $("body").append(strAudio);
-        //                 var audio = document.getElementById("audioPlay");
-        //                 //浏览器支持 audion
-        //                 audio.play();
-        //             }
-        //             if (result.deposit1 > 0) {
-        //                 var strAudio = "<audio id='audioPlay' src='/public/tx_jia.mp3' hidden='true'>";
-        //                 if ($("body").find("audio").length <= 0)
-        //                     $("body").append(strAudio);
-        //                 var audio = document.getElementById("audioPlay");
-        //                 //浏览器支持 audion
-        //                 audio.play();
-        //             }
-        //             $('#system-date').text(result.date);
-        //         });
-        //     }
+        function playTone(frequency, duration, delay) {
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.frequency.value = frequency;
+            osc.type = 'sine';
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            var now = ctx.currentTime;
+            gain.gain.setValueAtTime(0, now + delay);
+            gain.gain.linearRampToValueAtTime(0.3, now + delay + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + delay + duration);
+            osc.start(now + delay);
+            osc.stop(now + delay + duration + 0.05);
+        }
 
-        //     getStatus();
-        //     setInterval(function () {
-        //         getStatus();
-        //     }, 30000)
-    })
+        playTone(880, 0.4, 0);    // 叮
+        playTone(660, 0.5, 0.45); // 咚
+    }
+
+    // 开始持续响铃（5秒内每0.9秒响一次叮咚）
+    function startRinging() {
+        if (ringingTimer) return; // 已在响铃中，不重复触发
+
+        playDingDong();
+        ringingInterval = setInterval(function () {
+            playDingDong();
+        }, 900);
+
+        // 5秒后停止
+        ringingTimer = setTimeout(function () {
+            clearInterval(ringingInterval);
+            ringingInterval = null;
+            ringingTimer = null;
+        }, 5000);
+    }
+
+    // ===== 用户首次交互后初始化 AudioContext =====
+    // 浏览器策略：必须在用户交互后才能播放音频
+    var audioUnlocked = false;
+    function unlockAudio() {
+        if (audioUnlocked) return;
+        audioUnlocked = true;
+        getAudioCtx(); // 提前创建，后续播放不受限
+    }
+    $(document).one('click mousedown keydown touchstart', unlockAudio);
+
+    // ===== 每10秒轮询提款接口 =====
+    function checkTixian() {
+        $.get("{:url('deal/deposit_request')}", function (res) {
+            if (typeof res === 'string') {
+                try { res = JSON.parse(res); } catch (e) { return; }
+            }
+    
+            // 提现：tixian=1 → 响铃 + 提款记录按钮红色闪动
+            var $depositBtn = $('.layui-layout-right a[href*="deposit_list"]').closest('li');
+            if (res.data.tixian > 0) {
+                startRinging();
+                $depositBtn.find('a').addClass('flash-red');
+            } else {
+                $depositBtn.find('a').removeClass('flash-red');
+            }
+    
+            // 充值：chongzhi>0 → 不响铃，充值记录按钮蓝色闪动
+            var $rechargeBtn = $('.layui-layout-right a[href*="user_recharge"]').closest('li');
+            if (res.data.chongzhi > 0) {
+                $rechargeBtn.find('a').addClass('flash-blue');
+            } else {
+                $rechargeBtn.find('a').removeClass('flash-blue');
+            }
+        });
+    }
+
+    // 页面加载后延迟1秒再开始（等待用户交互解锁音频）
+    setTimeout(function () {
+        checkTixian();
+        setInterval(checkTixian, 10000);
+    }, 1000);
+});
 </script>
 </html>
