@@ -1146,8 +1146,9 @@ class Deal extends Base
                 $convey = Db::name('xy_convey')->where('uid',$oinfo['uid'])->where('status', 5)->where('is_pay', 1)->find();
                 
                 $balance = Db::name('xy_users')->where('id', $oinfo['uid'])->value('balance');
-
-                if($convey && $oinfo['num'] + $balance >= 0){
+                
+                //$balance为充值后的金额
+                if($convey && $balance >= 0){
                     $res2 = model('admin/Convey')->deal_reward($oinfo['uid'], $convey['id'], $convey['num'], $convey['commission']);
                 }
                 

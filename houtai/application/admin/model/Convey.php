@@ -1607,28 +1607,7 @@ class Convey extends Model
                         'addtime' => time(),
                         "balance" => $user['balance']
                     ]);
-                    //交易佣金
-                    $res8 = Db::name('xy_balance_log')->insert([
-                        'uid' => $info['uid'],
-                        'sid' => $info['uid'],
-                        'oid' => $oid,
-                        'num' => $info['commission'],
-                        'type' => 3,
-                        'status' => 1,
-                        'addtime' => time(),
-                        "balance" => $user['balance']
-                    ]);
-                    //商品收入
-                    $res2 = Db::name('xy_balance_log')->insert([
-                        'uid' => $info['uid'],
-                        'sid' => $info['uid'],
-                        'oid' => $oid,
-                        'num' => $info['num'],
-                        'type' => 2,
-                        'status' => 1,
-                        'addtime' => time(),
-                        "balance" => $user['balance']
-                    ]);
+                    
                     if ($res && $res1 && $res2) {
                          //提交事物
                            Db::commit();
@@ -1806,6 +1785,7 @@ class Convey extends Model
     public function deal_reward($uid, $oid, $num, $cnum)
     {
         $freeze_balance = Db::name('xy_users')->where('id', $uid)->value('freeze_balance');
+        $balance = Db::name('xy_users')->where('id', $uid)->value('balance');
         
         //防止冻结金额出现负数
         $znum = $num + $cnum;
@@ -1816,6 +1796,18 @@ class Convey extends Model
         Db::name('xy_users')->where('id', $uid)->setDec('freeze_balance', $num + $cnum);
         //Db::name('xy_balance_log')->where('oid', $oid)->update(['status' => 1]);
         //将订单状态改为已返回佣金
+        
+        //交易佣金
+        $res8 = Db::name('xy_balance_log')->insert([
+            'uid' => $uid,
+            'sid' => $uid,
+            'oid' => $oid,
+            'num' => $num + $cnum,
+            'type' => 3,
+            'status' => 1,
+            'addtime' => time(),
+            "balance" => $balance
+        ]);
         
         Db::name('xy_convey')
             ->where('id', $oid)
