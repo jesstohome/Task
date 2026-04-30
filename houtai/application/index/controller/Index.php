@@ -87,19 +87,27 @@ class Index extends Base
 
         
         //今天收益
-        $parameter['yon1'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3 || type = 5 || type = 6")->where('addtime', 'between', [$beginToday, $endToday])->sum('num'),2);
+        // $parameter['yon1'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3 || type = 5 || type = 6")->where('addtime', 'between', [$beginToday, $endToday])->sum('num'),2);
+        
+        $parameter['yon1'] = number_format(Db::name('xy_convey')->where('uid',$uid)->where('c_status',1)->where('addtime', 'between', [$beginToday, $endToday])->sum('commission'),2);
         
          //昨日收益
-       $parameter['Yesterdaysearnings'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3 || type = 5 || type = 6")->where('addtime', 'between', [$beginYesterday, $endYesterday])->sum('num'),2);
+    //   $parameter['Yesterdaysearnings'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3 || type = 5 || type = 6")->where('addtime', 'between', [$beginYesterday, $endYesterday])->sum('num'),2);
+    
+        $parameter['Yesterdaysearnings'] = number_format(Db::name('xy_convey')->where('uid',$uid)->where('c_status',1)->where('addtime', 'between', [$beginYesterday, $endYesterday])->sum('commission'),2);
        
         //总收益
-        $parameter['yon3'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3 || type = 5 || type = 6")->sum('num'),2);
+        $zongyongjin = Db::table('xy_balance_log')->where('uid', $uid)->where("type = 5 || type = 6")->sum('num');
+        
         
         //订单收益
-        $parameter['yon2'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3")->sum('num'),2);
+        // $parameter['yon2'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where("type = 3")->sum('num'),2);
+        $orderyongjin = Db::name('xy_convey')->where('uid',$uid)->where('c_status',1)->sum('commission');
         
-      
+        $parameter['yon2'] = number_format($orderyongjin,2);
         
+        //因为做单收益调整了日志，完整订单时把佣金和本金合到了一起，类型为3,所以再统计的时候不能再有type3,订单收益只能从订单处统计再和其它收益相加为总收益
+        $parameter['yon3'] = number_format($zongyongjin + $orderyongjin,2);
         //团队收益
         $parameter['Teambenefits'] = number_format(Db::table('xy_balance_log')->where('uid', $uid)->where(" type = 5 || type = 6")->sum('num'),2);
         $parameter['dongjiejine'] = number_format($info['freeze_balance'],2);
