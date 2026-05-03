@@ -87,11 +87,11 @@
 
              </td>
              <td class='text-left nowrap' >
-                 日提款：{$vo.today_withdrawal_sum}/{$vo.today_withdrawal_count}次<br/>
-                 总提款：{$vo.all_deposit_num}/{$vo.all_deposit_count}次<br/>
-                 <!--日充值：{$vo.today_recharge_sum}<br/>-->
+                 今日提现：{$vo.today_withdrawal_sum}<br/>
+                 总提现：<span style="color: red;">{$vo.withdrawal_sum}</span><br/>
+                 今日充值：{$vo.today_recharge_sum}<br/>
                  <!--日在线充值：{$vo.today_onlin_recharge_sum}<br/>-->
-                 总充值：{$vo.recharge_sum}<br/>
+                 总充值：<span style="color: green;">{$vo.recharge_sum}</span><br/>
                  <!--总在线充值：{$vo.online_recharge_sum}/{$vo.online_recharge_count}次<br/>-->
                  <!--总赠送：{$vo.give_amount_sum}<br/>-->
 <!--                 总充值：{$vo.all_recharge_num}/{$vo.all_recharge_count}次<br/>-->

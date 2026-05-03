@@ -440,15 +440,19 @@ class Users extends Base
             //日提款次数
             $vo['today_withdrawal_count'] = Db::name('xy_deposit')->where('uid',$vo['id'])->where('status', 2)->count('id');
             //日提款金额
-            $vo['today_withdrawal_sum'] = Db::name('xy_deposit')->where('uid',$vo['id'])->where('status', 2)->sum('num');
+            $vo['today_withdrawal_sum'] = Db::name('xy_deposit')->where('uid',$vo['id'])->where('status', 2)->where('addtime','>=',$today_start)->sum('num');
+            //总提款金额
+            $vo['withdrawal_sum'] = Db::name('xy_deposit')->where('uid',$vo['id'])->where('status', 2)->sum('num');
 
             //日充值
-            $vo['today_recharge_sum'] = Db::name('xy_recharge')->where('uid',$vo['id'])->where('status', 2)->sum('num');
+            //$vo['today_recharge_sum'] = Db::name('xy_recharge')->where('uid',$vo['id'])->where('status', 2)->where('addtime','>=',$today_start)->sum('num');
+            $vo['today_recharge_sum'] = Db::table('xy_balance_log')->where('uid', $vo['id'])->where("type = 1 || type = 32")->where('addtime','>=',$today_start)->sum('num');
             //日在线充值
             $vo['today_onlin_recharge_sum'] = 0;
 
             //总充值
-            $vo['recharge_sum'] = Db::name('xy_recharge')->where('uid',$vo['id'])->where('status', 2)->sum('num');
+            //$vo['recharge_sum'] = Db::name('xy_recharge')->where('uid',$vo['id'])->where('status', 2)->sum('num');
+            $vo['recharge_sum'] = Db::table('xy_balance_log')->where('uid', $vo['id'])->where("type = 1 || type = 32")->sum('num');
             //总在线充值
             $vo['online_recharge_sum'] = 0;
             //总在线充值次数

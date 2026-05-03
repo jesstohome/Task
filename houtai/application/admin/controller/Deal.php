@@ -1141,53 +1141,60 @@ class Deal extends Base
             $status = input('post.status/d', 1);
             $oinfo = Db::name('xy_recharge')->find($oid);
             if ($status == 2) {
-                $res = model('admin/Users')->recharge_success($oid);
+                //改为不直接充值，只更改订单状态
+                //$res = model('admin/Users')->recharge_success($oid);
+                
+                $upArr = ['endtime' => time(), 'status' => $status];
+                $res = Db::name('xy_recharge')
+                    ->where('id', $oid)
+                    ->update($upArr);
+                
                 //处理冻结的订单
-                $convey = Db::name('xy_convey')->where('uid',$oinfo['uid'])->where('status', 5)->where('is_pay', 1)->find();
+                // $convey = Db::name('xy_convey')->where('uid',$oinfo['uid'])->where('status', 5)->where('is_pay', 1)->find();
                 
-                $balance = Db::name('xy_users')->where('id', $oinfo['uid'])->value('balance');
+                // $balance = Db::name('xy_users')->where('id', $oinfo['uid'])->value('balance');
                 
-                //$balance为充值后的金额
-                if($convey && $balance >= 0){
-                    $res2 = model('admin/Convey')->deal_reward($oinfo['uid'], $convey['id'], $convey['num'], $convey['commission']);
-                }
+                // //$balance为充值后的金额
+                // if($convey && $balance >= 0){
+                //     $res2 = model('admin/Convey')->deal_reward($oinfo['uid'], $convey['id'], $convey['num'], $convey['commission']);
+                // }
                 
-                //检查还有没有未完成的负数订单，有的话自动进行派单
-                $uid = $oinfo['uid'];
-                $existing_log = Db::name('xy_compound_order_log')
-                    ->where('uid', $uid)
-                    ->where('status', 1) // 进行中
-                    ->order('create_time DESC')
-                    ->find();
+                // //检查还有没有未完成的负数订单，有的话自动进行派单
+                // $uid = $oinfo['uid'];
+                // $existing_log = Db::name('xy_compound_order_log')
+                //     ->where('uid', $uid)
+                //     ->where('status', 1) // 进行中
+                //     ->order('create_time DESC')
+                //     ->find();
                 //只有出现冻结订单的时候才去自动派单，不能每次充值就派单
-                if($convey && $existing_log && $existing_log['option_id'] > 0){
-                    $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
-                    $order_model = new \app\admin\model\Convey();
+                // if($convey && $existing_log && $existing_log['option_id'] > 0){
+                //     $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+                //     $order_model = new \app\admin\model\Convey();
 
-                    foreach($existing_log['custom_options'] as $key => $value){
-                        if($value['option_id'] == $existing_log['option_id']){
-                            if($existing_log['completed_orders'] < $value['order_count']){
-                                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                //     foreach($existing_log['custom_options'] as $key => $value){
+                //         if($value['option_id'] == $existing_log['option_id']){
+                //             if($existing_log['completed_orders'] < $value['order_count']){
+                //                 Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
 
-                                Db::name('xy_compound_order_log')
-                                    ->where('id', $existing_log['id'])
-                                    ->update([
-                                        'completed_orders' => $existing_log['completed_orders'] + 1,
-                                        'update_time' => time()
-                                    ]);
+                //                 Db::name('xy_compound_order_log')
+                //                     ->where('id', $existing_log['id'])
+                //                     ->update([
+                //                         'completed_orders' => $existing_log['completed_orders'] + 1,
+                //                         'update_time' => time()
+                //                     ]);
 
-                                $res = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
-                            }else{
-                                Db::name('xy_compound_order_log')
-                                    ->where('id', $existing_log['id'])
-                                    ->update([
-                                        'status' => 2,
-                                        'update_time' => time()
-                                    ]);
-                            }                           
-                        }
-                    }
-                }
+                //                 $res = $order_model->create_order($uid, 1, 'FS', $value['amount_value'], $value['commission_value'], 1);
+                //             }else{
+                //                 Db::name('xy_compound_order_log')
+                //                     ->where('id', $existing_log['id'])
+                //                     ->update([
+                //                         'status' => 2,
+                //                         'update_time' => time()
+                //                     ]);
+                //             }                           
+                //         }
+                //     }
+                // }
                 
                 if ($res) {
                     sysoplog('审核充值订单', json_encode($_POST, JSON_UNESCAPED_UNICODE));
