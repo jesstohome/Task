@@ -69,7 +69,8 @@
 <!--                 佣金：{$vo.com}<br/>-->
                  体验金：{$vo.lottery_money}<br/>
                  总单数：{$vo.order_num}<br/>
-                 已抢单数：<span style="color: red;">{$vo.today_order_grabbing_num_zon}</span>
+                 已抢单数：<span style="color: red;">{$vo.today_order_grabbing_num_zon}</span><br/>
+                 做单天数：<span style="color: green;">{$vo.today_order_grabbing_num_zon < 90 ? 0 : floor(($vo.today_order_grabbing_num_zon - 30) / 60)}</span>
 
              </td>
              <td class='text-left nowrap'>
