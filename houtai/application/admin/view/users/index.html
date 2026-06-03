@@ -134,6 +134,7 @@
                 </div>
             </td>
             <td class='text-center nowrap' >
+                <span>最后活动时间：{$vo.active_time}</span><br/><br/>
                 <span>{$vo.register_time}</span><br/>
                 {if($vo.register_ip)}
                 <span style="color:red;">{$vo.register_ip}</span><br/>
@@ -142,6 +143,10 @@
 
 
              <td class='text-left nowrap'>
+                 {if $vo.last_active_time gt $vo.active_now_time}
+                 <span style="color:white;background-color:green;padding:2px">活动</span><br/>
+                 {/if}
+                 
                  {$vo.login_time|format_datetime}<br/>
                  {if($vo.ip)}
                      ip：{$vo.ip}<br/>

@@ -198,11 +198,12 @@ class Users extends Base
 //        dump(input());exit;
         $this->online = input("online",0);
         if($this->online){
-            $online_ids = Db::table('xy_token')
-                ->where('time','>=',time() - (7 * 24 * 60 * 60))
-                ->group('uid')
-                ->column('uid');
-            $where[] = ['u.id', 'in', $online_ids];
+            // $online_ids = Db::table('xy_token')
+            //     ->where('time','>=',time() - (7 * 24 * 60 * 60))
+            //     ->group('uid')
+            //     ->column('uid');
+            // $where[] = ['u.id', 'in', $online_ids];
+            $where[] = ['u.last_active_time', '>=',time() - 60];
         }
 
         $this->all_children = input("all_children",0);
@@ -333,7 +334,7 @@ class Users extends Base
         
         $query->field('u.id,u.level,u.order_num,u.agent_service_id,u.agent_id,u.tel,u.username,u.group_id,le.name as level_name,u.freeze_amount,le.order_num as zon_order_num,
         u.lixibao_balance,u.id_status,u.ip,u.is_jia,u.addtime,u.invite_code,u.register_ip,u.login_status,u.withdrawal_status,
-        u.all_recharge_num,u.all_deposit_num,u.all_recharge_count,u.all_deposit_count,
+        u.all_recharge_num,u.all_deposit_num,u.all_recharge_count,u.all_deposit_count,u.last_active_time,
         u.freeze_balance,u.status,u.balance,u1.username as parent_name,u1.tel as parent_tel,u1.invite_code as parent_invite_code,u.login_time,u.deal_time,u.lottery_money,u.shuadan_status')
             ->leftJoin('xy_users u1', 'u.parent_id=u1.id')
             ->leftJoin('xy_level le', 'u.level=le.level')
@@ -381,6 +382,8 @@ class Users extends Base
 
 
             $vo['register_time'] = date('Y-m-d H:i:s', $vo['addtime']);
+            $vo['active_time'] = $vo['last_active_time'] ? date('Y-m-d H:i:s', $vo['last_active_time']) : '';
+            $vo['active_now_time'] = time() - 60;
             
             $vo['com'] = Db::name('xy_balance_log')->where('uid', $vo['id'])
                 ->where('type', 3)->where('status', 1)->sum('num');
