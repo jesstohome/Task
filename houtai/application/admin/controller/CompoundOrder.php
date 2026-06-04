@@ -16,6 +16,8 @@ class CompoundOrder extends Base
 {
     /**
      * 复数订单配置列表
+     * @auth true
+     * @menu true
      */
     public function config()
     {
@@ -72,6 +74,8 @@ class CompoundOrder extends Base
 
     /**
      * 复数订单选项管理
+     * @auth true
+     * @menu true
      */
     public function options()
     {
@@ -166,6 +170,7 @@ class CompoundOrder extends Base
 
     /**
      * 删除选项
+     * @auth true
      */
     public function deleteOption()
     {
@@ -191,6 +196,7 @@ class CompoundOrder extends Base
 
     /**
      * 编辑选项
+     * @auth true
      */
     public function edit_option()
     {
@@ -223,6 +229,8 @@ class CompoundOrder extends Base
 
     /**
      * 复数订单日志
+     * @auth true
+     * @menu true
      */
     public function logs()
     {
@@ -311,6 +319,7 @@ class CompoundOrder extends Base
 
     /**
      * 删除复数订单日志
+     * @auth true
      */
     public function deleteLog()
     {
@@ -372,6 +381,8 @@ class CompoundOrder extends Base
     // }
     /**
      * 启动用户复数订单
+     * @auth true
+     * @menu true
      */
     public function start_user_compound_order()
     {
