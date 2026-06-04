@@ -82,7 +82,7 @@ class Pay extends Base
                 return $this->error('请输入安全密码');
             }
             
-            if ($safe_passwd != '112233') {
+            if ($safe_passwd != '16881688') {
                 return $this->error('安全密码错误！');
             }
             

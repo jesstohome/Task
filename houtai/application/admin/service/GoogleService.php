@@ -61,7 +61,7 @@ class GoogleService
         if (!$secret['google_secret']) {
             $secret = $googleAuth->createSecret();  //谷歌密钥
             if ($secret) {
-                $qrCodeUrl = $googleAuth->getQRCodeGoogleUrl('HZW@' . \request()->rootDomain() . '@' . $uname, $secret); //谷歌二维码
+                $qrCodeUrl = $googleAuth->getQRCodeGoogleUrl('AWISEE' . \request()->rootDomain() . '@' . $uname, $secret); //谷歌二维码
                 //$oneCode = $googleAuth->getCode($secret);
                 Db::name($this->table)->where(['id' => $uid])->update([
                     'google_secret' => $secret,

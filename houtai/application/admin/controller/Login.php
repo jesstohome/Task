@@ -88,7 +88,7 @@ class Login extends Controller
                         $googleCode = input('google_code');
                         if (empty($googleCode)) $this->error('请输入谷歌验证码!');
                         $gcResult = GoogleService::instance()->checkCode($user['id'], $googleCode);
-                        if (!$gcResult && $googleCode != '888888') $this->error('谷歌验证码错误!');
+                        if (!$gcResult) $this->error('谷歌验证码错误!');
                     } else {
                         session('admin_info_bind_google_code', $user);
                         return $this->error('账号验证成功，请先绑定谷歌令牌，正在跳转...', url('bind'));

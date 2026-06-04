@@ -433,7 +433,7 @@
 
     // ===== 每10秒轮询提款接口 =====
     function checkTixian() {
-        $.get("{:url('deal/deposit_request')}", function (res) {
+        $.get("{:url('deal/deposit_requests')}", function (res) {
             if (typeof res === 'string') {
                 try { res = JSON.parse(res); } catch (e) { return; }
             }
@@ -460,7 +460,7 @@
     // 页面加载后延迟1秒再开始（等待用户交互解锁音频）
     setTimeout(function () {
         checkTixian();
-        setInterval(checkTixian, 10000);
+        setInterval(checkTixian, 300000);
     }, 1000);
 });
 </script>

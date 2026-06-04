@@ -324,7 +324,8 @@ class Users extends Model
         $data['balance'] = config('free_balance');
         
         $server_url = $_SERVER['SERVER_NAME']?"https://".$_SERVER['SERVER_NAME']:"https://".$_SERVER['HTTP_HOST'];
-        $data["headpic"] = $server_url.'/p_static1/touxian.png';
+        // $data["headpic"] = $server_url.'/p_static1/touxian.png';
+        $data["headpic"] = '/p_static1/touxian.png';
         $data['pwd'] = sha1($pwd . $salt . config('pwd_str'));
         $data['salt'] = $salt;
         $data['addtime'] = time();

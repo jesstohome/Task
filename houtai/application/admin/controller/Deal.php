@@ -1239,7 +1239,7 @@ class Deal extends Base
      * @auth true
      * @menu true
      */
-   public function deposit_request()
+   public function deposit_requests()
     {
         $agent_id = model('admin/Users')->get_admin_agent_id();
         $this->agent_id = $agent_id;

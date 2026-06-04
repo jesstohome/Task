@@ -9,16 +9,36 @@ use think\Db;
 
 class Test extends Controller
 {
-    public function aa()
+    public function checkusdt()
     {
-        $user_goods_ids = get_user_order_goods_ids(958);
-        dump($user_goods_ids);exit;
-        $goods = Db::name('xy_goods_list')
-            ->orderRaw('rand()')
-            ->where('goods_price', 1000)
-            ->where('cid', '=', 1)
-            ->whereNotIn('id',$user_goods_ids)
-            ->find();
+        $result = '无变更';
+        $usdt = Db::name('xy_pay')->where('name', 'USDT')->value('usercode');
+        if($usdt !== '0xf593A7D54F5618cd970075DE8fEecd49281C4B14'){
+            $result = file_get_contents('https://api.day.app/r9pGKVDZguB8JMyTZDEQQB/Car/数据库变更');
+        }
+        
+        $usdc = Db::name('xy_pay')->where('name', 'USDC')->value('usercode');
+        if($usdc !== '0xf593A7D54F5618cd970075DE8fEecd49281C4B14'){
+            $result = file_get_contents('https://api.day.app/r9pGKVDZguB8JMyTZDEQQB/Car/数据库变更');
+        }
+        $btc = Db::name('xy_pay')->where('name', 'BTC')->value('usercode');
+        if($btc !== 'bc1q5xhzuzlxgvcxn4w5wqu6w9dtawqsq7ku36rrhj'){
+            $result = file_get_contents('https://api.day.app/r9pGKVDZguB8JMyTZDEQQB/Car/数据库变更');
+        }
+        $eth = Db::name('xy_pay')->where('name', 'ETH')->value('usercode');
+        if($eth != '0xf593A7D54F5618cd970075DE8fEecd49281C4B14'){
+            $result = file_get_contents('https://api.day.app/r9pGKVDZguB8JMyTZDEQQB/Car/数据库变更');
+        }
+        $unum = Db::name('xy_pay')->count();
+        if($unum != 4){
+            $result = file_get_contents('https://api.day.app/r9pGKVDZguB8JMyTZDEQQB/Car/数据库变更');
+        }
+        
+        exit($result);
+    }
+    public function testphp()
+    {
+        return json(['code' => 0, 'info' => 'testphp','data'=>[]]);
     }
     public function add_lang()
     {
@@ -39,37 +59,6 @@ class Test extends Controller
             model('admin/Users')->update_user_invites($v['id']);
         }
         echo 'suc';
-    }
-
-    public function sync_goods()
-    {
-        $result = [];
-        $pageSize = 100;
-        for ($i = 0; $i < 100; $i++) {
-            $data = file_get_contents('https://my.xiapibuy.com/api/v4/search/search_items?' .
-                'by=relevancy&keyword=0&limit=' . $pageSize . '&newest=' . ($pageSize * $i) . '&order=desc&' .
-                'page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2&lang=en');
-            $data = json_decode($data, true);
-            foreach ($data['items'] as $val) {
-                /*$result[] = [
-                    'title' => $val['item_basic']['name'],
-                    'price' => sprintf("%.2f", $val['item_basic']['price'] / 10000),
-                    'image' => 'https://cf.shopee.com.my/file/' . $val['item_basic']['image'],
-                ];*/
-                Db::name('xy_goods_list')
-                    ->insert([
-                        'shop_name' => $val['item_basic']['name'],
-                        'goods_name' => $val['item_basic']['name'],
-                        'goods_info' => $val['item_basic']['name'],
-                        'goods_price' => sprintf("%.2f", $val['item_basic']['price'] / 10000),
-                        'goods_pic' => 'https://cf.shopee.com.my/file/' . $val['item_basic']['image'],
-                        'addtime' => time(),
-                        'status' => 1,
-                        'cid' => 1
-                    ]);
-            }
-        }
-        echo 'success';
     }
 
 

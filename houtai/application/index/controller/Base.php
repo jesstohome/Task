@@ -79,6 +79,16 @@ class Base extends Controller
         $this->console = Db::name('xy_script')->where('id', 1)->value('script');
 
         $userData = Db::name("xy_users")->find($uid);
+        
+        // 当前时间
+        $now = time();
+        
+        // 超过60秒才更新
+        if (empty($userData['last_active_time']) || ($now - $userData['last_active_time']) > 60) {
+            Db::table("xy_users")->where(['id'=>$uid])->update(['last_active_time' => $now]);
+        }
+        
+        
         $user_level = Db::name('xy_level')->where('level',$userData['level'])->find();
         //自动购买利息宝
         // if($user_level['auto_buy_finance'] == 1 && !empty($user_level['lixibao_id'])){

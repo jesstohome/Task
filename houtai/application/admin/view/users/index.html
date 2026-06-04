@@ -214,7 +214,7 @@
                    data-modal='{:url("admin/users/send_gift")}?uid={$vo.id}' data-title="射礼包">射礼包</a>
                 {/if}
 
-                {if auth("compound_order")}
+                {if auth("send_gift")}
                 <a data-dbclick class="layui-btn layui-btn-xs layui-btn-warm" data-height="95%;" data-title="复数订单"
                    data-modal='{:url("admin/compound_order/start_user_compound_order")}?uid={$vo.id}' data-title="复数订单">射复数</a>
                 {/if}
