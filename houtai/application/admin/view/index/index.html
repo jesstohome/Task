@@ -207,7 +207,7 @@
                 >
                     <a data-menu-node="m-{$oneMenu.id}" data-open="{$oneMenu.url}">
                         {notempty name='oneMenu.icon'}<span class='{$oneMenu.icon} padding-right-5 black'></span>{/notempty}
-                        <span class="black">{$oneMenu.title|default=''}</span>
+                        <span class="black">{:lang($oneMenu.title)}</span>
                     </a>
                 </li>
                 {/foreach}
@@ -285,7 +285,7 @@
                 </li>
                 {else}
                 <li class="layui-nav-item">
-                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i>{:lang(' 立即登录')}</a>
+                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i> {:lang('立即登录')}</a>
                 </li>
                 {/notempty}
             </ul>
@@ -302,7 +302,7 @@
                     <li class="layui-nav-item" data-submenu-layout='m-{$oneMenu.id}-{$twoMenu.id}' style="border: none;">
                         <a data-target-tips="{$twoMenu.title}" style="background-color:#1E1E2F !important;">
                             <span class='nav-icon {$twoMenu.icon}'></span>
-                            <span class="nav-text padding-left-5" style="background-color:#2A2A40 !important;">{$twoMenu.title}</span>
+                            <span class="nav-text padding-left-5" style="background-color:#2A2A40 !important;">{:lang($twoMenu.title)}</span>
                         </a>
                         <dl class="layui-nav-child" style="background-color:#000 !important;">
                             {notempty name='twoMenu.sub'}
@@ -310,7 +310,7 @@
                             <dd>
                                 <a data-target-tips="{$thrMenu.title}" data-open="{$thrMenu.url}" data-menu-node="m-{$oneMenu.id}-{$twoMenu.id}-{$thrMenu.id}">
                                     <span class='nav-icon padding-left-5 {$thrMenu.icon}'></span>
-                                    <span class="nav-text padding-left-5">{$thrMenu.title}</span>
+                                    <span class="nav-text padding-left-5">{:lang($thrMenu.title)}</span>
                                 </a>
                             </dd>
                             {/foreach}

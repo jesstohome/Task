@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             </div>
         </form>
     </fieldset>
@@ -65,8 +65,8 @@
 
             <td class='text-left nowrap'>
                 {switch $vo.status}
-                {case 1}启用{/case}
-                {case 0}未启用{/case}
+                {case 1}{:lang('启用')}{/case}
+                {case 0}{:lang('未启用')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>{$vo.addtime|format_datetime}</td>

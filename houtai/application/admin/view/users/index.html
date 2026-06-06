@@ -50,36 +50,36 @@
             <td class='text-left nowrap'>
 
                   <span style="font-size: 18px;;">{$vo.username}</span><br>
-                  电话：{$vo.tel}<br>
+                  {:lang('电话：')}{$vo.tel}<br>
                   <!--<span class="{$vo.is_jia == 0 ? 'layui-badge layui-bg-green' : 'layui-badge layui-bg-blue'}">{$vo.is_jia == 0 ? '外部' : '内部'}</span><br>-->
-                  <span style="color: #1E9FFF;">当前等级：{$vo.level_name}</span><br>
-                  <span style="color: #FF5722;">推广码:{$vo.invite_code}</span><br>
-                  <span style="color: #009688;">用户ID：{$vo.id}</span><br>
+                  <span style="color: #1E9FFF;">{:lang('当前等级：')}{$vo.level_name}</span><br>
+                  <span style="color: #FF5722;">{:lang('推广码:')}{$vo.invite_code}</span><br>
+                  <span style="color: #009688;">{:lang('用户ID：')}{$vo.id}</span><br>
 
 
                 <a data-dbclick  data-title="{:lang('方案组')}" data-width="40%;" data-height="50%;" class="layui-btn layui-btn-xs layui-btn layui-btn layui-btn-normal"
                    data-modal='{:url("users/guizhes")}?id={$vo.id}'>{if $vo.group_id && isset($groupAllList[$vo.group_id])} {$groupAllList[$vo.group_id]}{else}无方案组{/if}</span></a>
             </td>
-             <td class='text-left nowrap' >{:lang('
+             <td class='text-left nowrap' >
 
-                 余额：')}<span style="color: red;">{$vo.balance}</span><br/>
-                 冻结本金：{$vo.freeze_amount}<br/>
-                 抢单冻结：{$vo.order_freeze_balance}<br/>
+                 {:lang('余额：')}<span style="color: red;">{$vo.balance}</span><br/>
+                 {:lang('冻结本金：')}{$vo.freeze_amount}<br/>
+                 {:lang('抢单冻结：')}{$vo.order_freeze_balance}<br/>
 
 <!--                 佣金：{$vo.com}<br/>-->
-                 体验金：{$vo.lottery_money}<br/>
-                 总单数：{$vo.order_num}<br/>{:lang('
-                 已抢单数：')}<span style="color: red;">{$vo.today_order_grabbing_num_zon}</span><br/>{:lang('
-                 做单天数：')}<span style="color: green;">{$vo.today_order_grabbing_num_zon < 90 ? 0 : floor(($vo.today_order_grabbing_num_zon - 30) / 60)}</span>
+                 {:lang('体验金：')}{$vo.lottery_money}<br/>
+                 {:lang('总单数：')}{$vo.order_num}<br/>
+                 {:lang('已抢单数：')}<span style="color: red;">{$vo.today_order_grabbing_num_zon}</span><br/>
+                 {:lang('做单天数：')}<span style="color: green;">{$vo.today_order_grabbing_num_zon < 90 ? 0 : floor(($vo.today_order_grabbing_num_zon - 30) / 60)}</span>
 
              </td>
              <td class='text-left nowrap'>
-                 今日已抢会员单：{$vo.today_order_grabbing_num}次 <span style="color: red;">（完成：{$vo.today_success_count}次）</span><br/>
-                 今日复数单：{$vo.today_order_grabbing_num_fs}次 <span style="color: red;">（完成：{$vo.today_success_count_fs}次）</span><br/>
-                 今日礼包单：{$vo.today_order_grabbing_num_lb}次 <span style="color: red;">（完成：{$vo.today_success_count_lb}次）</span><br/>
-                 今日收益： {$vo.today_income}<br/>
-                 累计收益：{$vo.sum_income} <br/>
-                 昨日收益： {$vo.sum_yesterday_income}<br/>
+                 {:lang('今日已抢会员单：')}{$vo.today_order_grabbing_num}{:lang('次')} <span style="color: red;">{:lang('（完成：')}{$vo.today_success_count}{:lang('次）')}</span><br/>
+                 {:lang('今日复数单：')}{$vo.today_order_grabbing_num_fs}{:lang('次')} <span style="color: red;">{:lang('（完成：')}{$vo.today_success_count_fs}{:lang('次）')}</span><br/>
+                 {:lang('今日礼包单：')}{$vo.today_order_grabbing_num_lb}{:lang('次')} <span style="color: red;">{:lang('（完成：')}{$vo.today_success_count_lb}{:lang('次）')}</span><br/>
+                 {:lang('今日收益：')} {$vo.today_income}<br/>
+                 {:lang('累计收益：')}{$vo.sum_income} <br/>
+                 {:lang('昨日收益：')} {$vo.sum_yesterday_income}<br/>
                  <!--累计推广佣金：{$vo.promotion_income}<br/>-->
 
 <!--                 已完成订单总数:{$vo.day_d_count}<br/>-->
@@ -88,11 +88,11 @@
 
              </td>
              <td class='text-left nowrap' >
-                 今日提现：{$vo.today_withdrawal_sum}<br/>{:lang('
-                 总提现：')}<span style="color: red;">{$vo.withdrawal_sum}</span><br/>
-                 今日充值：{$vo.today_recharge_sum}<br/>
-                 <!--日在线充值：{$vo.today_onlin_recharge_sum}<br/>-->{:lang('
-                 总充值：')}<span style="color: green;">{$vo.recharge_sum}</span><br/>
+                 {:lang('今日提现：')}{$vo.today_withdrawal_sum}<br/>
+                 {:lang('总提现：')}<span style="color: red;">{$vo.withdrawal_sum}</span><br/>
+                 {:lang('今日充值：')}{$vo.today_recharge_sum}<br/>
+                 <!--日在线充值：{$vo.today_onlin_recharge_sum}<br/>-->
+                 {:lang('总充值：')}<span style="color: green;">{$vo.recharge_sum}</span><br/>
                  <!--总在线充值：{$vo.online_recharge_sum}/{$vo.online_recharge_count}次<br/>-->
                  <!--总赠送：{$vo.give_amount_sum}<br/>-->
 <!--                 总充值：{$vo.all_recharge_num}/{$vo.all_recharge_count}次<br/>-->
@@ -102,9 +102,9 @@
             <!--    累计收益：{$vo.lixbao_income}<br/>-->
             <!--</td>-->
              <td class='text-left nowrap'>
-<!--                 <span style="color: red;">上级：{$vo.parent_tel} - {$vo.parent_invite_code}</span><br/>-->
-                 <span style="color: green;">代理：{$vo.service} - {$vo.service_yqm}</span><br/>
-                 <span style="color: green;">上级用户：{$vo.parent_name}</span>
+<!--                 <span style="color: red;">{:lang('上级：')}{$vo.parent_tel} - {$vo.parent_invite_code}</span><br/>-->
+                 <span style="color: green;">{:lang('代理：')}{$vo.service} - {$vo.service_yqm}</span><br/>
+                 <span style="color: green;">{:lang('上级用户：')}{$vo.parent_name}</span>
              </td>
             <td class='text-center nowrap' >
                 <div class="layui-form">
@@ -134,7 +134,7 @@
                 </div>
             </td>
             <td class='text-center nowrap' >
-                <span>最后活动时间：{$vo.active_time}</span><br/><br/>
+                <span>{:lang('最后活动时间：')}{$vo.active_time}</span><br/><br/>
                 <span>{$vo.register_time}</span><br/>
                 {if($vo.register_ip)}
                 <span style="color:red;">{$vo.register_ip}</span><br/>
@@ -149,8 +149,8 @@
                  
                  {$vo.login_time|format_datetime}<br/>
                  {if($vo.ip)}
-                     ip：{$vo.ip}<br/>{:lang('
-                     ip地址：')}<span><?php
+                     ip：{$vo.ip}<br/>
+                     {:lang('ip地址：')}<span><?php
                          $result = $ips->btreeSearch($vo['ip']);
                          $vo['ips'] = isset($result['region']) ? $result['region'] : '';
                          $vo['ips'] = str_replace(['内网IP', '0', '|'], '', $vo['ips']);

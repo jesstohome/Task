@@ -57,15 +57,15 @@
             </td>
             <td class='text-left nowrap'>
                 {switch $vo.status}
-                    {case 0}待付款{/case}
+                    {case 0}{:lang('待付款')}{/case}
                     {case 1}
                         {if auth("edit_recharge")}
                             <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >{:lang('通过')}</a>
                             <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('edit_recharge',['status'=>3,'id'=>$vo.id])}" data-value="id#{$vo.id};status#3" >{:lang('驳回')}</a>
                         {/if}
                     {/case}
-                    {case 2}审核通过{/case}
-                    {case 3}审核驳回{/case}
+                    {case 2}{:lang('审核通过')}{/case}
+                    {case 3}{:lang('审核驳回')}{/case}
                 {/switch}
             </td>
         </tr>

@@ -8,7 +8,7 @@
         <legend>{:lang('数据统计')}</legend>
         <div class="row">
             <div class="col-12">
-                支付成功：{$user_recharge}
+                {:lang('支付成功：')}{$user_recharge}
             </div>
         </div>
     </fieldset>
@@ -70,8 +70,8 @@
             
             <td class='text-left nowrap'>{$vo.id}</td>
             <td class='text-left nowrap'>
-                用户名：{$vo.username} <span class="layui-badge layui-bg-green">{$vo.is_jia_name}</span> <br>
-                代理：{$vo.service} <br>
+                {:lang('用户名：')}{$vo.username} <span class="layui-badge layui-bg-green">{$vo.is_jia_name}</span> <br>
+                {:lang('代理：')}{$vo.service} <br>
             </td>
             <td class='text-left nowrap'>
                 {$vo.pay_name|default="-"}
@@ -85,8 +85,8 @@
                 {/if}
             </td>
             <td class='text-left nowrap'>
-                {$vo.num} <br>{:lang('
-                扣款：0 ')}<br>
+                {$vo.num} <br>
+                {:lang('扣款：0')} <br>
 <!--                之前余额：{$vo.before_balance}<br>-->
 <!--                之后余额：{$vo.after_balance}<br>-->
             </td>
@@ -118,7 +118,7 @@
             
             <td class='text-left nowrap'>
                 {switch $vo.status}
-                    {case 0}待付款{/case}
+                    {case 0}{:lang('待付款')}{/case}
                     {case 1}
                         {if auth("edit_recharge")}
                             <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >{:lang('通过')}</a>

@@ -167,7 +167,7 @@
 
                 <li class="layui-nav-item">
                     <p class="text-center no-border">
-                        <span style="color: #666666;font-size: 13px;">{:lang('首页 ')}</span> <span class="nav-title" style="color: #A9A9A9FF;font-size: 13px;">/ {$title}</span>
+                        <span style="color: #666666;font-size: 13px;">{:lang('首页')} </span> <span class="nav-title" style="color: #A9A9A9FF;font-size: 13px;">/ {$title}</span>
                     </p>
                 </li>
 
@@ -190,15 +190,15 @@
             <!--头部右侧功能区域-->
             <ul class="layui-nav layui-layout-right">
                 <li lay-unselect="" class="layui-nav-item">
-                    <a href="/admin.html#/admin/deal/user_recharge.html" style="color: #666666 !important;font-size: 13px;">{:lang('
-                        充值记录
-                        ')}<!--                        <span class="layui-badge recharge">0</span>-->
+                    <a href="/admin.html#/admin/deal/user_recharge.html" style="color: #666666 !important;font-size: 13px;">
+                        {:lang('充值记录')}
+                        <!--                        <span class="layui-badge recharge">0</span>-->
                     </a>
                 </li>
                 <li lay-unselect="" class="layui-nav-item">
-                    <a href="/admin.html#/admin/deal/deposit_list.html" style="color: #666666 !important;font-size: 13px;">{:lang('
-                        提款记录
-                        ')}<!--                        <span class="layui-badge deposit">0</span>-->
+                    <a href="/admin.html#/admin/deal/deposit_list.html" style="color: #666666 !important;font-size: 13px;">
+                        {:lang('提款记录')}
+                        <!--                        <span class="layui-badge deposit">0</span>-->
                     </a>
                 </li>
 
@@ -244,7 +244,7 @@
                 </li>
                 {else}
                 <li class="layui-nav-item">
-                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i>{:lang(' 立即登录')}</a>
+                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i> {:lang('立即登录')}</a>
                 </li>
                 {/notempty}
             </ul>

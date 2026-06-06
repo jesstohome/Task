@@ -34,9 +34,9 @@
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
                 {if auth("do_deposit") }
-                <a href="{:url('daochu')}" class="layui-btn layui-btn-danger" ><i class="layui-icon">&#xe615;</i>{:lang(' 导 出')}</a>
+                <a href="{:url('daochu')}" class="layui-btn layui-btn-danger" ><i class="layui-icon">&#xe615;</i> {:lang('导 出')}</a>
                 {/if}
             </div>
         </form>
@@ -110,9 +110,9 @@
             </td>
             <td class='text-left nowrap'>
                 {switch $vo.status}
-                {case 1}待审核{/case}
-                {case 2}审核通过{/case}
-                {case 3}审核驳回{/case}
+                {case 1}{:lang('待审核')}{/case}
+                {case 2}{:lang('审核通过')}{/case}
+                {case 3}{:lang('审核驳回')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>

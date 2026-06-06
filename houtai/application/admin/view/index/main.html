@@ -46,7 +46,7 @@
     }
 </style>
 <div class="think-box-shadow store-total-container">
-    <!--<h4 style="text-align: center">当地时间： {:date('Y-m-d H:i:s')}</h4>-->
+    <!--<h4 style="text-align: center">{:lang('当地时间：')} {:date('Y-m-d H:i:s')}</h4>-->
 
 
     <!--<div class="margin-bottom-15">{:lang('商城统计')}</div>-->
@@ -72,7 +72,7 @@
 
 
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn" onclick="shop()"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn" onclick="shop()"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             </div>
         </div>
         <div class="layui-row layui-col-space15" id="shop_content">{:lang('加载中....')}</div>

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             </div>
         </form>
     </fieldset>
@@ -46,8 +46,8 @@
             <td class='text-left nowrap'>{$vo.addtime|format_datetime}</td>
             <td class='text-left nowrap'>
                 {switch $vo.type}
-                    {case 1}收入{/case}
-                    {case 2}支出{/case}
+                    {case 1}{:lang('收入')}{/case}
+                    {case 2}{:lang('支出')}{/case}
                 {/switch}
             </td>
         </tr>

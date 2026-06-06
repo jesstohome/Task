@@ -68,7 +68,7 @@ class CompoundOrder extends Base
                 return ['code' => 1, 'info'  => lang('配置更新失败')];
             }
         } catch (\Exception $e) {
-            return ['code' => 1, 'info'  => lang('更新失败: ') . $e->getMessage()];
+            return ['code' => 1, 'info'  => lang('更新失败:') . $e->getMessage()];
         }
     }
 
@@ -190,7 +190,7 @@ class CompoundOrder extends Base
                 return json(['code' => 1, 'info'  => lang('删除失败')]);
             }
         } catch (\Exception $e) {
-            return json(['code' => 1, 'info'  => lang('删除失败: ') . $e->getMessage()]);
+            return json(['code' => 1, 'info'  => lang('删除失败:') . $e->getMessage()]);
         }
     }
 
@@ -375,7 +375,7 @@ class CompoundOrder extends Base
     //         if (empty($errors)) {
     //             return json(['code' => 0, 'info' => "数据库表创建成功，共执行 {$success} 条语句"]);
     //         } else {
-    //             return json(['code' => 1, 'info'  => lang('部分语句执行失败: ') . implode('; ', $errors)]);
+    //             return json(['code' => 1, 'info'  => lang('部分语句执行失败:') . implode('; ', $errors)]);
     //         }
     //     }
     // }

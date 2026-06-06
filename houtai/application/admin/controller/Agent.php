@@ -353,9 +353,9 @@ class Agent extends Base
                             ->where('id', $data['id'])
                             ->update(['user_id' => $res['id']]);
                     }
-                    sysoplog(lang('添加代理'), lang('新代理ID ') . $data['id']);
+                    sysoplog(lang('添加代理'), lang('新代理ID') . $data['id']);
                 } else {
-                    sysoplog(lang('编辑代理'), lang('新数据包 ') . json_encode($data, JSON_UNESCAPED_UNICODE));
+                    sysoplog(lang('编辑代理'), lang('新数据包') . json_encode($data, JSON_UNESCAPED_UNICODE));
                 }
             }
         }

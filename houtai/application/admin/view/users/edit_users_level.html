@@ -216,7 +216,7 @@
         <!--        <select name="lixibao_id" class="layui-select"  lay-verify="">-->
         <!--            <option value="">{:lang('请选择理财产品')}</option>-->
         <!--            {volist name="list" id="vo2"}-->
-        <!--            <option value="{$vo2.id}" {if $vo2.id == $vo.lixibao_id} selected {/if}>{$vo2.min_num}-{$vo2.max_num}/{$vo2.day}天/{$vo2.bili*100}%收益/{$vo2.shouxu*100}%手续费</option>-->
+        <!--            <option value="{$vo2.id}" {if $vo2.id == $vo.lixibao_id} selected {/if}>{$vo2.min_num}-{$vo2.max_num}/{$vo2.day}{:lang('天/')}{$vo2.bili*100}{:lang('%收益/')}{$vo2.shouxu*100}{:lang('%手续费')}</option>-->
         <!--            {/volist}-->
         <!--        </select>-->
         <!--    </div>-->

@@ -44,13 +44,13 @@
             <!--卡单模式-->
             <td class='text-left nowrap'>
                 <span style="color:red;">{$vo.mode_name}</span><br/>
-                匹配金额：{$vo.order_min_price}-{$vo.order_max_price}<br/>
-                佣金方式：{$vo.commission_type == 1 ? '固定金额' : '比例'}<br/>
+                {:lang('匹配金额：')}{$vo.order_min_price}-{$vo.order_max_price}<br/>
+                {:lang('佣金方式：')}{$vo.commission_type == 1 ? '固定金额' : '比例'}<br/>
 
                 {if($vo.commission_type == 1)}
-                固定佣金：{$vo.commission_value}<br/>
+                {:lang('固定佣金：')}{$vo.commission_value}<br/>
                 {else}
-                佣金比例：{$vo.commission_value}%<br/>
+                {:lang('佣金比例：')}{$vo.commission_value}%<br/>
                 {/if}
             </td>
             <td class='text-left nowrap'>
@@ -58,49 +58,49 @@
                     {$vo.goods_name}
                 </span><br/>
                 <span>{$vo.goods_price} × {$vo.goods_count} =</span> <span style="color: red;margin-left: 3px;">  {$vo.goods_price * $vo.goods_count}</span><br/>
-                <span style="color: red;">当前佣金：{$vo.commission}</span>
+                <span style="color: red;">{:lang('当前佣金：')}{$vo.commission}</span>
                 <!--                商品单价:{$vo.goods_price} <br/>-->
                 <!--                商品数量：{$vo.goods_count}<br/>-->
                 <!--                订单金额：{$vo.num}-->
             </td>
             <td class='text-left nowrap'>
                 {:date("m-d",$vo.addtime)}
-                第{$vo.today_dan}单
+                {:lang('第')}{$vo.today_dan}{:lang('单')}
                 <!--                {if(!$vo.grTitle)}-->
                 <!--                第{$vo.today_dan}单-->
                 <!--                {/if}-->
                 <br>
 
                 <!--                {if($vo.duorw > 0)}-->
-                <!--                <span style="color:red;"> 任务进度:{$vo.completedquantity}/{$vo.duorw}</span><br/>-->
+                <!--                <span style="color:red;"> {:lang('任务进度:')}{$vo.completedquantity}/{$vo.duorw}</span><br/>-->
                 <!--                {/if}-->
 
                 <!--                {if($vo.grTitle)}-->
-                <!--                <span style="color:red;"> 方案组进度:{$vo.group_rule_num}/{$vo.group_count}</span><br/>-->
+                <!--                <span style="color:red;"> {:lang('方案组进度:')}{$vo.group_rule_num}/{$vo.group_count}</span><br/>-->
                 <!--                {/if}-->
-                总价:{$vo.num}<br>
-                总佣金：{$vo.commission}
+                {:lang('总价:')}{$vo.num}<br>
+                {:lang('总佣金：')}{$vo.commission}
             </td>
             <!--<td class='text-left nowrap'></td>-->
             <td class='text-left nowrap'>
-                冻结：{$vo.user_freeze_balance}<br>
-                抢单余额：{$vo.user_balance}<br>
+                {:lang('冻结：')}{$vo.user_freeze_balance}<br>
+                {:lang('抢单余额：')}{$vo.user_balance}<br>
                 <span style="color:red;">
-                当前余额：{$vo.balance}
+                {:lang('当前余额：')}{$vo.balance}
                 </span><br>
             </td>
             <td class='text-left nowrap'>
-                用户评分：{$vo.pingfen}<br>
-                <div style="max-height:100px;overflow-y:auto;overflow-x:hidden;word-wrap:break-word;white-space:normal;word-break:break-word;width: 150px;">用户评论：{$vo.pinglun}</div>
+                {:lang('用户评分：')}{$vo.pingfen}<br>
+                <div style="max-height:100px;overflow-y:auto;overflow-x:hidden;word-wrap:break-word;white-space:normal;word-break:break-word;width: 150px;">{:lang('用户评论：')}{$vo.pinglun}</div>
             </td>
             <!--<td class='text-center nowrap'>
                 {switch $vo.status}
-                {case 0}等待付款{/case}
-                {case 1}完成付款{/case}
-                {case 2}用户取消{/case}
-                {case 3}强制付款{/case}
-                {case 4}系统取消{/case}
-                {case 5}订单冻结{/case}
+                {case 0}{:lang('等待付款')}{/case}
+                {case 1}{:lang('完成付款')}{/case}
+                {case 2}{:lang('用户取消')}{/case}
+                {case 3}{:lang('强制付款')}{/case}
+                {case 4}{:lang('系统取消')}{/case}
+                {case 5}{:lang('订单冻结')}{/case}
                 {/switch}
             </td>-->
 

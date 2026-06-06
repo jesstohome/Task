@@ -34,7 +34,7 @@
             </div>
 
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             </div>
         </form>
     </fieldset>
@@ -75,29 +75,29 @@
             <td class='text-left nowrap'>{$vo.addtime|format_datetime}</td>
             <td class='text-left nowrap'>
                 {switch $vo.type}
-                {case 1}转入利息宝{/case}
-                {case 2}利息宝转出{/case}
-                {case 3}每日收益{/case}
+                {case 1}{:lang('转入利息宝')}{/case}
+                {case 2}{:lang('利息宝转出')}{/case}
+                {case 3}{:lang('每日收益')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>
                 {switch $vo.is_sy}
-                {case 1}正常收益{/case}
-                {case 0}理财中{/case}
-                {case -1}提前提取{/case}
+                {case 1}{:lang('正常收益')}{/case}
+                {case 0}{:lang('理财中')}{/case}
+                {case -1}{:lang('提前提取')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>
                 {switch $vo.is_qu}
-                {case 1}已提取({$vo.shouxu}){/case}
+                {case 1}{:lang('已提取(')}{$vo.shouxu}){/case}
                 {case 0}{/case}
                 {/switch}
             </td>
 
             <td class='text-left nowrap' style="display:none">
                 {switch $vo.status}
-                {case 1}已完成{/case}
-                {case 0}冻结中{/case}
+                {case 1}{:lang('已完成')}{/case}
+                {case 0}{:lang('冻结中')}{/case}
                 {/switch}
             </td>
 

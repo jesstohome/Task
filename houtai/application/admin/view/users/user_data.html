@@ -267,8 +267,8 @@
             <div class="layui-tab-item">
                 <div class="layui-card-header layui-anim layui-anim-fadein notselect">
                     <span class="layui-icon layui-icon-next font-s10 color-desc margin-right-5"></span>
-                    <span style="color:red;">累计收入：{$rechagreCount|default=0}</span> ｜
-                    <span style="color:red;">累计支出：{$depositCount|default=0}</span>
+                    <span style="color:red;">{:lang('累计收入：')}{$rechagreCount|default=0}</span> ｜
+                    <span style="color:red;">{:lang('累计支出：')}{$depositCount|default=0}</span>
 
                     <div class="pull-right"></div>
                 </div>
@@ -316,7 +316,7 @@
                         </div>
 
                         <div class="layui-form-item layui-inline">
-                            <button class="layui-btn layui-btn-primary search" type="button"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                            <button class="layui-btn layui-btn-primary search" type="button"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
                         </div>
                         <table id="demo0" lay-filter="test1"></table>
                     </form>
@@ -326,7 +326,7 @@
             <div class="layui-tab-item">
                 <div class="layui-card-header layui-anim layui-anim-fadein notselect">
                     <span class="layui-icon layui-icon-next font-s10 color-desc margin-right-5"></span>
-                    <span style="color:red;">提款成功：{$withdrawal_success_amount|default=0}，转账中：{$in_transfer_amount|default=0}</span>
+                    <span style="color:red;">{:lang('提款成功：')}{$withdrawal_success_amount|default=0}{:lang('，转账中：')}{$in_transfer_amount|default=0}</span>
 
                     <div class="pull-right"></div>
                 </div>
@@ -384,7 +384,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <button type="button" class="layui-btn layui-btn-primary w_search"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                            <button type="button" class="layui-btn layui-btn-primary w_search"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
                         </div>
                         <table id="demo1" lay-filter="test2"></table>
                     </form>
@@ -394,7 +394,7 @@
             <div class="layui-tab-item">
                 <div class="layui-card-header layui-anim layui-anim-fadein notselect">
                     <span class="layui-icon layui-icon-next font-s10 color-desc margin-right-5"></span>
-                    <span style="color:red;">支付成功：{$recharge_success_amount|default=0}，代收手续费：{$shouxu_amount|default=0}</span>
+                    <span style="color:red;">{:lang('支付成功：')}{$recharge_success_amount|default=0}{:lang('，代收手续费：')}{$shouxu_amount|default=0}</span>
 
                     <div class="pull-right"></div>
                 </div>
@@ -457,7 +457,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <button type="button" class="layui-btn layui-btn-primary r-search"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                            <button type="button" class="layui-btn layui-btn-primary r-search"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
                         </div>
                     </form>
                 </fieldset>

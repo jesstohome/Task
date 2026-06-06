@@ -40,14 +40,14 @@
                                 <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >{:lang('确认付款')}</a>
                                 <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('edit_recharge',['status'=>3,'id'=>$vo.id])}" data-value="id#{$vo.id};status#3" >{:lang('取消订单')}</a>
                             {/if} -->
-                            等待付款
+                            {:lang('等待付款')}
                         {/literal}
                     {/case}
-                    {case 1}完成付款{/case}
-                    {case 2}已发货{/case}
-                    {case 3}强制付款{/case}
-                    {case 4}系统取消{/case}
-                    {case 5}订单冻结{/case}
+                    {case 1}{:lang('完成付款')}{/case}
+                    {case 2}{:lang('已发货')}{/case}
+                    {case 3}{:lang('强制付款')}{/case}
+                    {case 4}{:lang('系统取消')}{/case}
+                    {case 5}{:lang('订单冻结')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>

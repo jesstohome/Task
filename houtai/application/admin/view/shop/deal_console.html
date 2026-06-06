@@ -48,7 +48,7 @@
                         <span class="color-green margin-right-10">{:lang('匹配范围')}</span>
                         <!-- <span class="nowrap color-desc">OrderClearTime</span> -->
                         <div id="deal_rule" style="position:relative; margin: 10px 0px;" class="demo-slider"></div>
-                        <div id="test-slider-tips2" style="position:relative; margin: 10px 0px;" class="help-block">匹配范围：{:config('deal_min_num')}% ~ {:config('deal_max_num')}%</div>
+                        <div id="test-slider-tips2" style="position:relative; margin: 10px 0px;" class="help-block">{:lang('匹配范围：')}{:config('deal_min_num')}% ~ {:config('deal_max_num')}%</div>
                         <input type="hidden" name="deal_min_num" id='min' value="{:config('deal_min_num')}">
                         <input type="hidden" name="deal_max_num" id='max' value="{:config('deal_max_num')}">
                     </label>
@@ -134,9 +134,9 @@
                     </label>
                     <label class="layui-form-item margin-top-20 block relative">
                         <span class="color-green margin-right-10">{:lang('提交订单延时时间(单位/秒)')}</span>
-                        <p>{:lang('
-                            远程主机分配时间: ')}<input name="deal_zhuji_time" style="width:100px;display: inline-block" required placeholder="" value="{:config('deal_zhuji_time')}" class="layui-input">{:lang('
-                            等待商家响应时间 ')}<input name="deal_shop_time" style="width:100px;display: inline-block" required placeholder="" value="{:config('deal_shop_time')}" class="layui-input">
+                        <p>
+                            {:lang('远程主机分配时间:')} <input name="deal_zhuji_time" style="width:100px;display: inline-block" required placeholder="" value="{:config('deal_zhuji_time')}" class="layui-input">
+                            {:lang('等待商家响应时间')} <input name="deal_shop_time" style="width:100px;display: inline-block" required placeholder="" value="{:config('deal_shop_time')}" class="layui-input">
 
                         </p>
                         <p class="help-block">{:lang('时间由2部分组成,默认都是5秒,总共10秒')}</p>

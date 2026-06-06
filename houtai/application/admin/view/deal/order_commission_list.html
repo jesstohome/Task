@@ -20,20 +20,20 @@
             <td class='text-left nowrap'>{:config("currency")}{$vo.num}</td>
             <td class='text-left nowrap'>
                 {switch $vo.type}
-                {case 0}{literal}系统操作{/literal} {/case}
-                {case 1}充值{/case}
-                {case 2}交易{/case}
-                {case 3}返佣{/case}
-                {case 4}强制交易{/case}
-                {case 5}推广返佣{/case}
-                {case 6}下级交易返佣{/case}
-                {case 7}提现{/case}
+                {case 0}{:lang('系统操作')} {/case}
+                {case 1}{:lang('充值')}{/case}
+                {case 2}{:lang('交易')}{/case}
+                {case 3}{:lang('返佣')}{/case}
+                {case 4}{:lang('强制交易')}{/case}
+                {case 5}{:lang('推广返佣')}{/case}
+                {case 6}{:lang('下级交易返佣')}{/case}
+                {case 7}{:lang('提现')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>
                 {switch $vo.status}
-                {case 1}收入{/case}
-                {case 2}支出{/case}
+                {case 1}{:lang('收入')}{/case}
+                {case 2}{:lang('支出')}{/case}
                 {/switch}
             </td>
             <td class='text-left nowrap'>

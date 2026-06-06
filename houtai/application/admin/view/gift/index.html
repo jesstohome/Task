@@ -39,9 +39,9 @@
                 $gift_data = json_decode($vo['gift_data'], true);
                 {/php}
                 {if $gift_data}
-                    <div><strong>{:lang('礼包1：')}</strong>金额福利 {$gift_data['gift1']['amount']}元</div>
-                    <div><strong>{:lang('礼包2：')}</strong>订单福利 金额:{$gift_data['gift2']['order_amount']}元 佣金:{$gift_data['gift2']['commission']}%</div>
-                    <div><strong>{:lang('礼包3：')}</strong>复合奖励 金额:{$gift_data['gift3']['order_amount']}元 数量:{$gift_data['gift3']['order_count']}</div>
+                    <div><strong>{:lang('礼包1：')}</strong>{:lang('金额福利')} {$gift_data['gift1']['amount']}{:lang('元')}</div>
+                    <div><strong>{:lang('礼包2：')}</strong>{:lang('订单福利 金额:')}{$gift_data['gift2']['order_amount']}{:lang('元 佣金:')}{$gift_data['gift2']['commission']}%</div>
+                    <div><strong>{:lang('礼包3：')}</strong>{:lang('复合奖励 金额:')}{$gift_data['gift3']['order_amount']}{:lang('元 数量:')}{$gift_data['gift3']['order_count']}</div>
                 {/if}
             </td>
             <td class='text-center nowrap'>
@@ -53,7 +53,7 @@
             </td>
             <td class='text-center nowrap'>
                 {if $vo.selected_gift}
-                    礼包{$vo.selected_gift}
+                    {:lang('礼包')}{$vo.selected_gift}
                 {else}
                     -
                 {/if}

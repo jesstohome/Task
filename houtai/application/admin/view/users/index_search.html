@@ -176,10 +176,10 @@
         </div>
     </div>
     <div class="layui-form-item layui-inline">
-        <button class="layui-btn layui-btn-normal search-btn"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+        <button class="layui-btn layui-btn-normal search-btn"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
         <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url('/admin/index.html#/admin/users/index.html?spm=m-2-63-64')}'">
-                        <i class="layui-icon layui-icon-refresh"></i>{:lang(' 重置
-                    ')}</button>
+                        <i class="layui-icon layui-icon-refresh"></i> {:lang('重置')}
+                    </button>
         {if auth("create_user") }
         <!--<a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="{:lang('添加用户')}"-->
         <!--   data-width="80%;"-->
@@ -197,7 +197,7 @@
         {/if}
 
         {if auth("change_user_balance") }
-        <!--<span  data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm getSelectedIds fa fa-database">{:lang('  批量账变')}</span>-->
+        <!--<span  data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm getSelectedIds fa fa-database">  {:lang('批量账变')}</span>-->
         {/if}
     </div>
 </form>

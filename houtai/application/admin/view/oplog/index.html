@@ -53,8 +53,8 @@
                 <p class="color-text">{$vo.geoip|default='-'}</p>
                 <p class="color-desc">{$vo.isp|default='-'}</p>
             </td>
-            <td class='text-left nowrap'>
-                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">{:lang('时间：',###|raw}')}</span>
+            <td class='text-left nowrap'>{:lang('
+                日期：')}{$vo.create_at|format_datetime|str_replace=' ',''}<br><span class="color-desc">{:lang('时间：')}</span>
             </td>
             <td class='text-left nowrap'>
                 {if auth("remove")}

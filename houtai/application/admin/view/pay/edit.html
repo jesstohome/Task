@@ -36,7 +36,7 @@
             <span class="label-required-prev color-green">{:lang('收款码')}</span>
             <p width="auto" class="text-left"><input name="ewm" type="hidden" value="{$info.ewm|default=''}"></p>
             <script> $('[name="ewm"]').uploadMultipleImage()</script>
-            <p>{:lang(' 图片只能保存一张,更换请先删除')}</p>
+            <p> {:lang('图片只能保存一张,更换请先删除')}</p>
         </div>
         
         {/if}
@@ -101,13 +101,13 @@
         
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
         <!--    <label class="layui-col-xs9 relative">-->
-        <!--        <span class="color-green">{if $info.id==8}充值汇率率{elseif $info.id==10}银行卡号{else}商户号{/if}</span>-->
+        <!--        <span class="color-green">{if $info.id==8}{:lang('充值汇率率')}{elseif $info.id==10}银行卡号{else}商户号{/if}</span>-->
         <!--        <input name="mch_id" class="layui-input" placeholder="" value="{$info.mch_id}">-->
         <!--    </label>-->
         <!--</div>-->
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
         <!--    <label class="layui-col-xs9 relative">-->
-        <!--        <span class="color-green">{if $info.id==8}提现汇率{elseif $info.id==10 }开户真实姓名{else}商户密钥{/if}</span>-->
+        <!--        <span class="color-green">{if $info.id==8}{:lang('提现汇率')}{elseif $info.id==10 }开户真实姓名{else}商户密钥{/if}</span>-->
         <!--        <input name="secret" class="layui-input" placeholder="" value="{$info.secret}">-->
         <!--    </label>-->
         <!--</div>-->

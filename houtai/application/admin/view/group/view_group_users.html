@@ -20,15 +20,15 @@
             <td class='text-left nowrap'>{$vo.username|default='-'}</td>
             <td class='text-left nowrap'>{$vo.tel|default='-'}</td>
             <td class='text-left nowrap'>
-                抢单：{$vo.shuadan_status_name}<br/>
+                {:lang('抢单：')}{$vo.shuadan_status_name}<br/>{:lang('
                 {if($vo.single_control_status_name != '开启')}
-                    单控：{$vo.single_control_status_name}<br/>
+                    单控：')}{$vo.single_control_status_name}<br/>
                 {else}
                     单控： {$vo.order_min_bili}-{$vo.order_max_bili}%<br/>
-                    开启单数：{$vo.enable_order_num}<br/>
-                    固定佣金比例设置：{$vo.fixed_commission_bili}<br/>
-                    固定商品金额设置：{$vo.fixed_order_amount}<br/>
-                    固定抢单数量设置：{$vo.fixed_order_num}<br/>
+                    {:lang('开启单数：')}{$vo.enable_order_num}<br/>
+                    {:lang('固定佣金比例设置：')}{$vo.fixed_commission_bili}<br/>
+                    {:lang('固定商品金额设置：')}{$vo.fixed_order_amount}<br/>
+                    {:lang('固定抢单数量设置：')}{$vo.fixed_order_num}<br/>
                 {/if}
             </td>
             <td class='text-left nowrap'>{$vo.addtime|default='-'}</td>

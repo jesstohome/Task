@@ -11,11 +11,11 @@
             {if auth("do_deposit") }
             <div class="layui-form-item layui-inline" style="margin-right: 10px">
                 <button data-action='{:url("do_deposit2")}' data-csrf="{:systoken('do_deposit2')}" data-rule="id#{key}"
-                        class='layui-btn layui-btn-sm layui-btn-danger'>{:lang('批量通过
-                ')}</button>
+                        class='layui-btn layui-btn-sm layui-btn-danger'>{:lang('批量通过')}
+                </button>
                 <button data-action='{:url("do_deposit3")}' data-csrf="{:systoken('do_deposit3')}" data-rule="id#{key}"
-                        class='layui-btn layui-btn-sm layui-btn-warning'>{:lang('批量拒绝
-                ')}</button>
+                        class='layui-btn layui-btn-sm layui-btn-warning'>{:lang('批量拒绝')}
+                </button>
             </div>
             {/if}
             -->
@@ -73,10 +73,10 @@
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
                 {if auth("daochu") }
-                <a href="{:url('daochu')}" class="layui-btn layui-btn-danger"><i class="layui-icon">&#xe615;</i>{:lang('
-                    导 出')}</a>
+                <a href="{:url('daochu')}" class="layui-btn layui-btn-danger"><i class="layui-icon">&#xe615;</i>
+                    {:lang('导 出')}</a>
                 {/if}
             </div>
         </form>
@@ -85,8 +85,8 @@
         <legend>{:lang('数据统计')}</legend>
         <div class="row">
             <div class="col-12">
-                提款成功：{$user_deposit}，
-                转账中：{$in_transfer_amount}
+                {:lang('提款成功：')}{$user_deposit}{:lang('，
+                转账中：')}{$in_transfer_amount}
             </div>
         </div>
     </fieldset>
@@ -156,21 +156,21 @@
                 {/if}
 
                 {if($vo.group_name)}
-                <span class="layui-badge layui-bg-orange">方案组:{$vo.group_name}</span><br>
+                <span class="layui-badge layui-bg-orange">{:lang('方案组:')}{$vo.group_name}</span><br>
                 {/if}
             </td>
             <td class='text-left nowrap'>
 <!--                {$vo.username}<br>-->
                 {$vo.u_tel} <span class="layui-badge layui-bg-green">{$vo.nw_type}</span><br>
                 
-                等级：{$vo.vip_name}<br>
+                {:lang('等级：')}{$vo.vip_name}<br>
             </td>
             <td class='text-left nowrap'>
-                姓名：{$vo.username|default='-'}<br>
-                钱包：{$vo.bankname|default='-'}<br>
-                钱包名/钱包地址：{$vo.usdt_diz|default='-'}<br>
-                网络：{$vo.usdt_type|default='-'}<br>
-                邮件地址：{$vo.mailbox|default='-'}<br>
+                {:lang('姓名：')}{$vo.username|default='-'}<br>
+                {:lang('钱包：')}{$vo.bankname|default='-'}<br>
+                {:lang('钱包名/钱包地址：')}{$vo.usdt_diz|default='-'}<br>
+                {:lang('网络：')}{$vo.usdt_type|default='-'}<br>
+                {:lang('邮件地址：')}{$vo.mailbox|default='-'}<br>
                 
             </td>
             <!--<td>-->
@@ -178,15 +178,13 @@
             <!--    <br>-->
             <!--    {$agent_service_list[$vo.agent_service_id]|default='---'}-->
             <!--</td>-->
-            <td class='text-left nowrap'>
-                提现金额： {$vo.num}
+            <td class='text-left nowrap'>{:lang('提现金额：')}{$vo.num}
                 {if $vo.w_type=='USDT' || $vo.types == 2 }</b>{/if}
-                <br>
-                手续费：
+                <br>{:lang('手续费：')}
                 {if($vo.shouxu_type == 1)}
                     {$vo.shouxu*100}%
                 {else}
-                    {$vo.shouxu}【固定金额】
+                    {$vo.shouxu}{:lang('【固定金额】')}
                 {/if}
                 <br>
             </td>
@@ -218,14 +216,14 @@
                                data-confirm="{:lang('确定拒绝吗?')}"
                                data-csrf="{:systoken('change_withdrawal_agent_status')}"
                                data-action="{:url('change_withdrawal_agent_status')}"
-                               data-value="id#{$vo.id};status#3">{:lang('拒绝
-                            ')}</a>
+                               data-value="id#{$vo.id};status#3">{:lang('拒绝')}
+                            </a>
                             <a class="layui-btn layui-btn-xs layui-btn-danger deposit_demo_apply"
                                data-confirm="{:lang('确定通过吗?')}"
                                data-csrf="{:systoken('change_withdrawal_agent_status')}"
                                data-action="{:url('change_withdrawal_agent_status')}"
-                               data-value="id#{$vo.id};status#2">{:lang('通过
-                            ')}</a>
+                               data-value="id#{$vo.id};status#2">{:lang('通过')}
+                            </a>
                         {/if}
                     {else}
                     <!--<a class="layui-btn layui-btn-xs deposit_apply"-->

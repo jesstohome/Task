@@ -1,8 +1,8 @@
 <form onsubmit="return false" data-auto="true" action="{:url()}" method="post" class='layui-form layui-card' autocomplete="off">
     <div class="layui-card-body">
         <div class="color-text margin-left-40 margin-bottom-20 layui-code" style="border-left-width:1px;background:none">
-            <p class="margin-bottom-5 font-w7">{:lang('文件将上传到七牛云存储，对象存储需要配置为公开访问的Bucket空间！')}</p>{:lang('
-            完成实名认证后可获得10G免费存储空间哦！')}<a target="_blank" href="https://portal.qiniu.com/signup?code=3lhz6nmnwbple">{:lang('我要免费申请')}</a>
+            <p class="margin-bottom-5 font-w7">{:lang('文件将上传到七牛云存储，对象存储需要配置为公开访问的Bucket空间！')}</p>
+            {:lang('完成实名认证后可获得10G免费存储空间哦！')}<a target="_blank" href="https://portal.qiniu.com/signup?code=3lhz6nmnwbple">{:lang('我要免费申请')}</a>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">AllowExts<br><span class="nowrap color-desc">{:lang('允许类型')}</span></label>
@@ -60,14 +60,14 @@
             <label class="layui-form-label">AccessKey<br><span class="nowrap color-desc">{:lang('访问密钥')}</span></label>
             <div class="layui-input-block">
                 <input type="text" name="storage_qiniu_access_key" required value="{:sysconf('storage_qiniu_access_key')}" placeholder="{:lang('请输入七牛云 AccessKey (访问密钥)')}" class="layui-input">
-                <p class="help-block">可以在 [ 七牛云 >{:lang(' 个人中心 ] 设置并获取到访问密钥。')}</p>
+                <p class="help-block">可以在 [ 七牛云 > {:lang('个人中心 ] 设置并获取到访问密钥。')}</p>
             </div>
         </div>
         <div class="layui-form-item" data-storage-type="qiniu">
             <label class="layui-form-label">SecretKey<br><span class="nowrap color-desc">{:lang('安全密钥')}</span></label>
             <div class="layui-input-block">
                 <input type="text" name="storage_qiniu_secret_key" required value="{:sysconf('storage_qiniu_secret_key')}" maxlength="43" placeholder="{:lang('请输入七牛云 SecretKey (安全密钥)')}" class="layui-input">
-                <p class="help-block">可以在 [ 七牛云 >{:lang(' 个人中心 ] 设置并获取到安全密钥。')}</p>
+                <p class="help-block">可以在 [ 七牛云 > {:lang('个人中心 ] 设置并获取到安全密钥。')}</p>
             </div>
         </div>
         <div class="hr-line-dashed margin-left-40"></div>

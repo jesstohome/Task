@@ -41,7 +41,7 @@
                 <select name="kouchu_balance_uid" id="selectList">
                     <option value="">{:lang('选择人')}</option>
                     {foreach $cate as $key=>$vo}
-                    <option value="{$vo.id}">{$vo.username}({$vo.tel}) [充值:({$vo.chongzhi})],[提现:({$vo.tixian})],</option>
+                    <option value="{$vo.id}">{$vo.username}({$vo.tel}{:lang(') [充值:(')}{$vo.chongzhi}{:lang(')],[提现:(')}{$vo.tixian})],</option>
                     {/foreach}
                 </select>
             </div>

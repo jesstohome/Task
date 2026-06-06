@@ -28,8 +28,8 @@
                 </div>
                 <div class="layui-inline">
                     <button class="layui-btn layui-btn-sm" type="submit">
-                        <i class="layui-icon layui-icon-search"></i>{:lang(' 搜索
-                    ')}</button>
+                        <i class="layui-icon layui-icon-search"></i> {:lang('搜索')}
+                    </button>
                     <!--<button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url()}'">-->
                     <!--    <i class="layui-icon layui-icon-refresh"></i> 重置-->
                     <!--</button>-->
@@ -84,8 +84,8 @@
                                 <div style="margin-bottom: 5px; padding: 5px; border: 1px solid #f0f0f0; border-radius: 3px;">
                                     {$option.title}：
                                     <strong>{:lang('订单数量:')}</strong> {$option.order_count}
-                                    <strong>{:lang(' 订单金额:')}</strong> {$option.amount_value}
-                                    <strong>{:lang(' 佣金比例:')}</strong> {$option.commission_value}%
+                                    <strong> {:lang('订单金额:')}</strong> {$option.amount_value}
+                                    <strong> {:lang('佣金比例:')}</strong> {$option.commission_value}%
                                 </div>
                             {/foreach}
                         {else}
@@ -95,8 +95,8 @@
                     <td>{:date('Y-m-d H:i:s', $log['create_time'])}</td>
                     <td>
                         <button class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('deleteLog')}" data-value="id#{$log.id}" data-confirm="{:lang('确定要删除这条复数订单记录吗？')}">
-                            <i class="layui-icon layui-icon-delete"></i>{:lang(' 删除
-                        ')}</button>
+                            <i class="layui-icon layui-icon-delete"></i> {:lang('删除')}
+                        </button>
                     </td>
                 </tr>
                 {/foreach}

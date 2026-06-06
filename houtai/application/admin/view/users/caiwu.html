@@ -4,10 +4,10 @@
     <div class="layui-card-header layui-anim layui-anim-fadein notselect">
         <span class="layui-icon layui-icon-next font-s10 color-desc margin-right-5"></span>
          {if(input("id"))}
-        当前用户: {$uinfo.username}({$uinfo.tel}) ｜
+        {:lang('当前用户:')} {$uinfo.username}({$uinfo.tel}) ｜
         {/if}
-        <span style="color:red;">累计收入：{$rechagreCount|default=0}</span> ｜
-        <span style="color:red;">累计支出：{$depositCount|default=0}</span>
+        <span style="color:red;">{:lang('累计收入：')}{$rechagreCount|default=0}</span> ｜
+        <span style="color:red;">{:lang('累计支出：')}{$depositCount|default=0}</span>
 
         <div class="pull-right"></div>
     </div>
@@ -60,7 +60,7 @@
 
 
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
             </div>
         </form>
     </fieldset>
