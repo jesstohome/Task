@@ -8,31 +8,31 @@
 
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">商品名称</span>
-                <input name="goods_name" required class="layui-input" placeholder="请输入商品名称">
+                <span class="color-green">{:lang('商品名称')}</span>
+                <input name="goods_name" required class="layui-input" placeholder="{:lang('请输入商品名称')}">
                 <input type="hidden" name="_csrf_" value="{:systoken('add_goods')}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">店铺名称</span>
-                <input name="shop_name" required class="layui-input" placeholder="请输入店铺名称">
+                <span class="color-green">{:lang('店铺名称')}</span>
+                <input name="shop_name" required class="layui-input" placeholder="{:lang('请输入店铺名称')}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">商品单价</span>
-                <input name="goods_price" required class="layui-input" placeholder="请输入商品单价">
+                <span class="color-green">{:lang('商品单价')}</span>
+                <input name="goods_price" required class="layui-input" placeholder="{:lang('请输入商品单价')}">
             </label>
         </div>
 
 
         <div class="layui-form-item">
-            <span class="color-green label-required-prev">商品LOGO及轮播展示图片</span>
+            <span class="color-green label-required-prev">{:lang('商品LOGO及轮播展示图片')}</span>
             <table class="layui-table">
                 <thead>
                 <tr>
-                    <th class="text-center">展示图片</th>
+                    <th class="text-center">{:lang('展示图片')}</th>
                 </tr>
                 <tr>
                     <td width="90px" class="text-center"><input name="goods_pic" type="hidden"></td>
@@ -43,13 +43,13 @@
         </div>
 
         <div class="layui-form-item block">
-            <span class="label-required-prev color-green">商品详细内容</span>
+            <span class="label-required-prev color-green">{:lang('商品详细内容')}</span>
             <textarea name="goods_info"></textarea>
         </div>
 
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">保存商品</button>
-            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">取消编辑</button>
+            <button class="layui-btn" type="submit">{:lang('保存商品')}</button>
+            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">{:lang('取消编辑')}</button>
         </div>
 
     </div>

@@ -4,32 +4,32 @@
               method="get" autocomplete="off">
             <div class="layui-form-item" style="margin-bottom: 0;">
                 <div class="layui-inline">
-                    <label class="layui-form-label">用户ID</label>
+                    <label class="layui-form-label">{:lang('用户ID')}</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="uid" value="{:input('uid')}" placeholder="请输入用户ID" class="layui-input">
+                        <input type="text" name="uid" value="{:input('uid')}" placeholder="{:lang('请输入用户ID')}" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">用户名</label>
+                    <label class="layui-form-label">{:lang('用户名')}</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" value="{:input('username')}" placeholder="请输入用户名" class="layui-input">
+                        <input type="text" name="username" value="{:input('username')}" placeholder="{:lang('请输入用户名')}" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">状态</label>
+                    <label class="layui-form-label">{:lang('状态')}</label>
                     <div class="layui-input-inline">
                         <select name="status" lay-filter="status-select">
-                            <option value="">全部</option>
-                            <option value="1" {if input('status') == '1'}selected{/if}>进行中</option>
-                            <option value="2" {if input('status') == '2'}selected{/if}>已完成</option>
-                            <option value="3" {if input('status') == '3'}selected{/if}>已取消</option>
+                            <option value="">{:lang('全部')}</option>
+                            <option value="1" {if input('status') == '1'}selected{/if}>{:lang('进行中')}</option>
+                            <option value="2" {if input('status') == '2'}selected{/if}>{:lang('已完成')}</option>
+                            <option value="3" {if input('status') == '3'}selected{/if}>{:lang('已取消')}</option>
                         </select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <button class="layui-btn layui-btn-sm" type="submit">
-                        <i class="layui-icon layui-icon-search"></i> 搜索
-                    </button>
+                        <i class="layui-icon layui-icon-search"></i>{:lang(' 搜索
+                    ')}</button>
                     <!--<button class="layui-btn layui-btn-sm layui-btn-primary" type="button" onclick="location.href='{:url()}'">-->
                     <!--    <i class="layui-icon layui-icon-refresh"></i> 重置-->
                     <!--</button>-->
@@ -43,15 +43,15 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>用户名</th>
-                    <th>当前单数</th>
-                    <th>触发单数</th>
-                    <th>任务进行单数</th>
-                    <th>选中选项</th>
-                    <th>任务状态</th>
-                    <th>详情</th>
-                    <th>创建时间</th>
-                    <th>操作</th>
+                    <th>{:lang('用户名')}</th>
+                    <th>{:lang('当前单数')}</th>
+                    <th>{:lang('触发单数')}</th>
+                    <th>{:lang('任务进行单数')}</th>
+                    <th>{:lang('选中选项')}</th>
+                    <th>{:lang('任务状态')}</th>
+                    <th>{:lang('详情')}</th>
+                    <th>{:lang('创建时间')}</th>
+                    <th>{:lang('操作')}</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,11 +71,11 @@
                     </td>
                     <td>
                         {if $log.status == 1}
-                            <span class="layui-badge layui-bg-blue">进行中</span>
+                            <span class="layui-badge layui-bg-blue">{:lang('进行中')}</span>
                         {elseif $log.status == 2}
-                            <span class="layui-badge layui-bg-green">已完成</span>
+                            <span class="layui-badge layui-bg-green">{:lang('已完成')}</span>
                         {else}
-                            <span class="layui-badge layui-bg-gray">已取消</span>
+                            <span class="layui-badge layui-bg-gray">{:lang('已取消')}</span>
                         {/if}
                     </td>
                     <td>
@@ -83,9 +83,9 @@
                             {foreach $log.custom_options_parsed as $option}
                                 <div style="margin-bottom: 5px; padding: 5px; border: 1px solid #f0f0f0; border-radius: 3px;">
                                     {$option.title}：
-                                    <strong>订单数量:</strong> {$option.order_count}
-                                    <strong> 订单金额:</strong> {$option.amount_value}
-                                    <strong> 佣金比例:</strong> {$option.commission_value}%
+                                    <strong>{:lang('订单数量:')}</strong> {$option.order_count}
+                                    <strong>{:lang(' 订单金额:')}</strong> {$option.amount_value}
+                                    <strong>{:lang(' 佣金比例:')}</strong> {$option.commission_value}%
                                 </div>
                             {/foreach}
                         {else}
@@ -94,9 +94,9 @@
                     </td>
                     <td>{:date('Y-m-d H:i:s', $log['create_time'])}</td>
                     <td>
-                        <button class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('deleteLog')}" data-value="id#{$log.id}" data-confirm="确定要删除这条复数订单记录吗？">
-                            <i class="layui-icon layui-icon-delete"></i> 删除
-                        </button>
+                        <button class="layui-btn layui-btn-xs layui-btn-danger" data-action="{:url('deleteLog')}" data-value="id#{$log.id}" data-confirm="{:lang('确定要删除这条复数订单记录吗？')}">
+                            <i class="layui-icon layui-icon-delete"></i>{:lang(' 删除
+                        ')}</button>
                     </td>
                 </tr>
                 {/foreach}
@@ -117,4 +117,4 @@
             limit: limit
         });
     </script>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}

@@ -14,30 +14,30 @@
     {if auth("open") }
     {if(input("id"))}
     <div class="layui-form-item layui-inline" style="margin-right: 10px">
-        <a class="layui-btn layui-btn-sm layui-btn-normal" data-open="{:url('index')}" data-reload="true"  data-csrf="{:systoken('index')}">返回会员列表</a>
+        <a class="layui-btn layui-btn-sm layui-btn-normal" data-open="{:url('index')}" data-reload="true"  data-csrf="{:systoken('index')}">{:lang('返回会员列表')}</a>
     </div>
     {/if}
     {/if}
     <fieldset>
-        <legend>条件搜索</legend>
+        <legend>{:lang('条件搜索')}</legend>
         <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">类型</label>
+                <label class="layui-form-label">{:lang('类型')}</label>
                 <div class="layui-input-inline">
                     <select name="type" id="selectList">
-                        <option value="">所有状态</option>
-                        <option value="-1">系统</option>
-                        <option value="1">充值</option>
-                        <option value="2">交易</option>
-                        <option value="3">返佣</option>
-                        <option value="4">强制交易</option>
-                        <option value="5">推广返佣</option>
-                        <option value="6">下级交易返佣</option>
-                        <option value="7">提现</option>
-                        <option value="8">提现驳回</option>
-                        <option value="21">利息宝进款</option>
-                        <option value="22">利息宝出款</option>
-                        <option value="23">利息宝返利</option>
+                        <option value="">{:lang('所有状态')}</option>
+                        <option value="-1">{:lang('系统')}</option>
+                        <option value="1">{:lang('充值')}</option>
+                        <option value="2">{:lang('交易')}</option>
+                        <option value="3">{:lang('返佣')}</option>
+                        <option value="4">{:lang('强制交易')}</option>
+                        <option value="5">{:lang('推广返佣')}</option>
+                        <option value="6">{:lang('下级交易返佣')}</option>
+                        <option value="7">{:lang('提现')}</option>
+                        <option value="8">{:lang('提现驳回')}</option>
+                        <option value="21">{:lang('利息宝进款')}</option>
+                        <option value="22">{:lang('利息宝出款')}</option>
+                        <option value="23">{:lang('利息宝返利')}</option>
                     </select>
                 </div>
             </div>
@@ -45,29 +45,29 @@
             {if(!input("id"))}
             
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">手机号码</label>
+                <label class="layui-form-label">{:lang('手机号码')}</label>
                 <div class="layui-input-inline">
-                    <input  name="tel" value="{$Think.get.tel|default=''}" placeholder="请输入手机号码" class="layui-input">
+                    <input  name="tel" value="{$Think.get.tel|default=''}" placeholder="{:lang('请输入手机号码')}" class="layui-input">
                 </div>
             </div>
             {/if}
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">发生时间</label>
+                <label class="layui-form-label">{:lang('发生时间')}</label>
                 <div class="layui-input-inline">
-                    <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择注册时间" class="layui-input">
+                    <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="{:lang('请选择注册时间')}" class="layui-input">
                 </div>
             </div>
 
 
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
             </div>
         </form>
     </fieldset>
 
     <div class="layui-tab">
         <ul class="layui-tab-title">
-            <li class="layui-this">Ta的财务记录</li>
+            <li class="layui-this">{:lang('Ta的财务记录')}</li>
 
         </ul>
         <div class="layui-tab-content">

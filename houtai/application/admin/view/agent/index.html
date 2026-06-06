@@ -3,7 +3,7 @@
 {block name="button"}
 
 <!--{if auth("add")}-->
-<!--<button data-modal='{:url("add")}' data-title="添加代理" class='layui-btn layui-btn-sm layui-btn-primary'>添加代理</button>-->
+<!--<button data-modal='{:url("add")}' data-title="{:lang('添加代理')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加代理')}</button>-->
 <!--{/if}-->
 
 {/block}
@@ -12,47 +12,47 @@
 
 <div class="think-box-shadow">
     <fieldset>
-        <legend>条件搜索</legend>
+        <legend>{:lang('条件搜索')}</legend>
         <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false"
               method="get" autocomplete="off">
             <div class="layui-form-item layui-inline">
-<!--                <label class="layui-form-label">代理登录账号</label>-->
+<!--                <label class="layui-form-label">{:lang('代理登录账号')}</label>-->
                 <div class="layui-input-inline">
-                    <input name="username" value="{$Think.get.username|default=''}" placeholder="代理登录账号"
+                    <input name="username" value="{$Think.get.username|default=''}" placeholder="{:lang('代理登录账号')}"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <!--                <label class="layui-form-label">上级推广码和名称</label>-->
+                <!--                <label class="layui-form-label">{:lang('上级推广码和名称')}</label>-->
                 <div class="layui-input-inline">
-                    <input name="parent" value="{$Think.get.parent|default=''}" placeholder="上级推广码和名称"
+                    <input name="parent" value="{$Think.get.parent|default=''}" placeholder="{:lang('上级推广码和名称')}"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <!--                <label class="layui-form-label">昵称</label>-->
+                <!--                <label class="layui-form-label">{:lang('昵称')}</label>-->
                 <div class="layui-input-inline">
-                    <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="昵称"
+                    <input name="nickname" value="{$Think.get.nickname|default=''}" placeholder="{:lang('昵称')}"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-<!--                <label class="layui-form-label">注册手机</label>-->
+<!--                <label class="layui-form-label">{:lang('注册手机')}</label>-->
                 <div class="layui-input-inline">
-                    <input name="phone" value="{$Think.get.phone|default=''}" placeholder="注册手机" class="layui-input">
+                    <input name="phone" value="{$Think.get.phone|default=''}" placeholder="{:lang('注册手机')}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <!--        <label class="layui-form-label">注册时间</label>-->
+                <!--        <label class="layui-form-label">{:lang('注册时间')}</label>-->
                 <div class="layui-input-inline">
-                    <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="开始日期   -   结束日期"
+                    <input data-date-range name="create_at" value="{$Think.get.create_at|default=''}" placeholder="{:lang('开始日期   -   结束日期')}"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe615;</i> 搜 索</button>
-                <button data-modal='{:url("add")}' data-title="添加代理" class='layui-btn layui-btn-sm layui-btn-normal'>添加代理商</button>
-                <button class='layui-btn layui-btn-sm layui-btn-danger offOnline'>强制下线</button>
+                <button class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
+                <button data-modal='{:url("add")}' data-title="{:lang('添加代理')}" class='layui-btn layui-btn-sm layui-btn-normal'>{:lang('添加代理商')}</button>
+                <button class='layui-btn layui-btn-sm layui-btn-danger offOnline'>{:lang('强制下线')}</button>
             </div>
         </form>
     </fieldset>
@@ -62,21 +62,21 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-center nowrap'>代理ID</th>
-            <th class='text-center nowrap'>登录名</th>
-            <th class='text-center nowrap'>推广码</th>
-            <th class='text-center nowrap'>上级代理</th>
-            <th class='text-center nowrap'>推广链接</th>
-            <th class='text-center nowrap'>昵称</th>
-            <th class='text-center nowrap'>手机号</th>
-            <th class='text-center nowrap'>状态</th>
-<!--            <th class='text-left nowrap'>绑定用户ID</th>-->
-<!--            <th class='text-left nowrap'>级别</th>-->
-            <!--<th class='text-left nowrap'>推广地址</th>-->
-<!--            <th class='text-center nowrap'>登录次数</th>-->
-<!--            <th class='text-left nowrap'>客服链接</th>-->
-<!--            <th class='text-left nowrap'>添加时间</th>-->
-            <th class='text-center nowrap'>操作</th>
+            <th class='text-center nowrap'>{:lang('代理ID')}</th>
+            <th class='text-center nowrap'>{:lang('登录名')}</th>
+            <th class='text-center nowrap'>{:lang('推广码')}</th>
+            <th class='text-center nowrap'>{:lang('上级代理')}</th>
+            <th class='text-center nowrap'>{:lang('推广链接')}</th>
+            <th class='text-center nowrap'>{:lang('昵称')}</th>
+            <th class='text-center nowrap'>{:lang('手机号')}</th>
+            <th class='text-center nowrap'>{:lang('状态')}</th>
+<!--            <th class='text-left nowrap'>{:lang('绑定用户ID')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('级别')}</th>-->
+            <!--<th class='text-left nowrap'>{:lang('推广地址')}</th>-->
+<!--            <th class='text-center nowrap'>{:lang('登录次数')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('客服链接')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('添加时间')}</th>-->
+            <th class='text-center nowrap'>{:lang('操作')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -92,9 +92,9 @@
             <td class='text-center nowrap'>{$vo.phone}</td>
             <td class='text-center nowrap'>
                 {eq name='vo.status' value='0'}
-                <span class="color-red">禁止</span>
+                <span class="color-red">{:lang('禁止')}</span>
                 {else}
-                <span class="color-green">开放</span>
+                <span class="color-green">{:lang('开放')}</span>
                 {/eq}
             </td>
 <!--            <td class='text-left nowrap'>{$vo.user_id}</td>-->
@@ -107,55 +107,55 @@
 <!--            <td class='text-left nowrap'>{$vo.create_at}</td>-->
             <td class='text-center nowrap'>
                 {if auth("edit_agent")}
-                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-normal" data-title="编辑"
-                   data-modal='{:url("edit_agent")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-normal" data-title="{:lang('编辑')}"
+                   data-modal='{:url("edit_agent")}?id={$vo.id}'>{:lang('编 辑')}</a>
                 {/if}
 
                 {if auth("del_agent")}
-                <a data-confirm="确定要删除吗？"  class="layui-btn layui-btn-sm layui-btn-danger" data-title="删除"
-                   data-action='{:url("del_agent")}' data-value="id#{$vo.id}">删除</a><br/>
+                <a data-confirm="{:lang('确定要删除吗？')}"  class="layui-btn layui-btn-sm layui-btn-danger" data-title="{:lang('删除')}"
+                   data-action='{:url("del_agent")}' data-value="id#{$vo.id}">{:lang('删除')}</a><br/>
                 {/if}
 
                 {if auth("resetting_pwd")}
-                <a data-confirm="确定重置密码吗？"  class="layui-btn layui-btn-sm layui-btn-warm" data-title="重置密码"
-                   data-action='{:url("resetting_pwd")}' data-value="id#{$vo.id}">重置密码</a><br/>
+                <a data-confirm="{:lang('确定重置密码吗？')}"  class="layui-btn layui-btn-sm layui-btn-warm" data-title="{:lang('重置密码')}"
+                   data-action='{:url("resetting_pwd")}' data-value="id#{$vo.id}">{:lang('重置密码')}</a><br/>
                 {/if}
 
                 {if auth("migrate_user")}
-                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-primary" data-title="转移会员"
+                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-primary" data-title="{:lang('转移会员')}"
                    data-width="30%" data-height="50%"
-                   data-modal='{:url("migrate_user")}?id={$vo.id}'>转移会员</a><br/>
+                   data-modal='{:url("migrate_user")}?id={$vo.id}'>{:lang('转移会员')}</a><br/>
                 {/if}
 
                 {if auth("edit_agent")}
-                <span  class="layui-btn layui-btn-sm offOnline_agent">强制下线</span><br/>
+                <span  class="layui-btn layui-btn-sm offOnline_agent">{:lang('强制下线')}</span><br/>
                 {/if}
 
 <!--                {if $is_admin && $vo.parent_id==0}-->
-<!--                <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="设置密码"-->
-<!--                   data-open='{:url("index")}?parent_id={$vo.id}'>下级</a>-->
+<!--                <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="{:lang('设置密码')}"-->
+<!--                   data-open='{:url("index")}?parent_id={$vo.id}'>{:lang('下级')}</a>-->
 <!--                {/if}-->
 <!--                {if auth("pass")}-->
-<!--                <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="设置密码"-->
-<!--                   data-modal='{:url("pass")}?id={$vo.id}'>密 码</a>-->
+<!--                <a class="layui-btn layui-btn-normal layui-btn-sm" data-title="{:lang('设置密码')}"-->
+<!--                   data-modal='{:url("pass")}?id={$vo.id}'>{:lang('密 码')}</a>-->
 <!--                {/if}-->
 <!--                {if auth("edit")}-->
-<!--                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑"-->
-<!--                   data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>-->
+<!--                <a data-dbclick class="layui-btn layui-btn-sm" data-title="{:lang('编辑')}"-->
+<!--                   data-modal='{:url("edit")}?id={$vo.id}'>{:lang('编 辑')}</a>-->
 <!--                {/if}-->
 <!--                {if $vo.status eq 1 and auth("forbid")}-->
 <!--                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}"-->
-<!--                   data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>-->
+<!--                   data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">{:lang('禁 用')}</a>-->
 <!--                {elseif $vo.status eq 0 and auth("resume")}-->
 <!--                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}"-->
-<!--                   data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启 用</a>-->
+<!--                   data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">{:lang('启 用')}</a>-->
 <!--                {/if}-->
             </td>
         </tr>
         {/foreach}
         </tbody>
     </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
 <script>
     $(function () {

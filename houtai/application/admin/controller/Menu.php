@@ -46,7 +46,7 @@ class Menu extends Base
      */
     public function index()
     {
-        $this->title = '系统菜单';
+        $this->title = lang('系统菜单');
         $this->_page($this->table, false);
     }
 
@@ -107,7 +107,7 @@ class Menu extends Base
     {
         if ($this->request->isGet()) {
             $menus = Db::name($this->table)->where(['status' => '1'])->order('sort desc,id asc')->select();
-            $menus[] = ['title' => '顶级菜单', 'id' => '0', 'pid' => '-1'];
+            $menus[] = ['title'  => lang('顶级菜单'), 'id' => '0', 'pid' => '-1'];
             foreach ($this->menus = Data::arr2table($menus) as $key => &$menu) {
                 if (substr_count($menu['path'], '-') > 3) unset($this->menus[$key]); # 移除三级以下的菜单
                 elseif (isset($vo['pid']) && $vo['pid'] !== '' && $cur = "-{$vo['pid']}-{$vo['id']}") {

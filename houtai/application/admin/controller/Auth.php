@@ -44,7 +44,7 @@ class Auth extends Base
      */
     public function index()
     {
-        $this->title = '访问权限';
+        $this->title = lang('访问权限');
         $query = $this->_query($this->table)->dateBetween('create_at');
         $query->like('title,desc')->equal('status')->order('sort desc,id desc')->page();
     }
@@ -58,7 +58,7 @@ class Auth extends Base
      */
     public function apply()
     {
-        $this->title = '权限配置节点';
+        $this->title = lang('权限配置节点');
         $auth = $this->request->post('id', '0');
         switch (strtolower($this->request->post('action'))) {
             case 'get': // 获取权限配置
@@ -66,7 +66,7 @@ class Auth extends Base
 
                 //var_dump($checks,222);die;
 
-                return $this->success('获取权限节点成功！', NodeService::getAuthTree($checks));
+                return $this->success(lang('获取权限节点成功！'), NodeService::getAuthTree($checks));
             case 'save': // 保存权限配置
                 list($post, $data) = [$this->request->post(), []];
                 foreach (isset($post['nodes']) ? $post['nodes'] : [] as $node) {
@@ -75,7 +75,7 @@ class Auth extends Base
                 Db::name('SystemAuthNode')->where(['auth' => $auth])->delete();
                 Db::name('SystemAuthNode')->insertAll($data);
                 NodeService::applyUserAuth();
-                return $this->success('权限授权更新成功！');
+                return $this->success(lang('权限授权更新成功！'));
             default:
                 return $this->_form($this->table, 'apply');
         }
@@ -119,11 +119,11 @@ class Auth extends Base
     {
         try {
             NodeService::applyUserAuth(true);
-            $this->success('刷新系统授权成功！');
+            $this->success(lang('刷新系统授权成功！'));
         } catch (\think\exception\HttpResponseException $exception) {
             throw  $exception;
         } catch (\Exception $e) {
-            $this->error("刷新系统授权失败<br>{$e->getMessage()}");
+            $this->error(lang('刷新系统授权失败') . "<br>{$e->getMessage()}");
         }
     }
 
@@ -174,9 +174,9 @@ class Auth extends Base
         if ($result) {
             $map = ['auth' => $this->request->post('id')];
             Db::name('SystemAuthNode')->where($map)->delete();
-            $this->success("权限删除成功！", '');
+            $this->success(lang('权限删除成功！'), '');
         } else {
-            $this->error("权限删除失败，请稍候再试！");
+            $this->error(lang('权限删除失败，请稍候再试！'));
         }
     }
 

@@ -7,70 +7,70 @@
 
     <div class="layui-card-header layui-anim layui-anim-fadein notselect">
         <span class="layui-icon layui-icon-next font-s10 color-desc margin-right-5"></span>
-        当前用户: {$uinfo.username}({$uinfo.tel})  状态: {$uinfo['status']>0?'<font color="green">正常</font>':'<font color="red">封禁</font>'}
+        当前用户: {$uinfo.username}({$uinfo.tel})  状态: {$uinfo['status']>0?'<font color="green">{:lang('正常')}</font>':'<font color="red">{:lang('封禁')}</font>'}
         <div class="pull-right"></div></div>
 
 
     {if auth("open") }
     <div class="layui-form-item layui-inline" style="margin-right: 10px">
 
-        <a class="layui-btn layui-btn-sm layui-btn-normal" data-open="{:url('index')}" data-reload="true"  data-csrf="{:systoken('index')}">返回会员列表</a>
-        <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要{$uinfo['status']>0?'封禁':'解封'}该用户【{$uinfo.username}】吗？" data-action="{:url('open')}" data-value="id#{$uid};status#{$uinfo.status};type#0" data-csrf="{:systoken('open')}">{$uinfo['status']>0?'封禁':'解封'}</a>
-        <a class="layui-btn layui-btn-sm layui-btn-warning" data-confirm="确定要{$uinfo['status']>0?'封禁':'解封'}该用户【{$uinfo.username}】所有下级吗？" data-action="{:url('open')}" data-value="id#{$uid};status#{$uinfo.status};type#1" data-csrf="{:systoken('open')}">{$uinfo['status']>0?'封禁':'解封'}团队</a>
+        <a class="layui-btn layui-btn-sm layui-btn-normal" data-open="{:url('index')}" data-reload="true"  data-csrf="{:systoken('index')}">{:lang('返回会员列表')}</a>
+        <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要{$uinfo['status']>0?'封禁':'解封'}该用户【{$uinfo.username}】吗？" data-action="{:url('open')}" data-value="id#{$uid};status#{$uinfo.status};type#0" data-csrf="{:systoken('open')}">{$uinfo['status']>{:lang('0?'封禁':'解封'}')}</a>
+        <a class="layui-btn layui-btn-sm layui-btn-warning" data-confirm="确定要{$uinfo['status']>0?'封禁':'解封'}该用户【{$uinfo.username}】所有下级吗？" data-action="{:url('open')}" data-value="id#{$uid};status#{$uinfo.status};type#1" data-csrf="{:systoken('open')}">{$uinfo['status']>{:lang('0?'封禁':'解封'}团队')}</a>
     </div>
     {/if}
     <fieldset>
-        <legend>条件搜索</legend>
+        <legend>{:lang('条件搜索')}</legend>
         <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">用户名称</label>
+                <label class="layui-form-label">{:lang('用户名称')}</label>
                 <div class="layui-input-inline">
-                    <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入用户名称" class="layui-input">
+                    <input name="username" value="{$Think.get.username|default=''}" placeholder="{:lang('请输入用户名称')}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">手机号码</label>
+                <label class="layui-form-label">{:lang('手机号码')}</label>
                 <div class="layui-input-inline">
-                    <input name="tel" value="{$Think.get.tel|default=''}" placeholder="请输入手机号码" class="layui-input">
+                    <input name="tel" value="{$Think.get.tel|default=''}" placeholder="{:lang('请输入手机号码')}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">注册时间</label>
+                <label class="layui-form-label">{:lang('注册时间')}</label>
                 <div class="layui-input-inline">
-                    <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择注册时间" class="layui-input">
+                    <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="{:lang('请选择注册时间')}" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
             </div>
         </form>
     </fieldset>
 
     <div class="layui-tab">
         <ul class="layui-tab-title">
-            <li class="layui-this">Ta的下线</li>
-            <li class="">一级会员</li>
-            <li>二级会员</li>
-            <li>三级会员</li>
-            <li>四级会员</li>
-            <li>五级会员</li>
+            <li class="layui-this">{:lang('Ta的下线')}</li>
+            <li class="">{:lang('一级会员')}</li>
+            <li>{:lang('二级会员')}</li>
+            <li>{:lang('三级会员')}</li>
+            <li>{:lang('四级会员')}</li>
+            <li>{:lang('五级会员')}</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <div class="help-block">所得下级佣金：<span id="son_0">0</span></div>
+                <div class="help-block">{:lang('所得下级佣金：')}<span id="son_0">0</span></div>
                 <table id="demo0" lay-filter="test1"></table>
             </div>
             <div class="layui-tab-item">
-                <div class="help-block">所得下级佣金：<span id="son_1">0</span></div>
+                <div class="help-block">{:lang('所得下级佣金：')}<span id="son_1">0</span></div>
                 <table id="demo1" lay-filter="test2"></table>
             </div>
             <div class="layui-tab-item">
-                <div class="help-block">所得下级佣金：<span id="son_2">0</span></div>
+                <div class="help-block">{:lang('所得下级佣金：')}<span id="son_2">0</span></div>
                 <table id="demo2" lay-filter="test2"></table>
             </div>
             <div class="layui-tab-item">
-                <div class="help-block">所得下级佣金：<span id="son_3">0</span></div>
+                <div class="help-block">{:lang('所得下级佣金：')}<span id="son_3">0</span></div>
                 <table id="demo3" lay-filter="test3"></table>
             </div>
             <div class="layui-tab-item">

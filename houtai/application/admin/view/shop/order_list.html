@@ -8,15 +8,15 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>订单号</th>
-            <th class='text-left nowrap'>用户名</th>
-            <th class='text-left nowrap'>商品名称</th>
-            <th class='text-left nowrap'>商品单价</th>
-            <th class='text-left nowrap'>交易数量</th>
-            <th class='text-left nowrap'>交易数额</th>
-            <th class='text-left nowrap'>下单时间</th>
-            <th class='text-left nowrap'>交易状态</th>
-            <th class='text-left nowrap'>操作</th>
+            <th class='text-left nowrap'>{:lang('订单号')}</th>
+            <th class='text-left nowrap'>{:lang('用户名')}</th>
+            <th class='text-left nowrap'>{:lang('商品名称')}</th>
+            <th class='text-left nowrap'>{:lang('商品单价')}</th>
+            <th class='text-left nowrap'>{:lang('交易数量')}</th>
+            <th class='text-left nowrap'>{:lang('交易数额')}</th>
+            <th class='text-left nowrap'>{:lang('下单时间')}</th>
+            <th class='text-left nowrap'>{:lang('交易状态')}</th>
+            <th class='text-left nowrap'>{:lang('操作')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -37,8 +37,8 @@
                     {case 0}
                         {literal}
                         <!-- {if auth("edit_recharge")}
-                                <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >确认付款</a>
-                                <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('edit_recharge',['status'=>3,'id'=>$vo.id])}" data-value="id#{$vo.id};status#3" >取消订单</a>
+                                <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >{:lang('确认付款')}</a>
+                                <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('edit_recharge',['status'=>3,'id'=>$vo.id])}" data-value="id#{$vo.id};status#3" >{:lang('取消订单')}</a>
                             {/if} -->
                             等待付款
                         {/literal}
@@ -52,12 +52,12 @@
             </td>
             <td class='text-left nowrap'>
                 {if $vo.status==0}
-                <a data-csrf="{:systoken('do_user_order')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('do_user_order')}" data-value="id#{$vo.id};status#3" >强制付款</a>
-                <a data-csrf="{:systoken('do_user_order')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('do_user_order')}" data-value="id#{$vo.id};status#4" >取消订单</a>
+                <a data-csrf="{:systoken('do_user_order')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('do_user_order')}" data-value="id#{$vo.id};status#3" >{:lang('强制付款')}</a>
+                <a data-csrf="{:systoken('do_user_order')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('do_user_order')}" data-value="id#{$vo.id};status#4" >{:lang('取消订单')}</a>
                 {/if}
 
                 {if $vo.status==1}
-                <a data-csrf="{:systoken('fahuo')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('fahuo')}" data-value="id#{$vo.id};status#2" >发货</a>
+                <a data-csrf="{:systoken('fahuo')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('fahuo')}" data-value="id#{$vo.id};status#2" >{:lang('发货')}</a>
                 {/if}
             </td>
         </tr>
@@ -65,7 +65,7 @@
         </tbody>
     </table>
 
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 {/block}

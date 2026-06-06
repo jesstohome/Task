@@ -28,4 +28,15 @@ class Base extends Controller
             return $this->redirect('/');
         }
     }
+
+    /**
+     * 切换语言
+     */
+    public function change_lang()
+    {
+        $lang = input('lang', 'zh-cn');
+        cookie('think_var', $lang);
+        \think\facade\Lang::range($lang);
+        $this->success(lang('语言切换成功'), '');
+    }
 }

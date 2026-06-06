@@ -5,7 +5,7 @@
 <div class="think-box-shadow">
     {include file='deal/user_recharge_search'}
     <fieldset>
-        <legend>数据统计</legend>
+        <legend>{:lang('数据统计')}</legend>
         <div class="row">
             <div class="col-12">
                 支付成功：{$user_recharge}
@@ -13,7 +13,7 @@
         </div>
     </fieldset>
     <!--<fieldset>-->
-    <!--    <legend>数据统计</legend>-->
+    <!--    <legend>{:lang('数据统计')}</legend>-->
     <!--    <div class="row">-->
     <!--        <div class="col-12">-->
     <!--            第三方累计充值：{:config("currency")}{$rechargeAmount}，-->
@@ -44,20 +44,20 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>商户/单号</th>
-            <th class='text-left nowrap'>用户</th>
-            <th class='text-left nowrap'>支付方式</th>
-            <th class='text-left nowrap'>打款凭证</th>
-            <th class='text-left nowrap'>充值金额</th>
-            <th class='text-left nowrap'>充值状态</th>
-            <th class='text-left nowrap'>充值时间</th>
-<!--           <th class='text-left nowrap'>充值金额/手续费</th>-->
-<!--            <th class='text-left nowrap'>支付方式</th>-->
-<!--            <th class='text-left nowrap'>类型</th>-->
-<!--            <th class='text-left nowrap'>用户确认/交易流水号</th>-->
-<!--            <th class='text-left nowrap'>第三方状态</th>-->
-<!--             <th class='text-left nowrap'>充值通道</th>-->
-            <th class='text-left nowrap'>操作</th>
+            <th class='text-left nowrap'>{:lang('商户/单号')}</th>
+            <th class='text-left nowrap'>{:lang('用户')}</th>
+            <th class='text-left nowrap'>{:lang('支付方式')}</th>
+            <th class='text-left nowrap'>{:lang('打款凭证')}</th>
+            <th class='text-left nowrap'>{:lang('充值金额')}</th>
+            <th class='text-left nowrap'>{:lang('充值状态')}</th>
+            <th class='text-left nowrap'>{:lang('充值时间')}</th>
+<!--           <th class='text-left nowrap'>{:lang('充值金额/手续费')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('支付方式')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('类型')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('用户确认/交易流水号')}</th>-->
+<!--            <th class='text-left nowrap'>{:lang('第三方状态')}</th>-->
+<!--             <th class='text-left nowrap'>{:lang('充值通道')}</th>-->
+            <th class='text-left nowrap'>{:lang('操作')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -78,15 +78,15 @@
             </td>
             <td class='text-left nowrap'>
                 {if $vo.pic}
-                <a data-dbclick data-title="查看图片" data-modal='{:url("admin/users/picinfo")}?id={$vo.id}'>
+                <a data-dbclick data-title="{:lang('查看图片')}" data-modal='{:url("admin/users/picinfo")}?id={$vo.id}'>
                     <img src="{$vo.pic}" style="width:150px;height:100px;"></a>
                 {else}
                 <img src="{$vo.pic}" style="width:150px;height:100px;">
                 {/if}
             </td>
             <td class='text-left nowrap'>
-                {$vo.num} <br>
-                扣款：0 <br>
+                {$vo.num} <br>{:lang('
+                扣款：0 ')}<br>
 <!--                之前余额：{$vo.before_balance}<br>-->
 <!--                之后余额：{$vo.after_balance}<br>-->
             </td>
@@ -94,13 +94,13 @@
                 {switch $vo.status}
                 {case 1}
                     {if($vo.pic)}
-                        <span class="layui-badge layui-bg-orange">待审核</span>
+                        <span class="layui-badge layui-bg-orange">{:lang('待审核')}</span>
                     {else}
-                        <span class="layui-badge layui-bg-blue">未支付</span>
+                        <span class="layui-badge layui-bg-blue">{:lang('未支付')}</span>
                     {/if}
                 {/case}
-                {case 2} <span class="layui-badge layui-bg-green">已支付</span> {/case}
-                {case 3} <span class="layui-badge">支付失败</span> {/case}
+                {case 2} <span class="layui-badge layui-bg-green">{:lang('已支付')}</span> {/case}
+                {case 3} <span class="layui-badge">{:lang('支付失败')}</span> {/case}
                 {/switch}
                 <br>
                 {if($vo.endtime)}
@@ -121,28 +121,28 @@
                     {case 0}待付款{/case}
                     {case 1}
                         {if auth("edit_recharge")}
-                            <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >通过</a>
+                            <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn" data-action="{:url('edit_recharge',['status'=>2,'id'=>$vo.id])}" data-value="id#{$vo.id};status#2" >{:lang('通过')}</a>
                             
                             <a class="layui-btn layui-btn-xs layui-btn-warm"
                        data-prompt="请输入驳回内容"
                        data-csrf="{:systoken('do_deposit')}"
                        data-action="{:url('edit_recharge')}"
-                       data-value="id#{$vo.id};status#3">驳回</a>
+                       data-value="id#{$vo.id};status#3">{:lang('驳回')}</a>
 
-<!--                            <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('edit_recharge',['status'=>3,'id'=>$vo.id])}" data-value="id#{$vo.id};status#3" >驳回</a>-->
+<!--                            <a data-csrf="{:systoken('edit_recharge')}" class="layui-btn layui-btn-xs layui-btn-warm" data-action="{:url('edit_recharge',['status'=>3,'id'=>$vo.id])}" data-value="id#{$vo.id};status#3" >{:lang('驳回')}</a>-->
                         {else}
                             待付款
                         {/if}
                     {/case}
-                    {case 2}<a class="layui-btn layui-btn-xs">审核通过</a>{/case}
-                    {case 3}<a class="layui-btn layui-btn-xs layui-btn-danger">审核驳回</a>{/case}
+                    {case 2}<a class="layui-btn layui-btn-xs">{:lang('审核通过')}</a>{/case}
+                    {case 3}<a class="layui-btn layui-btn-xs layui-btn-danger">{:lang('审核驳回')}</a>{/case}
                 {/switch}
             </td>
         </tr>
         {/foreach}
         </tbody>
     </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 {/block}

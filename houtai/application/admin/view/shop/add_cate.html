@@ -8,36 +8,36 @@
 
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">分类名称</span>
-                <input name="name" required class="layui-input" placeholder="请输入分类名称">
+                <span class="color-green">{:lang('分类名称')}</span>
+                <input name="name" required class="layui-input" placeholder="{:lang('请输入分类名称')}">
                 <input type="hidden" name="_csrf_" value="{:systoken('add_cate')}">
             </label>
         </div>
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
             <!--<label class="layui-col-xs9 relative">-->
-                <!--<span class="color-green">佣金比例(不要设置百分比直接写0.01) </span>-->
-                <!--<input name="bili" required class="layui-input" placeholder="请输入佣金比例">-->
+                <!--<span class="color-green">{:lang('佣金比例(不要设置百分比直接写0.01) ')}</span>-->
+                <!--<input name="bili" required class="layui-input" placeholder="{:lang('请输入佣金比例')}">-->
             <!--</label>-->
         <!--</div>-->
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">分类简介</span>
-                <input name="cate_info" required class="layui-input" placeholder="请输入分类简介">
+                <span class="color-green">{:lang('分类简介')}</span>
+                <input name="cate_info" required class="layui-input" placeholder="{:lang('请输入分类简介')}">
             </label>
         </div>
 
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
             <!--<label class="layui-col-xs9 relative">-->
-                <!--<span class="color-green">最低金额限制</span>-->
-                <!--<input name="min" required class="layui-input" placeholder="请输入金额">-->
+                <!--<span class="color-green">{:lang('最低金额限制')}</span>-->
+                <!--<input name="min" required class="layui-input" placeholder="{:lang('请输入金额')}">-->
             <!--</label>-->
         <!--</div>-->
         <div class="layui-form-item">
-            <span class="color-green label-required-prev">分类LOGO</span>
+            <span class="color-green label-required-prev">{:lang('分类LOGO')}</span>
             <table class="layui-table">
                 <thead>
                 <tr>
-                    <th class="text-center">展示图片</th>
+                    <th class="text-center">{:lang('展示图片')}</th>
                 </tr>
                 <tr>
                     <td width="90px" class="text-center"><input name="cate_pic" type="hidden"></td>
@@ -49,8 +49,8 @@
 
 
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">保存</button>
-            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">取消编辑</button>
+            <button class="layui-btn" type="submit">{:lang('保存')}</button>
+            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">{:lang('取消编辑')}</button>
         </div>
 
     </div>

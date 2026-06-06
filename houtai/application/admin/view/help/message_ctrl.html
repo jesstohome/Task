@@ -3,7 +3,7 @@
 {block name="button"}
 
     {if auth("add_message")}
-    <button data-open='{:url("add_message")}' data-title="添加公告" class='layui-btn layui-btn-sm layui-btn-primary'>添加公告</button>
+    <button data-open='{:url("add_message")}' data-title="{:lang('添加公告')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加公告')}</button>
     {/if}
 
 {/block}
@@ -17,9 +17,9 @@
         <thead>
         <tr>
             <th class='text-left nowrap'>ID</th>
-            <th class='text-left nowrap'>标题</th>
-            <th class='text-left nowrap'>发表时间</th>
-            <th class='text-left nowrap'>查看内容</th>
+            <th class='text-left nowrap'>{:lang('标题')}</th>
+            <th class='text-left nowrap'>{:lang('发表时间')}</th>
+            <th class='text-left nowrap'>{:lang('查看内容')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -33,13 +33,13 @@
             </td>
             <td class='text-left nowrap'>
             {if auth("edit_message")}
-                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_message',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>编辑</a>
+                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_message',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>{:lang('编辑')}</a>
                 
                  <a class="layui-btn layui-btn-xs layui-btn-warm" data-csrf="{:systoken('del_message')}" data-action="{:url('del_message',['id'=>$vo.id])}" data-value="id#{$vo.id}"
-                   style='background:red;'>删除</a>
+                   style='background:red;'>{:lang('删除')}</a>
                    
                    
-                <!--<a class="layui-btn layui-btn-xs layui-btn" style='background:red;' onClick="del_message({$vo.id})">删除</a>-->
+                <!--<a class="layui-btn layui-btn-xs layui-btn" style='background:red;' onClick="del_message({$vo.id})">{:lang('删除')}</a>-->
             {/if}
             </td>
         </tr>
@@ -47,14 +47,14 @@
         </tbody>
     </table>
 
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 
 
-<!--<div class="layui-row layui-col-space15" id="banner">加载中....</div>-->
+<!--<div class="layui-row layui-col-space15" id="banner">{:lang('加载中....')}</div>-->
 
-<!--<div class="layui-row layui-col-space15" id="home_msg">加载中....</div>-->
+<!--<div class="layui-row layui-col-space15" id="home_msg">{:lang('加载中....')}</div>-->
 
 <script>
 

@@ -41,7 +41,7 @@ class Inyectar extends Base
         $query = $this->_query($this->table);
         $uid = $this->request->get('uid/d', 0);
         if ($uid < 1) {
-            return $this->error('用户不存在');
+            return $this->error(lang('用户不存在'));
         }
         $this->title = 'UID:' . $uid . ' 打针计划';
         $this->uid = $uid;
@@ -74,7 +74,7 @@ class Inyectar extends Base
     {
         $uid = $this->request->get('uid/d', 0);
         if ($uid < 1) {
-            return $this->error('用户不存在');
+            return $this->error(lang('用户不存在'));
         }
         $this->uid = $uid;
         // $this->applyCsrfToken();
@@ -135,7 +135,7 @@ class Inyectar extends Base
         $uids = input('uids');
         $scale = input('scale');
         if (!is_array($uids)) {
-            $this->error('选择要打针的用户');
+            $this->error(lang('选择要打针的用户'));
         }
         $data = [
             'order_num' => 0,
@@ -149,6 +149,6 @@ class Inyectar extends Base
             }
         }
         sysoplog('批量打针', "ID " . json_encode($uids, JSON_UNESCAPED_UNICODE) . " DATA " . json_encode($data, JSON_UNESCAPED_UNICODE));
-        $this->success('打针成功', $data);
+        $this->success(lang('打针成功'), $data);
     }
 }

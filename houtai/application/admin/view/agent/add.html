@@ -1,10 +1,10 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body padding-left-40">
         <div class="layui-form-item">
-            <label class="layui-form-label">上级代理</label>
+            <label class="layui-form-label">{:lang('上级代理')}</label>
             <div class="layui-input-block">
                 <select name="parent_id" class="layui-select" id="selectList">
-                    <option value="0">请选择</option>
+                    <option value="0">{:lang('请选择')}</option>
                     {foreach $agents as $v}
                     <option value="{$v.id}">{$v.username}</option>
                     {/foreach}
@@ -13,55 +13,55 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">邀请码</label>
+            <label class="layui-form-label">{:lang('邀请码')}</label>
             <div class="layui-input-block">
                 <input type="text" autocomplete="off" autofocus name="invite_code"
-                       value='' placeholder="邀请码"
+                       value='' placeholder="{:lang('邀请码')}"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">登录名</label>
+            <label class="layui-form-label label-required">{:lang('登录名')}</label>
             <div class="layui-input-block">
                 <input type="text" autocomplete="off" required autofocus name="username"
-                       value='' placeholder="登录名"
+                       value='' placeholder="{:lang('登录名')}"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">密码</label>
+            <label class="layui-form-label label-required">{:lang('密码')}</label>
             <div class="layui-input-block">
                 <input type="text" autocomplete="off"  required autofocus name="password"
-                       value='' placeholder="密码"
+                       value='' placeholder="{:lang('密码')}"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">昵称</label>
+            <label class="layui-form-label label-required">{:lang('昵称')}</label>
             <div class="layui-input-block">
                 <input type="text" autocomplete="off" required autofocus name="nickname"
-                       value='' placeholder="昵称"
+                       value='' placeholder="{:lang('昵称')}"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">联系手机</label>
+            <label class="layui-form-label">{:lang('联系手机')}</label>
             <div class="layui-input-block">
                 <input type="text" autocomplete="off" autofocus name="phone"
-                       value='' placeholder="联系手机"
+                       value='' placeholder="{:lang('联系手机')}"
                        class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
+            <label class="layui-form-label">{:lang('邮箱')}</label>
             <div class="layui-input-block">
                 <input name="mail" autocomplete="off"
-                       value='' placeholder="邮箱" class="layui-input">
+                       value='' placeholder="{:lang('邮箱')}" class="layui-input">
             </div>
         </div>
 
@@ -74,19 +74,19 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">状态</label>
+            <label class="layui-form-label">{:lang('状态')}</label>
             <div class="layui-input-block">
                 <select name="status" class="layui-select" id="selectList">
-                    <option value="1">开放</option>
-                    <option value="0">禁用</option>
+                    <option value="1">{:lang('开放')}</option>
+                    <option value="0">{:lang('禁用')}</option>
                 </select>
             </div>
         </div>
     </div>
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
-        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消</button>
-        <button class="layui-btn" type='submit'>创建</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="{:lang('确定要取消编辑吗？')}" data-close>{:lang('取消')}</button>
+        <button class="layui-btn" type='submit'>{:lang('创建')}</button>
     </div>
 </form>
 <script>window.form.render();</script>

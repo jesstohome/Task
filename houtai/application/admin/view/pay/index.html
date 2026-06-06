@@ -2,23 +2,23 @@
 
 {block name="content"}
 <div class="think-box-shadow">
-    <!--<a class="layui-btn layui-btn layui-btn" data-open="{:url('add_banner',['id'=>0])}" data-value="id#0" style='background:green;'>新增</a>-->
+    <!--<a class="layui-btn layui-btn layui-btn" data-open="{:url('add_banner',['id'=>0])}" data-value="id#0" style='background:green;'>{:lang('新增')}</a>-->
     <table class="layui-table margin-top-15" >
         {notempty name='list'}
         <thead>
         <tr>
             <th class='text-left nowrap'>
-                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">{:lang('刷 新')}</button>
             </th>
-            <th class='text-left nowrap'>名称</th>
-            <!--<th class='text-left nowrap'>标识</th>-->
-            <th class='text-left nowrap'>最小金额</th>
-            <th class='text-left nowrap'>最大金额</th>
-            <th class='text-left nowrap'>手续费</th>
-            <!--<th class='text-left nowrap'>状态</th>-->
-            <!--<th class='text-left nowrap'>代付状态</th>-->
+            <th class='text-left nowrap'>{:lang('名称')}</th>
+            <!--<th class='text-left nowrap'>{:lang('标识')}</th>-->
+            <th class='text-left nowrap'>{:lang('最小金额')}</th>
+            <th class='text-left nowrap'>{:lang('最大金额')}</th>
+            <th class='text-left nowrap'>{:lang('手续费')}</th>
+            <!--<th class='text-left nowrap'>{:lang('状态')}</th>-->
+            <!--<th class='text-left nowrap'>{:lang('代付状态')}</th>-->
             {if auth("edit")}
-            <th class='text-left nowrap'>操作</th>
+            <th class='text-left nowrap'>{:lang('操作')}</th>
             {/if}
         </tr>
         </thead>
@@ -35,30 +35,30 @@
             <td class='text-left nowrap'>{$vo.max}</td>
             <td class='text-left nowrap'>{$vo.pay_commission}</td>
             <!--<td class='text-left nowrap'>-->
-            <!--    {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span-->
-            <!--        class="color-green">使用中</span>{/eq}-->
+            <!--    {eq name='vo.status' value='0'}<span class="color-red">{:lang('已禁用')}</span>{else}<span-->
+            <!--        class="color-green">{:lang('使用中')}</span>{/eq}-->
             <!--</td>-->
             <!--<td class='text-left nowrap'>-->
             <!--    {eq name='vo.is_payout' value='0'}-->
-            <!--    <span class="color-red">未使用</span>-->
+            <!--    <span class="color-red">{:lang('未使用')}</span>-->
             <!--    {else}-->
-            <!--    <span class="color-green">使用中</span>-->
+            <!--    <span class="color-green">{:lang('使用中')}</span>-->
             <!--    {/eq}-->
             <!--</td>-->
             {if auth("edit")}
             <td class='text-left nowrap'>
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑"
-                   data-open='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="{:lang('编辑')}"
+                   data-open='{:url("edit")}?id={$vo.id}'>{:lang('编 辑')}</a>
                 <!--{if $vo.status eq 1}-->
                 <!--<a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('forbid')}"-->
-                <!--   data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁用代收</a>-->
+                <!--   data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">{:lang('禁用代收')}</a>-->
                 <!--{elseif $vo.status eq 0}-->
                 <!--<a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('resume')}"-->
-                <!--   data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启用代收</a>-->
+                <!--   data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">{:lang('启用代收')}</a>-->
                 <!--{/if}-->
                 {if $vo.is_payout eq 0}
                 <!--<a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('set_payout')}"-->
-                <!--   data-value="id#{$vo.id};is_payout#1" data-csrf="{:systoken('set_payout')}">启用代付</a>-->
+                <!--   data-value="id#{$vo.id};is_payout#1" data-csrf="{:systoken('set_payout')}">{:lang('启用代付')}</a>-->
                 {/if}
             </td>
             {/if}

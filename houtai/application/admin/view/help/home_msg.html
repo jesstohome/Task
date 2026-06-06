@@ -9,11 +9,11 @@
         <thead>
         <tr>
             <th class='text-left nowrap'>ID</th>
-            <th class='text-left nowrap'>标题</th>
-            <th class='text-left nowrap'>更新时间</th>
-            <th class='text-left nowrap'>最后编辑</th>
+            <th class='text-left nowrap'>{:lang('标题')}</th>
+            <th class='text-left nowrap'>{:lang('更新时间')}</th>
+            <th class='text-left nowrap'>{:lang('最后编辑')}</th>
             {if auth("edit_home_msg")}
-            <th class='text-left nowrap'>操作</th>
+            <th class='text-left nowrap'>{:lang('操作')}</th>
             {/if}
         </tr>
         </thead>
@@ -27,7 +27,7 @@
             <td class='text-left nowrap'>{$vo.author}</td>
             <td class='text-left nowrap'>
             {if auth("edit_home_msg")}
-                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_home_msg',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>编辑</a>
+                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_home_msg',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>{:lang('编辑')}</a>
             {/if}
             </td>
         </tr>

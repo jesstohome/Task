@@ -5,8 +5,8 @@
     <div class="layui-card-body think-box-shadow padding-left-40">
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">名称</span>
-                <input name="name" required class="layui-input" placeholder="请输入名称" value="{$info.name}">
+                <span class="color-green">{:lang('名称')}</span>
+                <input name="name" required class="layui-input" placeholder="{:lang('请输入名称')}" value="{$info.name}">
                 <input type="hidden" name="id" value="{$info.id}">
                 <input type="hidden" name="_csrf_" value="{:systoken('edit')}">
             </label>
@@ -14,29 +14,29 @@
         
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
         <!--    <label class="layui-col-xs9 relative">-->
-        <!--        <span class="color-green">标识</span>-->
-        <!--        <input name="url" required class="layui-input" placeholder="请输入标识" value="{$info.name2}" readonly>-->
+        <!--        <span class="color-green">{:lang('标识')}</span>-->
+        <!--        <input name="url" required class="layui-input" placeholder="{:lang('请输入标识')}" value="{$info.name2}" readonly>-->
         <!--    </label>-->
         <!--</div>-->
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
         <!--    <label class="layui-col-xs9 relative">-->
-        <!--        <span class="color-green">名称</span>-->
-        <!--        <input name="username" class="layui-input" placeholder="请输入名称" value="{$info.username}">-->
+        <!--        <span class="color-green">{:lang('名称')}</span>-->
+        <!--        <input name="username" class="layui-input" placeholder="{:lang('请输入名称')}" value="{$info.username}">-->
         <!--    </label>-->
         <!--</div>-->
          {if($info.py_status==2)}
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">收款地址</span>
-                <input name="usercode" class="layui-input" placeholder="请输入收款地址" value="{$info.usercode}">
+                <span class="color-green">{:lang('收款地址')}</span>
+                <input name="usercode" class="layui-input" placeholder="{:lang('请输入收款地址')}" value="{$info.usercode}">
             </label>
         </div>
         
         <div class="layui-form-item block">
-            <span class="label-required-prev color-green">收款码</span>
+            <span class="label-required-prev color-green">{:lang('收款码')}</span>
             <p width="auto" class="text-left"><input name="ewm" type="hidden" value="{$info.ewm|default=''}"></p>
             <script> $('[name="ewm"]').uploadMultipleImage()</script>
-            <p> 图片只能保存一张,更换请先删除</p>
+            <p>{:lang(' 图片只能保存一张,更换请先删除')}</p>
         </div>
         
         {/if}
@@ -50,27 +50,27 @@
         <!--</div>-->
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">最小金额</span>
-                <input name="min" required class="layui-input" placeholder="请输入最小金额" value="{$info.min}">
+                <span class="color-green">{:lang('最小金额')}</span>
+                <input name="min" required class="layui-input" placeholder="{:lang('请输入最小金额')}" value="{$info.min}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">最大金额</span>
-                <input name="max" required class="layui-input" placeholder="请输入最大金额" value="{$info.max}">
+                <span class="color-green">{:lang('最大金额')}</span>
+                <input name="max" required class="layui-input" placeholder="{:lang('请输入最大金额')}" value="{$info.max}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">手续费</span>
-                <input name="pay_commission" required class="layui-input" placeholder="请输入手续费" value="{$info.pay_commission}">
-                <!--<p class="help-block">第三方收取的收费，如10%，填写 0.1</p>-->
+                <span class="color-green">{:lang('手续费')}</span>
+                <input name="pay_commission" required class="layui-input" placeholder="{:lang('请输入手续费')}" value="{$info.pay_commission}">
+                <!--<p class="help-block">{:lang('第三方收取的收费，如10%，填写 0.1')}</p>-->
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">安全密码</span>
-                <input name="safe_passwd" required class="layui-input" type="password" placeholder="请输入安全密码" value="">
+                <span class="color-green">{:lang('安全密码')}</span>
+                <input name="safe_passwd" required class="layui-input" type="password" placeholder="{:lang('请输入安全密码')}" value="">
             </label>
         </div>
         
@@ -78,9 +78,9 @@
        <!--  {if($info.py_status==3 || $info.py_status==1)}-->
        <!-- <div class="layui-form-item layui-row layui-col-space15">-->
        <!--     <label class="layui-form-item block relative">-->
-       <!--                 <span class="color-green margin-right-10">通道类型</span>-->
+       <!--                 <span class="color-green margin-right-10">{:lang('通道类型')}</span>-->
        <!--                 <textarea style="min-height: 130px;line-height:16px" name="tondao_type"  class="layui-input">{$info.tondao_type}</textarea>-->
-       <!--                 <p class="help-block">一行一个, 通道</p>-->
+       <!--                 <p class="help-block">{:lang('一行一个, 通道')}</p>-->
        <!--             </label>-->
        <!-- </div>-->
        <!--{/if}-->
@@ -88,9 +88,9 @@
         
         <!--<div class="layui-form-item layui-row layui-col-space15">-->
         <!--    <label class="layui-form-item block relative">-->
-        <!--                <span class="color-green margin-right-10">银行设置/usdt类型设置</span>-->
+        <!--                <span class="color-green margin-right-10">{:lang('银行设置/usdt类型设置')}</span>-->
         <!--                <textarea style="min-height: 130px;line-height:16px" name="bank_code"  class="layui-input">{$info.bank_code}</textarea>-->
-        <!--                <p class="help-block">一行一个, 银行代码|银行名称</p>-->
+        <!--                <p class="help-block">{:lang('一行一个, 银行代码|银行名称')}</p>-->
         <!--            </label>-->
         <!--</div>-->
        
@@ -115,25 +115,25 @@
         {if($info.py_status == 1)}
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">收款银行名称</span>
+                <span class="color-green">{:lang('收款银行名称')}</span>
                 <input name="yhmc" class="layui-input" placeholder="" value="{$info.yhmc}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">收款银行卡号</span>
-                <input name="bank_number" class="layui-input" placeholder="请输入名称" value="{$info.bank_number}">
+                <span class="color-green">{:lang('收款银行卡号')}</span>
+                <input name="bank_number" class="layui-input" placeholder="{:lang('请输入名称')}" value="{$info.bank_number}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">收款人名称</span>
-                <input name="username" class="layui-input" placeholder="请输入名称" value="{$info.username}">
+                <span class="color-green">{:lang('收款人名称')}</span>
+                <input name="username" class="layui-input" placeholder="{:lang('请输入名称')}" value="{$info.username}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">开户行地址</span>
+                <span class="color-green">{:lang('开户行地址')}</span>
                 <input name="dizhi" class="layui-input" placeholder="" value="{$info.dizhi}">
             </label>
         </div>
@@ -143,9 +143,9 @@
         
         
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">提交</button>
+            <button class="layui-btn" type="submit">{:lang('提交')}</button>
          
-           <a href="/admin/index.html#/admin/pay/"> <button class="layui-btn layui-btn-danger"  type="button">取消</button></a>
+           <a href="/admin/index.html#/admin/pay/"> <button class="layui-btn layui-btn-danger"  type="button">{:lang('取消')}</button></a>
         </div>
 
     </div>

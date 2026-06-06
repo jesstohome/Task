@@ -4,55 +4,55 @@
 
 {if auth('config')}
 <div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7 text-middle">数据清理：</span>
+    <span class="color-green font-w7 text-middle">{:lang('数据清理：')}</span>
 
     <div class="layui-form layui-card">
         <div class="layui-card-body">
             <div class="layui-form-item" pane="">
-                <label class="layui-form-label">显示选项</label>
+                <label class="layui-form-label">{:lang('显示选项')}</label>
                 <div class="layui-input-block" id="clear">
-                    <input type="checkbox" name="clear" value="1" lay-skin="primary" title="用户">
+                    <input type="checkbox" name="clear" value="1" lay-skin="primary" title="{:lang('用户')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>用户</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="2" lay-skin="primary" title="交易">
+                        <span>{:lang('用户')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="2" lay-skin="primary" title="{:lang('交易')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>交易</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="3" lay-skin="primary" title="财务记录">
+                        <span>{:lang('交易')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="3" lay-skin="primary" title="{:lang('财务记录')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>财务记录</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="4" lay-skin="primary" title="充值">
+                        <span>{:lang('财务记录')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="4" lay-skin="primary" title="{:lang('充值')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>充值</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="5" lay-skin="primary" title="提现">
+                        <span>{:lang('充值')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="5" lay-skin="primary" title="{:lang('提现')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>提现</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="6" lay-skin="primary" title="银行卡">
+                        <span>{:lang('提现')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="6" lay-skin="primary" title="{:lang('银行卡')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>银行卡</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="7" lay-skin="primary" title="地址">
+                        <span>{:lang('银行卡')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="7" lay-skin="primary" title="{:lang('地址')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>地址</span><i class="layui-icon layui-icon-ok"></i></div>
-                    <input type="checkbox" name="clear" value="8" lay-skin="primary" title="利息宝">
+                        <span>{:lang('地址')}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    <input type="checkbox" name="clear" value="8" lay-skin="primary" title="{:lang('利息宝')}">
                     <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                        <span>利息宝</span><i class="layui-icon layui-icon-ok"></i></div>
+                        <span>{:lang('利息宝')}</span><i class="layui-icon layui-icon-ok"></i></div>
                 </div>
                 <div class="layui-input-block" style="width: 30%">
-                    <input value="" id="clearPwd" type="password" class="layui-input" placeholder="清理密码">
+                    <input value="" id="clearPwd" type="password" class="layui-input" placeholder="{:lang('清理密码')}">
                 </div>
             </div>
         </div>
     </div>
 
-    <a class="layui-btn layui-btn-sm" onclick="clearData()">确定清理</a>
+    <a class="layui-btn layui-btn-sm" onclick="clearData()">{:lang('确定清理')}</a>
 </div>
 {/if}
 <form class="layui-form" action="" lay-filter="example">
     <div class="think-box-shadow margin-bottom-15">
-        <span class="color-green font-w7 text-middle">语言选择：</span>
+        <span class="color-green font-w7 text-middle">{:lang('语言选择：')}</span>
         <div class="layui-form layui-card">
             <div class="layui-card-body">
                 <div class="layui-form-item" pane="">
-                    <label class="layui-form-label">显示选项</label>
+                    <label class="layui-form-label">{:lang('显示选项')}</label>
                     <div class="layui-input-block" style="min-height: 70px;">
                         {volist name='language' id='vo'}
                             {if condition='$vo.state == 1' }
@@ -66,16 +66,16 @@
                              </div>
                         {/volist}
                     </div>
-                    <label class="layui-form-label">默认语言</label>
+                    <label class="layui-form-label">{:lang('默认语言')}</label>
                     <div class="layui-input-block" style="min-height: 70px;">
                         <select name="langs"> 
-                            <option value="">请选择</option>
+                            <option value="">{:lang('请选择')}</option>
                             {volist name='language' id='vo'}
                             <option value="{$vo.id}" {if($vo['moryuy'] == 1)} selected {/if} >{$vo.title}</option>
                              {/volist}
                         </select>
                     </div>
-                    <button type="submit" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="language">保存语言</button>
+                    <button type="submit" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="language">{:lang('保存语言')}</button>
                 </div>
             </div>
         </div>
@@ -83,13 +83,13 @@
 </form>
 {if auth('config')}
 <div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7 text-middle">系统参数配置：</span>
-    <a class="layui-btn layui-btn-sm" data-modal="{:url('config')}">修改系统配置</a>
+    <span class="color-green font-w7 text-middle">{:lang('系统参数配置：')}</span>
+    <a class="layui-btn layui-btn-sm" data-modal="{:url('config')}">{:lang('修改系统配置')}</a>
 </div>
 {/if}
 
 <div class="think-box-shadow margin-bottom-15">
-    <span class="color-green font-w7 text-middle">文件存储引擎：</span>
+    <span class="color-green font-w7 text-middle">{:lang('文件存储引擎：')}</span>
     {foreach ['local'=>'本地服务器存储','qiniu'=>'七牛云对象存储','oss'=>'阿里云OSS存储'] as $k=>$v}
     {if sysconf('storage_type') eq $k}
     {if auth('file')}<a data-modal="{:url('file')}?type={$k}" class="layui-btn layui-btn-sm">{$v}</a>{else}<a
@@ -101,56 +101,56 @@
 
 <div class="think-box-shadow padding-40">
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站名称 Website</span>
+        <span class="color-green font-w7">{:lang('网站名称 Website')}</span>
         <label class="relative block">
             <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('site_name')}" class="fa fa-copy right-btn"></a>
         </label>
-        <p class="help-block">网站名称及网站图标，将显示在浏览器的标签上</p>
+        <p class="help-block">{:lang('网站名称及网站图标，将显示在浏览器的标签上')}</p>
     </div>
 
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站名称 Website</span>
+        <span class="color-green font-w7">{:lang('网站名称 Website')}</span>
         <label class="relative block">
             <input readonly value="{:sysconf('site_name')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('site_name')}" class="fa fa-copy right-btn"></a>
         </label>
-        <p class="help-block">网站名称及网站图标，将显示在浏览器的标签上</p>
+        <p class="help-block">{:lang('网站名称及网站图标，将显示在浏览器的标签上')}</p>
     </div>
 
 
     <div class="layui-form-item">
-        <span class="color-green font-w7">管理程序名称 Name</span>
+        <span class="color-green font-w7">{:lang('管理程序名称 Name')}</span>
         <label class="relative block">
-            <input readonly placeholder="请输入程序名称" value="{:sysconf('app_name')}" class="layui-input layui-bg-gray">
+            <input readonly placeholder="{:lang('请输入程序名称')}" value="{:sysconf('app_name')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('app_name')}" class="fa fa-copy right-btn"></a>
         </label>
-        <p class="help-block">管理程序名称，将显示在后台左上角标题</p>
+        <p class="help-block">{:lang('管理程序名称，将显示在后台左上角标题')}</p>
     </div>
     <div class="layui-form-item">
-        <span class="color-green font-w7">管理程序版本 Version</span>
+        <span class="color-green font-w7">{:lang('管理程序版本 Version')}</span>
         <label class="relative block">
             <input readonly value="{:sysconf('app_version')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('app_version')}" class="fa fa-copy right-btn"></a>
         </label>
-        <p class="help-block">管理程序版本，将显示在后台左上角标题</p>
+        <p class="help-block">{:lang('管理程序版本，将显示在后台左上角标题')}</p>
     </div>
 
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站备案号 Miitbeian</span>
+        <span class="color-green font-w7">{:lang('网站备案号 Miitbeian')}</span>
         <label class="relative block">
             <input readonly value="{:sysconf('miitbeian')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('miitbeian')}" class="fa fa-copy right-btn"></a>
         </label>
-        <p class="help-block">网站备案号，可以在<a target="_blank" href="http://beian.miit.gov.cn">备案管理中心</a>查询获取，将显示在登录页面下面</p>
+        <p class="help-block">{:lang('网站备案号，可以在')}<a target="_blank" href="http://beian.miit.gov.cn">{:lang('备案管理中心')}</a>{:lang('查询获取，将显示在登录页面下面')}</p>
     </div>
     <div class="layui-form-item">
-        <span class="color-green font-w7">网站版权信息 Copyright</span>
+        <span class="color-green font-w7">{:lang('网站版权信息 Copyright')}</span>
         <label class="relative block">
             <input readonly value="{:sysconf('site_copy')}" class="layui-input layui-bg-gray">
             <a data-copy="{:sysconf('site_copy')}" class="fa fa-copy right-btn"></a>
         </label>
-        <p class="help-block">网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统</p>
+        <p class="help-block">{:lang('网站版权信息，在后台登录页面显示版本信息并链接到备案到信息备案管理系统')}</p>
     </div>
 </div>
 {/block}

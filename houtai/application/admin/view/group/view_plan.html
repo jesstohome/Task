@@ -15,18 +15,18 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th rowspan="2" class="text-center">单数</th>
-            <th rowspan="2" class="text-center">抢单模式</th>
-            <th colspan="2" class="text-center">抢单金额匹配方式</th>
-            <th colspan="2" class="text-center">抢单佣金</th>
-            <th colspan="2" class="text-center">触发方案</th>
+            <th rowspan="2" class="text-center">{:lang('单数')}</th>
+            <th rowspan="2" class="text-center">{:lang('抢单模式')}</th>
+            <th colspan="2" class="text-center">{:lang('抢单金额匹配方式')}</th>
+            <th colspan="2" class="text-center">{:lang('抢单佣金')}</th>
+            <th colspan="2" class="text-center">{:lang('触发方案')}</th>
         </tr>
         <tr>
-            <th class="text-center">余额比例</th>
-            <th class="text-center">固定金额</th>
-            <th class="text-center">订单比例</th>
-            <th class="text-center">固定佣金</th>
-            <th class="text-center">触发等级</th>
+            <th class="text-center">{:lang('余额比例')}</th>
+            <th class="text-center">{:lang('固定金额')}</th>
+            <th class="text-center">{:lang('订单比例')}</th>
+            <th class="text-center">{:lang('固定佣金')}</th>
+            <th class="text-center">{:lang('触发等级')}</th>
         </tr>
         </thead>
 
@@ -45,7 +45,7 @@
         {/foreach}
         </tbody>
     </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
 <script>window.form.render();</script>
 {/block}

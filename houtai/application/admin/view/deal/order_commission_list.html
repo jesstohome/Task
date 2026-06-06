@@ -3,12 +3,12 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>订单号</th>
-            <th class='text-left nowrap'>用户名</th>
-            <th class='text-left nowrap'>交易额</th>
-            <th class='text-left nowrap'>交易类型</th>
-            <th class='text-left nowrap'>收入/支出</th>
-            <th class='text-left nowrap'>交易时间</th>
+            <th class='text-left nowrap'>{:lang('订单号')}</th>
+            <th class='text-left nowrap'>{:lang('用户名')}</th>
+            <th class='text-left nowrap'>{:lang('交易额')}</th>
+            <th class='text-left nowrap'>{:lang('交易类型')}</th>
+            <th class='text-left nowrap'>{:lang('收入/支出')}</th>
+            <th class='text-left nowrap'>{:lang('交易时间')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -43,5 +43,5 @@
         {/foreach}
         </tbody>
     </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>

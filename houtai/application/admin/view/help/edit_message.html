@@ -10,8 +10,8 @@
         <div class="layui-form-item layui-row layui-col-space15">
 
             <label class="layui-col-xs9 relative">
-                <span class="color-green">公告标题</span>
-                <input name="title" required class="layui-input" value="{$info.title}" placeholder="请输入公告标题"">
+                <span class="color-green">{:lang('公告标题')}</span>
+                <input name="title" required class="layui-input" value="{$info.title}" placeholder="{:lang('请输入公告标题')}"">
                 <input type="hidden" name="id" value="{$info.id}">
                 <input type="hidden" name="_csrf_" value="{:systoken('edit_message')}">
             </label>
@@ -20,13 +20,13 @@
 
 
         <div class="layui-form-item block">
-            <span class="label-required-prev color-green">公告内容</span>
+            <span class="label-required-prev color-green">{:lang('公告内容')}</span>
             <textarea name="content">{$info.content}</textarea>
         </div>
 
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">确认编辑</button>
-            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">取消编辑</button>
+            <button class="layui-btn" type="submit">{:lang('确认编辑')}</button>
+            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">{:lang('取消编辑')}</button>
         </div>
 
     </div>

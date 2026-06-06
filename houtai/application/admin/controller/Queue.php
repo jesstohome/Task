@@ -50,7 +50,7 @@ class Queue extends Base
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
         }
-        $this->title = '系统任务管理';
+        $this->title = lang('系统任务管理');
         $this->iswin = PATH_SEPARATOR === ';';
         $query = $this->_query($this->table)->dateBetween('create_at,start_at,end_at');
         $query->like('title,preload')->equal('status')->order('id desc')->page();

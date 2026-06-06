@@ -49,12 +49,12 @@
     <!--<h4 style="text-align: center">当地时间： {:date('Y-m-d H:i:s')}</h4>-->
 
 
-    <!--<div class="margin-bottom-15">商城统计</div>-->
+    <!--<div class="margin-bottom-15">{:lang('商城统计')}</div>-->
 
     {if($tuigljie)}
     <div class="margin-bottom-15">
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">推广地址:</label>
+            <label class="layui-form-label">{:lang('推广地址:')}</label>
             <div class="layui-input-inline" style="width:500px;line-height:40px;">
                 <a href="{$tuigljie}" target="_blank" > {$tuigljie} </a>
             </div>
@@ -62,9 +62,9 @@
         {/if}
         <div class="margin-bottom-15">
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">统计时间</label>
+                <label class="layui-form-label">{:lang('统计时间')}</label>
                 <div class="layui-input-inline">
-                    <input data-date-range name="addtime" id= "addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择统计时间"
+                    <input data-date-range name="addtime" id= "addtime" value="{$Think.get.addtime|default=''}" placeholder="{:lang('请选择统计时间')}"
                            class="layui-input">
                 </div>
             </div>
@@ -72,10 +72,10 @@
 
 
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn" onclick="shop()"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <button class="layui-btn" onclick="shop()"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
             </div>
         </div>
-        <div class="layui-row layui-col-space15" id="shop_content">加载中....</div>
+        <div class="layui-row layui-col-space15" id="shop_content">{:lang('加载中....')}</div>
     </div>
     <!--<div id="agent_content">-->
     <!--    加载中......-->

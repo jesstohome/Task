@@ -32,7 +32,7 @@ class Gift extends Base
      */
     public function index()
     {
-        $this->title = '礼包列表';
+        $this->title = lang('礼包列表');
         $query = $this->_query($this->table)->alias('g');
         $where = [];
 
@@ -75,9 +75,9 @@ class Gift extends Base
             $data = input('post.');
             $data['created_at'] = time();
             if (Db::name($this->table)->insert($data)) {
-                return $this->success('添加成功');
+                return $this->success(lang('添加成功'));
             } else {
-                return $this->error('添加失败');
+                return $this->error(lang('添加失败'));
             }
         }
         return $this->fetch('form');
@@ -92,9 +92,9 @@ class Gift extends Base
         if (request()->isPost()) {
             $data = input('post.');
             if (Db::name($this->table)->where('id', $data['id'])->update($data)) {
-                return $this->success('编辑成功');
+                return $this->success(lang('编辑成功'));
             } else {
-                return $this->error('编辑失败');
+                return $this->error(lang('编辑失败'));
             }
         }
         $id = input('id', 0);
@@ -110,9 +110,9 @@ class Gift extends Base
     {
         $id = input('id', 0);
         if (Db::name($this->table)->where('id', $id)->delete()) {
-            return $this->success('删除成功');
+            return $this->success(lang('删除成功'));
         } else {
-            return $this->error('删除失败');
+            return $this->error(lang('删除失败'));
         }
     }
 }

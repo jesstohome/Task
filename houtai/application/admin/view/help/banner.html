@@ -1,7 +1,7 @@
 {extend name='main'}
 {block name="button"}
 {if auth("add_message")}
-<button data-open='{:url("add_banner",["id"=>0])}' data-title="添加轮播图" class='layui-btn layui-btn-sm layui-btn-primary'>添加轮播图</button>
+<button data-open='{:url("add_banner",["id"=>0])}' data-title="{:lang('添加轮播图')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加轮播图')}</button>
 {/if}
 {/block}
 
@@ -11,10 +11,10 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>图片</th>
+            <th class='text-left nowrap'>{:lang('图片')}</th>
             <th class='text-left nowrap'>url</th>
             {if auth("edit_home_msg")}
-            <th class='text-left nowrap'>操作</th>
+            <th class='text-left nowrap'>{:lang('操作')}</th>
             {/if}
         </tr>
         </thead>
@@ -29,8 +29,8 @@
 
             <td class='text-left nowrap'>
                 {if auth("edit_home_msg")}
-                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_banner',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>编辑</a>
-                <a class="layui-btn layui-btn-xs layui-btn" onClick="del_message({$vo.id})" style='background:red;'>删除</a>
+                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_banner',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>{:lang('编辑')}</a>
+                <a class="layui-btn layui-btn-xs layui-btn" onClick="del_message({$vo.id})" style='background:red;'>{:lang('删除')}</a>
                 {/if}
 
             </td>

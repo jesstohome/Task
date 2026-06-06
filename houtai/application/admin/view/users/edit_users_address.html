@@ -3,23 +3,23 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body">
         <div class="layui-form-item">
-            <label class="layui-form-label">收货姓名</label>
+            <label class="layui-form-label">{:lang('收货姓名')}</label>
             <div class="layui-input-block">
-                <input name="name" placeholder="请输入收货姓名" value="{$vo.name}" class="layui-input">
+                <input name="name" placeholder="{:lang('请输入收货姓名')}" value="{$vo.name}" class="layui-input">
                 <input type="hidden" name="_csrf_" value="{:systoken('edit_users_address')}">
                 <input type="hidden" name="id" value="{$vo.id}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">收货手机</label>
+            <label class="layui-form-label label-required">{:lang('收货手机')}</label>
             <div class="layui-input-block">
-                <input name="tel" required value="{$vo.tel}" placeholder="请输入收货手机" class="layui-input">
+                <input name="tel" required value="{$vo.tel}" placeholder="{:lang('请输入收货手机')}" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">详细地址</label>
+            <label class="layui-form-label label-required">{:lang('详细地址')}</label>
             <div class="layui-input-block">
-                <input name="address" required value="{$vo.address}" placeholder="请输入详细地址" class="layui-input">
+                <input name="address" required value="{$vo.address}" placeholder="{:lang('请输入详细地址')}" class="layui-input">
             </div>
         </div>
     </div>
@@ -27,8 +27,8 @@
     <div class="hr-line-dashed"></div>
 
     <div class="layui-form-item text-center">
-        <button class="layui-btn" type='submit'>提交</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+        <button class="layui-btn" type='submit'>{:lang('提交')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>{:lang('取消')}</button>
     </div>
 
 </form>

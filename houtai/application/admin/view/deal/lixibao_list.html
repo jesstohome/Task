@@ -2,7 +2,7 @@
 {block name="button"}
 
 {if auth("add_lixibao")}
-<button data-open='{:url("add_lixibao")}' data-title="添加选项" class='layui-btn'>添加选项</button>
+<button data-open='{:url("add_lixibao")}' data-title="{:lang('添加选项')}" class='layui-btn'>{:lang('添加选项')}</button>
 {/if}
 
 {/block}
@@ -11,18 +11,18 @@
 
 <div class="think-box-shadow">
     <fieldset>
-        <legend>条件搜索</legend>
+        <legend>{:lang('条件搜索')}</legend>
 
 
         <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">发起时间</label>
+                <label class="layui-form-label">{:lang('发起时间')}</label>
                 <div class="layui-input-inline">
-                    <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择发起时间" class="layui-input">
+                    <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="{:lang('请选择发起时间')}" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item layui-inline">
-                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
             </div>
         </form>
     </fieldset>
@@ -35,16 +35,16 @@
             <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
             </th>
-            <th class='text-left nowrap'>编号</th>
-            <th class='text-left nowrap'>产品名称</th>
-            <th class='text-left nowrap'>期限</th>
-            <th class='text-left nowrap'>利率</th>
-            <th class='text-left nowrap'>手续费</th>
-            <th class='text-left nowrap'>最低限制金额</th>
-            <th class='text-left nowrap'>最高限制金额</th>
-            <th class='text-left nowrap'>状态</th>
-            <th class='text-left nowrap'>提交时间</th>
-            <th class='text-left nowrap'>操作</th>
+            <th class='text-left nowrap'>{:lang('编号')}</th>
+            <th class='text-left nowrap'>{:lang('产品名称')}</th>
+            <th class='text-left nowrap'>{:lang('期限')}</th>
+            <th class='text-left nowrap'>{:lang('利率')}</th>
+            <th class='text-left nowrap'>{:lang('手续费')}</th>
+            <th class='text-left nowrap'>{:lang('最低限制金额')}</th>
+            <th class='text-left nowrap'>{:lang('最高限制金额')}</th>
+            <th class='text-left nowrap'>{:lang('状态')}</th>
+            <th class='text-left nowrap'>{:lang('提交时间')}</th>
+            <th class='text-left nowrap'>{:lang('操作')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -72,15 +72,15 @@
             <td class='text-left nowrap'>{$vo.addtime|format_datetime}</td>
             <td class='text-left nowrap'>
                 {if $vo.status eq 1}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('lxb_forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('lxb_forbid')}">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('lxb_forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('lxb_forbid')}">{:lang('禁 用')}</a>
                 {elseif $vo.status eq 0}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('lxb_resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('lxb_resume')}">启 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('lxb_resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('lxb_resume')}">{:lang('启 用')}</a>
                 {/if}
                 {if auth("edit_lixibao")}
-                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_lixibao',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>编辑</a>
+                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_lixibao',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>{:lang('编辑')}</a>
                 {/if}
                 {if auth("del_lixibao")}
-                <a class="layui-btn layui-btn-xs layui-btn" style='background:red;' onClick="del_goods({$vo.id})">删除</a>
+                <a class="layui-btn layui-btn-xs layui-btn" style='background:red;' onClick="del_goods({$vo.id})">{:lang('删除')}</a>
                 {/if}
             </td>
 
@@ -90,7 +90,7 @@
         </tbody>
     </table>
 
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
     <script>
         var test = "{$Think.get.type|default='0'}";
         $("#selectList").find("option[value="+test+"]").prop("selected",true);
@@ -105,7 +105,7 @@
     
 </div>
 
-<div class="layui-row layui-col-space15" id="lixibao_log">加载中....</div>
+<div class="layui-row layui-col-space15" id="lixibao_log">{:lang('加载中....')}</div>
     
     
     <script>

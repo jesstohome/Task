@@ -3,11 +3,11 @@
 {block name="button"}
 
 {if auth("clear")}
-<button data-load='{:url("clear")}' data-confirm="确定要消除所有日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>清理日志</button>
+<button data-load='{:url("clear")}' data-confirm="{:lang('确定要消除所有日志吗？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('清理日志')}</button>
 {/if}
 
 {if auth("remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除日志吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除日志</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="{:lang('确定要删除日志吗？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('删除日志')}</button>
 {/if}
 
 {/block}
@@ -28,10 +28,10 @@
             <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
             </th>
-            <th class='text-left nowrap'>操作权限</th>
-            <th class='text-left nowrap'>操作行为</th>
-            <th class='text-left nowrap'>地理位置</th>
-            <th class='text-left nowrap'>操作时间</th>
+            <th class='text-left nowrap'>{:lang('操作权限')}</th>
+            <th class='text-left nowrap'>{:lang('操作行为')}</th>
+            <th class='text-left nowrap'>{:lang('地理位置')}</th>
+            <th class='text-left nowrap'>{:lang('操作时间')}</th>
             <th></th>
         </tr>
         </thead>
@@ -54,11 +54,11 @@
                 <p class="color-desc">{$vo.isp|default='-'}</p>
             </td>
             <td class='text-left nowrap'>
-                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">{:lang('时间：',###|raw}')}</span>
             </td>
             <td class='text-left nowrap'>
                 {if auth("remove")}
-                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除该日志吗？" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a data-dbclick class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="{:lang('确定要删除该日志吗？')}" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">{:lang('删 除')}</a>
                 {/if}
             </td>
         </tr>
@@ -67,7 +67,7 @@
         {/notempty}
     </table>
 
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 

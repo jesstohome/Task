@@ -48,7 +48,7 @@ class Crontab extends Controller
                     ->insert([
                         'uid' => $v['uid'],
                         'type' => 2,
-                        'content' => '充值订单' . $v['id'] . '已被退回，如有疑问请联系客服',
+                        'content'  => lang('充值订单') . $v['id'] . '已被退回，如有疑问请联系客服',
                         'title' => lang('sys_msg'),
                         'content' => '11-1',
                         'addtime' => time()

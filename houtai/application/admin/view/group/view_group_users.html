@@ -6,10 +6,10 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class="text-center">用户名</th>
-            <th class="text-center">手机号</th>
-            <th class="text-center">抢单信息</th>
-            <th class="text-center">注册时间</th>
+            <th class="text-center">{:lang('用户名')}</th>
+            <th class="text-center">{:lang('手机号')}</th>
+            <th class="text-center">{:lang('抢单信息')}</th>
+            <th class="text-center">{:lang('注册时间')}</th>
         </tr>
         </thead>
 
@@ -36,7 +36,7 @@
         {/foreach}
         </tbody>
     </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 </div>
 <script>window.form.render();</script>
 {/block}

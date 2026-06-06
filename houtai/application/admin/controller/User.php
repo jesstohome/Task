@@ -46,7 +46,7 @@ class User extends Base
      */
     public function index()
     {
-        $this->title = '系统用户';
+        $this->title = lang('系统用户');
         $query = $this->_query($this->table)
             ->like('username,phone,mail,nickname')
             ->where('authorize', '<>', '2')
@@ -62,7 +62,7 @@ class User extends Base
             }else{
                 $vo['authorize_name'] = '-';
                 if($vo['id'] == 10000){
-                    $vo['authorize_name'] = '超级管理员';
+                    $vo['authorize_name'] = lang('超级管理员');
                 }
             }
 
@@ -112,7 +112,7 @@ class User extends Base
         if($res){
             return $this->success('重置成功，密码为：'.$pwd);
         }
-        return $this->error('操作失败');
+        return $this->error(lang('操作失败'));
     }
 
     /**
@@ -124,9 +124,9 @@ class User extends Base
         $id = input('id');
         $res = Db::table('system_user')->where('id',$id)->update(['is_deleted' => 1]);
         if($res){
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
-        return $this->error('操作失败');
+        return $this->error(lang('操作失败'));
     }
 
     /**
@@ -138,7 +138,7 @@ class User extends Base
         if (request()->isPost()) {
             cache('edit_sys_user_'.session('admin_user')['id'],null);
             if(cache('edit_sys_user_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('edit_sys_user_'.session('admin_user')['id'],1,3);
             $data = [
@@ -149,7 +149,7 @@ class User extends Base
             ];
             foreach ($data as $v) {
                 if(empty($v)){
-                    return $this->error('请填写完整信息');
+                    return $this->error(lang('请填写完整信息'));
                 }
             }
             $data['authorize'] = input('authorize');
@@ -159,9 +159,9 @@ class User extends Base
             $id = input('id');
             $res = Db::table('system_user')->where('id',$id)->update($data);
             if($res){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
-            return $this->error('操作失败');
+            return $this->error(lang('操作失败'));
         }
         $this->sys_user = Db::table('system_user')
             ->where('id',input('id'))
@@ -182,7 +182,7 @@ class User extends Base
         if (request()->isPost()) {
             cache('add_sys_user_'.session('admin_user')['id'],null);
             if(cache('add_sys_user_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('add_sys_user_'.session('admin_user')['id'],1,3);
             $data = [
@@ -195,15 +195,15 @@ class User extends Base
             ];
             foreach ($data as $v) {
                 if(empty($v)){
-                    return $this->error('请填写完整信息');
+                    return $this->error(lang('请填写完整信息'));
                 }
             }
             $data['password'] = md5($data['password']);
             $res = Db::table('system_user')->insert($data);
             if($res){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
-            return $this->error('操作失败');
+            return $this->error(lang('操作失败'));
         }
         $this->authorizes = Db::name('SystemAuth')
             ->where('status',1)
@@ -227,14 +227,14 @@ class User extends Base
         } else {
             $post = $this->request->post();
             if ($post['password'] !== $post['repassword']) {
-                $this->error('两次输入的密码不一致！');
+                $this->error(lang('两次输入的密码不一致！'));
             }
             $result = NodeService::checkpwd($post['password']);
             if (empty($result['code'])) $this->error($result['msg']);
             if (Data::save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
-                $this->success('密码修改成功，下次请使用新密码登录！', '');
+                $this->success(lang('密码修改成功，下次请使用新密码登录！'), '');
             } else {
-                $this->error('密码修改失败，请稍候再试！');
+                $this->error(lang('密码修改失败，请稍候再试！'));
             }
         }
     }
@@ -258,13 +258,13 @@ class User extends Base
             if (!empty($data['user_id'])) {
                 $isAgentSon = Db::name('xy_users')->where('id', $data['user_id'])->value('agent_id');
                 if (empty($isAgentSon)) {
-                    $this->error("业务员ID {$data['user_id']} 未绑定代理！");
+                    $this->error(lang("业务员ID {$data['user_id']} 未绑定代理！"));
                 }
             }
             // 用户账号重复检查
             if (isset($data['id'])) unset($data['username']);
             elseif (Db::name($this->table)->where(['username' => $data['username'], 'is_deleted' => '0'])->count() > 0) {
-                $this->error("账号{$data['username']}已经存在，请使用其它账号！");
+                $this->error(lang("账号{$data['username']}已经存在，请使用其它账号！"));
             }
         } else {
             $data['authorize'] = explode(',', isset($data['authorize']) ? $data['authorize'] : '');
@@ -284,7 +284,7 @@ class User extends Base
     public function forbid()
     {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止操作！');
+            $this->error(lang('系统超级账号禁止操作！'));
         }
         $this->applyCsrfToken();
         $this->_save($this->table, ['status' => '0']);
@@ -311,7 +311,7 @@ class User extends Base
     public function remove()
     {
         if (in_array('10000', explode(',', $this->request->post('id')))) {
-            $this->error('系统超级账号禁止删除！');
+            $this->error(lang('系统超级账号禁止删除！'));
         }
         $this->applyCsrfToken();
         $this->_delete($this->table);

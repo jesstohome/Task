@@ -1,16 +1,16 @@
 <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
    <div class="layui-card-body">
        <div class="layui-form-item">
-           <label class="layui-form-label label-required">用户名称</label>
+           <label class="layui-form-label label-required">{:lang('用户名称')}</label>
            <div class="layui-input-block">
                <input value="{$info.username}" readonly disabled class="layui-input">
            </div>
        </div>
         <div class="layui-form-item">
-            <label class="layui-form-label label-required">方案组</label>
+            <label class="layui-form-label label-required">{:lang('方案组')}</label>
             <div class="layui-input-block">
                 <select name="group_id">
-                    <option value="0">不加入</option>
+                    <option value="0">{:lang('不加入')}</option>
                     {foreach $groupList as $key=>$vo}
                     <option value="{$vo.id}" <?php echo $info['group_id']==$vo['id'] ? 'selected': ''; ?> >{$vo.title}</option>
                     {/foreach}
@@ -32,8 +32,8 @@
     <input name="id" type="hidden" value="{$info.id}">
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
-        <button class="layui-btn" type='submit'>提交</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+        <button class="layui-btn" type='submit'>{:lang('提交')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>{:lang('取消')}</button>
     </div>
 </form>
 <script>window.form.render();</script>

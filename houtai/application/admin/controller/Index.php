@@ -39,7 +39,7 @@ class Index extends Base
      */
     public function index()
     {
-        $this->title = '系统管理后台';
+        $this->title = lang('系统管理后台');
         NodeService::applyUserAuth(true);
         $this->menus = NodeService::getMenuNodeTree();
 //        $this->menus1 = NodeService::getMenuNodeTree1();
@@ -64,7 +64,7 @@ class Index extends Base
      */
     public function main()
     {
-        $this->title = '统计数据';
+        $this->title = lang('统计数据');
         $type = input('type/s', '');
 
         if ($type == 'shop') {
@@ -601,10 +601,10 @@ class Index extends Base
     {
         $this->applyCsrfToken();
         if (intval($id) !== intval(session('admin_user.id'))) {
-            $this->error('只能修改当前用户的密码！');
+            $this->error(lang('只能修改当前用户的密码！'));
         }
         if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
+            $this->error(lang('需要登录才能操作哦！'));
         }
         if ($this->request->isGet()) {
             $this->verify = true;
@@ -619,22 +619,22 @@ class Index extends Base
                 'password' => 'require|min:4',
                 'repassword' => 'require|confirm:password',
             ], [
-                'oldpassword.require' => '旧密码不能为空！',
-                'password.require' => '登录密码不能为空！',
-                'password.min' => '登录密码长度不能少于4位有效字符！',
-                'repassword.require' => '重复密码不能为空！',
-                'repassword.confirm' => '重复密码与登录密码不匹配，请重新输入！',
+                'oldpassword.require' => lang('旧密码不能为空！'),
+                'password.require' => lang('登录密码不能为空！'),
+                'password.min' => lang('登录密码长度不能少于4位有效字符！'),
+                'repassword.require' => lang('重复密码不能为空！'),
+                'repassword.confirm' => lang('重复密码与登录密码不匹配，请重新输入！'),
             ]);
             $user = Db::name('SystemUser')->where(['id' => $id])->find();
             if (md5($data['oldpassword']) !== $user['password']) {
-                $this->error('旧密码验证失败，请重新输入！');
+                $this->error(lang('旧密码验证失败，请重新输入！'));
             }
             $result = NodeService::checkpwd($data['password']);
             if (empty($result['code'])) $this->error($result['msg']);
             if (Data::save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
-                $this->success('密码修改成功，下次请使用新密码登录！', '');
+                $this->success(lang('密码修改成功，下次请使用新密码登录！'), '');
             } else {
-                $this->error('密码修改失败，请稍候再试！');
+                $this->error(lang('密码修改失败，请稍候再试！'));
             }
         }
     }
@@ -651,13 +651,13 @@ class Index extends Base
     public function info($id = 0)
     {
         if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
+            $this->error(lang('需要登录才能操作哦！'));
         }
         $this->applyCsrfToken();
         if (intval($id) === intval(session('admin_user.id'))) {
             $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
         } else {
-            $this->error('只能修改登录用户的资料！');
+            $this->error(lang('只能修改登录用户的资料！'));
         }
     }
 
@@ -668,16 +668,16 @@ class Index extends Base
     public function clearRuntime()
     {
         if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
+            $this->error(lang('需要登录才能操作哦！'));
         }
         try {
             Console::call('clear');
             Console::call('xclean:session');
-            $this->success('清理运行缓存成功！');
+            $this->success(lang('清理运行缓存成功！'));
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
-            $this->error("清理运行缓存失败，{$e->getMessage()}");
+            $this->error(lang('清理运行缓存失败') . "：{$e->getMessage()}");
         }
     }
 
@@ -688,18 +688,18 @@ class Index extends Base
     public function buildOptimize()
     {
         if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
+            $this->error(lang('需要登录才能操作哦！'));
         }
         try {
             Console::call('optimize:route');
             Console::call('optimize:schema');
             Console::call('optimize:autoload');
             Console::call('optimize:config');
-            $this->success('压缩发布成功！');
+            $this->success(lang('压缩发布成功！'));
         } catch (HttpResponseException $exception) {
             throw $exception;
         } catch (\Exception $e) {
-            $this->error("压缩发布失败，{$e->getMessage()}");
+            $this->error(lang('压缩发布失败') . "：{$e->getMessage()}");
         }
     }
 
@@ -726,7 +726,7 @@ class Index extends Base
     public function order_info()
     {
         if (!NodeService::islogin()) {
-            $this->error('需要登录才能操作哦！');
+            $this->error(lang('需要登录才能操作哦！'));
         }
 
         $agent_id = model('admin/Users')->get_admin_agent_id();

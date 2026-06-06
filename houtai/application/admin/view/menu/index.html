@@ -3,11 +3,11 @@
 {block name="button"}
 
 {if auth("add")}
-<button data-modal='{:url("add")}' data-title="添加菜单" class='layui-btn layui-btn-sm layui-btn-primary'>添加菜单</button>
+<button data-modal='{:url("add")}' data-title="{:lang('添加菜单')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加菜单')}</button>
 {/if}
 
 {if auth("remove")}
-<button data-action='{:url("remove")}' data-csrf="{:systoken('remove')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除菜单</button>
+<button data-action='{:url("remove")}' data-csrf="{:systoken('remove')}" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('删除菜单')}</button>
 {/if}
 
 {/block}
@@ -15,7 +15,7 @@
 {block name="content"}
 <div class="think-bg-white">
     {empty name='list'}
-    <blockquote class="layui-elem-quote">没 有 记 录 哦！</blockquote>
+    <blockquote class="layui-elem-quote">{:lang('没 有 记 录 哦！')}</blockquote>
     {else}
     <table class="layui-table" >
         <thead>
@@ -24,7 +24,7 @@
                 <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
             </th>
             <th class='list-table-sort-td'>
-                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">{:lang('刷 新')}</button>
             </th>
             <th class='text-center' style="width:30px"></th>
             <th style="width:180px"></th>
@@ -44,30 +44,30 @@
             <td class='text-center'><i class="{$vo.icon} font-s18"></i></td>
             <td class="nowrap"><span class="color-desc">{$vo.spl|raw}</span>{$vo.title}</td>
             <td class='layui-hide-xs'>{$vo.url}</td>
-            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}</td>
+            <td class='text-center nowrap'>{eq name='vo.status' value='0'}<span class="color-red">{:lang('已禁用')}</span>{else}<span class="color-green">{:lang('使用中')}</span>{/eq}</td>
             <td class='text-center nowrap notselect'>
 
                 {if auth("add")}
                 <span class="text-explode">|</span>
                 <!--{if $vo.spt < 2}-->
-                <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="添加子菜单" data-modal='{:url("add")}?pid={$vo.id}'>添 加</a>
+                <a class="layui-btn layui-btn-xs layui-btn-primary" data-title="{:lang('添加子菜单')}" data-modal='{:url("add")}?pid={$vo.id}'>{:lang('添 加')}</a>
                 <!--{else}-->
-                <a class="layui-btn layui-btn-xs layui-btn-disabled">添 加</a>
+                <a class="layui-btn layui-btn-xs layui-btn-disabled">{:lang('添 加')}</a>
                 <!--{/if}-->
                 {/if}
 
                 {if auth("edit")}
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑菜单" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="{:lang('编辑菜单')}" data-modal='{:url("edit")}?id={$vo.id}'>{:lang('编 辑')}</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("forbid")}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="确定要禁用菜单吗？" data-action="{:url('forbid')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-confirm="{:lang('确定要禁用菜单吗？')}" data-action="{:url('forbid')}" data-value="id#{$vo.ids};status#0" data-csrf="{:systoken('forbid')}">{:lang('禁 用')}</a>
                 {elseif auth("resume")}
-                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('resume')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('resume')}">启 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-xs" data-action="{:url('resume')}" data-value="id#{$vo.ids};status#1" data-csrf="{:systoken('resume')}">{:lang('启 用')}</a>
                 {/if}
 
                 {if auth("remove")}
-                <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" data-confirm="{:lang('确定要删除数据吗?')}" data-action="{:url('remove')}" data-value="id#{$vo.ids}" data-csrf="{:systoken('remove')}">{:lang('删 除')}</a>
                 {/if}
 
             </td>

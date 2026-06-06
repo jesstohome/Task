@@ -41,12 +41,12 @@
 <div style="padding:15px;background:#fff">
     <div class="layui-tab layui-tab-card" style="box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);">
         <ul class="layui-tab-title">
-            <li class="layui-this">基本设置</li>
-            <li>账变记录</li>
-            <li>提现记录</li>
-            <li>充值记录</li>
-            <!--<li>银行账户</li>-->
-            <!--<li>Tron地址</li>-->
+            <li class="layui-this">{:lang('基本设置')}</li>
+            <li>{:lang('账变记录')}</li>
+            <li>{:lang('提现记录')}</li>
+            <li>{:lang('充值记录')}</li>
+            <!--<li>{:lang('银行账户')}</li>-->
+            <!--<li>{:lang('Tron地址')}</li>-->
         </ul>
         <div class="layui-tab-content">
             <!--基本设置-->
@@ -55,39 +55,39 @@
                     <input type="hidden" name="uid" value="{$user.id}">
                     <div class="layui-card-body">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">登录名</label>
+                            <label class="layui-form-label">{:lang('登录名')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" value="{$user.username}" readonly autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">推广码</div>
+                                <div class="layui-form-mid">{:lang('推广码')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" value="{$user.invite_code}" readonly autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">电话</label>
+                            <label class="layui-form-label">{:lang('电话')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" value="{$user.tel}" readonly autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">邮箱</div>
+                                <div class="layui-form-mid">{:lang('邮箱')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" value="{$user.email}" readonly autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">抢单次数</label>
+                            <label class="layui-form-label">{:lang('抢单次数')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="text" name="order_num" placeholder="" value="{$user.order_num}" autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">平台代理</div>
+                                <div class="layui-form-mid">{:lang('平台代理')}</div>
                                 <div class="layui-input-inline" >
                                     <select name="agent_service_id" class="layui-select"  lay-verify="">
                                         {volist name="agent_list" id="al"}
@@ -98,33 +98,33 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">新密码</label>
+                            <label class="layui-form-label">{:lang('新密码')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
-                                    <input type="text" name="pwd" placeholder="不填则表示不修改" value="" autocomplete="off" class="layui-input">
+                                    <input type="text" name="pwd" placeholder="{:lang('不填则表示不修改')}" value="" autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">取款密码</div>
+                                <div class="layui-form-mid">{:lang('取款密码')}</div>
                                 <div class="layui-input-inline" >
-                                    <input type="text" name="pwd2" placeholder="不填则表示不修改" value="" autocomplete="off" class="layui-input">
+                                    <input type="text" name="pwd2" placeholder="{:lang('不填则表示不修改')}" value="" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">注册时间</label>
+                            <label class="layui-form-label">{:lang('注册时间')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" readonly value="{$user.addtime|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">最后登录时间</div>
+                                <div class="layui-form-mid">{:lang('最后登录时间')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" placeholder="" readonly value="{$user.login_time|date='Y-m-d H:i:s'}" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">等级</label>
+                            <label class="layui-form-label">{:lang('等级')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <select name="level" class="layui-select"  lay-verify="">
@@ -138,13 +138,13 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">信用分</label>
+                            <label class="layui-form-label">{:lang('信用分')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="number" name="credit" value="{$user.credit}" placeholder="" autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">性别</div>
+                                <div class="layui-form-mid">{:lang('性别')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" name="whatsapp" readonly value="{$user.whatsapp}" placeholder="" autocomplete="off" class="layui-input">
                                 </div>
@@ -160,7 +160,7 @@
                         <!---->
                         <!--                            </div>-->
                         <!--                        </div>-->
-                        <!--                        <div class="layui-form-mid">平台代理</div>-->
+                        <!--                        <div class="layui-form-mid">{:lang('平台代理')}</div>-->
                         <!--                        <div class="layui-input-inline" >-->
                         <!--                            <input type="text" value="{$user.service}" readonly placeholder="" autocomplete="off" class="layui-input">-->
                         <!--                        </div>-->
@@ -169,33 +169,33 @@
 
 
                         <div class="layui-form-item">
-                            <label class="layui-form-label">登录IP</label>
+                            <label class="layui-form-label">{:lang('登录IP')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="text" value="{$user.ip}" readonly placeholder="" autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">登录地址</div>
+                                <div class="layui-form-mid">{:lang('登录地址')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" value="{$user.login_ip_address}" readonly placeholder="" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">姓名：</label>
+                            <label class="layui-form-label">{:lang('姓名：')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="text" name="real_name" value="{$user.real_name}" placeholder="" autocomplete="off" class="layui-input">
                                 </div>
 
-                                <div class="layui-form-mid">证件号：</div>
+                                <div class="layui-form-mid">{:lang('证件号：')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="text" name="id_card_num" value="{$user.id_card_num}" placeholder="" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">证件正面：</label>
+                            <label class="layui-form-label">{:lang('证件正面：')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" style="width: 25%;">
                                     <a href="{$user.top_pic}" target="_blank" rel="noopener noreferrer">
@@ -203,14 +203,14 @@
                                     </a>
                                 </div>
 
-                                <div class="layui-form-mid">证件背面：</div>
+                                <div class="layui-form-mid">{:lang('证件背面：')}</div>
                                 <div class="layui-input-inline"  style="width: 25%;">
                                     <a href="{$user.bot_pic}" target="_blank" rel="noopener noreferrer">
                                           <img src="{$user.bot_pic}" width="200" height="150" />
                                     </a>
                                 </div>
                                 
-                                <div class="layui-form-mid">手持证件：</div>
+                                <div class="layui-form-mid">{:lang('手持证件：')}</div>
                                 <div class="layui-input-inline"  style="width: 25%;">
                                     <a href="{$user.wx_ewm}" target="_blank" rel="noopener noreferrer">
                                           <img src="{$user.wx_ewm}" width="200" height="150"/>
@@ -219,17 +219,17 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">认证状态：</label>
+                            <label class="layui-form-label">{:lang('认证状态：')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <select name="id_status" class="layui-select"  lay-verify="">
-                                        <option value="0" {if $user.id_status == 0}selected{/if}>未填写信息</option>
-                                        <option value="1" {if $user.id_status == 1}selected{/if}>认证审核中</option>
-                                        <option value="2" {if $user.id_status == 2}selected{/if}>通过认证</option>
-                                        <option value="3" {if $user.id_status == 3}selected{/if}>拒绝认证</option>
-                                        <!--<option value="4" {if $user.id_status == 4}selected{/if}>高级认证审核中</option>-->
-                                        <!--<option value="5" {if $user.id_status == 5}selected{/if}>通过高级认证</option>-->
-                                        <!--<option value="6" {if $user.id_status == 6}selected{/if}>拒绝高级认证</option>-->
+                                        <option value="0" {if $user.id_status == 0}selected{/if}>{:lang('未填写信息')}</option>
+                                        <option value="1" {if $user.id_status == 1}selected{/if}>{:lang('认证审核中')}</option>
+                                        <option value="2" {if $user.id_status == 2}selected{/if}>{:lang('通过认证')}</option>
+                                        <option value="3" {if $user.id_status == 3}selected{/if}>{:lang('拒绝认证')}</option>
+                                        <!--<option value="4" {if $user.id_status == 4}selected{/if}>{:lang('高级认证审核中')}</option>-->
+                                        <!--<option value="5" {if $user.id_status == 5}selected{/if}>{:lang('通过高级认证')}</option>-->
+                                        <!--<option value="6" {if $user.id_status == 6}selected{/if}>{:lang('拒绝高级认证')}</option>-->
                                     </select>
                                 </div>
 
@@ -237,20 +237,20 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">登录状态</label>
+                            <label class="layui-form-label">{:lang('登录状态')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <input type="checkbox" lay-filter="user_status" name="status" lay-skin="switch" lay-text="ON|OFF" value="{$user.status}" {if($user.status == 1)}checked{/if}>
                                 </div>
 
-                                <div class="layui-form-mid">提款状态</div>
+                                <div class="layui-form-mid">{:lang('提款状态')}</div>
                                 <div class="layui-input-inline" >
                                     <input type="checkbox" lay-filter="user_withdrawal_status" name="withdrawal_status" lay-skin="switch" lay-text="ON|OFF"  value="{$user.withdrawal_status}" {if($user.withdrawal_status == 1)}checked{/if}>
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">备注</label>
+                            <label class="layui-form-label">{:lang('备注')}</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline" >
                                     <textarea name="remark" class="layui-textarea">{$user.remark}</textarea>
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <div class="layui-form-item text-center">
-                        <button class="layui-btn layui-btn-normal edit_user_data" lay-submit lay-filter="submitForm">修改</button>
+                        <button class="layui-btn layui-btn-normal edit_user_data" lay-submit lay-filter="submitForm">{:lang('修改')}</button>
                     </div>
                 </form>
             </div>
@@ -273,50 +273,50 @@
                     <div class="pull-right"></div>
                 </div>
                 <fieldset>
-                    <legend>条件搜索</legend>
+                    <legend>{:lang('条件搜索')}</legend>
                     <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">类型</label>
+                            <label class="layui-form-label">{:lang('类型')}</label>
                             <div class="layui-input-inline">
                                 <select name="type" id="selectList">
-                                    <option value="">所有状态</option>
-                                    <option value="-1">系统</option>
-                                    <option value="1">充值</option>
-                                    <option value="2">交易</option>
-                                    <option value="3">返佣</option>
-                                    <option value="4">强制交易</option>
-                                    <option value="5">推广返佣</option>
-                                    <option value="6">下级交易返佣</option>
-                                    <option value="7">提现</option>
-                                    <option value="8">提现驳回</option>
-                                    <option value="21">利息宝进款</option>
-                                    <option value="22">利息宝出款</option>
-                                    <option value="23">利息宝返利</option>
-                                    <option value="31">手动扣款</option>
-                                    <option value="32">后台充值</option>
-                                    <option value="33">注册奖励</option>
-                                    <option value="34">免费赠送</option>
-                                    <option value="35">冻结本金</option>
-                                    <option value="36">解冻本金</option>
+                                    <option value="">{:lang('所有状态')}</option>
+                                    <option value="-1">{:lang('系统')}</option>
+                                    <option value="1">{:lang('充值')}</option>
+                                    <option value="2">{:lang('交易')}</option>
+                                    <option value="3">{:lang('返佣')}</option>
+                                    <option value="4">{:lang('强制交易')}</option>
+                                    <option value="5">{:lang('推广返佣')}</option>
+                                    <option value="6">{:lang('下级交易返佣')}</option>
+                                    <option value="7">{:lang('提现')}</option>
+                                    <option value="8">{:lang('提现驳回')}</option>
+                                    <option value="21">{:lang('利息宝进款')}</option>
+                                    <option value="22">{:lang('利息宝出款')}</option>
+                                    <option value="23">{:lang('利息宝返利')}</option>
+                                    <option value="31">{:lang('手动扣款')}</option>
+                                    <option value="32">{:lang('后台充值')}</option>
+                                    <option value="33">{:lang('注册奖励')}</option>
+                                    <option value="34">{:lang('免费赠送')}</option>
+                                    <option value="35">{:lang('冻结本金')}</option>
+                                    <option value="36">{:lang('解冻本金')}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">手机号码</label>
+                            <label class="layui-form-label">{:lang('手机号码')}</label>
                             <div class="layui-input-inline">
                                 <input  name="tel" value="{$Think.get.tel|default=''}" placeholder="" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">发生时间</label>
+                            <label class="layui-form-label">{:lang('发生时间')}</label>
                             <div class="layui-input-inline">
                                 <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="" class="layui-input">
                             </div>
                         </div>
 
                         <div class="layui-form-item layui-inline">
-                            <button class="layui-btn layui-btn-primary search" type="button"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                            <button class="layui-btn layui-btn-primary search" type="button"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
                         </div>
                         <table id="demo0" lay-filter="test1"></table>
                     </form>
@@ -331,60 +331,60 @@
                     <div class="pull-right"></div>
                 </div>
                 <fieldset>
-                    <legend>条件搜索</legend>
+                    <legend>{:lang('条件搜索')}</legend>
                     <form class="layui-form layui-form-pane form-search w_table"  action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">用户名称</label>
+                            <label class="layui-form-label">{:lang('用户名称')}</label>
                             <div class="layui-input-inline">
-                                <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入用户名称"
+                                <input name="username" value="{$Think.get.username|default=''}" placeholder="{:lang('请输入用户名称')}"
                                        class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">手机号</label>
+                            <label class="layui-form-label">{:lang('手机号')}</label>
                             <div class="layui-input-inline">
-                                <input name="mobile" value="{$Think.get.mobile|default=''}" placeholder="请输入用户手机号"
+                                <input name="mobile" value="{$Think.get.mobile|default=''}" placeholder="{:lang('请输入用户手机号')}"
                                        class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">状态</label>
+                            <label class="layui-form-label">{:lang('状态')}</label>
                             <div class="layui-input-inline">
                                 <select name="status">
-                                    <option value="">全部</option>
-                                    <option value="1">未审核</option>
-                                    <option value="2">已通过</option>
-                                    <option value="3">已驳回</option>
-                                    <option value="4">转账失败</option>
+                                    <option value="">{:lang('全部')}</option>
+                                    <option value="1">{:lang('未审核')}</option>
+                                    <option value="2">{:lang('已通过')}</option>
+                                    <option value="3">{:lang('已驳回')}</option>
+                                    <option value="4">{:lang('转账失败')}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">代理审核</label>
+                            <label class="layui-form-label">{:lang('代理审核')}</label>
                             <div class="layui-input-inline">
                                 <select name="agent_status">
-                                    <option value="">全部</option>
-                                    <option value="1">未审核</option>
-                                    <option value="2">已通过</option>
-                                    <option value="3">已驳回</option>
+                                    <option value="">{:lang('全部')}</option>
+                                    <option value="1">{:lang('未审核')}</option>
+                                    <option value="2">{:lang('已通过')}</option>
+                                    <option value="3">{:lang('已驳回')}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">订单号</label>
+                            <label class="layui-form-label">{:lang('订单号')}</label>
                             <div class="layui-input-inline">
-                                <input name="oid" value="{$Think.get.oid|default=''}" placeholder="请输入订单号" class="layui-input">
+                                <input name="oid" value="{$Think.get.oid|default=''}" placeholder="{:lang('请输入订单号')}" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">发起时间</label>
+                            <label class="layui-form-label">{:lang('发起时间')}</label>
                             <div class="layui-input-inline">
-                                <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择发起时间"
+                                <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="{:lang('请选择发起时间')}"
                                        class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <button type="button" class="layui-btn layui-btn-primary w_search"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                            <button type="button" class="layui-btn layui-btn-primary w_search"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
                         </div>
                         <table id="demo1" lay-filter="test2"></table>
                     </form>
@@ -400,24 +400,24 @@
                 </div>
 
                 <fieldset>
-                    <legend>条件搜索</legend>
+                    <legend>{:lang('条件搜索')}</legend>
                     <form class="layui-form layui-form-pane r_table" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">支付状态</label>
+                            <label class="layui-form-label">{:lang('支付状态')}</label>
                             <div class="layui-input-inline">
                                 <select name="status">
-                                    <option value="">全部</option>
-                                    <option value="1">未支付</option>
-                                    <option value="2">充值成功</option>
-                                    <option value="3">充值失败</option>
+                                    <option value="">{:lang('全部')}</option>
+                                    <option value="1">{:lang('未支付')}</option>
+                                    <option value="2">{:lang('充值成功')}</option>
+                                    <option value="3">{:lang('充值失败')}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">充值方式</label>
+                            <label class="layui-form-label">{:lang('充值方式')}</label>
                             <div class="layui-input-inline">
                                 <select name="recharge_type">
-                                    <option value="-">全部</option>
+                                    <option value="-">{:lang('全部')}</option>
                                     {foreach $pay_list as $k=>$v}
                                     <option value="{$v}">{$v}</option>
                                     {/foreach}
@@ -426,10 +426,10 @@
                         </div>
 
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">內部代理</label>
+                            <label class="layui-form-label">{:lang('內部代理')}</label>
                             <div class="layui-input-inline">
                                 <select name="agent_service_id">
-                                    <option value="0">全部</option>
+                                    <option value="0">{:lang('全部')}</option>
                                     {foreach $agent_service_list as $k=>$v}
                                     <option value="{$k}">{$v}</option>
                                     {/foreach}
@@ -438,26 +438,26 @@
                         </div>
 
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">订单号</label>
+                            <label class="layui-form-label">{:lang('订单号')}</label>
                             <div class="layui-input-inline">
-                                <input name="oid" value="" placeholder="请输入订单号" class="layui-input">
+                                <input name="oid" value="" placeholder="{:lang('请输入订单号')}" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">手机号码</label>
+                            <label class="layui-form-label">{:lang('手机号码')}</label>
                             <div class="layui-input-inline">
-                                <input name="tel" value="" placeholder="请输入手机号码" class="layui-input">
+                                <input name="tel" value="" placeholder="{:lang('请输入手机号码')}" class="layui-input">
                             </div>
                         </div>
 
                         <div class="layui-form-item layui-inline">
-                            <label class="layui-form-label">添加时间</label>
+                            <label class="layui-form-label">{:lang('添加时间')}</label>
                             <div class="layui-input-inline">
-                                <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="请选择添加时间" class="layui-input">
+                                <input data-date-range name="addtime" value="{$Think.get.addtime|default=''}" placeholder="{:lang('请选择添加时间')}" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-inline">
-                            <button type="button" class="layui-btn layui-btn-primary r-search"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+                            <button type="button" class="layui-btn layui-btn-primary r-search"><i class="layui-icon">&#xe615;</i>{:lang(' 搜 索')}</button>
                         </div>
                     </form>
                 </fieldset>
@@ -466,12 +466,12 @@
             <!--银行账户-->
             <div class="layui-tab-item">
                 <div class="layui-card-header layui-anim layui-anim-fadein notselect">
-                    <span class="layui-btn layui-btn-sm layui-btn-normal bank_refresh">刷新</span>
+                    <span class="layui-btn layui-btn-sm layui-btn-normal bank_refresh">{:lang('刷新')}</span>
                     <span class="layui-btn layui-btn-sm layui-btn-normal add_bank_btn">{:lang("添加")}
                 </span>
 
                 </div>
-                <p style="color: red;margin-top: 20px;">添加、编辑、删除后点击刷新按钮生效</p>
+                <p style="color: red;margin-top: 20px;">{:lang('添加、编辑、删除后点击刷新按钮生效')}</p>
                 <table id="demo4" lay-filter="test4"></table>
             </div>
             <!--Tron地址-->

@@ -1,18 +1,18 @@
 <form class="layui-form layui-card" action="{:request()->url()}"  data-auto="true" method="post" autocomplete="off">
     <div class="layui-card-body">
         <div class="layui-form-item">
-            <label class="layui-form-label">名称</label>
+            <label class="layui-form-label">{:lang('名称')}</label>
             <div class="layui-input-block">
                 <input type="hidden" name="group_id" value="{$group.id}">
-                <input name="title" value='{$group.title|default=""}' placeholder="请输入方案组名称" class="layui-input">
+                <input name="title" value='{$group.title|default=""}' placeholder="{:lang('请输入方案组名称')}" class="layui-input">
                 {:token()}
             </div>
         </div>
         <div class="layui-form-item layui-inline">
-            <label class="layui-form-label">代理</label>
+            <label class="layui-form-label">{:lang('代理')}</label>
             <div class="layui-input-inline">
                 <select name="agent_id" class="layui-select">
-                    <option value="">选择代理</option>
+                    <option value="">{:lang('选择代理')}</option>
                     {volist name="agents" id="agent"}
                     <option value="{$agent.id}" {if $group.agent_id == $agent.id} selected {/if}>{$agent.username}</option>
                     {/volist}
@@ -20,16 +20,16 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">抢单次数</label>
+            <label class="layui-form-label">{:lang('抢单次数')}</label>
             <div class="layui-input-block">
-                <input name="order_num" value='{$group.order_num}' placeholder="请输入用户订单数量" class="layui-input">
+                <input name="order_num" value='{$group.order_num}' placeholder="{:lang('请输入用户订单数量')}" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item set_order_box">
-            <label class="layui-form-label">方案计划</label>
+            <label class="layui-form-label">{:lang('方案计划')}</label>
 <!--            <div class="layui-inline">-->
 <!--                <div class="layui-input-inline">-->
-<!--                    <span class="layui-btn layui-btn-xs layui-btn-warm set_order">设置爆单</span>-->
+<!--                    <span class="layui-btn layui-btn-xs layui-btn-warm set_order">{:lang('设置爆单')}</span>-->
 <!--                </div>-->
 <!--            </div>-->
         </div>
@@ -39,32 +39,32 @@
             <label class="layui-form-label"></label>
             <div class="layui-inline">
                 <div class="layui-input-inline" style="width: 80px;">
-                    <input type="number" name="order_num" value="{$item.order_num}" placeholder="第几单" autocomplete="off" class="layui-input">
+                    <input type="number" name="order_num" value="{$item.order_num}" placeholder="{:lang('第几单')}" autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-form-mid">单</div>
+                <div class="layui-form-mid">{:lang('单')}</div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="order_type" class="layui-select order_type" lay-filter="order_type">
-                        <option value="0" {if $item.order_type == 0} selected{/if}>默认模式</option>
-                        <option value="1" {if $item.order_type == 1} selected{/if}>叠加模式</option>
-                        <option value="2" {if $item.order_type == 2} selected{/if}>固定补单模式</option>
+                        <option value="0" {if $item.order_type == 0} selected{/if}>{:lang('默认模式')}</option>
+                        <option value="1" {if $item.order_type == 1} selected{/if}>{:lang('叠加模式')}</option>
+                        <option value="2" {if $item.order_type == 2} selected{/if}>{:lang('固定补单模式')}</option>
                     </select>
                 </div>
 
                 <!--选择默认模式-->
                 <div class="layui-input-inline order_type_0" style="width: 100px;display: {if $item.order_type != 0} none {/if};">
                     <select name="order_price_type" class="layui-select order_price_type" lay-filter="order_price_type">
-                        <option value="0" {if $item.order_price_type == 0} selected{/if}>余额比例%</option>
-                        <option value="1"  {if $item.order_price_type == 1} selected{/if}>固定金额</option>
+                        <option value="0" {if $item.order_price_type == 0} selected{/if}>{:lang('余额比例%')}</option>
+                        <option value="1"  {if $item.order_price_type == 1} selected{/if}>{:lang('固定金额')}</option>
                     </select>
                 </div>
                 <!--选择默认模式->选择余额比例%-->
                 <div class="layui-inline order_price_type_0" style="display: {if $item.order_type != 0 || $item.order_price_type != 0} none {/if};">
                     <div class="layui-input-inline" style="width: 80px;">
-                        <input type="number" value="{$item.order_price_min|default=''}" name="order_price_min" placeholder="输入比例" autocomplete="off" class="layui-input">
+                        <input type="number" value="{$item.order_price_min|default=''}" name="order_price_min" placeholder="{:lang('输入比例')}" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid">-</div>
                     <div class="layui-input-inline" style="width: 80px;">
-                        <input type="number" value="{$item.order_price_max|default=''}"  name="order_price_max" placeholder="输入比例" autocomplete="off" class="layui-input">
+                        <input type="number" value="{$item.order_price_max|default=''}"  name="order_price_max" placeholder="{:lang('输入比例')}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <!--选择默认模式->选择固定金额-->
@@ -79,23 +79,23 @@
                 <div class="layui-input-inline order_type_1" style="width: 80px;display: {if $item.order_type != 1} none {/if};">
                     <!--order_price_type=0 余额比例 -->
                     <input type="hidden" name="order_price_type" value="0" autocomplete="off" class="layui-input">
-                    <input type="number" name="order_price" value="{$item.order_price|default=''}" placeholder="输入比例" autocomplete="off" class="layui-input">
+                    <input type="number" name="order_price" value="{$item.order_price|default=''}" placeholder="{:lang('输入比例')}" autocomplete="off" class="layui-input">
                 </div>
 
                 <!--选择固定补单模式-->
                 <div class="layui-input-inline order_type_2" style="width: 80px;display: {if $item.order_type != 2} none {/if};">
                     <!--order_price_type=1 固定金额 -->
                     <input type="hidden" name="order_price_type" value="1" autocomplete="off" class="layui-input">
-                    <input type="number" name="order_price" value="{$item.order_price|default=''}" placeholder="金额" autocomplete="off" class="layui-input">
+                    <input type="number" name="order_price" value="{$item.order_price|default=''}" placeholder="{:lang('金额')}" autocomplete="off" class="layui-input">
                 </div>
 
                 <!--佣金-->
                 <div class="layui-inline">
-                    <div class="layui-form-mid">佣金：</div>
+                    <div class="layui-form-mid">{:lang('佣金：')}</div>
                     <div class="layui-input-inline" style="width: 110px;">
                         <select name="commission_type" class="layui-select">
-                            <option value="0" {if $item.commission_type == 0} selected{/if}>订单比例%</option>
-                            <option value="1" {if $item.commission_type == 1} selected{/if}>固定金额</option>
+                            <option value="0" {if $item.commission_type == 0} selected{/if}>{:lang('订单比例%')}</option>
+                            <option value="1" {if $item.commission_type == 1} selected{/if}>{:lang('固定金额')}</option>
                         </select>
                     </div>
                     <div class="layui-input-inline" style="width: 100px;">
@@ -107,7 +107,7 @@
                 <div class="layui-inline">
                     <div class="layui-input-inline" style="width: 120px;">
                         <select name="trigger_level" class="layui-select">
-                            <option value="" >选择触发等级</option>
+                            <option value="" >{:lang('选择触发等级')}</option>
                             {volist name="levels" id="le"}
                             <option value="{$le.level}" {if $item.trigger_level === $le.level} selected {/if}>{$le.name}</option>
                             {/volist}
@@ -118,8 +118,8 @@
                 <div class="layui-inline">
                     <div class="layui-input-inline" style="width: 110px;">
                         <select name="freeze_principal" class="layui-select">
-                            <option value="0" {if $item.freeze_principal == 0} selected {/if}>组合订单</option>
-                            <option value="1" {if $item.freeze_principal == 1} selected {/if}>幸运订单</option>
+                            <option value="0" {if $item.freeze_principal == 0} selected {/if}>{:lang('组合订单')}</option>
+                            <option value="1" {if $item.freeze_principal == 1} selected {/if}>{:lang('幸运订单')}</option>
                         </select>
                     </div>
                 </div>
@@ -148,24 +148,24 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">绑定用户</label>
+            <label class="layui-form-label">{:lang('绑定用户')}</label>
             <div class="layui-inline">
                 <div class="layui-input-inline" style="width: 150px;">
-                    <input type="text" name="username" placeholder="登录账号" autocomplete="off" class="layui-input">
+                    <input type="text" name="username" placeholder="{:lang('登录账号')}" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="user_type" class="layui-select"  lay-verify="">
-                        <option value="">用户类型</option>
-                        <option value="0">外部</option>
-                        <option value="1">内部</option>
+                        <option value="">{:lang('用户类型')}</option>
+                        <option value="0">{:lang('外部')}</option>
+                        <option value="1">{:lang('内部')}</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 150px;">
-                    <input type="text" name="parent_name" placeholder="上级名称" autocomplete="off" class="layui-input">
+                    <input type="text" name="parent_name" placeholder="{:lang('上级名称')}" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width:100px;">
                     <select name="level" class="layui-select"  lay-verify="">
-                        <option value="">用户等级</option>
+                        <option value="">{:lang('用户等级')}</option>
                         {volist name="levels" id="le"}
                         <option value="{$le.level}" >{$le.name}</option>
                         {/volist}
@@ -178,7 +178,7 @@
             <label class="layui-form-label"></label>
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <button type="button" class="layui-btn layui-btn-sm layui-btn-normal s_user" lay-on="reload">搜索</button>
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-normal s_user" lay-on="reload">{:lang('搜索')}</button>
                 </div>
             </div>
         </div>
@@ -192,46 +192,46 @@
         </div>
 
         <div class="layui-form-item layui-inline layui-hide">
-            <label class="layui-form-label">开启状态</label>
+            <label class="layui-form-label">{:lang('开启状态')}</label>
             <div class="layui-input-inline">
                 <select name="status" class="layui-select"  lay-verify="">
-                    <option value="0" {if $group.status == 0} selected {/if}>关闭</option>
-                    <option value="1" {if $group.status == 1} selected {/if}>开启</option>
+                    <option value="0" {if $group.status == 0} selected {/if}>{:lang('关闭')}</option>
+                    <option value="1" {if $group.status == 1} selected {/if}>{:lang('开启')}</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item layui-hide">
-            <label class="layui-form-label">是否默认</label>
+            <label class="layui-form-label">{:lang('是否默认')}</label>
             <div class="layui-input-inline">
                 <select name="is_default" class="layui-select"  lay-verify="">
-                    <option value="0" {if $group.is_default == 0} selected {/if}>否</option>
-                    <option value="1" {if $group.is_default == 1} selected {/if}>是</option>
+                    <option value="0" {if $group.is_default == 0} selected {/if}>{:lang('否')}</option>
+                    <option value="1" {if $group.is_default == 1} selected {/if}>{:lang('是')}</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item layui-hide">
-            <label class="layui-form-label">是否团队模式</label>
+            <label class="layui-form-label">{:lang('是否团队模式')}</label>
             <div class="layui-input-inline">
                 <select name="is_team_mode" class="layui-select"  lay-verify="">
-                    <option value="0" {if $group.is_team_mode == 0} selected {/if}>否</option>
-                    <option value="1" {if $group.is_team_mode == 1} selected {/if}>是</option>
+                    <option value="0" {if $group.is_team_mode == 0} selected {/if}>{:lang('否')}</option>
+                    <option value="1" {if $group.is_team_mode == 1} selected {/if}>{:lang('是')}</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item layui-hide">
-            <label class="layui-form-label">是否共享</label>
+            <label class="layui-form-label">{:lang('是否共享')}</label>
             <div class="layui-input-inline">
                 <select name="share" class="layui-select"  lay-verify="">
-                    <option value="0" {if $group.is_share == 0} selected {/if}>否</option>
-                    <option value="1" {if $group.is_share == 1} selected {/if}>是</option>
+                    <option value="0" {if $group.is_share == 0} selected {/if}>{:lang('否')}</option>
+                    <option value="1" {if $group.is_share == 1} selected {/if}>{:lang('是')}</option>
                 </select>
             </div>
         </div>
     </div>
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">
-        <button class="layui-btn submit-btn" type='button'>提交</button>
-        <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>
+        <button class="layui-btn submit-btn" type='button'>{:lang('提交')}</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-close>{:lang('取消')}</button>
     </div>
     <script>
         $(function (){

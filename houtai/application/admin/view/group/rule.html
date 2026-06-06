@@ -2,7 +2,7 @@
 
 {block name="button"}
 {if auth("rule_add")}
-<button data-modal='{:url("rule_add")}?group_id={$group_id}' data-title="添加规则" class='layui-btn layui-btn-sm layui-btn-primary'>添加规则</button>
+<button data-modal='{:url("rule_add")}?group_id={$group_id}' data-title="{:lang('添加规则')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加规则')}</button>
 {/if}
 {/block}
 {block name="content"}
@@ -11,13 +11,13 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>第几单</th>
-            <th class='text-left nowrap'>佣金类型</th>
-            <th class='text-left nowrap'>佣金</th>
-            <th class='text-left nowrap'>增加做单数</th>
-            <th class='text-left nowrap'>做单类型</th>
-            <th class='text-left nowrap'>做单价格</th>
-            <th class='text-left nowrap'>弹窗图片</th>
+            <th class='text-left nowrap'>{:lang('第几单')}</th>
+            <th class='text-left nowrap'>{:lang('佣金类型')}</th>
+            <th class='text-left nowrap'>{:lang('佣金')}</th>
+            <th class='text-left nowrap'>{:lang('增加做单数')}</th>
+            <th class='text-left nowrap'>{:lang('做单类型')}</th>
+            <th class='text-left nowrap'>{:lang('做单价格')}</th>
+            <th class='text-left nowrap'>{:lang('弹窗图片')}</th>
             <th class='text-left nowrap'></th>
         </tr>
         </thead>
@@ -33,27 +33,27 @@
             <td class='text-left nowrap'>{$vo.order_price|default='0'}</td>
             <td class='text-left nowrap'>
                 {if $vo.image}
-                <a data-dbclick data-tips-image="{$vo.image}" data-title="预览图片">
+                <a data-dbclick data-tips-image="{$vo.image}" data-title="{:lang('预览图片')}">
                     <img src="{$vo.image}">
                 </a>
                 {/if}
             </td>
             <td class='text-left nowrap'>
                 {if auth("rule_edit")}
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑规则"
-                   data-modal='{:url("rule_edit")}?id={$vo.id}'>编辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm" data-title="{:lang('编辑规则')}"
+                   data-modal='{:url("rule_edit")}?id={$vo.id}'>{:lang('编辑')}</a>
                 {/if}
                 {if auth("rule_remove")}
-                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除吗？"
-                   data-action="{:url('rule_remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('rule_remove')}">删除</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="{:lang('确定要删除吗？')}"
+                   data-action="{:url('rule_remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('rule_remove')}">{:lang('删除')}</a>
                 {/if}
             </td>
         </tr>
         {/foreach}
         </tbody>
     </table>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
-    <div class="">请填写好第x单  不要断</div>
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
+    <div class="">{:lang('请填写好第x单  不要断')}</div>
 </div>
 <script>window.form.render();</script>
 {/block}

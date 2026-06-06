@@ -39,7 +39,7 @@ class Group extends Base
      */
     public function index()
     {
-        $this->title = '模式分组';
+        $this->title = lang('模式分组');
         $this->agent = input('agent','');
         $this->group_name = input('group_name','');
         $this->is_share = input('is_share','');
@@ -97,10 +97,10 @@ class Group extends Base
      */
     public function del_group()
     {
-        $this->title = '删除方案分组';
+        $this->title = lang('删除方案分组');
         $id = input('id');
         Db::table('xy_group')->where('id',$id)->delete();;
-        $this->success('删除成功');
+        $this->success(lang('删除成功'));
     }
 
 //    /**
@@ -114,9 +114,9 @@ class Group extends Base
 //            $id = input('id');
 //            $res = Db::table('xy_group_rule')->where('id',$id)->delete();
 //            if($res){
-//                $this->success('删除成功');
+//                $this->success(lang('删除成功'));
 //            }
-//            $this->error('删除失败');
+//            $this->error(lang('删除失败'));
 //        }
 //    }
 
@@ -130,7 +130,7 @@ class Group extends Base
         if (request()->isPost()) {
             $data = input();
             if(cache('group_edit')){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('group_edit',1,3);
             Db::startTrans();
@@ -175,9 +175,9 @@ class Group extends Base
                 Db::rollback();
                 return $this->error($e->getMessage());
             }
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
-        $this->title = '编辑方案分组';
+        $this->title = lang('编辑方案分组');
         $id = input('id');
         $this->group = Db::table('xy_group')->where('id',$id)->find();;
         $this->group_rule_list = Db::table('xy_group_rule')->where('group_id',$id)->select();;
@@ -206,7 +206,7 @@ class Group extends Base
      */
     public function view_group_users()
     {
-        $this->title = '查看方案组用户';
+        $this->title = lang('查看方案组用户');
         $id = input('id');
         $this->_query('xy_users')->where('group_id',$id)->page();;
     }
@@ -235,7 +235,7 @@ class Group extends Base
      */
     public function view_plan()
     {
-        $this->title = '查看计划';
+        $this->title = lang('查看计划');
         $id = input('id');
         $this->_query('xy_group_rule')->where('group_id',$id)->page();;
     }
@@ -296,7 +296,7 @@ class Group extends Base
         if (request()->isPost()) {
             $data = input();
             if(cache('group_add')){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('group_add',1,3);
             Db::startTrans();
@@ -339,7 +339,7 @@ class Group extends Base
                 Db::rollback();
                 return $this->error($e->getMessage());
             }
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
         $where = [];
         if($this->agent_id){
@@ -440,12 +440,12 @@ class Group extends Base
     {
         $group_id = $this->request->get('group_id/d', 0);
         if (!$group_id) {
-            $this->error('数据不存在');
+            $this->error(lang('数据不存在'));
         }
-        $this->title = '叠加规则列表';
+        $this->title = lang('叠加规则列表');
         $this->group_id = $group_id;
-        $this->com_types = [0 => '百分比', 1 => "固定值"];
-        $this->order_types = [0 => '默认模式', 1 => "叠加模式"];
+        $this->com_types = [0  => lang('百分比'), 1 => "固定值"];
+        $this->order_types = [0  => lang('默认模式'), 1 => "叠加模式"];
         $query = Db::name($this->table_rule)
             ->where('group_id', $group_id);
         $this->list = $query->select();
@@ -465,7 +465,7 @@ class Group extends Base
     {
         $this->group_id = $this->request->get('group_id/d', 0);
         if (!$this->group_id) {
-            $this->error('数据不存在');
+            $this->error(lang('数据不存在'));
         }
         // $this->applyCsrfToken();
         $this->_form($this->table_rule, 'rule_form');

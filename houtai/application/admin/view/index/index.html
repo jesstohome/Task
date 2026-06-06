@@ -193,7 +193,7 @@
 
                 <li class="layui-nav-item">
                     <p class="text-center no-border">
-                        <span style="color: #666666;font-size: 13px;">首页 </span> <span class="nav-title" style="color: #A9A9A9FF;font-size: 13px;">/ {$title}</span>
+                        <span style="color: #666666;font-size: 13px;">{:lang('首页')} </span> <span class="nav-title" style="color: #A9A9A9FF;font-size: 13px;">/ {$title}</span>
                     </p>
                 </li>
 
@@ -215,15 +215,15 @@
 
             <!--头部右侧功能区域-->
             <ul class="layui-nav layui-layout-right">
-                <li lay-unselect="" class="layui-nav-item">
+                <li class="layui-nav-item">
                     <a href="/admin.html#/admin/deal/user_recharge.html" style="color: #666666 !important;font-size: 13px;">
-                        充值记录
+                        {:lang('充值记录')}
                         <!--                        <span class="layui-badge recharge">0</span>-->
                     </a>
                 </li>
                 <li lay-unselect="" class="layui-nav-item">
                     <a href="/admin.html#/admin/deal/deposit_list.html" style="color: #666666 !important;font-size: 13px;">
-                        提款记录
+                        {:lang('提款记录')}
                         <!--                        <span class="layui-badge deposit">0</span>-->
                     </a>
                 </li>
@@ -240,6 +240,21 @@
                     </a>
                 </li>
 
+                <!-- 语言切换 -->
+                <li lay-unselect="" class="layui-nav-item">
+                    <a href="javascript:;" onclick="switchLang('zh-cn')" style="color: #666666 !important;font-size: 13px;" id="langZhBtn">{:lang('中文')}</a>
+                </li>
+                <li lay-unselect="" class="layui-nav-item">
+                    <a href="javascript:;" onclick="switchLang('en-us')" style="color: #666666 !important;font-size: 13px;" id="langEnBtn">EN</a>
+                </li>
+                <script>
+                function switchLang(lang) {
+                    $.get('{:url("admin/index/change_lang")}?lang=' + lang, function(res) {
+                        location.reload();
+                    });
+                }
+                </script>
+
                 <!--刷新-->
                 <!--                <li lay-unselect class="layui-nav-item">-->
                 <!--                    <a data-reload>-->
@@ -249,12 +264,12 @@
                 {notempty name='Think.session.admin_user.username'}
                 <li class="layui-nav-item">
                     <dl class="layui-nav-child">
-                        <dd lay-unselect><a data-modal="{:url('admin/index/info',['id'=>session('admin_user.id')])}"><i class="layui-icon layui-icon-set-fill margin-right-5"></i>基本资料</a></dd>
-                        <dd lay-unselect><a data-modal="{:url('admin/index/pass',['id'=>session('admin_user.id')])}"><i class="layui-icon layui-icon-component margin-right-5"></i>安全设置</a></dd>
+                        <dd lay-unselect><a data-modal="{:url('admin/index/info',['id'=>session('admin_user.id')])}"><i class="layui-icon layui-icon-set-fill margin-right-5"></i>{:lang('基本资料')}</a></dd>
+                        <dd lay-unselect><a data-modal="{:url('admin/index/pass',['id'=>session('admin_user.id')])}"><i class="layui-icon layui-icon-component margin-right-5"></i>{:lang('安全设置')}</a></dd>
 
-                        <!--<dd lay-unselect><a data-modal="{:url('admin/index/buildOptimize')}"><i class="layui-icon layui-icon-template-1 margin-right-5"></i>压缩发布</a></dd>-->
+                        <!--<dd lay-unselect><a data-modal="{:url('admin/index/buildOptimize')}"><i class="layui-icon layui-icon-template-1 margin-right-5"></i>{:lang('压缩发布')}</a></dd>-->
 
-                        <dd lay-unselect><a data-modal="{:url('admin/index/clearRuntime')}"><i class="layui-icon layui-icon-fonts-clear margin-right-5"></i>清理缓存</a></dd>
+                        <dd lay-unselect><a data-modal="{:url('admin/index/clearRuntime')}"><i class="layui-icon layui-icon-fonts-clear margin-right-5"></i>{:lang('清理缓存')}</a></dd>
 
                         {notempty name='GLOBALS.AdminUserRightOption'}
                         {foreach $GLOBALS.AdminUserRightOption as $option}
@@ -264,13 +279,13 @@
                         {/foreach}
                         {/notempty}
 
-                        <dd lay-unselect><a data-confirm="确定要退出登录吗？" data-load="{:url('admin/login/out')}"><i class="layui-icon layui-icon-release margin-right-5"></i>退出登录</a></dd>
+                        <dd lay-unselect><a data-confirm="{:lang('确定要退出登录吗？')}" data-load="{:url('admin/login/out')}"><i class="layui-icon layui-icon-release margin-right-5"></i>{:lang('退出登录')}</a></dd>
                     </dl>
                     <a><span style="color: #666666 !important;"><i class="layui-icon layui-icon-username margin-right-5" style="color: #666666 !important;"></i> {:session('admin_user.username')}</span></a>
                 </li>
                 {else}
                 <li class="layui-nav-item">
-                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i> 立即登录</a>
+                    <a data-href="{:url('@admin/login')}"><i class="layui-icon layui-icon-username"></i>{:lang(' 立即登录')}</a>
                 </li>
                 {/notempty}
             </ul>
@@ -314,8 +329,8 @@
         <div class="layui-body" style="background-color: #fff!important;">
             <div class="layui-tab layui-tab-card" lay-allowClose="true" lay-filter="menuItem">
                 <ul class="layui-tab-title">
-                    <!--                    <li lay-id="/admin/users/index" class="layui-this">网站设置</li>-->
-                    <!--                    <li lay-id="/admin/index/main">首页</li>-->
+                    <!--                    <li lay-id="/admin/users/index" class="layui-this">{:lang('网站设置')}</li>-->
+                    <!--                    <li lay-id="/admin/index/main">{:lang('首页')}</li>-->
                 </ul>
                 <div class="layui-tab-content">
                     {block name='content'}{/block}

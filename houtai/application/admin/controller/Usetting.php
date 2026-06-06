@@ -41,7 +41,7 @@ class Usetting extends Base
         $query = $this->_query($this->table);
         $uid = $this->request->get('uid/d', 0);
         if ($uid < 1) {
-            return $this->error('用户不存在');
+            return $this->error(lang('用户不存在'));
         }
         $this->title = 'UID:' . $uid . ' 做单设置';
         $this->uid = $uid;
@@ -74,7 +74,7 @@ class Usetting extends Base
     {
         $uid = $this->request->get('uid/d', 0);
         if ($uid < 1) {
-            return $this->error('用户不存在');
+            return $this->error(lang('用户不存在'));
         }
         $this->uid = $uid;
         $this->applyCsrfToken();

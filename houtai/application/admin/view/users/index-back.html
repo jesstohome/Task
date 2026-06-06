@@ -3,7 +3,7 @@
 {block name="button"}
 
 {if auth("add_users")}
-<button data-modal='{:url("add_users")}' data-title="添加会员" class='layui-btn layui-btn-sm layui-btn-primary'>添加会员</button>
+<button data-modal='{:url("add_users")}' data-title="{:lang('添加会员')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加会员')}</button>
 {/if}
 
 {/block}
@@ -19,16 +19,16 @@
             <th lay-data="{type:'checkbox',width:40,fixed:'left'}" class='list-table-check-td think-checkbox'>
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
-            <th lay-data="{field:'id',width:80,fixed:'left'}" class='text-center nowrap' >账号资料</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>余额</th>
-            <th lay-data="{field:'addtime',width:150}" class='text-center nowrap'>抢单收益</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>充值/提款</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>理财收益</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>上级代理</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>状态</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>注册时间</th>
-            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>最近登录</th>
-            <th lay-data="{field:'edit',width:280,fixed: 'right'}" class='text-center nowrap'>操作</th>
+            <th lay-data="{field:'id',width:80,fixed:'left'}" class='text-center nowrap' >{:lang('账号资料')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('余额')}</th>
+            <th lay-data="{field:'addtime',width:150}" class='text-center nowrap'>{:lang('抢单收益')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('充值/提款')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('理财收益')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('上级代理')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('状态')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('注册时间')}</th>
+            <th lay-data="{field:'addtime',width:200}" class='text-center nowrap'>{:lang('最近登录')}</th>
+            <th lay-data="{field:'edit',width:280,fixed: 'right'}" class='text-center nowrap'>{:lang('操作')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -52,12 +52,12 @@
                 <span style="color: #009688;">用户ID：{$vo.id}</span><br>
 
 
-                <a data-dbclick  data-title="方案组" data-width="40%;" data-height="50%;" class="layui-btn layui-btn-xs layui-btn layui-btn layui-btn-normal"
+                <a data-dbclick  data-title="{:lang('方案组')}" data-width="40%;" data-height="50%;" class="layui-btn layui-btn-xs layui-btn layui-btn layui-btn-normal"
                    data-modal='{:url("users/guizhes")}?id={$vo.id}'>{if $vo.group_id && isset($groupAllList[$vo.group_id])} {$groupAllList[$vo.group_id]}{else}无方案组{/if}</span></a>
             </td>
-            <td class='text-left nowrap' >
+            <td class='text-left nowrap' >{:lang('
 
-                余额：<span style="color: red;">{$vo.balance}</span><br/>
+                余额：')}<span style="color: red;">{$vo.balance}</span><br/>
                 冻结本金：{$vo.freeze_amount}<br/>
                 抢单冻结：{$vo.order_freeze_balance}<br/>
 
@@ -97,15 +97,15 @@
             </td>
             <td class='text-center nowrap' >
                 <div class="layui-form">
-                    <span>登录：</span>
+                    <span>{:lang('登录：')}</span>
                     <input type="checkbox" lay-filter="status" name="status" lay-skin="switch" lay-text="ON|OFF"  data-id="{$vo.id}" value="{$vo.status}" {if($vo.status == 1)}checked{/if}>
                 </div>
                 <div class="layui-form">
-                    <span>提现：</span>
+                    <span>{:lang('提现：')}</span>
                     <input type="checkbox" lay-filter="withdrawal_status" name="withdrawal_status" lay-skin="switch" lay-text="ON|OFF"  data-id="{$vo.id}" value="{$vo.withdrawal_status}" {if($vo.withdrawal_status == 1)}checked{/if}>
                 </div>
                 <div class="layui-form">
-                    <span>抢单：</span>
+                    <span>{:lang('抢单：')}</span>
                     <input type="checkbox" lay-filter="shuadan_status" name="shuadan_status" lay-skin="switch" lay-text="ON|OFF" data-id="{$vo.id}" value="{$vo.shuadan_status}" value="1"{if($vo.shuadan_status == 1)}checked{/if}>
                 </div>
             </td>
@@ -120,8 +120,8 @@
             <td class='text-left nowrap'>
                 {$vo.login_time|format_datetime}<br/>
                 {if($vo.ip)}
-                ip：{$vo.ip}<br/>
-                ip地址：<span><?php
+                ip：{$vo.ip}<br/>{:lang('
+                ip地址：')}<span><?php
                          $result = $ips->btreeSearch($vo['ip']);
                          $vo['ips'] = isset($result['region']) ? $result['region'] : '';
                          $vo['ips'] = str_replace(['内网IP', '0', '|'], '', $vo['ips']);
@@ -130,31 +130,31 @@
                      </span>
                 {/if}
                 <!--状态：{if $vo.is_jia>0}-->
-                <!--       <a class="layui-btn layui-btn-danger layui-btn-xs">假人</a>-->
+                <!--       <a class="layui-btn layui-btn-danger layui-btn-xs">{:lang('假人')}</a>-->
                 <!--       {else}-->
-                <!--       <a class="layui-btn layui-btn-normal layui-btn-xs">真人</a>-->
+                <!--       <a class="layui-btn layui-btn-normal layui-btn-xs">{:lang('真人')}</a>-->
                 <!--       {/if}<br/>-->
 
             </td>
             <td class='text-left nowrap'>
                 {if auth("inyectar/index")}
-                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="打针计划"
-                   data-open='{:url("inyectar/index")}?uid={$vo.id}'>打针</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="{:lang('打针计划')}"
+                   data-open='{:url("inyectar/index")}?uid={$vo.id}'>{:lang('打针')}</a>
                 {/if}
 
                 <!--                {if auth("usetting/index")}-->
-                <!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="做单设置"-->
-                <!--                   data-open='{:url("usetting/index")}?uid={$vo.id}'>做单</a>-->
+                <!--                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="{:lang('做单设置')}"-->
+                <!--                   data-open='{:url("usetting/index")}?uid={$vo.id}'>{:lang('做单')}</a>-->
                 <!--                {/if}-->
 
                 {if auth("usetting/index")}
-                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="下线"
-                   data-open='{:url("offline")}?uid={$vo.id}'>下线</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="{:lang('下线')}"
+                   data-open='{:url("offline")}?uid={$vo.id}'>{:lang('下线')}</a>
                 {/if}
 
                 {if auth("change_user_balance")}
-                <a data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm" data-title="账变"
-                   data-modal='{:url("admin/users/change_user_balance")}?id={$vo.id}'>账变</a>
+                <a data-dbclick data-height="65%" class="layui-btn layui-btn-xs layui-btn-warm" data-title="{:lang('账变')}"
+                   data-modal='{:url("admin/users/change_user_balance")}?id={$vo.id}'>{:lang('账变')}</a>
                 {/if}
 
                 <a class="layui-btn layui-btn-xs"
@@ -164,51 +164,51 @@
 
                 <a class="layui-btn layui-btn-xs"
                    data-dbclick data-height="65%;"
-                   data-modal="{:url('set_single_control')}?uid={$vo.id}" data-title="设置单控方案">{:lang("设置单控方案")}
+                   data-modal="{:url('set_single_control')}?uid={$vo.id}" data-title="{:lang('设置单控方案')}">{:lang("设置单控方案")}
                 </a>
 
                 {if auth("edit_level")}
-                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="编辑等级"
-                   data-modal='{:url("users/edit_level")}?id={$vo.id}'>等级</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="{:lang('编辑等级')}"
+                   data-modal='{:url("users/edit_level")}?id={$vo.id}'>{:lang('等级')}</a>
                 {/if}
 
                 <br/>
 
                 {if auth("edit_money")}
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑余额信息"
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="{:lang('编辑余额信息')}"
                    style='background:red;'
-                   data-modal='{:url("users/edit_money")}?id={$vo.id}'>余额</a>
+                   data-modal='{:url("users/edit_money")}?id={$vo.id}'>{:lang('余额')}</a>
                 {/if}
                 {if auth("edit_users_ankou")}
-                <!--<a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="暗扣设置"
-                   data-modal='{:url("users/edit_users_ankou")}?id={$vo.id}'>暗扣设置</a>-->
+                <!--<a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="{:lang('暗扣设置')}"
+                   data-modal='{:url("users/edit_users_ankou")}?id={$vo.id}'>{:lang('暗扣设置')}</a>-->
                 {/if}
                 {if auth("edit_users")}
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="编辑用户信息"
-                   data-modal='{:url("users/edit_users")}?id={$vo.id}'>编辑</a>
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="{:lang('编辑用户信息')}"
+                   data-modal='{:url("users/edit_users")}?id={$vo.id}'>{:lang('编辑')}</a>
                 {/if}
                 {if auth("edit_users_bk")}
-                <a data-dbclick class="layui-btn layui-btn-xs" data-title="银行卡信息"
-                   data-modal='{:url("users/edit_users_bk")}?id={$vo.id}'>银行卡信息</a>
+                <a data-dbclick class="layui-btn layui-btn-xs" data-title="{:lang('银行卡信息')}"
+                   data-modal='{:url("users/edit_users_bk")}?id={$vo.id}'>{:lang('银行卡信息')}</a>
                 {/if}
 
                 <br/>
 
                 {if auth("edit_users_address")}
-                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="收货地址信息"
-                   data-modal='{:url("users/edit_users_address")}?id={$vo.id}'>地址信息</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="{:lang('收货地址信息')}"
+                   data-modal='{:url("users/edit_users_address")}?id={$vo.id}'>{:lang('地址信息')}</a>
                 {/if}
                 {if auth("edit_users_ewm")}
                 <a class="layui-btn layui-btn-xs layui-btn"
                    data-action="{:url('edit_users_ewm',['status'=>2,'id'=>$vo.id])}"
-                   data-value="id#{$vo.id};status#{$vo.invite_code}" style='background:red;'>刷新二维码</a>
+                   data-value="id#{$vo.id};status#{$vo.invite_code}" style='background:red;'>{:lang('刷新二维码')}</a>
                 {/if}
                 {if auth("tuandui")}
-                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="查看团队" data-reload="true"
-                   data-open='{:url("users/tuandui")}?id={$vo.id}'>查看团队</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-danger" data-title="{:lang('查看团队')}" data-reload="true"
+                   data-open='{:url("users/tuandui")}?id={$vo.id}'>{:lang('查看团队')}</a>
                 <br/>
-                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="查看账变" data-reload="true"
-                   data-open='{:url("users/caiwu")}?id={$vo.id}'>账变</a>
+                <a data-dbclick class="layui-btn layui-btn-xs layui-btn-normal" data-title="{:lang('查看账变')}" data-reload="true"
+                   data-open='{:url("users/caiwu")}?id={$vo.id}'>{:lang('账变')}</a>
                 {/if}
 
 
@@ -216,14 +216,14 @@
                 {if ($vo.status == 1) and auth("edit_users_status")}
                 <a class="layui-btn layui-btn-xs layui-btn-warm"
                    data-action="{:url('edit_users_status',['status'=>2,'id'=>$vo.id])}"
-                   data-value="id#{$vo.id};status#2" style='background:red;'>禁用</a>
+                   data-value="id#{$vo.id};status#2" style='background:red;'>{:lang('禁用')}</a>
                 {elseif ($vo.status == 2) and auth("edit_users_status") /}
                 <a class="layui-btn layui-btn-xs layui-btn-warm"
                    data-action="{:url('edit_users_status',['status'=>1,'id'=>$vo.id])}"
-                   data-value="id#{$vo.id};status#1" style='background:green;'>启用</a>
+                   data-value="id#{$vo.id};status#1" style='background:green;'>{:lang('启用')}</a>
                 {/if}
                 {if auth("delete_user")}
-                <a class="layui-btn layui-btn-xs layui-btn" onClick="del_user({$vo.id})" style='background:red;'>删除</a>
+                <a class="layui-btn layui-btn-xs layui-btn" onClick="del_user({$vo.id})" style='background:red;'>{:lang('删除')}</a>
                 {/if}
 
 
@@ -232,11 +232,11 @@
                 <!--{if ($vo.is_jia == 1)}-->
                 <!--<a class="layui-btn layui-btn-xs layui-btn-warm"-->
                 <!--   data-action="{:url('edit_users_status2',['status'=>-1,'id'=>$vo.id])}"-->
-                <!--   data-value="id#{$vo.id};status#-1" style='background:red;'>设为真人</a>-->
+                <!--   data-value="id#{$vo.id};status#-1" style='background:red;'>{:lang('设为真人')}</a>-->
                 <!--{else/}-->
                 <!--<a class="layui-btn layui-btn-xs layui-btn-warm"-->
                 <!--   data-action="{:url('edit_users_status2',['status'=>1,'id'=>$vo.id])}"-->
-                <!--   data-value="id#{$vo.id};status#1" style='background:green;'>设为假人</a>-->
+                <!--   data-value="id#{$vo.id};status#1" style='background:green;'>{:lang('设为假人')}</a>-->
                 <!--{/if}-->
                 <!--{/if}-->
 
@@ -334,7 +334,7 @@
             limit: limit
         });
     </script>
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 {/block}

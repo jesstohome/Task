@@ -8,47 +8,47 @@
 
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">名称</span>
-                <input name="name" required value="{$info.name}" class="layui-input" placeholder="请输入名称">
+                <span class="color-green">{:lang('名称')}</span>
+                <input name="name" required value="{$info.name}" class="layui-input" placeholder="{:lang('请输入名称')}">
                 <input type="hidden" name="_csrf_" value="{:systoken('edit_lixibao')}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">天数 </span>
-                <input name="day" required class="layui-input" value="{$info.day}" placeholder="请输入天数">
+                <span class="color-green">{:lang('天数 ')}</span>
+                <input name="day" required class="layui-input" value="{$info.day}" placeholder="{:lang('请输入天数')}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">比例(不要设置百分比直接写0.01)</span>
-                <input name="bili" value="{$info.bili}" required class="layui-input" placeholder="请输入比例">
+                <span class="color-green">{:lang('比例(不要设置百分比直接写0.01)')}</span>
+                <input name="bili" value="{$info.bili}" required class="layui-input" placeholder="{:lang('请输入比例')}">
             </label>
         </div>
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">手续费比例(不要设置百分比直接写0.01)</span>
-                <input name="shouxu" value="{$info.shouxu}" required class="layui-input" placeholder="请输入手续费">
-            </label>
-        </div>
-
-        <div class="layui-form-item layui-row layui-col-space15">
-            <label class="layui-col-xs9 relative">
-                <span class="color-green">最低金额限制</span>
-                <input name="min_num" value="{$info.min_num}" required class="layui-input" placeholder="请输入金额">
+                <span class="color-green">{:lang('手续费比例(不要设置百分比直接写0.01)')}</span>
+                <input name="shouxu" value="{$info.shouxu}" required class="layui-input" placeholder="{:lang('请输入手续费')}">
             </label>
         </div>
 
         <div class="layui-form-item layui-row layui-col-space15">
             <label class="layui-col-xs9 relative">
-                <span class="color-green">最高金额限制</span>
-                <input name="max_num" value="{$info.max_num}" required class="layui-input" placeholder="请输入金额">
+                <span class="color-green">{:lang('最低金额限制')}</span>
+                <input name="min_num" value="{$info.min_num}" required class="layui-input" placeholder="{:lang('请输入金额')}">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('最高金额限制')}</span>
+                <input name="max_num" value="{$info.max_num}" required class="layui-input" placeholder="{:lang('请输入金额')}">
             </label>
         </div>
 
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">保存</button>
-            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">取消编辑</button>
+            <button class="layui-btn" type="submit">{:lang('保存')}</button>
+            <button class="layui-btn layui-btn-danger" ng-click="hsitoryBack()" type="button">{:lang('取消编辑')}</button>
         </div>
 
     </div>

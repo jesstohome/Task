@@ -3,11 +3,11 @@
 {block name="button"}
 
 {if auth("add")}
-<button data-modal='{:url("add")}' data-title="添加权限" class='layui-btn layui-btn-sm layui-btn-primary'>添加权限</button>
+<button data-modal='{:url("add")}' data-title="{:lang('添加权限')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('添加权限')}</button>
 {/if}
 
 {if auth("remove")}
-<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="确定要删除这些权限吗？" class='layui-btn layui-btn-sm layui-btn-primary'>删除权限</button>
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-csrf="{:systoken('remove')}" data-confirm="{:lang('确定要删除这些权限吗？')}" class='layui-btn layui-btn-sm layui-btn-primary'>{:lang('删除权限')}</button>
 {/if}
 
 {/block}
@@ -23,9 +23,9 @@
             <th class='list-table-check-td think-checkbox'>
                 <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
             </th>
-            <th class='text-left nowrap'>权限信息</th>
-            <th class='text-left nowrap'>创建时间</th>
-            <th class="text-center nowrap">使用状态</th>
+            <th class='text-left nowrap'>{:lang('权限信息')}</th>
+            <th class='text-left nowrap'>{:lang('创建时间')}</th>
+            <th class="text-center nowrap">{:lang('使用状态')}</th>
             <th></th>
         </tr>
         </thead>
@@ -41,31 +41,31 @@
                 <p class="color-desc">权限描述：{$vo.desc|default="没有写描述哦！"}</p>
             </td>
             <td class="text-left nowrap">
-                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">时间：',###|raw}</span>
+                日期：{$vo.create_at|format_datetime|str_replace=' ','<br><span class="color-desc">{:lang('时间：',###|raw}')}</span>
             </td>
             <td class='text-center nowrap'>
-                {eq name='vo.status' value='0'}<span class="color-red">已禁用</span>{else}<span class="color-green">使用中</span>{/eq}
+                {eq name='vo.status' value='0'}<span class="color-red">{:lang('已禁用')}</span>{else}<span class="color-green">{:lang('使用中')}</span>{/eq}
             </td>
             <td class='text-center nowrap'>
 
                 {if auth("edit")}
                 <span class="text-explode">|</span>
-                <a data-dbclick class="layui-btn layui-btn-sm" data-title="编辑权限" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <a data-dbclick class="layui-btn layui-btn-sm" data-title="{:lang('编辑权限')}" data-modal='{:url("edit")}?id={$vo.id}'>{:lang('编 辑')}</a>
                 {/if}
 
                 {if auth("apply")}
-                <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={$vo.id}'>授 权</a>
+                <a class="layui-btn layui-btn-normal layui-btn-sm" data-open='{:url("apply")}?id={$vo.id}'>{:lang('授 权')}</a>
                 {/if}
 
                 {if $vo.status eq 1 and auth("forbid")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">禁 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0" data-csrf="{:systoken('forbid')}">{:lang('禁 用')}</a>
                 {elseif $vo.status eq 0 and auth("resume")}
-                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">启 用</a>
+                <a class="layui-btn layui-btn-warm layui-btn-sm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1" data-csrf="{:systoken('resume')}">{:lang('启 用')}</a>
                 {/if}
 
                 {if $vo.id!=2}
                 {if auth("remove")}
-                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">删 除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" data-confirm="{:lang('确定要删除数据吗?')}" data-action="{:url('remove')}" data-value="id#{$vo.id}" data-csrf="{:systoken('remove')}">{:lang('删 除')}</a>
                 {/if}
                 {/if}
             </td>
@@ -74,7 +74,7 @@
         </tbody>
     </table>
 
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 

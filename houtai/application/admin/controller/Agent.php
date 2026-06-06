@@ -34,7 +34,7 @@ class Agent extends Base
     public function index()
     {
         if ($this->agent_id > 0 && $this->agent_uid > 0) return '<h1>无权限</h1>';
-        $this->title = '代理列表';
+        $this->title = lang('代理列表');
         $this->is_admin = $this->agent_id == 0;
         $this->parent = input('parent','');
         $this->nickname = input('nickname','');
@@ -108,13 +108,13 @@ class Agent extends Base
         if (request()->isPost()) {
             $migrate_user_id = input('migrate_user_id','');
             if(!$migrate_user_id){
-                return $this->error('请选择代理');
+                return $this->error(lang('请选择代理'));
             }
             $res = Db::table('xy_users')->where('agent_service_id',$this->id)->update(['agent_service_id'=>$migrate_user_id]);
             if($res){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
-            return $this->error('操作失败');
+            return $this->error(lang('操作失败'));
         }
         $this->agents = Db::name('system_user')
             ->where('authorize', "2")
@@ -136,7 +136,7 @@ class Agent extends Base
         if($res){
             return $this->success('重置成功，密码为：'.$pwd);
         }
-        return $this->error('操作失败');
+        return $this->error(lang('操作失败'));
     }
 
     /**
@@ -148,9 +148,9 @@ class Agent extends Base
         $id = input('id');
         $res = Db::table('system_user')->where('id',$id)->update(['is_deleted' => 1]);
         if($res){
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
-        return $this->error('操作失败');
+        return $this->error(lang('操作失败'));
     }
 
     /**
@@ -161,7 +161,7 @@ class Agent extends Base
     {
         if (request()->isPost()) {
             if(cache('edit_agent_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('edit_agent_'.session('admin_user')['id'],1,3);
             $data = input();
@@ -174,7 +174,7 @@ class Agent extends Base
             if(!empty($invite_code)){
                 $count_user = Db::table('system_user')->where('id','<>',$id)->where('invite_code',$invite_code)->count();
                 if($count_user > 0){
-                    return $this->error('该邀请码已存在');
+                    return $this->error(lang('该邀请码已存在'));
                 }
             }
 
@@ -183,9 +183,9 @@ class Agent extends Base
             unset($data['open_type']);
             $res = Db::table('system_user')->where('id',$id)->update($data);
             if($res){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
-            return $this->error('操作失败');
+            return $this->error(lang('操作失败'));
         }
         $id = input('id');
         $this->system_user = Db::name('system_user')
@@ -215,7 +215,7 @@ class Agent extends Base
     {
         if (request()->isPost()) {
             if(cache('agent_add_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('agent_add_'.session('admin_user')['id'],1,3);
             $data = input();
@@ -224,14 +224,14 @@ class Agent extends Base
             if(!empty($invite_code)){
                 $count_user = Db::table('system_user')->where('invite_code',$invite_code)->count();
                 if($count_user > 0){
-                    return $this->error('该邀请码已存在');
+                    return $this->error(lang('该邀请码已存在'));
                 }
             }
 
 //            if(!empty($invitation_code)){
 //                $user = Db::table('xy_users')->where('invite_code',$invitation_code)->find();
 //                if(empty($user)){
-//                    return $this->error('该邀请码的用户不存在');
+//                    return $this->error(lang('该邀请码的用户不存在'));
 //                }
 //                $data['user_id'] = $user['id'];
 //            }
@@ -246,9 +246,9 @@ class Agent extends Base
             $data['password'] = md5($data['password']);
             $res = Db::table('system_user')->insert($data);
             if($res){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
-            return $this->error('操作失败');
+            return $this->error(lang('操作失败'));
         }
         $this->agents = Db::name('system_user')
             ->where('authorize', "2")
@@ -287,12 +287,12 @@ class Agent extends Base
             // 用户账号重复检查
             if (isset($data['id'])) unset($data['username']);
             elseif (Db::name($this->table)->where(['username' => $data['username'], 'is_deleted' => '0'])->count() > 0) {
-                $this->error("账号{$data['username']}已经存在，请使用其它账号！");
+                $this->error(lang("账号{$data['username']}已经存在，请使用其它账号！"));
             }
             
             $resUserId = Db::table("xy_users")->find($data["user_id"]);
             if(!$resUserId){
-                 $this->error('uid不存在');
+                 $this->error(lang('uid不存在'));
             }
            
             
@@ -302,12 +302,12 @@ class Agent extends Base
                 $data['parent_id'] = $this->agent_id;
             }
             if (!isset($data['id']) && $data['parent_id'] > 0) {
-                if (!$data['phone']) $this->error('手机号必填');
+                if (!$data['phone']) $this->error(lang('手机号必填'));
                 if (Db::name($this->table_user)->where(['tel' => $data['phone']])->count('id') > 0) {
-                    $this->error("手机号 {$data['phone']} 已经存在，请使用其它手机号！");
+                    $this->error(lang("手机号 {$data['phone']} 已经存在，请使用其它手机号！"));
                 }
                 if (Db::name($this->table_user)->where(['username' => $data['username']])->count('id') > 0) {
-                    $this->error("账号 {$data['username']} 已经存在，请使用其它账号！");
+                    $this->error(lang("账号 {$data['username']} 已经存在，请使用其它账号！"));
                 }
             }
             //用户权限处理
@@ -315,7 +315,7 @@ class Agent extends Base
             /*if (!empty($data['user_id'])) {
                 $isAgentSon = Db::name('xy_users')->where('id', $data['user_id'])->value('agent_id');
                 if (empty($isAgentSon)) {
-                    $this->error("业务员ID {$data['user_id']} 未绑定代理！");
+                    $this->error(lang("业务员ID {$data['user_id']} 未绑定代理！"));
                 }
             }*/
         } else {
@@ -353,9 +353,9 @@ class Agent extends Base
                             ->where('id', $data['id'])
                             ->update(['user_id' => $res['id']]);
                     }
-                    sysoplog('添加代理', '新代理ID ' . $data['id']);
+                    sysoplog(lang('添加代理'), lang('新代理ID ') . $data['id']);
                 } else {
-                    sysoplog('编辑代理', '新数据包 ' . json_encode($data, JSON_UNESCAPED_UNICODE));
+                    sysoplog(lang('编辑代理'), lang('新数据包 ') . json_encode($data, JSON_UNESCAPED_UNICODE));
                 }
             }
         }
@@ -377,15 +377,15 @@ class Agent extends Base
         } else {
             $post = $this->request->post();
             if ($post['password'] !== $post['repassword']) {
-                $this->error('两次输入的密码不一致！');
+                $this->error(lang('两次输入的密码不一致！'));
             }
             $result = NodeService::checkpwd($post['password']);
             if (empty($result['code'])) $this->error($result['msg']);
             if (Data::save($this->table, ['id' => $post['id'], 'password' => md5($post['password'])], 'id')) {
-                sysoplog('修改代理用户密码', 'ID ' . $post['id']);
-                $this->success('密码修改成功，下次请使用新密码登录！', '');
+                sysoplog(lang('修改代理用户密码'), 'ID ' . $post['id']);
+                $this->success(lang('密码修改成功，下次请使用新密码登录！'), '');
             } else {
-                $this->error('密码修改失败，请稍候再试！');
+                $this->error(lang('密码修改失败，请稍候再试！'));
             }
         }
     }

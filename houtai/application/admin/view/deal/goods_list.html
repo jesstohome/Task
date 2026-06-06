@@ -3,7 +3,7 @@
 {block name="button"}
 
     {if auth("add_goods")}
-    <button data-open='{:url("add_goods")}' data-title="添加公告" class='layui-btn'>添加商品</button>
+    <button data-open='{:url("add_goods")}' data-title="{:lang('添加公告')}" class='layui-btn'>{:lang('添加商品')}</button>
     {/if}
 
 {/block}
@@ -17,12 +17,12 @@
         {notempty name='list'}
         <thead>
         <tr>
-            <th class='text-left nowrap'>商品ID</th>
-            <th class='text-left nowrap'>商品分类</th>
-            <th class='text-left nowrap'>商品名称</th>
-            <th class='text-left nowrap'>商品价格</th>
-            <th class='text-left nowrap'>添加时间</th>
-            <th class='text-left nowrap'>状态</th>
+            <th class='text-left nowrap'>{:lang('商品ID')}</th>
+            <th class='text-left nowrap'>{:lang('商品分类')}</th>
+            <th class='text-left nowrap'>{:lang('商品名称')}</th>
+            <th class='text-left nowrap'>{:lang('商品价格')}</th>
+            <th class='text-left nowrap'>{:lang('添加时间')}</th>
+            <th class='text-left nowrap'>{:lang('状态')}</th>
         </tr>
         </thead>
         {/notempty}
@@ -38,10 +38,10 @@
             </td>
             <td class='text-left nowrap'>
             {if auth("edit_goods")}
-                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_goods',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>编辑</a>
+                <a class="layui-btn layui-btn-xs layui-btn" data-open="{:url('edit_goods',['id'=>$vo.id])}" data-value="id#{$vo.id}" style='background:green;'>{:lang('编辑')}</a>
             {/if}
             {if auth("del_goods")}
-                <a class="layui-btn layui-btn-xs layui-btn" style='background:red;' onClick="del_goods({$vo.id})">删除</a>
+                <a class="layui-btn layui-btn-xs layui-btn" style='background:red;' onClick="del_goods({$vo.id})">{:lang('删除')}</a>
             {/if}
             </td>
         </tr>
@@ -49,7 +49,7 @@
         </tbody>
     </table>
 
-    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
 
 </div>
 <script>

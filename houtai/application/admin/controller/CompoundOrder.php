@@ -63,12 +63,12 @@ class CompoundOrder extends Base
                 ->update($update_data);
 
             if ($result !== false) {
-                return ['code' => 0, 'info' => '配置更新成功'];
+                return ['code' => 0, 'info'  => lang('配置更新成功')];
             } else {
-                return ['code' => 1, 'info' => '配置更新失败'];
+                return ['code' => 1, 'info'  => lang('配置更新失败')];
             }
         } catch (\Exception $e) {
-            return ['code' => 1, 'info' => '更新失败: ' . $e->getMessage()];
+            return ['code' => 1, 'info'  => lang('更新失败: ') . $e->getMessage()];
         }
     }
 
@@ -96,7 +96,7 @@ class CompoundOrder extends Base
                 ->find();
 
             if (!$option) {
-                return json(['code' => 1, 'info' => '选项不存在']);
+                return json(['code' => 1, 'info'  => lang('选项不存在')]);
             }
 
             $this->assign('option', $option);
@@ -112,7 +112,7 @@ class CompoundOrder extends Base
                 ->find();
 
             if (!$option) {
-                return json(['code' => 1, 'info' => '选项不存在']);
+                return json(['code' => 1, 'info'  => lang('选项不存在')]);
             }
 
             $this->assign('option', $option);
@@ -162,9 +162,9 @@ class CompoundOrder extends Base
             }
 
             if ($result !== false) {
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             } else {
-                return $this->error('保存失败');
+                return $this->error(lang('保存失败'));
             }
     }
 
@@ -176,7 +176,7 @@ class CompoundOrder extends Base
     {
         $id = Request::param('id');
         if (!$id) {
-            return json(['code' => 1, 'info' => '参数错误']);
+            return json(['code' => 1, 'info'  => lang('参数错误')]);
         }
 
         try {
@@ -185,12 +185,12 @@ class CompoundOrder extends Base
                 ->delete();
 
             if ($result) {
-                return json(['code' => 0, 'info' => '删除成功']);
+                return json(['code' => 0, 'info'  => lang('删除成功')]);
             } else {
-                return json(['code' => 1, 'info' => '删除失败']);
+                return json(['code' => 1, 'info'  => lang('删除失败')]);
             }
         } catch (\Exception $e) {
-            return json(['code' => 1, 'info' => '删除失败: ' . $e->getMessage()]);
+            return json(['code' => 1, 'info'  => lang('删除失败: ') . $e->getMessage()]);
         }
     }
 
@@ -206,7 +206,7 @@ class CompoundOrder extends Base
         if (Request::isPost()) {
             $data = Request::post();
             $result = $this->saveOption($data);
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
             return json($result);
         }
 
@@ -217,7 +217,7 @@ class CompoundOrder extends Base
                 ->find();
 
             if (!$option) {
-                return json(['code' => 1, 'info' => '选项不存在']);
+                return json(['code' => 1, 'info'  => lang('选项不存在')]);
             }
 
             $this->assign('option', $option);
@@ -325,7 +325,7 @@ class CompoundOrder extends Base
     {
         $id = Request::param('id');
         if (!$id) {
-            return json(['code' => 1, 'info' => '参数错误']);
+            return json(['code' => 1, 'info'  => lang('参数错误')]);
         }
         
         $result = Db::name('xy_compound_order_log')
@@ -333,9 +333,9 @@ class CompoundOrder extends Base
                 ->delete();
         
         if ($result) {
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             } else {
-                return $this->error('操作失败');
+                return $this->error(lang('操作失败'));
             }
     }
 
@@ -348,7 +348,7 @@ class CompoundOrder extends Base
     //         // 读取SQL文件
     //         $sql_file = APP_PATH . '../compound_order_tables.sql';
     //         if (!file_exists($sql_file)) {
-    //             return json(['code' => 1, 'info' => 'SQL文件不存在']);
+    //             return json(['code' => 1, 'info'  => lang('SQL文件不存在')]);
     //         }
 
     //         $sql = file_get_contents($sql_file);
@@ -375,7 +375,7 @@ class CompoundOrder extends Base
     //         if (empty($errors)) {
     //             return json(['code' => 0, 'info' => "数据库表创建成功，共执行 {$success} 条语句"]);
     //         } else {
-    //             return json(['code' => 1, 'info' => '部分语句执行失败: ' . implode('; ', $errors)]);
+    //             return json(['code' => 1, 'info'  => lang('部分语句执行失败: ') . implode('; ', $errors)]);
     //         }
     //     }
     // }
@@ -388,13 +388,13 @@ class CompoundOrder extends Base
     {
         $uid = Request::param('uid');
         if (!$uid) {
-            return json(['code' => 0, 'info' => '用户ID不能为空']);
+            return json(['code' => 0, 'info'  => lang('用户ID不能为空')]);
         }
 
         // 检查用户是否存在
         $user = Db::name('xy_users')->where('id', $uid)->find();
         if (!$user) {
-            return json(['code' => 0, 'info' => '用户不存在']);
+            return json(['code' => 0, 'info'  => lang('用户不存在')]);
         }
         
         $where = [
@@ -415,7 +415,7 @@ class CompoundOrder extends Base
             $options = isset($data['options']) ? $data['options'] : [];
 
             if (empty($options)) {
-                return json(['code' => 0, 'info' => '请至少配置一个复数订单选项']);
+                return json(['code' => 0, 'info'  => lang('请至少配置一个复数订单选项')]);
             }
 
             // 检查用户是否已经有进行中的复数订单
@@ -425,10 +425,10 @@ class CompoundOrder extends Base
                 ->find();
 
             if ($existing_log) {
-                return json(['code' => 0, 'info' => '该用户已有进行中的复数订单']);
+                return json(['code' => 0, 'info'  => lang('该用户已有进行中的复数订单')]);
             }
             
-            if($data['trigger_count'] < $yizuo) return json(['code' => 0, 'info' => '触发单数过低！']);
+            if($data['trigger_count'] < $yizuo) return json(['code' => 0, 'info'  => lang('触发单数过低！')]);
 
             // 获取用户今日完成的订单数作为触发单数
             // $today_start = strtotime(date('Y-m-d'));
@@ -458,9 +458,9 @@ class CompoundOrder extends Base
             $result = Db::name('xy_compound_order_log')->insert($log_data);
 
             if ($result) {
-                return json(['code' => 1, 'info' => '复数订单已启动']);
+                return json(['code' => 1, 'info'  => lang('复数订单已启动')]);
             } else {
-                return json(['code' => 0, 'info' => '启动失败，请重试']);
+                return json(['code' => 0, 'info'  => lang('启动失败，请重试')]);
             }
         }
 

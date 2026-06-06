@@ -39,7 +39,7 @@ class Shop extends Base
      */
     public function order_list()
     {
-        $this->title = '订单列表';
+        $this->title = lang('订单列表');
         $where = [];
         if (input('oid/s', '')) $where[] = ['xc.id', 'like', '%' . input('oid', '') . '%'];
         if (input('username/s', '')) $where[] = ['u.username', 'like', '%' . input('username/s', '') . '%'];
@@ -75,7 +75,7 @@ class Shop extends Base
      */
     public function goods_list()
     {
-        $this->title = '商品管理';
+        $this->title = lang('商品管理');
 
         $this->cate = db('xy_shop_goods_cate')->order('addtime asc')->select();
         $where = [];
@@ -109,7 +109,7 @@ class Shop extends Base
      */
     public function goods_cate()
     {
-        $this->title = '分类管理';
+        $this->title = lang('分类管理');
         $this->_query('xy_shop_goods_cate')->page();
     }
 
@@ -195,9 +195,9 @@ class Shop extends Base
             $res = Db::table('xy_shop_goods_list')->where('id', $id)->update($data);
         }
         if ($res)
-            return ['code' => 0, 'info' => '操作成功!'];
+            return ['code' => 0, 'info'  => lang('操作成功!')];
         else
-            return ['code' => 1, 'info' => '操作失败!'];
+            return ['code' => 1, 'info'  => lang('操作失败!')];
     }
 
     /**
@@ -230,9 +230,9 @@ class Shop extends Base
             $res = Db::table('xy_shop_goods_cate')->where('id', $id)->update($data);
         }
         if ($res)
-            return ['code' => 0, 'info' => '操作成功!'];
+            return ['code' => 0, 'info'  => lang('操作成功!')];
         else
-            return ['code' => 1, 'info' => '操作失败!'];
+            return ['code' => 1, 'info'  => lang('操作失败!')];
     }
 
     /**
@@ -485,7 +485,7 @@ class Shop extends Base
                 }
             }
 
-            $this->success('处理成功', '#'. url('deposit_list'));
+            $this->success(lang('处理成功'), '#'. url('deposit_list'));
         }
     }
 }

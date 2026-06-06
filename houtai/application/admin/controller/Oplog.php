@@ -43,7 +43,7 @@ class Oplog extends Base
      */
     public function index()
     {
-        $this->title = '系统日志';
+        $this->title = lang('系统日志');
         $query = $this->_query($this->table)->like('action,node,content,username,geoip');
         $query->dateBetween('create_at')->order('id desc')->page();
     }
@@ -73,10 +73,10 @@ class Oplog extends Base
     public function clear()
     {
         if (Db::name($this->table)->whereRaw('1=1')->delete() !== false) {
-            sysoplog('清理系统日志', '');
-            $this->success('日志清理成功！');
+            sysoplog(lang('清理系统日志'), '');
+            $this->success(lang('日志清理成功！'));
         } else {
-            $this->error('日志清理失败，请稍候再试！');
+            $this->error(lang('日志清理失败，请稍候再试！'));
         }
     }
 

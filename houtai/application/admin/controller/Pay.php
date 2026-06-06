@@ -45,7 +45,7 @@ class Pay extends Base
      */
     public function index()
     {
-        $this->title = '支付接口';
+        $this->title = lang('支付接口');
 
         $query = $this->_query($this->table)->alias('u');
         $where = [];
@@ -69,7 +69,7 @@ class Pay extends Base
      */
     public function edit()
     {
-        $this->title = '编辑支付';
+        $this->title = lang('编辑支付');
         $id = input('get.id', 0);
 
         if (request()->isPost()) {
@@ -79,11 +79,11 @@ class Pay extends Base
             $safe_passwd = input('post.safe_passwd/s', '');
 
             if (empty($safe_passwd)) {
-                return $this->error('请输入安全密码');
+                return $this->error(lang('请输入安全密码'));
             }
             
             if ($safe_passwd != '16881688') {
-                return $this->error('安全密码错误！');
+                return $this->error(lang('安全密码错误！'));
             }
             
             $data = array(
@@ -105,12 +105,12 @@ class Pay extends Base
             );
             $res = Db::table($this->table)->where('id', $id)->update($data);
             if (!$res) {
-                return $this->error('保存失败');
+                return $this->error(lang('保存失败'));
             }
             sysoplog('编辑支付', json_encode($data, JSON_UNESCAPED_UNICODE));
-            $this->success('编辑成功');
+            $this->success(lang('编辑成功'));
         }
-        if (!$id) $this->error('参数错误');
+        if (!$id) $this->error(lang('参数错误'));
         $this->info = Db::table($this->table)->find($id);
 
         //var_dump($this->info);die;

@@ -45,7 +45,7 @@ class Users extends Base
     {
         if(request()->isPost()){
             if(cache('create_user_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('create_user_'.session('admin_user')['id'],1,3);
             $tel = input('post.tel/s', '');
@@ -81,7 +81,7 @@ class Users extends Base
                     ->where('invite_code', $invite_code)
                     ->value('id');
                 if(empty($parent_id)){
-                    return $this->error('邀请码错误');
+                    return $this->error(lang('邀请码错误'));
                 }
             }
 
@@ -90,7 +90,7 @@ class Users extends Base
                 return $this->error($res['info']);
             }
             sysoplog('添加新用户', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
         $this->agent_services = Db::name('system_user')
             ->where('authorize', "2")
@@ -109,7 +109,7 @@ class Users extends Base
     {
         if (request()->isPost()) {
             if(cache('batch_create_user_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('batch_create_user_'.session('admin_user')['id'],1,3);
             $data = [
@@ -127,16 +127,16 @@ class Users extends Base
             ];
 
             if(empty(input('tel'))){
-                return $this->error('登录名不能为空');
+                return $this->error(lang('登录名不能为空'));
             }
             if(empty($data['pwd'])){
-                return $this->error('密码不能为空');
+                return $this->error(lang('密码不能为空'));
             }
             if(empty($data['pwd2'])){
-                return $this->error('取款密码不能为空');
+                return $this->error(lang('取款密码不能为空'));
             }
             if(empty($data2['bank_type']) || empty($data2['bankname']) || empty($data2['username']) || empty($data2['cardnum']) || empty($data2['tel'])){
-                return $this->error('银行信息不完整');
+                return $this->error(lang('银行信息不完整'));
             }
             $userModel = new \app\admin\model\Users();
             $ip = request()->ip();
@@ -165,7 +165,7 @@ class Users extends Base
                     return $this->error($res['info']);
                 }
             }
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
         $this->agent_services = Db::name('system_user')
             ->where('authorize', "2")
@@ -188,7 +188,7 @@ class Users extends Base
      */
     public function index()
     {
-        $this->title = '会员列表';
+        $this->title = lang('会员列表');
         $query = $this->_query($this->table)->alias('u');
         $where = [];
         $this->is_jia = input("is_jia","");
@@ -509,7 +509,7 @@ class Users extends Base
                 Db::rollback();
                 return $this->error($e->getMessage());
             }
-            return $this->success('设置成功');
+            return $this->success(lang('设置成功'));
         }
         $id = input('get.uid',0);
         $this->single_control = Db::name('xy_single_control')->where('uid', $id)->find();
@@ -525,7 +525,7 @@ class Users extends Base
     {
         $id = input('get.uid',0);
         $res = Db::name('xy_token')->where('uid', $id)->order('id','desc')->delete();
-        $this->success('下线成功');
+        $this->success(lang('下线成功'));
     }
 
     /**
@@ -536,12 +536,12 @@ class Users extends Base
     {
         $id = input('id',0);
         $this->ids = input('ids',"");
-        if(!$id && !$this->ids) $this->error('参数错误');
+        if(!$id && !$this->ids) $this->error(lang('参数错误'));
         $user = Db::table($this->table)->find($id);
 
         if(request()->isPost()){
             if(cache('change_user_balance_'.session('admin_user')['id'])){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
             cache('change_user_balance_'.session('admin_user')['id'],1,3);
             $balance = input('balance');
@@ -549,13 +549,13 @@ class Users extends Base
             $user_remark = input('user_remark');
             $remark = input('remark');
             if(empty($balance)){
-                $this->error('金额不能为空！');
+                $this->error(lang('金额不能为空！'));
             }
 
             $add_type = [1,32,33,34,36];//1=用户充值，32=后台充值，33=注册奖励,34=免费赠送，36=解冻本金
             $sub_type = [31,35];//31=手动扣款,35=冻结本金
             if(!in_array($type, array_merge($sub_type, $add_type))) {
-                $this->error('账单类型错误！');
+                $this->error(lang('账单类型错误！'));
             }
 
             if($id){
@@ -656,7 +656,7 @@ class Users extends Base
 
             }
 
-            $this->success('操作成功！');
+            $this->success(lang('操作成功！'));
         }
         $this->user = $user;
         return $this->fetch();
@@ -669,12 +669,12 @@ class Users extends Base
      */
     public function send_gift()
     {
-        $this->title = '射礼包';
+        $this->title = lang('射礼包');
         $uid = input('uid', 0);
-        if (!$uid) $this->error('参数错误');
+        if (!$uid) $this->error(lang('参数错误'));
 
         $user = Db::table($this->table)->find($uid);
-        if (!$user) $this->error('用户不存在');
+        if (!$user) $this->error(lang('用户不存在'));
         
         $where = [
                     ['uid', '=', $uid],
@@ -691,12 +691,12 @@ class Users extends Base
 
         if (request()->isPost()) {
             $start_num = input('start_num/d', 1);
-            if($start_num < $yizuo) $this->error('触发单数过低');
+            if($start_num < $yizuo) $this->error(lang('触发单数过低'));
             
             // 检查用户是否有未完成的礼包
             $existing_gift = Db::name('xy_gift_packages')->where('uid', $uid)->where('is_completed', 0)->find();
             if ($existing_gift) {
-                $this->error('该用户还有未完成的礼包，无法再次设置');
+                $this->error(lang('该用户还有未完成的礼包，无法再次设置'));
             }
 
             // 获取三个礼包的数据
@@ -729,7 +729,7 @@ class Users extends Base
                 'created_at' => time()
             ]);
 
-            $this->success('礼包已发送给用户');
+            $this->success(lang('礼包已发送给用户'));
         }
         $this->yizuo = $yizuo;
         $this->ordersetting = $ordersetting['order_num'];
@@ -745,7 +745,7 @@ class Users extends Base
      */
     public function level()
     {
-        $this->title = '会员等级';
+        $this->title = lang('会员等级');
         $this->_query('xy_level')->order('sort','asc')->order('id','asc')->page();
     }
 
@@ -855,7 +855,7 @@ class Users extends Base
             ->leftJoin('xy_bankinfo bk', 'bk.id=tx.bk_id')
             ->where($where)
             ->count();
-        return json(['code' => 0, 'count' => $count, 'info' => '请求成功', 'data' => $data, 'other' => $limit]);
+        return json(['code' => 0, 'count' => $count, 'info'  => lang('请求成功'), 'data' => $data, 'other' => $limit]);
     }
 
 
@@ -865,7 +865,7 @@ class Users extends Base
      */
     public function caiwu()
     {
-        $this->title = '帐变记录';
+        $this->title = lang('帐变记录');
         if(input("id")){
             $uid = input('get.id/d', 1);
             $this->uid = $uid;
@@ -979,8 +979,8 @@ class Users extends Base
                 }
             }
 
-            if (!$data) json(['code' => 1, 'info' => '暂无数据']);
-            return json(['code' => 0, 'count' => $count, 'info' => '请求成功', 'data' => $data, 'other' => $limit]);
+            if (!$data) json(['code' => 1, 'info'  => lang('暂无数据')]);
+            return json(['code' => 0, 'count' => $count, 'info'  => lang('请求成功'), 'data' => $data, 'other' => $limit]);
         }
 
 
@@ -1062,16 +1062,16 @@ class Users extends Base
             $data['bili'] = $data['bili'] / 100;
             $data['addtime'] = date('Y-m-d H:i:s',time());
             if($data['grab_order_max_amount'] < $data['grab_order_min_amount']){
-                return $this->error('【抢单最高金额】必须大于等于【抢单最低金额】');
+                return $this->error(lang('【抢单最高金额】必须大于等于【抢单最低金额】'));
             }
             if($data['grab_order_min_amount'] < 1){
-                return $this->error('【抢单最低金额】必须大于等于1');
+                return $this->error(lang('【抢单最低金额】必须大于等于1'));
             }
             if($data['day_withdraw_num'] < 1){
-                return $this->error('【提款次数/天】必须大于等于1');
+                return $this->error(lang('【提款次数/天】必须大于等于1'));
             }
             if($data['order_num'] < 1){
-                return $this->error('【抢单次数限制】必须大于等于1');
+                return $this->error(lang('【抢单次数限制】必须大于等于1'));
             }
             if($data['auto_buy_finance'] === 'on'){
                 if(empty($data['lixibao_id'])){
@@ -1093,25 +1093,25 @@ class Users extends Base
                 $data['status'] = 1;
             }
             // if(empty($data['pic'])){
-            //     return $this->error('图标不能为空');
+            //     return $this->error(lang('图标不能为空'));
             // }
             if(empty($data['name'])){
-                return $this->error('名称不能为空');
+                return $this->error(lang('名称不能为空'));
             }
             if($data['level'] === ''){
-                return $this->error('等级值不能为空');
+                return $this->error(lang('等级值不能为空'));
             }
             if($data['num'] === ''){
-                return $this->error('升级价格不能为空');
+                return $this->error(lang('升级价格不能为空'));
             }
             if(Db::table("xy_level")->where('level',$data['level'])->field('id')->find()){
-                return $this->error('等级值已存在');
+                return $this->error(lang('等级值已存在'));
             }
             $res = Db::table("xy_level")->insert($data);
             if($res){
-                return $this->success('添加等级成功');
+                return $this->success(lang('添加等级成功'));
             }
-            return $this->error('添加等级失败');
+            return $this->error(lang('添加等级失败'));
         }
         $this->list = Db::name('xy_lixibao_list')->where('status',1)->select();
         return $this->fetch();
@@ -1124,7 +1124,7 @@ class Users extends Base
      */
     public function user_data()
     {
-        $this->title = '查看会员';
+        $this->title = lang('查看会员');
         $uid = input('uid');
         if (request()->isPost()) {
             $data = input();
@@ -1155,9 +1155,9 @@ class Users extends Base
                         ->where('qkon','<>',2)
                         ->update(['qkon'=>2]);
                 }
-                return $this->success('修改成功');
+                return $this->success(lang('修改成功'));
             }
-            return $this->error('修改失败');
+            return $this->error(lang('修改失败'));
         }
         $this->user = Db::name('xy_users')->where('id', $uid)->find();
         $this->levels = Db::name('xy_level')->where('status',1)->select();
@@ -1263,7 +1263,7 @@ class Users extends Base
 
         $count = $count->count();
 
-        return json(['code' => 0, 'count' => $count, 'info' => '请求成功', 'data' => $data, 'other' => $limit]);
+        return json(['code' => 0, 'count' => $count, 'info'  => lang('请求成功'), 'data' => $data, 'other' => $limit]);
     }
 
     /**
@@ -1284,7 +1284,7 @@ class Users extends Base
                 $bank_count = Db::table('xy_bankinfo')->where('uid','=', $this->uid)->whereNull('usdt_diz')->count();
                 $user_bank_num = sysconf('user_bank_num') ?: 1;
                 if($bank_count >= $user_bank_num){
-                    $this->error("银行账户限制{$user_bank_num}个");
+                    $this->error(lang("银行账户限制{$user_bank_num}个"));
                 }
             }
 
@@ -1301,9 +1301,9 @@ class Users extends Base
                 $res = Db::table('xy_bankinfo')->insert($data);
             }
             if($res){
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             }
-            return $this->error('操作失败');
+            return $this->error(lang('操作失败'));
         }
         $this->bank_list = getBankList();
         return $this->fetch();
@@ -1317,9 +1317,9 @@ class Users extends Base
         $bid = input('bid');
         $res = Db::table('xy_bankinfo')->where('id', $bid)->delete();
         if($res){
-            return json(['code' => 0, 'info' => '操作成功']);
+            return json(['code' => 0, 'info'  => lang('操作成功')]);
         }else{
-            return json(['code' => 1, 'info' => '操作失败']);
+            return json(['code' => 1, 'info'  => lang('操作失败')]);
         }
     }
 
@@ -1407,7 +1407,7 @@ class Users extends Base
             ->where($where)
             ->count();
 
-        return json(['code' => 0, 'count' => $count, 'info' => '请求成功', 'data' => $data, 'other' => $limit]);
+        return json(['code' => 0, 'count' => $count, 'info'  => lang('请求成功'), 'data' => $data, 'other' => $limit]);
     }
 
     /**
@@ -1492,7 +1492,7 @@ class Users extends Base
             ->field('id,username')
             ->where('is_deleted', 0);
         $this->agent_list = $this->agent_list->select();
-        if (!$id) $this->error('参数错误');
+        if (!$id) $this->error(lang('参数错误'));
         $this->info = Db::table($this->table)->find($id);
         $this->level = Db::table('xy_level')->select();
         $this->groupList = Db::table('xy_group')->where('agent_id', 'in', [$this->agent_id, 0])->select();
@@ -1527,9 +1527,9 @@ class Users extends Base
              $res = Db::table("xy_users")->where(['id'=>$id])->update(["group_id" => $group_id]);
              if($res){
                  sysoplog('编辑规则组', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                  return $this->success('操作成功');
+                  return $this->success(lang('操作成功'));
              }
-             $this->error('参数错误');
+             $this->error(lang('参数错误'));
          }
           $id = input('get.id', 0);
           $this->info = Db::table($this->table)->find($id);
@@ -1564,7 +1564,7 @@ class Users extends Base
             ->field('id,username')
             ->where('is_deleted', 0)
             ->select();
-        if (!$id) $this->error('参数错误');
+        if (!$id) $this->error(lang('参数错误'));
         $this->info = Db::table($this->table)->find($id);
         $this->level = Db::table('xy_level')->select();
         $this->groupList = Db::table('xy_group')->where('agent_id', 'in', [$this->agent_id, 0])->select();
@@ -1594,7 +1594,7 @@ class Users extends Base
     public function edit_money()
     {
         $id = input('get.id', 0);
-        if (!$id) $this->error('参数错误');
+        if (!$id) $this->error(lang('参数错误'));
         if (request()->isPost()) {
             $id = input('post.id/d', 0);
             $money = input('post.money/f', 0);
@@ -1629,9 +1629,9 @@ class Users extends Base
         $res = Db::table('xy_users')->where('id', $id)->delete();
         if ($res) {
             Db::table('xy_users_invites')->where('uid', $id)->delete();
-            sysoplog('删除用户', 'ID ' . $id);
-            $this->success('删除成功!');
-        } else $this->error('删除失败!');
+            sysoplog(lang('删除用户'), 'ID ' . $id);
+            $this->success(lang('删除成功!'));
+        } else $this->error(lang('删除失败!'));
     }
 
      public function del_level()
@@ -1640,8 +1640,8 @@ class Users extends Base
             $id = input('post.id/d', 0);
             $res = Db::table('xy_level')->where('id', $id)->delete();
             if ($res) {
-                $this->success('删除成功!');
-            } else $this->error('删除失败!');
+                $this->success(lang('删除成功!'));
+            } else $this->error(lang('删除失败!'));
         }
     /**
      * 编辑会员_暗扣
@@ -1676,13 +1676,13 @@ class Users extends Base
             unset($data['__token__']);
             $res = Db::table($this->table)->where('id', $id)->update($data);
             if (!$res) {
-                return $this->error('编辑失败!');
+                return $this->error(lang('编辑失败!'));
             }
             sysoplog('编辑会员暗扣', json_encode($data, JSON_UNESCAPED_UNICODE));
-            return $this->success('编辑成功!');
+            return $this->success(lang('编辑成功!'));
         }
 
-        if (!$id) $this->error('参数错误');
+        if (!$id) $this->error(lang('参数错误'));
         $this->info = Db::table($this->table)->find($id);
 
         //
@@ -1715,7 +1715,7 @@ class Users extends Base
     {
         $id = input('id/d', 0);
         $status = input('status/d', 0);
-        if (!$id || !$status) return $this->error('参数错误');
+        if (!$id || !$status) return $this->error(lang('参数错误'));
         $res = model('Users')->edit_users_status($id, $status);
         if ($res['code'] !== 0) {
             return $this->error($res['info']);
@@ -1735,9 +1735,9 @@ class Users extends Base
         $type = input('type', '');
         $res = Db::table('xy_users')->where('id', $id)->update([$type => $status]);
         if($res){
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
-        return $this->error('操作失败');
+        return $this->error(lang('操作失败'));
     }
     
     /**
@@ -1778,9 +1778,9 @@ class Users extends Base
                 ]);
             if ($res !== false) {
                 sysoplog('编辑银行卡信息', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             } else {
-                return $this->error('操作失败');
+                return $this->error(lang('操作失败'));
             }
         }
 
@@ -1788,7 +1788,7 @@ class Users extends Base
         $uid = input('id/d', 0);
         $this->bk_info = Db::name('xy_member_address')->where('uid', input('id/d', 0))->select();
         if (!$this->bk_info) {
-            //$this->error('没有数据');
+            //$this->error(lang('没有数据'));
             $data = [
                 'uid' => input('id/d', 0),
                 'name' => '',
@@ -1816,14 +1816,14 @@ class Users extends Base
     {
         $id = input('id/d', 0);
         $status = input('status/d', 0);
-        if (!$id || !$status) return $this->error('参数错误');
+        if (!$id || !$status) return $this->error(lang('参数错误'));
         $status == -1 ? $status = 0 : '';
         $res = Db::table($this->table)->where('id', $id)->update(['is_jia' => $status]);
         if (!$res) {
             sysoplog('编辑会员真假人', "ID {$id} status {$status}");
-            return $this->error('更新失败!');
+            return $this->error(lang('更新失败!'));
         }
-        return $this->success('更新成功');
+        return $this->success(lang('更新成功'));
     }
     
     
@@ -1835,14 +1835,14 @@ class Users extends Base
     {
         $id = input('id/d', 0);
         $status = input('status/d', 0);
-        if (!$id || !$status) return $this->error('参数错误');
+        if (!$id || !$status) return $this->error(lang('参数错误'));
         $status == -1 ? $status = 0 : '';
         $res = Db::table($this->table)->where('id', $id)->update(['shuadan_status' => $status]);
         if (!$res) {
             sysoplog('编辑会员刷单状态', "ID {$id} status {$status}");
-            return $this->error('更新失败!');
+            return $this->error(lang('更新失败!'));
         }
-        return $this->success('更新成功');
+        return $this->success(lang('更新成功'));
     }
 
     /**
@@ -1853,7 +1853,7 @@ class Users extends Base
     {
         $id = input('id/d', 0);
         $invite_code = input('status/s', '');
-        if (!$id || !$invite_code) return $this->error('参数错误');
+        if (!$id || !$invite_code) return $this->error(lang('参数错误'));
 
         $n = ($id % 20);
 
@@ -1864,9 +1864,9 @@ class Users extends Base
 
         $res = model('Users')->create_qrcode($invite_code, $id);
         if (0 && $res['code'] !== 0) {
-            return $this->error('失败');
+            return $this->error(lang('失败'));
         }
-        return $this->success('成功');
+        return $this->success(lang('成功'));
     }
 
 
@@ -1970,7 +1970,7 @@ class Users extends Base
                     $datum['jb'] = '<span class="layui-btn layui-btn-xs layui-btn-danger" style="background: ' . $color . '">' . $datum['jb'] . '</span>';
                 }
             }
-            if (!$data) json(['code' => 1, 'info' => '暂无数据']);
+            if (!$data) json(['code' => 1, 'info'  => lang('暂无数据')]);
 
             $tj_com = 0;
             switch ($level) {
@@ -2006,7 +2006,7 @@ class Users extends Base
             return json([
                 'code' => 0,
                 'count' => $count,
-                'info' => '请求成功',
+                'info'  => lang('请求成功'),
                 'data' => $data,
                 'other' => $limit,
                 'tj_com' => $tj_com
@@ -2036,7 +2036,7 @@ class Users extends Base
             if (!$type) {
                 $status2 = $status ? 0 : 1;
                 $res = db('xy_users')->where('id', $uid)->update(['status' => $status2]);
-                return json(['code' => 1, 'info' => '请求成功', 'data' => $info]);
+                return json(['code' => 1, 'info'  => lang('请求成功'), 'data' => $info]);
             } else {
                 //
 
@@ -2064,13 +2064,13 @@ class Users extends Base
                     $res = db('xy_users')->where('id', $item['id'])->update(['status' => $status2]);
                 }
 
-                return json(['code' => 1, 'info' => '请求成功', 'data' => $info]);
+                return json(['code' => 1, 'info'  => lang('请求成功'), 'data' => $info]);
             }
 
 
         }
 
-        return json(['code' => 1, 'info' => '暂无数据']);
+        return json(['code' => 1, 'info'  => lang('暂无数据')]);
     }
 
 
@@ -2091,7 +2091,7 @@ class Users extends Base
      */
     public function cs_list()
     {
-        $this->title = '客服列表';
+        $this->title = lang('客服列表');
         $where = [];
         if (input('tel/s', '')) $where[] = ['tel', 'like', '%' . input('tel/s', '') . '%'];
         if (input('username/s', '')) $where[] = ['username', 'like', '%' . input('username/s', '') . '%'];
@@ -2115,9 +2115,9 @@ class Users extends Base
          $res = Db::table("xy_cs")->where("id",$id)->delete();
          if($res){
              sysoplog('删除客服', json_encode(input(), JSON_UNESCAPED_UNICODE));
-              return $this->success('操作成功');
+              return $this->success(lang('操作成功'));
          }
-         return $this->error('操作失败，请刷新再试');
+         return $this->error(lang('操作失败，请刷新再试'));
      }
 
     /**
@@ -2155,9 +2155,9 @@ class Users extends Base
             $res = db('xy_cs')->insert($data);
             if ($res) {
                 sysoplog('添加客服', json_encode($data, JSON_UNESCAPED_UNICODE));
-                return $this->success('添加成功');
+                return $this->success(lang('添加成功'));
             }
-            return $this->error('添加失败，请刷新再试');
+            return $this->error(lang('添加失败，请刷新再试'));
         }
         return $this->fetch();
     }
@@ -2208,9 +2208,9 @@ class Users extends Base
             $res = db('xy_cs')->where('id', $id)->update($data);
             if ($res !== false) {
                 sysoplog('编辑客服信息', json_encode($data, JSON_UNESCAPED_UNICODE));
-                return $this->success('编辑成功');
+                return $this->success(lang('编辑成功'));
             }
-            return $this->error('编辑失败，请刷新再试');
+            return $this->error(lang('编辑失败，请刷新再试'));
         }
         $id = input('id/d', 0);
         $this->list = db('xy_cs')->find($id);
@@ -2230,9 +2230,9 @@ class Users extends Base
             $res = db('xy_script')->where('id', 1)->update(['script' => $code]);
             if ($res !== false) {
                 sysoplog('客服调用代码', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                $this->success('操作成功!');
+                $this->success(lang('操作成功!'));
             }
-            $this->error('操作失败!');
+            $this->error(lang('操作失败!'));
         }
         $this->code = db('xy_script')->where('id', 1)->value('script');
         return $this->fetch();
@@ -2264,13 +2264,13 @@ class Users extends Base
             ]);
             if ($res !== false) {
                 sysoplog('编辑银行卡信息', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                return $this->success('操作成功');
+                return $this->success(lang('操作成功'));
             } else {
-                return $this->error('操作失败');
+                return $this->error(lang('操作失败'));
             }
         }
         $this->bk_info = Db::name('xy_bankinfo')->where('uid', input('id/d', 0))->select();
-        if (!$this->bk_info) $this->error('没有数据');
+        if (!$this->bk_info) $this->error(lang('没有数据'));
         return $this->fetch();
     }
 
@@ -2317,16 +2317,16 @@ class Users extends Base
             $data['bili'] = $data['bili'] / 100;
             $data['addtime'] = date('Y-m-d H:i:s',time());
             if($data['grab_order_max_amount'] < $data['grab_order_min_amount']){
-                return $this->error('【抢单最高金额】必须大于等于【抢单最低金额】');
+                return $this->error(lang('【抢单最高金额】必须大于等于【抢单最低金额】'));
             }
             if($data['grab_order_min_amount'] < 1){
-                return $this->error('【抢单最低金额】必须大于等于1');
+                return $this->error(lang('【抢单最低金额】必须大于等于1'));
             }
             if($data['day_withdraw_num'] < 1){
-                return $this->error('【提款次数/天】必须大于等于1');
+                return $this->error(lang('【提款次数/天】必须大于等于1'));
             }
             if($data['order_num'] < 1){
-                return $this->error('【抢单次数限制】必须大于等于1');
+                return $this->error(lang('【抢单次数限制】必须大于等于1'));
             }
             if($data['auto_buy_finance'] == 1){
                 if(empty($data['lixibao_id'])){
@@ -2334,25 +2334,25 @@ class Users extends Base
                 }
             }
             // if(empty($data['pic'])){
-            //     return $this->error('图标不能为空');
+            //     return $this->error(lang('图标不能为空'));
             // }
             if(empty($data['name'])){
-                return $this->error('名称不能为空');
+                return $this->error(lang('名称不能为空'));
             }
             if($data['level'] === ''){
-                return $this->error('等级值不能为空');
+                return $this->error(lang('等级值不能为空'));
             }
             if($data['num'] === ''){
-                return $this->error('升级价格不能为空');
+                return $this->error(lang('升级价格不能为空'));
             }
             if(Db::table("xy_level")->where('id','<>',input('id'))->where('level',$data['level'])->field('id')->find()){
-                return $this->error('等级值已存在');
+                return $this->error(lang('等级值已存在'));
             }
             $res = Db::table("xy_level")->where('id',input('id'))->update($data);
             if($res){
-                return $this->success('更新成功');
+                return $this->success(lang('更新成功'));
             }
-            return $this->error('更新失败');
+            return $this->error(lang('更新失败'));
             // $this->applyCsrfToken();
 //            $id = input('post.id/d', 0);
 //            $name = input('post.name/s', '');
@@ -2403,14 +2403,14 @@ class Users extends Base
 //                ]);
 //            if ($res !== false) {
 //                sysoplog('编辑会员等级', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-//                return $this->success('操作成功');
+//                return $this->success(lang('操作成功'));
 //            } else {
-//                return $this->error('操作失败');
+//                return $this->error(lang('操作失败'));
 //            }
         }
         $this->bk_info = Db::name('xy_level')->where('id', input('id/d', 0))->select();
         $this->cate = Db::name('xy_goods_cate')->select();
-        if (!$this->bk_info) $this->error('没有数据');
+        if (!$this->bk_info) $this->error(lang('没有数据'));
         $this->list = Db::name('xy_lixibao_list')->where('status',1)->select();
         return $this->fetch();
     }

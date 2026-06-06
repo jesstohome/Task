@@ -28,7 +28,7 @@ class Deal extends Base
      */
     public function order_list()
     {
-        $this->title = '抢单记录';
+        $this->title = lang('抢单记录');
         $where = [];
          $is_jia = input("is_jia");
             $is_jia = $is_jia?$is_jia:0;
@@ -45,7 +45,7 @@ class Deal extends Base
             $where[] = ['fc.addtime', 'between', [strtotime($arr[0]), strtotime($arr[1] . ' 23:59:59')]];
         }
         $this->status = $status;
-        $this->statusList = [0 => '待付款', 1 => '交易完成', 2 => '用户取消', 3 => '强制完成', 4 => '强制取消', 5 => '交易冻结'];
+        $this->statusList = [0  => lang('待付款'), 1  => lang('交易完成'), 2  => lang('用户取消'), 3  => lang('强制完成'), 4  => lang('强制取消'), 5  => lang('交易冻结')];
         $agent_id = model('admin/Users')->get_admin_agent_id();
         if ($agent_id) {
 //            $ids =  implode(",",model('admin/Users')->child_user(session('admin_user')['user_id'],5));
@@ -121,7 +121,7 @@ class Deal extends Base
         
         $orderData = Db::table("xy_convey")->find($id);
         if(!$orderData){
-            return $this->error('参数错误');
+            return $this->error(lang('参数错误'));
         }
         
         if($status == 5){
@@ -162,9 +162,9 @@ class Deal extends Base
         }
         
         if($res2){
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
-        return $this->error('参数错误');
+        return $this->error(lang('参数错误'));
     }
 
     // protected function _order_status_form_result($result, $data)
@@ -181,7 +181,7 @@ class Deal extends Base
         // $this->applyCsrfToken();
         $oid = input('post.id/s', '');
         $status = input('post.status/d', 1);
-        if (!\in_array($status, [3, 4])) return $this->error('参数错误');
+        if (!\in_array($status, [3, 4])) return $this->error(lang('参数错误'));
         $res = model('Convey')->do_order($oid, $status);
         if ($res['code'] === 0) {
           
@@ -189,7 +189,7 @@ class Deal extends Base
               //  Db::table("xy_convey")->where("id",$oid)->update(["status"=>$status]);
             }
               sysoplog('处理用户交易订单', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         } else
             return $this->error($res['info']);
     }
@@ -208,9 +208,9 @@ class Deal extends Base
          $info = Db::table("xy_convey")->where("id",$oid)->find();
         $res = Db::name('xy_message')->insert(['uid' => $info['uid'], 'type' => 2, 'title' => yuylangs('sys_msg'), 'content' => $oid . ',' . yuylangs('dd_system_clean'), 'addtime' => time()]);
         if($res){
-            return $this->success('操作成功');
+            return $this->success(lang('操作成功'));
         }
-          return $this->error("操作失败");
+          return $this->error(lang("操作失败"));
     }
 
     /**
@@ -220,7 +220,7 @@ class Deal extends Base
      */
     public function deal_console()
     {
-        $this->title = '交易控制';
+        $this->title = lang('交易控制');
         if (request()->isPost()) {
             $deal_min_balance = input('post.deal_min_balance/d', 0);
             $deal_timeout = input('post.deal_timeout/d', 0);
@@ -241,7 +241,7 @@ class Deal extends Base
             $_5_d_reward = input('post.5_d_reward/f', 0);
 
             //可以加上限制条件
-            if ($deal_commission > 1 || $deal_commission < 0) return $this->error('参数错误');
+            if ($deal_commission > 1 || $deal_commission < 0) return $this->error(lang('参数错误'));
             setconfig(['deal_min_balance'], [$deal_min_balance]);
             setconfig(['deal_timeout'], [$deal_timeout]);
             setconfig(['deal_min_num'], [$deal_min_num]);
@@ -395,8 +395,8 @@ class Deal extends Base
                 }
             }
 
-            sysoplog('编辑交易控制', '');
-            return $this->success('操作成功!');
+            sysoplog(lang('编辑交易控制'), '');
+            return $this->success(lang('操作成功!'));
         }
 
         // var_dump(config('master_name'));die;
@@ -413,7 +413,7 @@ class Deal extends Base
      */
     public function goods_list()
     {
-        $this->title = '商品管理';
+        $this->title = lang('商品管理');
         $this->cateList = db('xy_goods_cate')->column('name', 'id');
         $where = [];
         $query = $this->_query('xy_goods_list');
@@ -429,7 +429,7 @@ class Deal extends Base
      */
     public function goods_cate()
     {
-        $this->title = '分类管理';
+        $this->title = lang('分类管理');
         $this->_query('xy_goods_cate')->page();
     }
 
@@ -440,7 +440,7 @@ class Deal extends Base
      */
     public function add_goods()
     {
-        $this->title = '添加商品';
+        $this->title = lang('添加商品');
         if (\request()->isPost()) {
             // $this->applyCsrfToken();//验证令牌
             $shop_name = input('post.shop_name/s', '');
@@ -469,7 +469,7 @@ class Deal extends Base
      */
     public function add_cate()
     {
-        $this->title = '添加商品分类';
+        $this->title = lang('添加商品分类');
         if (\request()->isPost()) {
             // $this->applyCsrfToken();//验证令牌
             $name = input('post.name/s', '');
@@ -519,9 +519,9 @@ class Deal extends Base
             $res = Db::table('xy_goods_cate')->where('id', $id)->update($data);
         }
         if ($res)
-            return ['code' => 0, 'info' => '操作成功!'];
+            return ['code' => 0, 'info'  => lang('操作成功!')];
         else
-            return ['code' => 1, 'info' => '操作失败!'];
+            return ['code' => 1, 'info'  => lang('操作失败!')];
     }
 
     /**
@@ -531,7 +531,7 @@ class Deal extends Base
      */
     public function edit_goods($id)
     {
-        $this->title = '编辑商品';
+        $this->title = lang('编辑商品');
         $id = (int)$id;
         if (\request()->isPost()) {
             // $this->applyCsrfToken();//验证令牌
@@ -564,7 +564,7 @@ class Deal extends Base
      */
     public function edit_cate($id)
     {
-        $this->title = '编辑商品分类';
+        $this->title = lang('编辑商品分类');
         $id = (int)$id;
         if (\request()->isPost()) {
             // $this->applyCsrfToken();//验证令牌
@@ -692,7 +692,7 @@ class Deal extends Base
                     ->count('distinct c.uid');
         
         
-        $this->title = '充值记录';
+        $this->title = lang('充值记录');
         $query = $this->_query('xy_recharge')
             ->alias('xr')
             ->leftJoin('xy_users u', 'u.id=xr.uid');
@@ -957,7 +957,7 @@ class Deal extends Base
                     ->count('distinct c.uid');
         
         
-        $this->title = '充值管理';
+        $this->title = lang('充值管理');
         $query = $this->_query('xy_recharge')
             ->alias('xr')
             ->leftJoin('xy_users u', 'u.id=xr.uid');
@@ -1198,9 +1198,9 @@ class Deal extends Base
                 
                 if ($res) {
                     sysoplog('审核充值订单', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                    $this->success('操作成功!');
+                    $this->success(lang('操作成功!'));
                 } else {
-                    $this->success('操作失败!');
+                    $this->success(lang('操作失败!'));
                 }
             } elseif ($status == 3) {
                 $res = Db::name('xy_recharge')->where('id', $oid)->update(['endtime' => time(), 'status' => $status]);
@@ -1208,14 +1208,14 @@ class Deal extends Base
                     ->insert([
                         'uid' => $oinfo['uid'],
                         'type' => 2,
-                        'content' => '充值订单' . $oid . '已被退回，如有疑问请联系客服',
+                        'content'  => lang('充值订单') . $oid . '已被退回，如有疑问请联系客服',
                         'title' => lang('sys_msg'),
                         'content' => sprintf(input('prompt'), $oid),
                         'addtime' => time()
                     ]);
             }
             sysoplog('审核充值订单', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-            $this->success('操作成功!');
+            $this->success(lang('操作成功!'));
         }
     }
 
@@ -1229,9 +1229,9 @@ class Deal extends Base
         $status = input('status');
         $res = Db::table('xy_deposit')->where('id',$id)->update(['agent_status' => $status]);
         if($res){
-            $this->success('操作成功');
+            $this->success(lang('操作成功'));
         }else{
-            $this->error('操作失败');
+            $this->error(lang('操作失败'));
         }
     }
     /**
@@ -1260,7 +1260,7 @@ class Deal extends Base
             ->count();
         $data['tixian'] = $tixain;
         $data['chongzhi'] = $chongzhi;
-        return $this->success('获取成功!',$data);
+        return $this->success(lang('获取成功!'),$data);
     }
 
     /**
@@ -1329,7 +1329,7 @@ class Deal extends Base
             ->sum('c.num');
         
         
-        $this->title = '提现列表';
+        $this->title = lang('提现列表');
         $query = $this->_query('xy_deposit')->alias('xd');
         $where = [];
         $is_jia = input("is_jia");
@@ -1641,10 +1641,10 @@ class Deal extends Base
         $status = input('post.status/d', 1);
         $oinfo = Db::name('xy_deposit')->where('id', input('post.id', 0))->find();
         if (!$oinfo) {
-            return $this->error('订单不存在!');
+            return $this->error(lang('订单不存在!'));
         }
         if ($oinfo['status'] != 1) {
-            return $this->error('订单已处理过了,不能再次处理!');
+            return $this->error(lang('订单已处理过了,不能再次处理!'));
         }
         if ($status == 3) {
             $msg = input('post.prompt/s', '');
@@ -1685,22 +1685,22 @@ class Deal extends Base
             if ($res1 && $res2 && $res3) {
                 sysoplog('驳回提现', json_encode($_POST, JSON_UNESCAPED_UNICODE));
                 Db::commit();
-                $this->success('驳回成功，钱已返回至用户余额！');
+                $this->success(lang('驳回成功，钱已返回至用户余额！'));
             } else {
                 Db::rollback();
-                $this->error('驳回失败，请联系技术查看！');
+                $this->error(lang('驳回失败，请联系技术查看！'));
             }
         } //
         elseif ($status == 2) {
             $uinfo = Db::name('xy_users')->where('id', $oinfo['uid'])->find();
             if (!$uinfo) {
-                return $this->error('用户已被删除,不能处理!');
+                return $this->error(lang('用户已被删除,不能处理!'));
             }
             $payout_type = Db::name('xy_pay')
                 ->where('is_payout', 1)
                 ->limit(1)->value('name2');
             if (!$payout_type) {
-                return $this->error('未配置支付方式!');
+                return $this->error(lang('未配置支付方式!'));
             }
             $payout_type = strtolower($payout_type);
             $payout = null;
@@ -1717,9 +1717,9 @@ class Deal extends Base
             //         ]);
             //     if (!$res2) {
             //         Db::rollback();
-            //         return $this->error('数据库处理失败!');
+            //         return $this->error(lang('数据库处理失败!'));
             //     } else {
-            //         return $this->success('审核成功!');
+            //         return $this->success(lang('审核成功!'));
             //     }
             // }
 
@@ -1745,12 +1745,12 @@ class Deal extends Base
                 ]);
             if (!$res2) {
                 Db::rollback();
-                return $this->error('数据库处理失败!');
+                return $this->error(lang('数据库处理失败!'));
             }
             $blank_info = Db::name('xy_bankinfo')->where(['uid' => $oinfo['uid']])->find();
             if (!$blank_info) {
                 Db::rollback();
-                return $this->error('提现用户无银行卡信息!');
+                return $this->error(lang('提现用户无银行卡信息!'));
             }
             $blank_info['cardnum'] = str_replace(" ", "", $blank_info['cardnum']);
 
@@ -1762,7 +1762,7 @@ class Deal extends Base
                 ]);
             if (!$res4) {
                 Db::rollback();
-                return $this->error('用户数据更新失败!');
+                return $this->error(lang('用户数据更新失败!'));
             }
             Db::name('xy_message')
                 ->insert([
@@ -1807,7 +1807,7 @@ class Deal extends Base
             // }
             sysoplog('提现付款', json_encode($_POST, JSON_UNESCAPED_UNICODE));
             Db::commit();
-            return $this->success('付款成功!');
+            return $this->success(lang('付款成功!'));
         } //
         elseif ($status == 88) {
             Db::startTrans();
@@ -1826,10 +1826,10 @@ class Deal extends Base
             if ($res2) {
                 sysoplog('通过提现不付款', json_encode($_POST, JSON_UNESCAPED_UNICODE));
                 Db::commit();
-                $this->success('操作成功！');
+                $this->success(lang('操作成功！'));
             } else {
                 Db::rollback();
-                $this->error('操作失败，请联系技术查看！');
+                $this->error(lang('操作失败，请联系技术查看！'));
             }
         }
     }
@@ -1954,7 +1954,7 @@ class Deal extends Base
      */
     public function lixibao_log()
     {
-        $this->title = '理财记录';
+        $this->title = lang('理财记录');
         $query = $this->_query('xy_lixibao')->alias('xd');
         $where = [];
         if (input('username/s', '')) $where[] = ['u.username', 'like', '%' . input('username/s', '') . '%'];
@@ -2013,9 +2013,9 @@ class Deal extends Base
 
             if ($res) {
                 sysoplog('添加利息宝', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                return $this->success('提交成功', '#' . url('lixibao_list'));
+                return $this->success(lang('提交成功'), '#' . url('lixibao_list'));
             } else
-                return $this->error('提交失败');
+                return $this->error(lang('提交失败'));
         }
         return $this->fetch();
     }
@@ -2027,7 +2027,7 @@ class Deal extends Base
      */
     public function edit_lixibao($id)
     {
-        $this->title = '编辑利息宝';
+        $this->title = lang('编辑利息宝');
         $id = (int)$id;
         if (\request()->isPost()) {
             // $this->applyCsrfToken();//验证令牌
@@ -2053,9 +2053,9 @@ class Deal extends Base
 
             if ($res) {
                 sysoplog('编辑利息宝', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-                return $this->success('提交成功', '#' . url('lixibao_list'));
+                return $this->success(lang('提交成功'), '#' . url('lixibao_list'));
             } else
-                return $this->error('提交失败');
+                return $this->error(lang('提交失败'));
         }
         $info = db('xy_lixibao_list')->find($id);
         $this->assign('info', $info);
@@ -2088,7 +2088,7 @@ class Deal extends Base
      */
     public function lixibao_list()
     {
-        $this->title = '理财管理';
+        $this->title = lang('理财管理');
         $query = $this->_query('xy_lixibao_list')->alias('xd');
         $where = [];
         if (input('addtime/s', '')) {
@@ -2147,7 +2147,7 @@ class Deal extends Base
      */
     public function do_deposit2()
     {
-        $this->error('该功能已禁用');
+        $this->error(lang('该功能已禁用'));
         exit;
         $ids = [];
         if (isset($_REQUEST['id']) && !empty($_REQUEST['id'])) {
@@ -2159,7 +2159,7 @@ class Deal extends Base
                     Db::name('xy_deposit')->where('id', $id)->update(['status' => 2, 'endtime' => time()]);
                 }
             }
-            $this->success('处理成功', '#' . url('deposit_list'));
+            $this->success(lang('处理成功'), '#' . url('deposit_list'));
         }
 
     }
@@ -2273,7 +2273,7 @@ public function daoru()
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setWidth(10);
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setWidth(30);
 
-        $statusList = [1 => '待审核', 2 => '审核通过', 3 => '审核驳回', 4 => '转账失败'];
+        $statusList = [1  => lang('待审核'), 2  => lang('审核通过'), 3  => lang('审核驳回'), 4  => lang('转账失败')];
         $systemUserList = Db::name('SystemUser')->column('username', 'id');
         //6.循环刚取出来的数组，将数据逐一添加到excel表格。
         for ($i = 0; $i < count($list); $i++) {
@@ -2343,7 +2343,7 @@ public function daoru()
                 }
             }
             sysoplog('批量拒绝提现', json_encode($_POST, JSON_UNESCAPED_UNICODE));
-            $this->success('处理成功', '#' . url('deposit_list'));
+            $this->success(lang('处理成功'), '#' . url('deposit_list'));
         }
     }
 
@@ -2363,7 +2363,7 @@ public function daoru()
                 //['endtime','between','??']    //时间限制
             ])
             ->select();
-        if (!$info) return $this->error('当前没有待返佣订单!');
+        if (!$info) return $this->error(lang('当前没有待返佣订单!'));
         try {
             foreach ($info as $k => $v) {
                 Db::startTrans();
@@ -2388,7 +2388,7 @@ public function daoru()
                     $res1 = Db::name('xy_convey')->where('id', $v['oid'])->update(['c_status' => 2]);//记录账号异常
                 }
                 if ($res !== false && $res1) {
-                    sysoplog('一键返佣', '');
+                    sysoplog(lang('一键返佣'), '');
                     Db::commit();
                 } else
                     Db::rollback();
@@ -2396,7 +2396,7 @@ public function daoru()
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
-        return $this->success('操作成功!');
+        return $this->success(lang('操作成功!'));
     }
 
     /**
@@ -2406,7 +2406,7 @@ public function daoru()
     public function order_commission_list($oid)
     {
         if (!$oid) {
-            $this->error('请选择要查看的订单');
+            $this->error(lang('请选择要查看的订单'));
         }
         $this->_query('xy_balance_log')
             ->alias('xc')

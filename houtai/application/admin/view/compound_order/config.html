@@ -4,24 +4,24 @@
 
         <div class="layui-form-item">
             <label class="relative block">
-                <span class="color-green font-w7">触发订单数量</span>
-                <input name="trigger_order_count" required type="number" min="1" placeholder="请输入触发复数订单的订单数量" value="{$config.trigger_order_count}" class="layui-input">
+                <span class="color-green font-w7">{:lang('触发订单数量')}</span>
+                <input name="trigger_order_count" required type="number" min="1" placeholder="{:lang('请输入触发复数订单的订单数量')}" value="{$config.trigger_order_count}" class="layui-input">
             </label>
-            <p class="help-block">用户完成指定数量的订单后触发复数订单选择</p>
+            <p class="help-block">{:lang('用户完成指定数量的订单后触发复数订单选择')}</p>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">状态</label>
+            <label class="layui-form-label">{:lang('状态')}</label>
             <div class="layui-input-block">
-                <input type="radio" name="status" value="1" title="启用" {if $config.status == 1}checked{/if}>
-                <input type="radio" name="status" value="0" title="禁用" {if $config.status == 0}checked{/if}>
+                <input type="radio" name="status" value="1" title="{:lang('启用')}" {if $config.status == 1}checked{/if}>
+                <input type="radio" name="status" value="0" title="{:lang('禁用')}" {if $config.status == 0}checked{/if}>
             </div>
-            <p class="help-block">启用后用户达到触发条件时会弹出复数订单选择</p>
+            <p class="help-block">{:lang('启用后用户达到触发条件时会弹出复数订单选择')}</p>
         </div>
 
         <div class="hr-line-dashed"></div>
         <div class="layui-form-item text-center">
-            <button class="layui-btn" type="submit">保存配置</button>
+            <button class="layui-btn" type="submit">{:lang('保存配置')}</button>
         </div>
     </div>
 </form>

@@ -19,7 +19,7 @@
                     <form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
                        <div class="layui-card-body">
                            <div class="layui-form-item">
-                               <label class="layui-form-label label-required">账户类型</label>
+                               <label class="layui-form-label label-required">{:lang('账户类型')}</label>
                                <div class="layui-input-block">
                                    <select name="bank_type">
                                        {if(!$bank_info)}
@@ -31,7 +31,7 @@
                                </div>
                            </div>
                            <div class="layui-form-item">
-                               <label class="layui-form-label label-required">开户行</label>
+                               <label class="layui-form-label label-required">{:lang('开户行')}</label>
                                <div class="layui-input-block">
                                    <select name="bankname">
                                        {volist name="bank_list" id="vo"}
@@ -46,27 +46,27 @@
                                </div>
                            </div>
                            <div class="layui-form-item">
-                               <label class="layui-form-label label-required">银行账号</label>
+                               <label class="layui-form-label label-required">{:lang('银行账号')}</label>
                                <div class="layui-input-block">
-                                   <input name="cardnum" value="{$bank_info.cardnum|default=''}" required placeholder="银行账号" class="layui-input">
+                                   <input name="cardnum" value="{$bank_info.cardnum|default=''}" required placeholder="{:lang('银行账号')}" class="layui-input">
                                </div>
                            </div>
                            <div class="layui-form-item">
-                               <label class="layui-form-label label-required">开户人</label>
+                               <label class="layui-form-label label-required">{:lang('开户人')}</label>
                                <div class="layui-input-block">
-                                   <input name="username" value="{$bank_info.username|default=''}" required placeholder="真实姓名" class="layui-input">
+                                   <input name="username" value="{$bank_info.username|default=''}" required placeholder="{:lang('真实姓名')}" class="layui-input">
                                </div>
                            </div>
                            <div class="layui-form-item">
-                               <label class="layui-form-label label-required">手机</label>
+                               <label class="layui-form-label label-required">{:lang('手机')}</label>
                                <div class="layui-input-block">
-                                   <input name="tel" value="{$bank_info.tel|default=''}" required placeholder="手机" class="layui-input">
+                                   <input name="tel" value="{$bank_info.tel|default=''}" required placeholder="{:lang('手机')}" class="layui-input">
                                </div>
                            </div>
                            <div class="layui-form-item">
-                               <label class="layui-form-label label-required">CCI账号</label>
+                               <label class="layui-form-label label-required">{:lang('CCI账号')}</label>
                                <div class="layui-input-block">
-                                   <input name="bank_code" value="{$bank_info.bank_code|default=''}" required placeholder="CCI账号" class="layui-input">
+                                   <input name="bank_code" value="{$bank_info.bank_code|default=''}" required placeholder="{:lang('CCI账号')}" class="layui-input">
                                </div>
                            </div>
                         </div>
@@ -75,7 +75,7 @@
                         <div class="hr-line-dashed"></div>
                         <div class="layui-form-item text-center">
                             <button type="button" class="layui-btn layui-btn-normal add_bank_submit" lay-submit lay-filter="add_bank_submit">{if $b_id} 编辑 {else} 添加 {/if}</button>
-<!--                            <button class="layui-btn layui-btn-danger" type='button' data-close>取消</button>-->
+<!--                            <button class="layui-btn layui-btn-danger" type='button' data-close>{:lang('取消')}</button>-->
                         </div>
                     </form>
                 </div>
