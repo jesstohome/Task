@@ -1623,6 +1623,8 @@ class Convey extends Model
      */
     public function do_order($oid, $status, $uid = '', $add_id = '', $pingfen = 0, $pinglun = '')
     {
+        //已删除多任务订单相关结算代码（git提交名：订单结算优化）
+        
         $info = Db::name('xy_convey')->find($oid);
         if (!$info) return ['code' => 1, 'info' => yuylangs('order_sn_none')];
         if ($uid && $info['uid'] != $uid) return ['code' => 1, 'info' => yuylangs('cscw')];
@@ -1645,20 +1647,6 @@ class Convey extends Model
         if (in_array($status, [1, 3])) {
             //TODO 判断余额是否足够
             
-            // if ($user['balance'] < $info['num']) {
-            //     //把幸运订单降级为普通订单
-                
-            //     Db::rollback();
-                
-            //     if($info['group_zero'] == 1){
-            //         Db::table("xy_convey")->where('id', $oid)->update(["group_zero"=>0]);
-            //     }
-            //     return [
-            //         'code' => 1,
-            //         'info' => sprintf(yuylangs('zhyebz'), ($info['num'] - $user['balance']) . ""),
-            //         'url' => url('index/ctrl/recharge')
-            //     ];
-            // }
             if ($user['balance'] <= 0) {
                 //把幸运订单降级为普通订单
                 
@@ -1676,38 +1664,9 @@ class Convey extends Model
             //是否为多单模式
             $isGroup = false;
             $isMultipleOrder = false;
-            if ($info['group_id'] > 0) {
-                $isGroup = true;
-                $o_g_ids = Db::name('xy_convey')
-                    ->where('uid', $info['uid'])
-                    ->where('group_is_active', 1)
-                    ->where('group_id', $info['group_id'])
-                    ->where('group_rule_num', $info['group_rule_num'])
-                    ->column('id');
-             //   return $o_g_ids;
-                if (count($o_g_ids) > 1) {
-                    $isMultipleOrder = true;
-                }
-                
-                
-                //校验是否是最后一单
-                // $groupInfo = Db::name('xy_group')->where('id', $info['group_id'])->find();
-                if($info['rands']){
-                     $order_num1 = Db::table("xy_convey")->where('qkon',1)->where("rands",$info['rands'])->count();
-                     if($order_num1 >= $info["duorw"]){
-                         Db::table("xy_convey")->where(['rands'=>$info['rands']])->update(["group_completedornot"=>2]);
-                     }    
-                }
-                
-                if(!$info['duorw']){
-                    Db::table("xy_convey")->where(['rands'=>$info['rands']])->update(["group_completedornot"=>2]);
-                }
-                
-              
-            }
+            
             //付款
             if (!$info['is_pay']) {
-                try {
                 
                     $res1 = Db::name('xy_users')
                         ->where('id', $info['uid'])
@@ -1729,78 +1688,21 @@ class Convey extends Model
                         "balance" => $user['balance']
                     ]);
                     
-                    if ($res && $res1 && $res2) {
-                         //提交事物
-                           Db::commit();
-                    } else {
+                    if (!$res || !$res1 || !$res2) {
                         Db::rollback();
                         return ['code' => 1, 'info' => yuylangs('czsb')];
                     }
-                } catch (Exception $th) {
-                    Db::rollback();
-                    return ['code' => 1, 'info' => yuylangs('czsb')];
-                }
             }
             //系统通知
             $isAllOk = true;
             if ($status == 3) {
                 Db::name('xy_message')->insert(['uid' => $info['uid'], 'type' => 2, 'title' => yuylangs('sys_msg'), 'content' => $oid . ',' . yuylangs('dd_pay_system'), 'addtime' => time()]);
             }
-            
-            
-            
-          
+        
             if (!$isMultipleOrder) {
                 $c_status = Db::name('xy_convey')->where('id', $oid)->value('c_status');
                 //判断是否已返还佣金
-                if ($c_status === 0 && $user['balance'] >= $info['num']) $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);
-            } else {
-                
-                 
-                  
-                //校验他是不是最后一单
-                 $order_num1 = Db::table("xy_convey")->where("rands",$info['rands'])->where('qkon',1)->count();
-                 if($info['rands']){
-                    //  $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);  //测试给他 使用的
-                   //提交事物
-                         
-                              Db::commit();   
-                      if($order_num1 >= $info["duorw"]){
-                         $oList = Db::table("xy_convey")->where("rands",$info['rands'])->where('qkon',1)->select(); 
-                         foreach($oList as $val){
-                              if (  $val['c_status'] == 0 && $user['balance'] >= $info['num']) {   //注释的
-                                  $this->deal_reward($val['uid'], $val['id'], $val['num'], $val['commission']);
-                               } 
-                         } 
-                       
-                      
-                     }   
-                 }else{
-                     if($user['balance'] >= $info['num']){
-                         $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);  //测试给他 使用的
-                     }
-                      
-                 }
-                  
-            }
-            
-             // //多单模式      ------------卡
-              $xy_group_rule1 = Db::table("xy_group_rule")->where("group_id",$user['group_id'])->count();
-            $xy_group_rule2 = Db::table("xy_group_rule")->where("group_id",$user['group_id'])->sum("add_orders1");
-           $all_order_num1 = $xy_group_rule1 + $xy_group_rule2;
-             $zuodanshu = Db::table("xy_convey")->where(["group_is_active" => 1,'group_id'=>$user['group_id'],"qkon"=>1,'uid'=>$user['id']])->count();
-
-            //更新等级
-            if($info['group_id']){
-                $groupRuleInfo = Db::name('xy_group_rule')
-                    ->where('group_id', $info['group_id'])
-                    ->where('order_num', $info['group_rule_num'])
-                    ->find();
-                if ($groupRuleInfo) {
-                    if ($groupRuleInfo['trigger_level'] > $user['level']) {
-                        Db::name('xy_users')->where('id', $info['uid'])->update(['level'=>$groupRuleInfo['trigger_level']]);
-                    }
-                }
+                if ($c_status == 0 && $user['balance'] >= $info['num']) $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);
             }
             
             //扣除体验金
@@ -1837,29 +1739,23 @@ class Convey extends Model
                         ]);
             }
             
-            //注释
-              if ($zuodanshu >= $all_order_num1) {
-//                    Db::name('xy_convey')
-//                        ->where('uid', $user['id'])
-//                        ->where('group_id', $user['group_id'])
-//                        ->update([
-//                            'group_is_active' => 0
-//                        ]);
+            if (Db::commit()) {
+                if ($user['balance'] >= $info['num']) {
+                    return ['code' => 0, 'info' => yuylangs('czcg')];
+                } else {
+                    return [
+                        'code' => 1,
+                        'info' => yuylangs('money_not'),
+                        'url' => url('index/ctrl/recharge')
+                    ];
                 }
-            if($user['balance'] >= $info['num']){
-                return ['code' => 0, 'info' => yuylangs('czcg')];
-            }else{
-                //防止出现负数金额的时候再派负数订单
-                return [
-                    'code' => 1,
-                    'info' => yuylangs('money_not'),
-                    'url' => url('index/ctrl/recharge')
-                ];
+            } else {
+                Db::rollback();
+                return ['code' => 1, 'info' => 'Network error, please try again.'];
             }
             
            
-        } //
-        elseif (in_array($status, [2, 4])) {
+        }elseif(in_array($status, [2, 4])) {
             
             //判断幸运订单是否可以取消
             if($status == 2 && $info['group_zero'] == 0){
@@ -1905,6 +1801,9 @@ class Convey extends Model
      */
     public function deal_reward($uid, $oid, $num, $cnum)
     {
+        
+        //已删除多任务订单相关结算代码（git提交名：订单结算优化）
+        
         $freeze_balance = Db::name('xy_users')->where('id', $uid)->value('freeze_balance');
         $balance = Db::name('xy_users')->where('id', $uid)->value('balance');
         
@@ -1935,45 +1834,6 @@ class Convey extends Model
             ->update(['c_status' => 1, 'status' => 1]);
             
         Db::name('xy_reward_log')->insert(['oid' => $oid, 'uid' => $uid, 'num' => $num, 'addtime' => time(), 'type' => 2, 'status' => 2]);    
-        // 检查是否为复数订单，如果是则自动处理下一单
-        //$order_info = Db::name('xy_convey')->where('id', $oid)->find();
-        //if ($order_info && $order_info['order_mode'] == $this->order_mode_array['compound_order']) {
-            // 查找对应的复数订单记录
-            // $compound_log = Db::name('xy_compound_order_log')
-            //     ->where('uid', $uid)
-            //     ->where('status', 1) // 进行中
-            //     ->order('create_time DESC')
-            //     ->find();
-
-            // if ($compound_log) {
-            //     // 更新已完成订单数
-            //     Db::name('xy_compound_order_log')
-            //         ->where('id', $compound_log['id'])
-            //         ->update([
-            //             'completed_orders' => Db::raw('completed_orders + 1'),
-            //             'update_time' => time()
-            //         ]);
-
-            //     // 检查是否还有下一单需要处理
-            //     $updated_log = Db::name('xy_compound_order_log')
-            //         ->where('id', $compound_log['id'])
-            //         ->find();
-
-            //     if ($updated_log['completed_orders'] < $updated_log['total_orders']) {
-            //         // 还有下一单，自动创建
-            //         $next_result = $this->process_compound_order_next($compound_log['id']);
-            //         if ($next_result['code'] == 0) {
-            //             // 下一单创建成功，可以在这里添加通知逻辑
-            //         }
-            //     } else {
-            //         // 复数订单已完成
-            //         Db::name('xy_compound_order_log')
-            //             ->where('id', $compound_log['id'])
-            //             ->update(['status' => 2, 'update_time' => time()]); // 2=已完成
-            //     }
-            // }
-        //}
-
 
         //之后下单人级别>0 才发放层级奖励
         $level = Db::name('xy_users')->where('id', $uid)->value('level');

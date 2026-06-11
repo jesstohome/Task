@@ -230,6 +230,7 @@ class Order extends Base
      */
     public function do_order()
     {
+        //已删除多任务订单相关结算代码（git提交名：订单结算优化）
         if (request()->isPost()) {
             $oid = input('post.oid');
             $status = input('post.status/d', 1);
@@ -238,46 +239,9 @@ class Order extends Base
             $pinglun = input('post.pinglun/s', '');
             $uid = $this->usder_id;
             if (!\in_array($status, [1, 2])) return json(['code' => 1, 'info' => yuylangs('cscw')]);
-         
-            if (is_array($oid)) {
-                $uinfo = Db::name('xy_users')->where('id', $uid)->find();
-                $oidList = [];
-                $all_amount = 0;
-                foreach ($oid as $o) {
-                    $order = Db::name('xy_convey')
-                        ->field('id,num')
-                        ->where('id', $o)
-                        ->where('uid', $uid)
-                        ->where('status', 0)
-                        ->find();
-                    if (!empty($order['id'])) {
-                        $oidList[] = $o;
-                        $all_amount += floatval($order['num']);
-                    }
-                }
-                
-                if (empty($oidList)) {
-                    return json(['code' => 1, 'info' => yuylangs('qqcw')]);
-                }
-                if ($uinfo['balance'] <= 0) return [
-                    'code' => 1,
-                    'info' => yuylangs('money_not'),
-                    'url' => url('index/ctrl/recharge')
-                ];
-                // if ($uinfo['balance'] < $all_amount) return [
-                //     'code' => 1,
-                //     'info' => sprintf(yuylangs('zhyebz'), ($all_amount - $uinfo['balance']) . ""),
-                //     'url' => url('index/ctrl/recharge')
-                // ];
-                foreach ($oidList as $v) {
-                    $res = model('admin/Convey')->do_order($v, $status, $this->usder_id, $add_id, $pingfen, $pinglun);
-                    if ($res['code'] == 1) {
-                        return json($res);
-                    }
-                }
-            } else {
-                $res = model('admin/Convey')->do_order($oid, $status, $this->usder_id, $add_id, $pingfen, $pinglun);
-            }
+            
+            //去处理订单
+            $res = model('admin/Convey')->do_order($oid, $status, $this->usder_id, $add_id, $pingfen, $pinglun);
             //检查是否有进行中的复数订单，如果有则直接继续创建订单
             if ($res['code'] == 0) {
                 $existing_log = Db::name('xy_compound_order_log')
