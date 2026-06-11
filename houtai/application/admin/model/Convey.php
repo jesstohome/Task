@@ -1739,7 +1739,8 @@ class Convey extends Model
                         ]);
             }
             
-            if (Db::commit()) {
+            try {
+                Db::commit();
                 if ($user['balance'] >= $info['num']) {
                     return ['code' => 0, 'info' => yuylangs('czcg')];
                 } else {
@@ -1749,8 +1750,10 @@ class Convey extends Model
                         'url' => url('index/ctrl/recharge')
                     ];
                 }
-            } else {
+            } catch (\Exception $e) {
                 Db::rollback();
+                // 记录日志方便排查
+                //\think\Log::error('do_order commit failed, oid:' . $oid . ' err:' . $e->getMessage());
                 return ['code' => 1, 'info' => 'Network error, please try again.'];
             }
             
@@ -1834,54 +1837,9 @@ class Convey extends Model
             ->update(['c_status' => 1, 'status' => 1]);
             
         Db::name('xy_reward_log')->insert(['oid' => $oid, 'uid' => $uid, 'num' => $num, 'addtime' => time(), 'type' => 2, 'status' => 2]);    
-
-        //之后下单人级别>0 才发放层级奖励
-        $level = Db::name('xy_users')->where('id', $uid)->value('level');
-        if ($level > 0) {
-            $userList = model('admin/Users')->parent_user($uid, 3);
-        } else $userList = [];
-     
-        //发放佣金
-        if ($userList) { 
-            foreach ($userList as $v) {
-                if ($v['level'] == 0) continue;
-                $tj_bili = Db::name('xy_level')->where('level', $v['level'])->value('tj_bili');
-                $price = $this->get_tj_bili($tj_bili, intval($v['lv'])) * $cnum;
-                if ($v['status'] === 1) {
-                    Db::name('xy_reward_log')
-                        ->insert([
-                            'uid' => $v['id'],
-                            'sid' => $v['pid'],
-                            'oid' => $oid,
-                            'num' => $price,
-                            'lv' => $v['lv'],
-                            'type' => 2,
-                            'status' => 2,
-                            'addtime' => time(),
-                        ]);
-                    $res = Db::name('xy_users')
-                        ->where('id', $v['id'])
-                        ->where('status', 1)
-                        ->setInc('balance', $price);
-                    //下级佣金
-                    
-                     $balance = Db::name('xy_users')
-                        ->where('id', $v['id'])->value("balance");
-                    
-                    $res2 = Db::name('xy_balance_log')->insert([
-                        'uid' => $v['id'],
-                        'sid' => $uid,
-                        'oid' => $oid,
-                        'num' => $price,
-                        'type' => 6,
-                        'status' => 1,
-                        'addtime' => time(),
-                        "balance" => $balance
-                    ]);
-                }
-            }
-        }
-        /************* 发放交易奖励 *********/
+        //删除上级奖励发放代码
+        
+        
     }
 
     /**
