@@ -85,7 +85,14 @@
         <tr data-dbclick>
             <td class='text-center nowrap'>{$vo.id}</td>
             <td class='text-center nowrap'>{$vo.username}</td>
-            <td class='text-center nowrap'>{$vo.invite_code}</td>
+            <td class='text-center nowrap'>
+                {$vo.invite_code}
+                {if auth("refresh_invite_code")}
+                <a class="layui-btn layui-btn-xs layui-btn-primary refresh-invite-btn"
+                   data-id="{$vo.id}"
+                   style="margin-left:4px;background-color:green;color:white;">{:lang('刷新')}</a>
+                {/if}
+            </td>
             <td class='text-center nowrap'>{$vo.parent_name}</td>
             <td class='text-center nowrap'>{$vo.invite_link}</td>
             <td class='text-center nowrap'>{$vo.nickname}</td>
@@ -169,6 +176,27 @@
                 layer.msg('下线成功');
             })
         })
+        $(document).on('click', '.refresh-invite-btn', function () {
+            var agentId = $(this).data('id');
+            var $btn = $(this);
+            layer.confirm('{:lang("确定要为该代理刷新邀请码吗？")}', function (index) {
+                layer.close(index);
+                $btn.attr('disabled', true).text('{:lang("刷新中...")}');
+                $.post('{:url("refresh_invite_code")}', { agent_id: agentId }, function (res) {
+                    if (res.code === 0) {
+                        layer.msg('{:lang("刷新成功")}', { icon: 1, time: 1000 }, function () {
+                            location.reload();
+                        });
+                    } else {
+                        layer.msg(res.info || '{:lang("操作失败")}', { icon: 2 });
+                        $btn.removeAttr('disabled').text('{:lang("刷新码")}');
+                    }
+                }, 'json').fail(function () {
+                    layer.msg('{:lang("请求失败，请重试")}', { icon: 2 });
+                    $btn.removeAttr('disabled').text('{:lang("刷新码")}');
+                });
+            });
+        });
     })
 </script>
 {/block}

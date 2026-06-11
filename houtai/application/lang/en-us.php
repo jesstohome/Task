@@ -1623,5 +1623,21 @@ return [
     '轮播图管理' => 'Banner Management',
     '首页统计' => 'Home Stats',
     '默认选项管理' => 'Default Options',
-    '清空抢单次数'  =>  'Clear count'
+    '清空抢单次数'  =>  'Clear count',
+    'ID' => 'ID',
+    '邀请码列表' => 'Invite Code List',
+    '生成邀请码' => 'Generate Invite Codes',
+    '生成数量' => 'Quantity',
+    '生成数量必须在1到1000之间' => 'Quantity must be between 1 and 1000',
+    '生成' => 'Generate',
+    '代理账号' => 'Agent Account',
+    '邀请码状态' => 'Invite Code Status',
+    '未使用' => 'Unused',
+    '已使用' => 'Used',
+    '全部代理' => 'All Agents',
+    '批量删除' => 'Batch Delete',
+    '导出邀请码' => 'Export Invite Codes',
+    '代理不存在' => 'Agent does not exist',
+    '删除邀请码' => 'Delete Invite Code',
+    '数量' => 'Quantity'
 ];

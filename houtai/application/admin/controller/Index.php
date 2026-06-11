@@ -78,9 +78,14 @@ class Index extends Base
         $agent_id = model('admin/Users')->get_admin_agent_id();
         $tuigljie = "";
         if ($agent_id) {
-            $adminData = Db::table("system_user")->find($agent_id);
+            //$adminData = Db::table("system_user")->find($agent_id);
+            
+            $agentInviteCode = Db::table('xy_agent_invite_code')
+            ->where(['agent_id' => $agent_id, 'status' => 0, 'is_deleted' => 0])
+            ->order('id DESC')
+            ->find();
 //            $code = Db::table("xy_users")->where("id",$adminData["user_id"])->value("invite_code");
-            $tuigljie = sysconf('web_url').'/register?type=2&invite_code='.$adminData['invite_code'];;
+            $tuigljie = sysconf('web_url').'/register?type=2&invite_code='.$agentInviteCode['invite_code'];;
         }
         $this->agent_id = $agent_id;
         $this->assign("tuigljie",$tuigljie);

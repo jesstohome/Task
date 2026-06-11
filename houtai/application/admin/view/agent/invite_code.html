@@ -1,0 +1,113 @@
+{extend name='main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <fieldset>
+        <legend>{:lang('生成邀请码')}</legend>
+        <form class="layui-form layui-form-pane" action="{:url('create_invite_code')}" data-auto="true" method="post" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">{:lang('选择代理')}</label>
+                <div class="layui-input-inline">
+                    <select name="agent_id" class="layui-select" {if !$is_admin}disabled{/if}>
+                        {foreach $agents as $agent}
+                        <option value="{$agent.id}" {if $agent_select_id==$agent.id}selected{/if}>{$agent.username}</option>
+                        {/foreach}
+                    </select>
+                    {if !$is_admin}<input type="hidden" name="agent_id" value="{$agent_select_id}">{/if}
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">{:lang('生成数量')}</label>
+                <div class="layui-input-inline">
+                    <input name="number" value="1" min="1" max="1000" type="number" placeholder="{:lang('生成数量')}" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-normal">{:lang('生成')}</button>
+            </div>
+        </form>
+    </fieldset>
+
+    <fieldset class="margin-top-10">
+        <legend>{:lang('条件搜索')}</legend>
+        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+            <div class="layui-form-item layui-inline">
+                <div class="layui-input-inline">
+                    <input name="agent_username" value="{$Think.get.agent_username|default=''}" placeholder="{:lang('代理账号')}" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <div class="layui-input-inline">
+                    <select name="status" class="layui-select">
+                        <option value="" {if $status===""}selected{/if}>{:lang('邀请码状态')}</option>
+                        <option value="0" {if $status==="0"}selected{/if}>{:lang('未使用')}</option>
+                        <option value="1" {if $status==="1"}selected{/if}>{:lang('已使用')}</option>
+                    </select>
+                </div>
+            </div>
+            {if $is_admin}
+            <div class="layui-form-item layui-inline">
+                <div class="layui-input-inline">
+                    <select name="agent_id" class="layui-select">
+                        <option value="0">{:lang('全部代理')}</option>
+                        {foreach $agents as $agent}
+                        <option value="{$agent.id}" {if $agent_select_id==$agent.id}selected{/if}>{$agent.username}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            {/if}
+            <div class="layui-form-item layui-inline">
+                <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> {:lang('搜 索')}</button>
+                <button data-action="{:url('batch_del_invite_code')}" data-rule="id#{key}" data-confirm="{:lang('确定要删除吗？')}" class="layui-btn layui-btn-danger">{:lang('批量删除')}</button>
+                <a class="layui-btn layui-btn-normal" target="_blank" href='{:url("export_invite_code")}?agent_username={$Think.get.agent_username|default=""}&agent_id={$agent_select_id}'>{:lang('导出邀请码')}</a>
+            </div>
+        </form>
+    </fieldset>
+
+    <script>form.render()</script>
+    <table class="layui-table margin-top-10">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <label><input data-auto-none data-check-target='.list-check-box' type='checkbox'></label>
+            </th>
+            <th class='text-center nowrap'>{:lang('ID')}</th>
+            <th class='text-center nowrap'>{:lang('邀请码')}</th>
+            <th class='text-center nowrap'>{:lang('代理名称')}</th>
+            <th class='text-center nowrap'>{:lang('使用状态')}</th>
+            <th class='text-center nowrap'>{:lang('使用用户')}</th>
+            <th class='text-center nowrap'>{:lang('创建时间')}</th>
+            <th class='text-center nowrap'>{:lang('操作')}</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'>
+                <label><input class="list-check-box" value='{$vo.id}' type='checkbox'></label>
+            </td>
+            <td class='text-center nowrap'>{$vo.id}</td>
+            <td class='text-center nowrap'>{$vo.invite_code}</td>
+            <td class='text-center nowrap'>{$vo.agent_name}</td>
+            <td class='text-center nowrap'>
+                {if $vo.status==1}
+                <span class="color-red">{$vo.status_name}</span>
+                {else}
+                <span class="color-green">{$vo.status_name}</span>
+                {/if}
+            </td>
+            <td class='text-center nowrap'>{$vo.used_username}</td>
+            <td class='text-center nowrap'>{$vo.create_at}</td>
+            <td class='text-center nowrap'>
+                <a class="layui-btn layui-btn-xs layui-btn-danger" data-confirm="{:lang('确定要删除吗？')}" data-action="{:url('del_invite_code')}" data-value="id#{$vo.id}">{:lang('删除')}</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">{:lang('没有记录哦')}</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

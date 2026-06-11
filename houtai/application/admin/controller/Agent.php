@@ -6,6 +6,7 @@ use app\admin\service\NodeService;
 use library\tools\Data;
 use think\Db;
 use PHPExcel;
+use PHPExcel_IOFactory;
 
 /**
  * 代理管理
@@ -20,6 +21,7 @@ class Agent extends Base
      */
     protected $table = 'system_user';
     protected $table_user = 'xy_users';
+    protected $inviteTable = 'xy_agent_invite_code';
 
     /**
      * 代理列表
@@ -73,6 +75,258 @@ class Agent extends Base
         $query->where('is_deleted', 0);
         return $query->like('username,phone')->order('id DESC')->page();
     }
+
+    /**
+     * 邀请码列表
+     * @auth true
+     * @menu true
+     */
+    public function invite_code()
+    {
+        $this->title = lang('邀请码列表');
+        $this->is_admin = $this->agent_id == 0;
+        $this->agent_username = input('agent_username/s', '');
+        $this->status = input('status', '');
+        $this->agent_select_id = input('agent_id/d', 0);
+        $this->agents = Db::name($this->table)
+            ->where('authorize', '2')
+            ->where('is_deleted', 0)
+            ->field('id,username')
+            ->order('id desc')
+            ->select();
+        if (!$this->is_admin) {
+            $this->agents = Db::name($this->table)
+                ->where('id', $this->agent_id)
+                ->where('authorize', '2')
+                ->where('is_deleted', 0)
+                ->field('id,username')
+                ->select();
+            $this->agent_select_id = $this->agent_id;
+        }
+        $query = $this->_query($this->inviteTable)->alias('c')
+            ->leftJoin('system_user a', 'a.id=c.agent_id')
+            ->leftJoin('xy_users u', 'u.id=c.used_user_id')
+            ->field('c.*,a.username as agent_name,u.username as used_username');
+        $this->applyInviteCodeWhere($query);
+        return $query->where('c.is_deleted', 0)->order('c.status asc, c.id desc')->page();
+    }
+
+    /**
+     * 生成代理邀请码
+     * @auth true
+     */
+    public function create_invite_code()
+    {
+        $agentId = input('post.agent_id/d', 0);
+        $number = input('post.number/d', 0);
+
+        if ($this->agent_id > 0) {
+            $agentId = $this->agent_id;
+        }
+        if ($agentId <= 0) {
+            return $this->error(lang('请选择代理'));
+        }
+        if ($number <= 0 || $number > 1000) {
+            return $this->error(lang('生成数量必须在1到1000之间'));
+        }
+
+        $agent = Db::name($this->table)
+            ->where('id', $agentId)
+            ->where('authorize', '2')
+            ->where('is_deleted', 0)
+            ->find();
+        if (empty($agent)) {
+            return $this->error(lang('代理不存在'));
+        }
+
+        $data = [];
+        for ($i = 0; $i < $number; $i++) {
+            $data[] = [
+                'agent_id' => $agentId,
+                'invite_code' => $this->makeAgentInviteCode(),
+                'status' => 0,
+                'create_at' => date('Y-m-d H:i:s'),
+                'update_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+        $res = Db::name($this->inviteTable)->insertAll($data);
+        if ($res) {
+            sysoplog(lang('生成邀请码'), lang('代理ID') . $agentId . ',' . lang('数量') . $number);
+            return $this->success(lang('操作成功'));
+        }
+        return $this->error(lang('操作失败'));
+    }
+    
+    /**
+     * 刷新单个代理的邀请码（生成一个新的未使用邀请码）
+     * @auth true
+     */
+    public function refresh_invite_code()
+    {
+        $agentId = input('post.agent_id/d', 0);
+        if ($this->agent_id > 0) {
+            $agentId = $this->agent_id;
+        }
+        if ($agentId <= 0) {
+            return $this->error(lang('请选择代理'));
+        }
+        $agent = Db::name($this->table)
+            ->where('id', $agentId)
+            ->where('is_deleted', 0)
+            ->find();
+        if (empty($agent)) {
+            return $this->error(lang('代理不存在'));
+        }
+    
+        $data = [
+            'agent_id'    => $agentId,
+            'invite_code' => $this->makeAgentInviteCode(),
+            'status'      => 0,
+            'create_at'   => date('Y-m-d H:i:s'),
+            'update_at'   => date('Y-m-d H:i:s'),
+        ];
+        $res = Db::name($this->inviteTable)->insert($data);
+        if ($res) {
+            sysoplog(lang('刷新邀请码'), lang('代理ID') . $agentId);
+            return $this->success(lang('操作成功'));
+        }
+        return $this->error(lang('操作失败'));
+    }
+
+    /**
+     * 删除代理邀请码
+     * @auth true
+     */
+    public function del_invite_code()
+    {
+        $id = input('id', '');
+        $ids = array_filter(array_map('intval', explode(',', $id)));
+        if (empty($ids)) {
+            return $this->error(lang('参数错误'));
+        }
+
+        $query = Db::name($this->inviteTable)->whereIn('id', $ids);
+        if ($this->agent_id > 0) {
+            $query->where('agent_id', $this->agent_id);
+        }
+        $res = $query->update([
+            'is_deleted' => 1,
+            'update_at' => date('Y-m-d H:i:s'),
+        ]);
+        if ($res !== false) {
+            sysoplog(lang('删除邀请码'), 'ID ' . join(',', $ids));
+            return $this->success(lang('操作成功'));
+        }
+        return $this->error(lang('操作失败'));
+    }
+
+    /**
+     * 批量删除代理邀请码
+     * @auth true
+     */
+    public function batch_del_invite_code()
+    {
+        return $this->del_invite_code();
+    }
+
+    /**
+     * 导出未使用代理邀请码
+     * @auth true
+     */
+    public function export_invite_code()
+    {
+        $query = Db::name($this->inviteTable)->alias('c')
+            ->leftJoin('system_user a', 'a.id=c.agent_id')
+            ->field('c.id,c.invite_code,c.status,c.create_at,a.username as agent_name')
+            ->where('c.is_deleted', 0)
+            ->where('c.status', 0);
+
+        $this->applyInviteCodeWhere($query, true);
+        $list = $query->order('c.id desc')->select();
+
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', lang('ID'));
+        $objPHPExcel->getActiveSheet()->setCellValue('B1', lang('邀请码'));
+        $objPHPExcel->getActiveSheet()->setCellValue('C1', lang('代理名称'));
+        $objPHPExcel->getActiveSheet()->setCellValue('D1', lang('使用状态'));
+        $objPHPExcel->getActiveSheet()->setCellValue('E1', lang('创建时间'));
+        $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setWidth(10);
+        $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setWidth(30);
+        $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setWidth(24);
+        $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('D')->setWidth(16);
+        $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('E')->setWidth(24);
+
+        foreach ($list as $i => $vo) {
+            $row = $i + 2;
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $vo['id']);
+            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $vo['invite_code']);
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $vo['agent_name']);
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, lang('未使用'));
+            $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $vo['create_at']);
+        }
+
+        $filename = 'agent_invite_code_' . date('YmdHis') . '.xls';
+        $objPHPExcel->getActiveSheet()->setTitle(lang('邀请码列表'));
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header('Content-Disposition:inline;filename="' . $filename . '"');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    protected function _invite_code_page_filter(&$data)
+    {
+        foreach ($data as &$vo) {
+            $vo['status_name'] = intval($vo['status']) === 1 ? lang('已使用') : lang('未使用');
+            $vo['agent_name'] = $vo['agent_name'] ?: '-';
+        }
+    }
+
+    /**
+     * 代理邀请码查询条件
+     * @param \think\db\Query $query
+     * @param bool $export
+     */
+    private function applyInviteCodeWhere(&$query, $export = false)
+    {
+        if ($this->agent_id > 0) {
+            $query->where('c.agent_id', $this->agent_id);
+            return;
+        }
+
+        $agentId = input('agent_id/d', 0);
+        if ($agentId > 0) {
+            $query->where('c.agent_id', $agentId);
+        }
+        $agentUsername = trim(input('agent_username/s', ''));
+        if ($agentUsername !== '') {
+            $query->where('a.username', 'like', '%' . $agentUsername . '%');
+        }
+        if (!$export) {
+            $status = input('status', '');
+            if ($status !== '') {
+                $query->where('c.status', intval($status));
+            }
+        }
+    }
+
+    /**
+     * 生成唯一代理邀请码
+     * @return string
+     */
+    private function makeAgentInviteCode()
+    {
+        do {
+            $code = strtoupper(substr(md5(uniqid('', true) . mt_rand(100000, 999999)), 0, 8));
+            $exists = Db::name($this->inviteTable)->where('invite_code', $code)->count()
+                + Db::name($this->table)->where('invite_code', $code)->count()
+                + Db::name($this->table_user)->where('invite_code', $code)->count();
+        } while ($exists > 0);
+        return $code;
+    }
     /**
      * 表单数据处理
      * @param array $data
@@ -83,9 +337,16 @@ class Agent extends Base
     public function _index_page_filter(&$data)
     {
         foreach ($data as &$vo) {
+            
+            $agentInviteCode = Db::table('xy_agent_invite_code')
+            ->where(['agent_id' => $vo['id'], 'status' => 0, 'is_deleted' => 0])
+            ->order('id DESC')
+            ->find();
+            
             $vo['invite_link'] = '';
-            if($vo['invite_code']){
-                $vo['invite_link'] = sysconf('web_url').'/register?type=2&invite_code='.$vo['invite_code'];
+            if($agentInviteCode){
+                $vo['invite_link'] = sysconf('web_url').'/register?type=2&invite_code='.$agentInviteCode['invite_code'];
+                $vo['invite_code'] = $agentInviteCode['invite_code'];
             }
             if($vo['nickname'] == ''){
                 $vo['nickname'] = '-';
