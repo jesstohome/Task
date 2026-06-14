@@ -325,6 +325,8 @@ export default {
     // background-color: #f3f3f3;
     font-size: 30px;
     font-weight: 900;
+	margin-bottom: 200px;
+	padding-bottom: 200px;
 }
 :deep(.van-nav-bar){
         background-color: #000000;
@@ -357,7 +359,6 @@ export default {
 .list{
 		padding: 0 40px;
 		box-shadow: none;
-		overflow: auto;
 		display: flex;
 		flex-direction: column;
         margin-top: 100px;

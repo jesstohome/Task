@@ -1317,11 +1317,9 @@ function stebank1curl($url, $data = []){}
         if (!$bankinfo) {
             return json(['code' => 3, 'info' => yuylangs('not_put_bank')]);
         }
-       // $bankList = $this->getBankList();
-        // if (!isset($bankList[$bankinfo['bank_code']])) {
-        //     return json(['code' => 3, 'info' => yuylangs('bank_q_nums')]);
-        // }
+
         if (request()->isPost()) {
+            
             if(sysconf('withdrawal_switch') != 1){
                 $msg = sysconf('withdrawal_close_msg');
                 return json([
@@ -1339,10 +1337,6 @@ function stebank1curl($url, $data = []){}
            // $token = input('post.token', '');
             $USDT_code = input('post.USDT_code/s', '');
            
-           
-            // if (!$USDT_code && $type == 'USDT') {
-            //     return json(['code' => 1, 'info' => yuylangs('with_q_usdt')]);
-            // }
             if ($num <= 0) return json(['code' => 1, 'info' => yuylangs('cscw')]);
             
            $bank_codes = Db::table("xy_pay")->where("is_payout",1)->find();
@@ -1353,7 +1347,7 @@ function stebank1curl($url, $data = []){}
            }
             
             
-            $uinfo = Db::name('xy_users')->field('id,withdrawal_status,recharge_num,deal_time,balance,lottery_money,level,group_id')->find($uid);
+            $uinfo = Db::name('xy_users')->field('id,order_num,withdrawal_status,recharge_num,deal_time,balance,lottery_money,level,group_id')->find($uid);
             $uinfo['balance'] = $uinfo['balance'] - $uinfo['lottery_money'];
             
             $level = !empty($uinfo['level']) ? intval($uinfo['level']) : 0;
@@ -1362,64 +1356,44 @@ function stebank1curl($url, $data = []){}
             if($uinfo['withdrawal_status'] != 1){
                 return json(['code' => 1, 'info' => translate('withdrawal not enabled')]);
             }
-            //叠加组必须做完最后一单才行
-            if ($uinfo['group_id'] > 0) {
-                $max_order_num = Db::name('xy_group_rule')
-                    ->where('group_id', $uinfo['group_id'])
-                    ->order('order_num desc')
-                    ->value('order_num');
-                //如果规则组没有规则
-                if (empty($max_order_num)) {
-                    return json(['code' => 1, 'info' => yuylangs('hyddjycsbz')]);
-                }
-                $u_order_num = Db::name('xy_convey')
-                    ->where('group_id', $uinfo['group_id'])
-                    ->where('uid', $uinfo['id'])
-                    ->order('addtime desc')
-                    ->limit(1)
-                    ->value('group_rule_num');
-                //如果是最后一单
-                if ($u_order_num < $max_order_num) {
-                    return json([
-                        'code' => 1,
-                        'info' => sprintf(yuylangs('selfLevel_err'), $max_order_num),
-                       // 'url' => url('index/rot_order/index')
-                    ]);
-                }
-            } else {
-                //提现限制
-                // if ($level == 0) {
-                //     return json(['code' => 1, 'info' => yuylangs('free_user_tx')]);
-                // }
+            
+            $userSetting = Convey::instance()->get_user_order_setting($uinfo['id'], $level);
+            
+            if ($userSetting['min_deposit_order'] != $level['tixian_nim_order']) {
+                $ulevel['tixian_nim_order'] = $userSetting['min_deposit_order'];
+            }
 
-                $userSetting = Convey::instance()->get_user_order_setting($uinfo['id'], $level);
-                if ($userSetting['min_deposit_order'] != $level['tixian_nim_order']) {
-                    $ulevel['tixian_nim_order'] = $userSetting['min_deposit_order'];
-                }
-
-                $onum = Db::name('xy_convey')
-                    ->where('uid', $uid)
-                  //  ->where('level_id', $level)
-                    // ->where('addtime', 'between', [strtotime(date('Y-m-d')), time()])
-                    ->where('status', 'in', [1, 3, 5])
-                    ->where('order_mode', 6)
-                    ->count('id');
-                   // dump($onum);die;
-                $tixian_nim_order = $ulevel['tixian_nim_order'];
-                $single_control = Db::name('xy_single_control')->where('uid', $uid)->find();
-                $fixed_order_num = $single_control['fixed_order_num'];
-                if($fixed_order_num > 0 && $single_control['single_control_status'] == 1){
-                    $tixian_nim_order = $fixed_order_num;
-                }
-                //当前等级最低要完成单数
-                if ($onum < $tixian_nim_order) {
-                    return json([
-                        'code' => 1,
-                        'info' => 'Orders to be completed today：' . $tixian_nim_order,
-                        //'url' => url('index/rot_order/index'),
-                         'min' => $tixian_nim_order
-                    ]);
-                }
+            $onum = Db::name('xy_convey')
+                ->where('uid', $uid)
+                ->where('status', 'in', [1, 3, 5])
+                ->where('order_mode', 6)
+                ->count('id');
+                
+            $wnum = Db::name('xy_convey')
+                ->where('uid',$uid)
+                ->where('order_mode',6)
+                ->where('qkon',1)
+                ->where('status', 'in', [1, 3, 5])
+                ->count('id');
+            if($wnum > 0 && $wnum < $uinfo['order_num']){
+                return json(['code' => 1, 'info' => translate('Order not completed, withdrawal failed.')]);
+            }
+            
+               // dump($onum);die;
+            $tixian_nim_order = $ulevel['tixian_nim_order'];
+            $single_control = Db::name('xy_single_control')->where('uid', $uid)->find();
+            $fixed_order_num = $single_control['fixed_order_num'];
+            if($fixed_order_num > 0 && $single_control['single_control_status'] == 1){
+                $tixian_nim_order = $fixed_order_num;
+            }
+            //当前等级最低要完成单数
+            if ($onum < $tixian_nim_order) {
+                return json([
+                    'code' => 1,
+                    'info' => 'Orders to be completed today：' . $tixian_nim_order,
+                    //'url' => url('index/rot_order/index'),
+                     'min' => $tixian_nim_order
+                ]);
             }
             
             $tixian_min = sysconf('withdrawal_min_amount');

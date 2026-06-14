@@ -1639,5 +1639,7 @@ return [
     '导出邀请码' => 'Export Invite Codes',
     '代理不存在' => 'Agent does not exist',
     '删除邀请码' => 'Delete Invite Code',
-    '数量' => 'Quantity'
+    '数量' => 'Quantity',
+    '当前工作单数' => 'Work',
+    '工作中禁止提现' => 'Withdrawals are prohibited'
 ];

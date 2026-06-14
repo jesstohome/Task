@@ -222,7 +222,8 @@ class Convey extends Model
             'goods_count' => $goods['count'],
             'commission' => number_format($commission,2),
             'user_balance' => $uinfo['balance'],
-            'user_freeze_balance' => $uinfo['freeze_balance'],
+            // 'user_freeze_balance' => $uinfo['freeze_balance'],
+            'user_freeze_balance' => 0,
             "today_dan" => $today_dan+1,
             "order_min_price" => $min,
             "order_max_price" => $max,
@@ -1671,7 +1672,7 @@ class Convey extends Model
                     $res1 = Db::name('xy_users')
                         ->where('id', $info['uid'])
                         ->dec('balance', $info['num'])
-                        ->inc('freeze_balance', $info['num'] + $info['commission']) //冻结商品金额 + 佣金
+                        ->inc('freeze_balance', round($info['num'] + $info['commission'], 2)) //冻结商品金额 + 佣金
                         ->update([
                             'deal_status' => 1,
                             'status' => 1
@@ -1700,7 +1701,7 @@ class Convey extends Model
             }
         
             if (!$isMultipleOrder) {
-                $c_status = Db::name('xy_convey')->where('id', $oid)->value('c_status');
+                $c_status = Db::name('xy_convey')->where('id', $oid)->lock(true)->value('c_status');
                 //判断是否已返还佣金
                 if ($c_status == 0 && $user['balance'] >= $info['num']) $this->deal_reward($info['uid'], $oid, $info['num'], $info['commission']);
             }
@@ -1811,12 +1812,14 @@ class Convey extends Model
         $balance = Db::name('xy_users')->where('id', $uid)->value('balance');
         
         //防止冻结金额出现负数
-        $znum = $num + $cnum;
+        $znum = round($num + $cnum, 2);
+        $freeze_balance = round($freeze_balance, 2);
+        
         if($znum > $freeze_balance){
             $znum = $freeze_balance;
         }
-        Db::name('xy_users')->where('id', $uid)->setInc('balance', $num + $cnum);
-        Db::name('xy_users')->where('id', $uid)->setDec('freeze_balance', $num + $cnum);
+        Db::name('xy_users')->where('id', $uid)->setInc('balance', $znum);
+        Db::name('xy_users')->where('id', $uid)->setDec('freeze_balance', $znum);
         //Db::name('xy_balance_log')->where('oid', $oid)->update(['status' => 1]);
         //将订单状态改为已返回佣金
         

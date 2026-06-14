@@ -53,7 +53,7 @@
                   {:lang('电话：')}{$vo.tel}<br>
                   <!--<span class="{$vo.is_jia == 0 ? 'layui-badge layui-bg-green' : 'layui-badge layui-bg-blue'}">{$vo.is_jia == 0 ? '外部' : '内部'}</span><br>-->
                   <span style="color: #1E9FFF;">{:lang('当前等级：')}{$vo.level_name}</span><br>
-                  <span style="color: #FF5722;">{:lang('推广码:')}{$vo.invite_code}</span><br>
+                  <!--<span style="color: #FF5722;">{:lang('推广码:')}{$vo.invite_code}</span><br>-->
                   <span style="color: #009688;">{:lang('用户ID：')}{$vo.id}</span><br>
 
 
@@ -63,8 +63,8 @@
              <td class='text-left nowrap' >
 
                  {:lang('余额：')}<span style="color: red;">{$vo.balance}</span><br/>
-                 {:lang('冻结本金：')}{$vo.freeze_amount}<br/>
-                 {:lang('抢单冻结：')}{$vo.order_freeze_balance}<br/>
+                 <!--{:lang('冻结本金：')}{$vo.freeze_amount}<br/>-->
+                 {:lang('抢单冻结：')}{$vo.freeze_balance}<br/>
 
 <!--                 佣金：{$vo.com}<br/>-->
                  {:lang('体验金：')}{$vo.lottery_money}<br/>
@@ -93,6 +93,9 @@
                  {:lang('今日充值：')}{$vo.today_recharge_sum}<br/>
                  <!--日在线充值：{$vo.today_onlin_recharge_sum}<br/>-->
                  {:lang('总充值：')}<span style="color: green;">{$vo.recharge_sum}</span><br/>
+                 
+                 <span style="color: red;">{:lang('当前工作单数：')}{$vo.day_completed_count} / {$vo.order_num}</span><br/>
+                 <span>### 1~{$vo.order_num - 1} 工作中禁止提现 ###</span>
                  <!--总在线充值：{$vo.online_recharge_sum}/{$vo.online_recharge_count}次<br/>-->
                  <!--总赠送：{$vo.give_amount_sum}<br/>-->
 <!--                 总充值：{$vo.all_recharge_num}/{$vo.all_recharge_count}次<br/>-->

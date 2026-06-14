@@ -510,8 +510,8 @@ class Users extends Model
         }
         $data = [
             'tel' => $tel,
-            'balance' => $balance,
-            'freeze_balance' => $freeze_balance,
+            // 'balance' => $balance,
+            // 'freeze_balance' => $freeze_balance,
             'username' => $user_name,
             'parent_id' => $parent_id,
             '__token__' => $token,

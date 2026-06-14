@@ -395,11 +395,13 @@ class Users extends Base
 
 
             //抢单冻结金额
-            $vo['order_freeze_balance'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',0)->sum(Db::raw('num + commission'));
+            // $vo['order_freeze_balance'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('c_status',0)->sum(Db::raw('num + commission'));
             
             //总已做单数
             $vo['today_order_grabbing_num_zon'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',6)->where('status', 'in', [1, 3, 5])->count('id');
             
+            //当前工作单数
+            $vo['day_completed_count'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',6)->where('qkon',1)->where('status', 'in', [1, 3, 5])->count('id');
             
             //今日已抢单普通单
             $vo['today_order_grabbing_num'] = Db::name('xy_convey')->where('uid',$vo['id'])->where('order_mode',6)->where('addtime','>=',$today_start)->count('id');
