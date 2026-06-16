@@ -13,10 +13,20 @@
         <div class="loading-body">
           <!-- GIF 图片容器 -->
           <div class="loading-gif-wrap">
-            <img :src="loadImg" class="loading-gif" alt="" />
-            <!-- 扫光效果 -->
-            <div class="loading-gif-shine"></div>
-          </div>
+          <video
+            ref="loadVideoRef"
+            :src="loadVideo"
+            class="loading-gif"
+            muted
+            playsinline
+            webkit-playsinline
+            autoplay
+            loop
+            preload="auto"
+          ></video>
+          <!-- 扫光效果 -->
+          <div class="loading-gif-shine"></div>
+        </div>
 
           <!-- 步骤文字 -->
           <div class="loading-text-wrap">
@@ -117,12 +127,12 @@
 
     <div class="hero-section">
       <div class="hero-bg">
-        <img :src="require('@/assets/images/starting_bg.png')" alt="" class="hero-bg-img" />
+        <img :src="require('@/assets/images/starting_bg.webp')" alt="" class="hero-bg-img" />
       </div>
       <div class="hero-nav">
         <div class="hero-nav-left">
           <div class="hero-avatar">
-            <img :src="userinfo?.headpic" alt="avatar" />
+            <img :src="require('@/assets/images/touxian.webp')" alt="avatar" />
           </div>
           <span class="hero-greeting">Hi, {{userinfo?.username}} 👋</span>
         </div>
@@ -173,7 +183,7 @@
     <div class="below-showcase">
       <div class="notes-card">
         <div class="notes-card-bg">
-          <img :src="require('@/assets/images/notice.png')" alt="" class="notes-bg-img" />
+          <img :src="require('@/assets/images/notice.webp')" alt="" class="notes-bg-img" />
           <div class="notes-bg-overlay"></div>
         </div>
         <div class="notes-content">
@@ -292,7 +302,7 @@
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance, reactive, onMounted } from 'vue';
+import { ref, computed, getCurrentInstance, reactive, onMounted, nextTick } from 'vue';
 import { rot_order, submit_order, order_info, do_order, start_compound_order, process_compound_order_next } from '@/api/order/index'
 import store from '@/store/index'
 import { getdetailbyid, getHomeData } from '@/api/home/index.js'
@@ -337,6 +347,38 @@ export default {
     const showGift = ref(false)
     const showCompoundOrder = ref(false)
     const compoundOrderData = ref(null)
+
+    const loadVideoRef = ref(null)
+    const loadVideo = ref('')
+
+    // 播放视频并返回Promise，兼容自动播放被拦截的情况
+    const playVideo = () => {
+      return new Promise(async (resolve) => {
+        await nextTick()  // 等待Vue完成DOM更新，确保src已经应用到video元素
+
+        const videoEl = loadVideoRef.value
+        if (!videoEl) {
+          resolve()
+          return
+        }
+
+        // 确保浏览器已经加载了新的src（load()会重新加载当前src指向的资源）
+        videoEl.load()
+        videoEl.currentTime = 0
+
+        const playPromise = videoEl.play()
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            resolve()
+          }).catch((err) => {
+            console.warn('Video autoplay blocked:', err)
+            resolve()
+          })
+        } else {
+          resolve()
+        }
+      })
+    }
 
     // 进度条 class 根据步骤切换宽度
     const loadProgressClass = computed(() => {
@@ -461,11 +503,14 @@ export default {
       loading.value = true
       loadStep.value = 1
       loadText.value = t('msg.zzszsj')
-      loadImg.value = require('@/assets/images/1.gif')
+      loadVideo.value = require('@/assets/images/aaa.mp4')
 
       let submit = null
       let time = (info.value.deal_zhuji_time || 1) * 1000
       let time2 = (info.value.deal_shop_time || 2) * 1000
+
+      // 等待视频开始播放后再走原有的延时流程
+      await playVideo()
 
       setTimeout(async () => {
         loadStep.value = 2
@@ -476,48 +521,36 @@ export default {
     }
 
     const setout = (json, time) => {
-      setTimeout(() => {
+      setTimeout(async () => {
         if (json) {
           if (json.code === 1 && json.status === 1) {
             compoundOrderData.value = json.data
             showCompoundOrder.value = true
             loading.value = false
             loadStep.value = 0
-            giftRef.value?.checkGiftStatus()  // ← 触发礼包检查
+            giftRef.value?.checkGiftStatus()
             return
           }
 
-          if (json.code === 0) {
-            // 步骤3：匹配成功
-            loadStep.value = 3
-            loadImg.value = require('@/assets/images/3.gif')
-            loadText.value = t('msg.ppcg')
+        if (json.code === 0) {
+          loadStep.value = 3
+          loadVideo.value = require('@/assets/images/bbb.mp4')
+          loadText.value = t('msg.ppcg')
 
-            setTimeout(() => {
-              // 关闭加载遮罩，展示成功结果卡片
-              // loading.value = false
-              // loadStep.value = 0
+          await playVideo()  // 删掉前面那行多余的setTimeout
 
-              // // 填充结果数据（如果接口返回了订单信息可以从 json 里取）
-              // resultOrderInfo.value = {
-              //   commission: json.commission || '0.00',
-              //   amount: json.amount || '0.00'
-              // }
-              // showOrderResult.value = true
-
-              // 2秒倒计时后跳转
-              startResultCountdown(2000, () => {
-                showOrderResult.value = false
-                proxy.$Message({ message: json.info, type: 'success' })
-                tjOrder(json)
-              })
-            }, 1000)
-
-          } else {
+          setTimeout(() => {
+            startResultCountdown(2000, () => {
+              showOrderResult.value = false
+              proxy.$Message({ message: json.info, type: 'success' })
+              tjOrder(json)
+            })
+          }, 1000)
+        } else {
             proxy.$Message({ message: json.info, type: 'error' })
             loading.value = false
             loadStep.value = 0
-            giftRef.value?.checkGiftStatus()  // ← 触发礼包检查
+            giftRef.value?.checkGiftStatus()
             return
           }
         } else {
@@ -592,15 +625,15 @@ export default {
     }
 
     return {
-      pingluntext, generateRandomComment, pinglun, info, currency, level, level_show,
-      loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
-      cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
-      userinfo, creditPercent, copyInvite, showGift, showCompoundOrder, compoundOrderData,
-      selectCompoundOrderOption, skipCompoundOrder,
-      // 新增
-      giftRef,loadStep, loadProgressClass, showOrderResult, resultOrderInfo, resultCountdown,
-      getParticleStyle, getFwStyle
-    }
+  pingluntext, generateRandomComment, pinglun, info, currency, level, level_show,
+  loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
+  cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
+  userinfo, creditPercent, copyInvite, showGift, showCompoundOrder, compoundOrderData,
+  selectCompoundOrderOption, skipCompoundOrder,
+  giftRef, loadStep, loadProgressClass, showOrderResult, resultOrderInfo, resultCountdown,
+  getParticleStyle, getFwStyle,
+  loadVideo, loadVideoRef
+}
   }
 }
 </script>

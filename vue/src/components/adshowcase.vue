@@ -76,14 +76,14 @@ defineEmits(['match'])
 const TOTAL = 20
 
 const stripImages = Array.from({ length: TOTAL }, (_, i) => ({
-  src: require(`@/assets/images/a${i + 1}.jpg`),
+  src: require(`@/assets/images/a${i + 1}.webp`),
   alt: `ad ${i + 1}`,
 }))
 const carImages = Array.from({ length: TOTAL }, (_, i) => ({
-  src: require(`@/assets/images/b${i + 1}.png`),
+  src: require(`@/assets/images/b${i + 1}.webp`),
   alt: `car ${i + 1}`,
 }))
-const baseBg = require('@/assets/images/bg.png')
+const baseBg = require('@/assets/images/bg.webp')
 
 /* ─────────────────────────────────────────────────────────
    固定 px 布局常量

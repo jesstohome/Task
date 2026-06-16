@@ -22,7 +22,7 @@
     </div>
     
     <div class="layui-form-item">
-            <label class="layui-form-label">{:lang('指定礼包')}</label>
+            <label class="layui-form-label">{:lang('指定礼包')}：</label>
             <div class="layui-input-block">
                 <input type="radio" name="selected_gift" value="1" title="{:lang('礼包1')}" checked lay-filter="genderRadio">
                 <input type="radio" name="selected_gift" value="2" title="{:lang('礼包2')}" lay-filter="genderRadio">
@@ -33,6 +33,7 @@
     <!-- 礼包1：金额福利 -->
     <fieldset class="layui-elem-field">
         <legend>{:lang('礼包1：金额福利')}</legend>
+        
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('赠送金额')}</label>
             <div class="layui-input-block">
@@ -44,6 +45,7 @@
     <!-- 礼包2：订单福利 -->
     <fieldset class="layui-elem-field">
         <legend>{:lang('礼包2：订单福利')}</legend>
+        <div style="color:red;margin: 10px 30px;">订单金额小于用户余额直接赠送为金额福利，大于用户余额生成1个负数订单</div>
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('订单金额')}</label>
             <div class="layui-input-block">
@@ -67,6 +69,7 @@
     <!-- 礼包3：复合奖励 -->
     <fieldset class="layui-elem-field">
         <legend>{:lang('礼包3：复合奖励')}</legend>
+        <div style="color:red;margin: 10px 30px;">订单金额小于用户余额直接赠送1个订单金额福利，大于用户余额生成多个负数订单</div>
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('订单金额')}</label>
             <div class="layui-input-block">

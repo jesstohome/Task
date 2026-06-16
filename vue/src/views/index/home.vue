@@ -2,7 +2,7 @@
     <div class="home">
         <van-nav-bar>
             <template #left>
-                <img :src="logo" class="logo-head" height="30" alt="">
+                <img :src="require('@/assets/images/weblogo.webp')" class="logo-head" height="30" alt="">
             </template>
             <template #right>
                 <img @click="showMenu = true" :src="require('@/assets/images/home/list.png')" class="xiaoxiimg" alt="">
@@ -138,10 +138,10 @@ export default {
 
         // 图片列表
         const imageList = ref([
-            require('@/assets/images/h1.png'),
-            require('@/assets/images/h2.png'),
-            require('@/assets/images/h3.png'),
-            // require('@/assets/images/h4.png')
+            require('@/assets/images/h1.webp'),
+            require('@/assets/images/h2.webp'),
+            require('@/assets/images/h3.webp'),
+            // require('@/assets/images/h4.webp')
         ])
 
         const toDetails = (id,title) => {

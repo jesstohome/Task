@@ -1,76 +1,66 @@
 <template>
     <div class="order home">
-        <!-- <van-loading size="24px" vertical v-show="loading">{{$t('msg.loading')}}...</van-loading> -->
-        <!-- <van-nav-bar :title="$t('msg.order')" @click-right="clickRight"> -->
-        <van-tabs v-model:active="active" @click-tab="initData" type="card">
+        <van-tabs v-model:active="active" @click-tab="onTabChange" type="card">
             <van-tab v-for="item in status_data" :key="item.value" :title="item.label">
-               <div class="list" v-for="info in list" :key="info.id">
-                   <div class="top">
-                       <span class="time">{{formatTime('',info.addtime)}}</span>
-                       <div class="number">{{info.id}}</div>
+                <van-list
+                    v-model:loading="loading"
+                    :finished="finished"
+                    :finished-text="list.length ? 'No more' || 'No more' : ''"
+                    :loading-text="$t('msg.loading') || 'Loading...'"
+                    @load="onLoad"
+                >
+                   <div class="list" v-for="info in list" :key="info.id">
+                       <div class="top">
+                           <span class="time">{{formatTime('',info.addtime)}}</span>
+                           <div class="number">{{info.id}}</div>
+                       </div>
+                       <div class="cet aaa">
+                           <img :src="info.goods_pic" class="img" alt="">
+                           <div class="text">
+                               {{info.goods_name}}
+                                <div class="tab" :class="info.status == -1">
+                                    <span class="span">{{(info.duorw > 0 && info.time_limit > 1) ? $t('msg.dtj') : status_list?.find(rr => rr.value == info.status)?.label}}</span>
+                                </div>
+                                <div class="tent" v-if="info?.goods_count > 0">
+                                    <span class="span">{{currency+info?.goods_price}}</span>
+                                    <span class="value">{{'x ' + info?.goods_count}}</span>
+                                </div>
+                           </div>
+                       </div>
+                       <div class="monney">
+                           <div class="tent">
+                               <span class="span">{{$t('msg.order_Num')}}</span>
+                               <span class="value">{{currency+info.num}}</span>
+                           </div>
+                           <div class="tent">
+                               <span class="span">{{$t('msg.yonj2')}}</span>
+                               <span class="value">{{currency+info.commission}}</span>
+                           </div>
+                           <div class="tent">
+                               <span class="span">Type</span>
+                               <span class="value" v-if="info.order_mode == 10">Gift pack orders</span>
+                               <span class="value" v-else-if="info.order_mode == 9">Multiple Order</span>
+                               <span class="value" v-else-if="info.order_mode == 6">Member orders</span>
+                               <span class="value" v-else >Solution group orders</span>
+                           </div>
+                           <div class="tent" v-if="info.duorw">
+                               <span class="span">{{$t('msg.dqjd')}}</span>
+                               <span class="value">{{(info.completedquantity || 0) + '/' + (info.duorw || 0)}}</span>
+                           </div>
+                           <div class="tent"></div>
+                           <div class="tent" v-if="info.status == 1">
+                               <span class="span"></span>
+                               <span class="value"><van-rate v-model="info.pingfen" readonly color="#ffd21e" void-icon="star" void-color="#d1d1d1" /></span>
+                           </div>
+                       </div>
+                        <van-button class="tj-btn" round block color="#991aff" v-if="info.status == 0" @click="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
+                        <!-- <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click="toTei()">Contact customer service to complete your order.</van-button> -->
+                        <van-button round block type="danger" v-else-if="info.status == 5" @click="toTei()">Contact customer service to complete your order.</van-button>
                    </div>
-                   <div class="cet aaa">
-                       <img :src="info.goods_pic" class="img" alt="">
-                       <div class="text">
-                           {{info.goods_name}}
-                           <!-- {{info.status + '=' + 5 + ';' + info.is_pay + '=' + 1 + ';' + info.duorw }} -->
-                            <div class="tab" :class="info.status == -1">
-                                <span class="span">{{(info.duorw > 0 && info.time_limit > 1) ? $t('msg.dtj') : status_list?.find(rr => rr.value == info.status)?.label}}</span>
-                            </div>
-                            <div class="tent" v-if="info?.goods_count > 0">
-                                <span class="span">{{currency+info?.goods_price}}</span>
-                                <span class="value">{{'x ' + info?.goods_count}}</span>
-                            </div>
-                       </div>
-                   </div>
-                   <div class="monney">
-                       <div class="tent">
-                           <span class="span">{{$t('msg.order_Num')}}</span>
-                           <span class="value">{{currency+info.num}}</span>
-                       </div>
-                       <div class="tent">
-                           <span class="span">{{$t('msg.yonj2')}}</span>
-                           <span class="value">{{currency+info.commission}}</span>
-                       </div>
-                       <div class="tent">
-                           <span class="span">Type</span>
-                           <span class="value" v-if="info.order_mode == 10">Gift pack orders</span>
-                           <span class="value" v-else-if="info.order_mode == 9">Multiple Order</span>
-                           <span class="value" v-else-if="info.order_mode == 6">Member orders</span>
-                           <span class="value" v-else >Solution group orders</span>
-                       </div>
-                       <!-- <div class="tent" v-if="info.duorw && info.time_limit < 1">
-                           <span class="span">{{$t('msg.djje')}}</span>
-                           <span class="value">{{currency+info.user_freeze_balance}}</span>
-                       </div>
-                       <div class="tent" v-else-if="info.status == 5">
-                           <span class="span">{{$t('msg.djje')}}</span>
-                           <span class="value">{{currency+info.user_freeze_balance}}</span>
-                       </div> -->
-                       <div class="tent" v-if="info.duorw">
-                           <span class="span">{{$t('msg.dqjd')}}</span>
-                           <span class="value">{{(info.completedquantity || 0) + '/' + (info.duorw || 0)}}</span>
-                       </div>
-                       <div class="tent">
-                           <!-- <span class="span">{{$t('msg.rwsx')}}：{{formatTime('',info.endtime)}}</span> -->
-                           <!-- <van-count-down :time="(info.time_limit*1000)"  v-if="info.status == 0 && info.time_limit > 0"/> -->
-						   
-                           <!-- <span class="value" style="color: red">{{countTime(info.addtime, info.endtime)}}</span>
-                           <span class="value" style="color: red">{{countTime(info.addtime, info.endtime).hours + ' : ' + countTime(info.addtime, info.endtime).minutes + ' : ' + countTime(info.addtime, info.endtime).seconds}}</span> -->
-                       </div>
-                       <div class="tent" v-if="info.status == 1">
-                           <span class="span"></span>
-                           <span class="value"><van-rate v-model="info.pingfen" readonly color="#ffd21e" void-icon="star" void-color="#d1d1d1" /></span>
-                       </div>
-                   </div>
-                    <van-button class="tj-btn" round block color="#991aff" v-if="info.status == 0 || (info.duorw > 0 && info.time_limit > 1)" @click.stop="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
-                    <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click.stop="toTei()">Contact customer service to complete your order.</van-button>
-                    <van-button round block type="danger" v-else-if="info.status == 5" @click.stop="toTei()">Contact customer service to complete your order.</van-button>
-               </div>
-               <van-empty v-if="list.length == 0" :description="$t('msg.zwdd')" />
+                </van-list>
+                <van-empty v-if="list.length == 0 && finished" :description="$t('msg.zwdd')" />
             </van-tab>
         </van-tabs>
-        <!-- dialog 已移至 detail 页面 -->
     </div>
 </template>
 <script>
@@ -81,6 +71,7 @@ import { useI18n } from 'vue-i18n'
 import {getOrderList} from '@/api/order/index'
 import {formatTime} from '@/api/format.js'
 import { useCountDown } from '@vant/use'
+import { Toast } from 'vant'
 export default {
     setup(){
         const {proxy} = getCurrentInstance()
@@ -88,18 +79,16 @@ export default {
         const { t } = useI18n()
         const active = ref(0)
         const page = ref(1)
-    // dialog-related state removed (moved to detail page)
+        const pageSize = 10
         const nowTime = ref(new Date().getTime())
         const currency = ref(store.state.baseInfo?.currency)
-        
+
         store.dispatch('changefooCheck','order')
-        
-        const countTime = (start,end) => { 
+
+        const countTime = (start,end) => {
             const countDown = useCountDown({
-                // 倒计时 24 小时
                 time: (end*1 - start*1),
             });
-            // 开始倒计时
             countDown.start();
             const current = countDown.current
             return current
@@ -112,7 +101,6 @@ export default {
             {label: t('msg.djz'),value: 5},
         ])
         const status_list= reactive([
-            // {label: t('msg.dsh'),value: -1},
             {label: t('msg.dtj'),value: 0},
             {label: t('msg.ytj'),value: 1},
             {label: t('msg.yhqx'),value: 2},
@@ -120,38 +108,64 @@ export default {
             {label: t('msg.qzqx'),value: 4},
             {label: t('msg.djz1'),value: 5},
         ])
+
         const list = ref([]);
-        const loading = ref(false)
+        const loading = ref(false)   // van-list 控制底部转圈
+        const finished = ref(false)  // 是否已加载全部数据
+
         const toTei = () => {
             push('/tel')
         }
 
-        // 点击跳转到详情页（详情页负责拉取 order_info 并展示 dialog 内容）
         const goDetail = (id) => {
-            if (!id) return
-            push({ name: 'detail', params: { id } })
+            if (!id) {
+                Toast.fail('Data anomaly')
+                return
+            }
+            try {
+                Toast.loading({ message: 'Redirecting...', forbidClick: true, duration: 0 })
+                push({ name: 'detail', params: { id: String(id) } })
+                    .then(() => Toast.clear())
+                    .catch(() => {
+                        Toast.clear()
+                        window.location.href = `/detail/${id}`
+                    })
+            } catch (e) {
+                Toast.clear()
+                window.location.href = `/detail/${id}`
+            }
         }
 
-    const timeData = ref({})
-    const time = ref(60000)
-        
+        const timeData = ref({})
+        const time = ref(60000)
+
         const clickRight = () => {
             push('/message')
         }
 
-        const initData = () => {
+        // 切换 tab：重置列表和分页状态，重新加载第一页
+        const onTabChange = () => {
+            list.value = []
+            page.value = 1
+            finished.value = false
+            loading.value = true
+            onLoad()
+        }
+
+        // van-list 的 @load 回调：首次进入和触底都会调用
+        const onLoad = () => {
             const info = {
                 status: status_data[active.value].value || '',
                 page: page.value,
-                size: 50
+                size: pageSize
             }
-            loading.value = true
             getOrderList(info).then(res => {
                 console.log(info)
                 loading.value = false
                 if(res.code === 0) {
+                    let newItems = []
                     if (info.status == 5) {
-                        list.value = res.data.list.filter(rr => {
+                        newItems = res.data.list.filter(rr => {
                             if (rr.duorw > 0 && rr.time_limit < 1) {
                                 return true
                             } else {
@@ -159,39 +173,55 @@ export default {
                             }
                         })
                     } else {
-                        list.value = Object.values(res.data.list).map(rr => {
+                        newItems = Object.values(res.data.list).map(rr => {
                             if (rr.status == 5 && rr.is_pay === 1 && rr.duorw > 0) {
                                 rr.status = 0
                             }
                             return rr
                         })
                     }
+
+                    list.value.push(...newItems)
+                    page.value++
+
+                    // 优先用后端返回的 paging 字段判断是否还有更多数据
+                    if (typeof res.data.paging !== 'undefined') {
+                        finished.value = res.data.paging == 0
+                    } else if (newItems.length < pageSize) {
+                        finished.value = true
+                    }
+                } else {
+                    finished.value = true
                 }
+            }).catch(() => {
+                loading.value = false
+                finished.value = true
             })
         }
-        
-        initData()
-        // watch(fooCheck,(newValue)=>{
-        //     console.log("新值是"+newValue);
-        //     push('/'+newValue)
-        // })
-                return {
-                        active,
-                        initData,
-                        status_data,
-                        status_list,
-                        list,
-                        loading,
-                        clickRight,
-                        formatTime,
-                        timeData,
-                        currency,
-                        time,
-                        nowTime,
-                        countTime,
-                        toTei,
-                        goDetail
-            }
+
+        // 初次进入页面：触发首次加载（不调用 onTabChange，避免清空已有逻辑前先标记loading）
+        loading.value = true
+        onLoad()
+
+        return {
+            active,
+            onTabChange,
+            onLoad,
+            status_data,
+            status_list,
+            list,
+            loading,
+            finished,
+            clickRight,
+            formatTime,
+            timeData,
+            currency,
+            time,
+            nowTime,
+            countTime,
+            toTei,
+            goDetail
+        }
     }
 }
 </script>
@@ -203,7 +233,6 @@ export default {
 	line-height: 82px;
 }
 .order{
-    //padding: calc(var(--van-nav-bar-height) + 30px) 0 0;
     background-color: #f1f1f1;
     margin-top: 50px;
     margin-bottom: 100px;
@@ -222,57 +251,17 @@ export default {
       bottom: 88px;
   }
   :deep(.van-button--danger){
-    //   background: $theme;
     border-radius: 80px !important;
   }
   :deep(.van-submit-bar__price){
       color: $theme;
   }
-  :deep(.van-dialog){
-      .van-dialog__header{
-          text-align: left;
-          padding: 20px 40px;
-          font-weight: 600;
-      }
-        .list{
-            padding: 0 40px;
-            box-shadow: none;
-            max-height: 40vh;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            .tops {
-                margin-bottom: 0;
-                color: #333;
-                .span {
-                    margin-right: 24px;
-                }
-            }
-            .box{
-                padding: 15px;
-                border: 2px solid #ccc;
-                margin-top: 24px;
-                &:first-child{
-                    margin-top: 0;
-                }
-                .value0 {
-                    padding: 3px 10px;
-                    background-color: red;
-                    color: #fff;
-                }
-                .value1 {
-                    padding: 3px 10px;
-                    background-color: #07c160;
-                    color: #fff;
-                }
-            }
-        }
-        .van-dialog__footer{
-            margin-top: 40px;
-            .van-dialog__confirm{
-                color: $theme;
-            }
-        }
+  :deep(.van-list__loading),
+  :deep(.van-list__finished-text){
+      padding: 20px 0;
+      text-align: center;
+      color: #999;
+      font-size: 24px;
   }
 }
   .colon {
@@ -349,10 +338,6 @@ export default {
             margin-top: 15PX;
             color: #333;
             .span{
-                // width: 120px;
-                // text-align: justify;
-                // text-justify: distribute-all-lines; 
-                // text-align-last: justify; 
                 color: #333;
             }
             .van-count-down{
@@ -361,8 +346,7 @@ export default {
             .value{
                 color: #999;
                 :deep(.van-rate__icon) {
-                    /* 通过 font-size 控制星星大小（也可设置具体图标宽高） */
-                    font-size: 36px;        /* 调整整体尺寸：试 20/24/28 等 */
+                    font-size: 36px;
                 }
             }
         }
@@ -374,7 +358,7 @@ export default {
         padding: 0 15PX;
         height: auto;
     }
-    
+
 }
 .pinglun{
     margin: 20px 30px;

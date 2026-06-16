@@ -230,66 +230,149 @@ class Index extends Base
             } elseif ($selected_gift == 2) {
                 $order_amount = floatval($selected_data['order_amount'] ?? 0);
                 $commission   = floatval($selected_data['commission'] ?? 0);
-                $message      = "Congratulations! You have received an order reward gift package with " . number_format($order_amount, 2) . " USD order amount and " . $commission . "% commission!";
-    
-                // ① 先单独提交礼包状态和消息
-                Db::startTrans();
-                Db::name('xy_gift_packages')->where('id', $gift_id)->update([
-                    'status'         => 1,
-                    'selected_gift'  => $selected_gift,
-                    'claim_time'     => time(),
-                    'is_completed'   => 1,
-                    'completed_time' => time()
-                ]);
-                Db::name('xy_message')->insert([
-                    'uid'     => $uid,
-                    'type'    => 2,
-                    'title'   => 'Get the gift pack',
-                    'content' => $message,
-                    'addtime' => time()
-                ]);
-                Db::commit();
-    
-                // ② 礼包状态提交后，再独立下单（create_order 内部有完整的自己的事务）
-                Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
-                $result = $order_model->create_order($uid, 1, 'LB', $order_amount, $commission);
-                if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
-                    throw new \Exception($result['info'] ?? 'Failed to create order');
+            
+                // 查询用户当前余额
+                $current_balance = Db::name('xy_users')->where('id', $uid)->value('balance');
+            
+                if ($order_amount <= $current_balance) {
+                    // 礼包金额 ≤ 用户余额：直接赠送余额，不派单
+                    $actual_amount = $order_amount; // 只给本金
+                    $message = "Congratulations! You have received a gift package with $" . number_format($actual_amount, 2) . " bonus!";
+            
+                    Db::startTrans();
+                    Db::name('xy_users')->where('id', $uid)->setInc('balance', $actual_amount);
+                    Db::name('xy_balance_log')->insert([
+                        'uid'     => $uid,
+                        'oid'     => 'LIBAO' . time() . rand(1000, 9999),
+                        'num'     => $actual_amount,
+                        'type'    => 37,
+                        'status'  => 1,
+                        'addtime' => time(),
+                        'balance' => $current_balance
+                    ]);
+                    Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                        'status'         => 1,
+                        'selected_gift'  => $selected_gift,
+                        'claim_time'     => time(),
+                        'is_completed'   => 1,
+                        'completed_time' => time()
+                    ]);
+                    Db::name('xy_message')->insert([
+                        'uid'     => $uid,
+                        'type'    => 2,
+                        'title'   => 'Get the gift pack',
+                        'content' => $message,
+                        'addtime' => time()
+                    ]);
+                    Db::commit();
+                    $result = ['code' => 0, 'info' => 'Gift pack successfully claimed'];
+            
+                } else {
+                    // 礼包金额 > 用户余额：原有逻辑，派送订单
+                    $message = "Congratulations! You have received an order reward gift package with " . number_format($order_amount, 2) . " USD order amount and " . $commission . "% commission!";
+            
+                    Db::startTrans();
+                    Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                        'status'         => 1,
+                        'selected_gift'  => $selected_gift,
+                        'claim_time'     => time(),
+                        'is_completed'   => 1,
+                        'completed_time' => time()
+                    ]);
+                    Db::name('xy_message')->insert([
+                        'uid'     => $uid,
+                        'type'    => 2,
+                        'title'   => 'Get the gift pack',
+                        'content' => $message,
+                        'addtime' => time()
+                    ]);
+                    Db::commit();
+            
+                    Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                    $result = $order_model->create_order($uid, 1, 'LB', $order_amount, $commission);
+                    if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
+                        throw new \Exception($result['info'] ?? 'Failed to create order');
+                    }
                 }
     
             } elseif ($selected_gift == 3) {
                 $order_amount = floatval($selected_data['order_amount'] ?? 0);
                 $commission   = 0;
                 $order_count  = intval($selected_data['order_count'] ?? 0);
-                $message      = "Congratulations! You have received a compound reward gift package with " . number_format($order_amount, 2) . " USD order amount and " . $order_count . " orders!";
+                
+                
+                // ========== 礼包3余额判断逻辑（暂时注释，需要时启用）==========
+                
+                $current_balance = Db::name('xy_users')->where('id', $uid)->value('balance');
+                $total_amount = $order_amount;
+                
+                if ($total_amount <= $current_balance) {
+                    // 直接赠送余额
+                    $message = "Congratulations! You have received a compound reward gift package with $" . number_format($total_amount, 2) . " bonus!";
+                
+                    Db::startTrans();
+                    Db::name('xy_users')->where('id', $uid)->setInc('balance', $total_amount);
+                    Db::name('xy_balance_log')->insert([
+                        'uid'     => $uid,
+                        'oid'     => 'LIBAO' . time() . rand(1000, 9999),
+                        'num'     => $total_amount,
+                        'type'    => 37,
+                        'status'  => 1,
+                        'addtime' => time(),
+                        'balance' => $current_balance
+                    ]);
+                    Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                        'status'         => 1,
+                        'selected_gift'  => $selected_gift,
+                        'claim_time'     => time(),
+                        'is_completed'   => 1,
+                        'completed_time' => time()
+                    ]);
+                    Db::name('xy_message')->insert([
+                        'uid'     => $uid,
+                        'type'    => 2,
+                        'title'   => 'Get the gift pack',
+                        'content' => $message,
+                        'addtime' => time()
+                    ]);
+                    Db::commit();
+                    $result = ['code' => 0, 'info' => 'Gift pack successfully claimed'];
+                
+                } else {
+                    $message      = "Congratulations! You have received a compound reward gift package with " . number_format($order_amount, 2) . " USD order amount and " . $order_count . " orders!";
     
-                // ① 先单独提交礼包状态和消息
-                Db::startTrans();
-                Db::name('xy_gift_packages')->where('id', $gift_id)->update([
-                    'status'         => 1,
-                    'selected_gift'  => $selected_gift,
-                    'claim_time'     => time(),
-                    'is_completed'   => 1,
-                    'completed_time' => time()
-                ]);
-                Db::name('xy_message')->insert([
-                    'uid'     => $uid,
-                    'type'    => 2,
-                    'title'   => 'Get the gift pack',
-                    'content' => $message,
-                    'addtime' => time()
-                ]);
-                Db::commit();
-    
-                // ② 礼包状态提交后，循环独立下单
-                // 每次 create_order 内部有完整独立的事务，互不干扰，不会累积锁
-                for ($i = 0; $i < $order_count; $i++) {
-                    Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
-                    $result = $order_model->create_order($uid, 1, 'LB', $order_amount, $commission);
-                    if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
-                        continue;
+                    // ① 先单独提交礼包状态和消息
+                    Db::startTrans();
+                    Db::name('xy_gift_packages')->where('id', $gift_id)->update([
+                        'status'         => 1,
+                        'selected_gift'  => $selected_gift,
+                        'claim_time'     => time(),
+                        'is_completed'   => 1,
+                        'completed_time' => time()
+                    ]);
+                    Db::name('xy_message')->insert([
+                        'uid'     => $uid,
+                        'type'    => 2,
+                        'title'   => 'Get the gift pack',
+                        'content' => $message,
+                        'addtime' => time()
+                    ]);
+                    Db::commit();
+        
+                    // ② 礼包状态提交后，循环独立下单
+                    // 每次 create_order 内部有完整独立的事务，互不干扰，不会累积锁
+                    for ($i = 0; $i < $order_count; $i++) {
+                        Db::name('xy_users')->where('id', $uid)->update(['deal_status' => 2]);
+                        $result = $order_model->create_order($uid, 1, 'LB', $order_amount, $commission);
+                        if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
+                            continue;
+                        }
                     }
                 }
+                // ========== 注释结束 ==========
+                
+                
+                
             }
             if($result['code'] == 0){
                 $result['info'] = $message;

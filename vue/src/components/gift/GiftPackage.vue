@@ -260,9 +260,9 @@ export default {
 
     const getBoxImage = (index) => {
       const images = [
-        require('@/assets/images/home/gifta.png'),
-        require('@/assets/images/home/giftb.png'),
-        require('@/assets/images/home/giftc.png')
+        require('@/assets/images/home/gifta.webp'),
+        require('@/assets/images/home/giftb.webp'),
+        require('@/assets/images/home/giftc.webp')
       ];
       return images[index];
     };

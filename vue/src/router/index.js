@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import login from '../views/login/login.vue'
+import detail from '@/views/order/detail.vue'
 
 const routes = [
   {
@@ -25,7 +26,8 @@ const routes = [
   {
     path: '/detail/:id',
     name: 'detail',
-    component: ()=> import('@/views/order/detail.vue')
+    //非懒加载方式引入这个页面，直接打包进主页
+    component: detail
   },
 // 余利宝
   {
@@ -276,6 +278,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.onError((error, to) => {
+  const isChunkError = /Failed to fetch dynamically imported module|Loading chunk|Importing a module script failed|error loading dynamically imported module/.test(error.message)
+  if (isChunkError) {
+    const key = 'chunk-reload-' + to.fullPath
+    if (!sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, '1')
+      window.location.href = to.fullPath
+    }
+  }
 })
 
 // 4. 你还可以监听路由拦截，比如权限验证。

@@ -5,7 +5,7 @@
          ① 顶部汽车背景大图
     ══════════════════════════════════════════════════════ -->
     <div class="profile-hero">
-      <img :src="require('@/assets/images/self/head_bg.png')" alt="hero" class="profile-hero-img" />
+      <img :src="require('@/assets/images/self/head_bg.webp')" alt="hero" class="profile-hero-img" />
     </div>
 
     <!-- ══════════════════════════════════════════════════════
@@ -16,7 +16,8 @@
       <!-- 用户信息行：头像（探出） + 用户名 + 邀请码 -->
       <div class="profile-user-row">
         <div class="profile-avatar-wrap">
-          <img :src="userinfo?.headpic" alt="avatar" class="profile-avatar-img" />
+          <!-- <img :src="userinfo?.headpic" alt="avatar" class="profile-avatar-img" /> -->
+          <img :src="require('@/assets/images/touxian.webp')" alt="avatar" class="profile-avatar-img" />
         </div>
         <div class="profile-user-info">
           <div class="profile-username">{{ userinfo.username }}</div>
