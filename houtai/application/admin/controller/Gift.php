@@ -37,8 +37,15 @@ class Gift extends Base
         $where = [];
 
         if (input('uid/s', '')) $where[] = ['g.uid', '=', input('uid/s')];
-        if (input('status/s', '')) $where[] = ['g.status', '=', input('status/s')];
-
+        if (input('username/s', '')) $where[] = ['u.username', '=', input('username/s')];
+        $if_completed = input('is_completed/d', '');
+        if($if_completed === 0){
+           $where[] = ['g.is_completed', '=', 0]; 
+        }
+        if($if_completed == 1){
+           $where[] = ['g.is_completed', '=', 1]; 
+        }
+    
         $query->field('g.*, u.username, u.tel')
             ->leftJoin('xy_users u', 'g.uid=u.id')
             ->where($where)

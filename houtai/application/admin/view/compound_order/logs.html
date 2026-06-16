@@ -1,6 +1,6 @@
 <div class="layui-card">
     <div class="layui-card-header">
-        <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false"
+        <form class="layui-form layui-form-pane form-search" lay-filter="search-form" action="{:request()->url()}" onsubmit="return false"
               method="get" autocomplete="off">
             <div class="layui-form-item" style="margin-bottom: 0;">
                 <div class="layui-inline">
@@ -22,7 +22,6 @@
                             <option value="">{:lang('全部')}</option>
                             <option value="1" {if input('status') == '1'}selected{/if}>{:lang('进行中')}</option>
                             <option value="2" {if input('status') == '2'}selected{/if}>{:lang('已完成')}</option>
-                            <option value="3" {if input('status') == '3'}selected{/if}>{:lang('已取消')}</option>
                         </select>
                     </div>
                 </div>
@@ -107,6 +106,13 @@
 </div>
 <script>
         var table = layui.table;
+        
+        var form = layui.form;  // 新增
+    
+        // 渲染 form 组件（让 select 正常显示）
+        form.render();          // 新增
+        
+        form.render('select');
         //转换静态表格
         var limit = Number('{$Think.get.limit}');
         if(limit==0) limit=20;
