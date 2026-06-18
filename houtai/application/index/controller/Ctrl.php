@@ -1298,6 +1298,23 @@ function stebank1curl($url, $data = []){}
     //提现接口
     public function do_deposit()
     {
+        //判断是否有未领取礼包
+        $where = [
+                ['uid', '=', $this->usder_id],
+                ['qkon', '=', 1],
+                ['order_mode', '=', 6],
+            ];
+        //已做单数
+        $yizuo = Db::name('xy_convey')
+                    ->where($where)
+                    ->where('status', 'in', [1, 3, 5])
+                    ->count('id');
+                    
+        $gift = Db::name('xy_gift_packages')->where('uid', $this->usder_id)->where('start_num', '<=', $yizuo)->where('status', 0)->find();
+        if($gift){
+            return json(['code' => 1, 'info' => translate('Unclaimed gift pack.')]);
+        }
+            
         $res = check_time(config('tixian_time_1'), config('tixian_time_2'));
         $str = config('tixian_time_1') . ":00  - " . config('tixian_time_2') . ":00";
         if ($res) return json(['code' => 1, 'info' => yuylangs('ctrl_jzz') . $str . yuylangs('ctrl_ywsjd')]);
@@ -1329,6 +1346,8 @@ function stebank1curl($url, $data = []){}
             }
 
             $uid = $this->usder_id;
+            
+            
             if ($info['pwd2'] != sha1($pwd2 . $info['salt2'] . config('pwd_str')) ) {
                 return json(['code' => 1, 'info' => yuylangs('pass_error')]);
             }
@@ -1362,7 +1381,8 @@ function stebank1curl($url, $data = []){}
             if ($userSetting['min_deposit_order'] != $level['tixian_nim_order']) {
                 $ulevel['tixian_nim_order'] = $userSetting['min_deposit_order'];
             }
-
+            
+            //判断是否在做单循环中，1到29单中不可提现
             $onum = Db::name('xy_convey')
                 ->where('uid', $uid)
                 ->where('status', 'in', [1, 3, 5])
@@ -1378,6 +1398,19 @@ function stebank1curl($url, $data = []){}
             if($wnum > 0 && $wnum < $uinfo['order_num']){
                 return json(['code' => 1, 'info' => translate('Order not completed, withdrawal failed.')]);
             }
+            
+            // 检查用户是否有未完成的复数订单
+            // $existing_log = Db::name('xy_compound_order_log')
+            // ->where('uid', $uid)
+            // ->where('status', 1) // 进行中
+            // ->order('create_time DESC')
+            // ->find();
+            // if ($existing_log) {
+            //     $existing_log['custom_options'] = json_decode($existing_log['custom_options'],1);
+            //     if ($existing_log['now_num'] >= $existing_log['trigger_count'] && $wnum == $uinfo['order_num']) {
+            //         return json(['code' => 1, 'info' => translate('There are incomplete orders.')]);
+            //     }
+            // }
             
                // dump($onum);die;
             $tixian_nim_order = $ulevel['tixian_nim_order'];

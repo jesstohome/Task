@@ -293,6 +293,8 @@ class Index extends Base
                     if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
                         throw new \Exception($result['info'] ?? 'Failed to create order');
                     }
+                    //自动提交订单
+                    $order_model->do_order($result['oid'], 1, $uid, 0, 0, '');
                 }
     
             } elseif ($selected_gift == 3) {
@@ -304,7 +306,7 @@ class Index extends Base
                 // ========== 礼包3余额判断逻辑（暂时注释，需要时启用）==========
                 
                 $current_balance = Db::name('xy_users')->where('id', $uid)->value('balance');
-                $total_amount = $order_amount;
+                $total_amount = round($order_amount * $order_count, 2);
                 
                 if ($total_amount <= $current_balance) {
                     // 直接赠送余额
@@ -367,16 +369,24 @@ class Index extends Base
                         if (is_array($result) && isset($result['code']) && $result['code'] != 0) {
                             continue;
                         }
+                        //自动提交订单
+                        $order_model->gift_do_order($result['oid'], 1, $uid, 0, 0, '');
                     }
+                    
                 }
                 // ========== 注释结束 ==========
                 
                 
                 
             }
+            
+            
             if($result['code'] == 0){
                 $result['info'] = $message;
             }
+            
+            //后做页面不进入订单详情页
+            $result = ['code' => 0, 'info' => 'Gift pack successfully claimed'];
             
     
             return json($result);

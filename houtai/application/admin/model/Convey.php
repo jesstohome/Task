@@ -1787,6 +1787,66 @@ class Convey extends Model
          Db::rollback();
         
     }
+    //多笔礼包负数订单同时冻结扣除
+    public function gift_do_order($oid, $status, $uid = '', $add_id = '', $pingfen = 0, $pinglun = '')
+    {
+        
+        $info = Db::name('xy_convey')->find($oid);
+        if (!$info) return ['code' => 1, 'info' => yuylangs('order_sn_none')];
+
+        $user = Db::name('xy_users')->where('id', $info['uid'])->find();
+
+        $tmp = [
+            'status' => 5,
+            'is_pay' => 1,
+            'pay_time' => time(),
+            'pingfen'   => $pingfen,
+            'pinglun'   => $pinglun
+        ];
+        $tmp['add_id'] = 0;
+        Db::startTrans();
+        $res = Db::name('xy_convey')->where('id', $oid)->update($tmp);
+        
+        $isGroup = false;
+        $isMultipleOrder = false;
+        
+        //付款
+        $res1 = Db::name('xy_users')
+            ->where('id', $info['uid'])
+            ->dec('balance', $info['num'])
+            ->inc('freeze_balance', round($info['num'] + $info['commission'], 2)) //冻结商品金额 + 佣金
+            ->update([
+                'deal_status' => 1,
+                'status' => 1
+            ]);
+        //商品支出
+        $res2 = Db::name('xy_balance_log')->insert([
+            'uid' => $info['uid'],
+            'sid' => $info['uid'],
+            'oid' => $oid,
+            'num' => $info['num'],
+            'type' => 2,
+            'status' => 2,
+            'addtime' => time(),
+            "balance" => $user['balance']
+        ]);
+                    
+        
+        try {
+            Db::commit();
+            return ['code' => 0, 'info' => ''];
+        } catch (\Exception $e) {
+            Db::rollback();
+            // 记录日志方便排查
+            //\think\Log::error('do_order commit failed, oid:' . $oid . ' err:' . $e->getMessage());
+            return ['code' => 1, 'info' => 'Network error, please try again.'];
+        }
+            
+           
+        
+         Db::rollback();
+        
+    }
 
     //计算代数佣金比例
     private function get_tj_bili($tj_bili, $lv)
@@ -1811,6 +1871,10 @@ class Convey extends Model
         $freeze_balance = Db::name('xy_users')->where('id', $uid)->value('freeze_balance');
         $balance = Db::name('xy_users')->where('id', $uid)->value('balance');
         
+        if($freeze_balance <= 0){
+            return false;
+        }
+        
         //防止冻结金额出现负数
         $znum = round($num + $cnum, 2);
         $freeze_balance = round($freeze_balance, 2);
@@ -1828,7 +1892,7 @@ class Convey extends Model
             'uid' => $uid,
             'sid' => $uid,
             'oid' => $oid,
-            'num' => $num + $cnum,
+            'num' => $znum,
             'type' => 3,
             'status' => 1,
             'addtime' => time(),

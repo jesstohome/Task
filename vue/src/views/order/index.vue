@@ -61,6 +61,8 @@
                 <van-empty v-if="list.length == 0 && finished" :description="$t('msg.zwdd')" />
             </van-tab>
         </van-tabs>
+
+        <GiftPackage v-model="showGift" />
     </div>
 </template>
 <script>
@@ -72,7 +74,9 @@ import {getOrderList} from '@/api/order/index'
 import {formatTime} from '@/api/format.js'
 import { useCountDown } from '@vant/use'
 import { Toast } from 'vant'
+import GiftPackage from '@/components/gift/index.js'
 export default {
+    components: { GiftPackage },
     setup(){
         const {proxy} = getCurrentInstance()
         const { push } = useRouter();

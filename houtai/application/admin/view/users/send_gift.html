@@ -69,7 +69,7 @@
     <!-- 礼包3：复合奖励 -->
     <fieldset class="layui-elem-field">
         <legend>{:lang('礼包3：复合奖励')}</legend>
-        <div style="color:red;margin: 10px 30px;">订单金额小于用户余额直接赠送1个订单金额福利，大于用户余额生成多个负数订单</div>
+        <div style="color:red;margin: 10px 30px;">总订单金额小于用户余额直接赠总订单金额福利，大于用户余额生成多个负数订单</div>
         <div class="layui-form-item">
             <label class="layui-form-label">{:lang('订单金额')}</label>
             <div class="layui-input-block">
@@ -103,20 +103,32 @@
         
     var userBalance = {$user.balance};
 
-    // 实时计算预计负数约
-    function calcNegative(inputEl) {
-        var val = parseFloat($(inputEl).val()) || 0;
+    // 计算礼包2预计负数（余额 - 订单金额）
+    function calcNegative2() {
+        var val = parseFloat($('input[name="gift2_order_amount"]').val()) || 0;
         var result = userBalance - val;
-        $(inputEl).closest('fieldset').find('input[readonly][style*="color:red"]').val(result.toFixed(2));
+        $('input[name="gift2_order_amount"]').closest('fieldset').find('input[readonly][style*="color:red"]').val(result.toFixed(2));
     }
 
-    // 绑定两个订单金额输入框
-    $('input[name="gift2_order_amount"], input[name="gift3_order_amount"]').on('input change', function() {
-        calcNegative(this);
+    // 计算礼包3预计负数（余额 - 订单金额 × 订单数量）
+    function calcNegative3() {
+        var amount = parseFloat($('input[name="gift3_order_amount"]').val()) || 0;
+        var count = parseInt($('input[name="gift3_order_count"]').val()) || 1;
+        var result = userBalance - (amount * count);
+        $('input[name="gift3_order_amount"]').closest('fieldset').find('input[readonly][style*="color:red"]').val(result.toFixed(2));
+    }
+
+    // 绑定礼包2
+    $('input[name="gift2_order_amount"]').on('input change', function() {
+        calcNegative2();
     });
 
-    // 页面加载时初始化两个预计负数约
-    $('input[name="gift2_order_amount"], input[name="gift3_order_amount"]').each(function() {
-        calcNegative(this);
+    // 绑定礼包3（金额或数量变化都要重新计算）
+    $('input[name="gift3_order_amount"], input[name="gift3_order_count"]').on('input change', function() {
+        calcNegative3();
     });
+
+    // 页面加载时初始化
+    calcNegative2();
+    calcNegative3();
 </script>

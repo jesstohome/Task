@@ -219,10 +219,10 @@ export default {
               openingIndex.value = -1;
               selectedBoxIndex.value = -1;
               countdownWidth.value = 100;
-              if(selected.value == 2 || selected.value == 3){
+              // if(selected.value == 2 || selected.value == 3){
                 
-                push({ name: 'detail', params: { id: res.oid } });
-              }
+              //   push({ name: 'detail', params: { id: res.oid } });
+              // }
             }, 600);
           }, 5000);
 
@@ -260,9 +260,9 @@ export default {
 
     const getBoxImage = (index) => {
       const images = [
-        require('@/assets/images/home/gifta.webp'),
-        require('@/assets/images/home/giftb.webp'),
-        require('@/assets/images/home/giftc.webp')
+        require('@/assets/images/home/gift.webp'),
+        require('@/assets/images/home/gift.webp'),
+        require('@/assets/images/home/gift.webp')
       ];
       return images[index];
     };
@@ -302,7 +302,8 @@ export default {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, #1a0533cc 0%, #0a0015ee 100%);
+  // background: radial-gradient(ellipse at center, #1a0533cc 0%, #0a0015ee 100%);
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 80%) 0%, rgba(10, 0, 21, 0.9333333333) 100%);
 }
 
 .star {
@@ -376,7 +377,7 @@ export default {
 
 .gift-close {
   font-size: 52px;
-  color: rgba(255,255,255,0.6);
+  color: #3838384f;
   cursor: pointer;
   line-height: 1;
   transition: all 0.2s;
@@ -426,7 +427,8 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, #5a2dff99, #9b59b6cc);
+  // background: linear-gradient(145deg, #5a2dff99, #9b59b6cc);
+  background-color: #020413;
   box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
   transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease, background 0.4s ease;
 
@@ -491,7 +493,7 @@ export default {
   position: absolute;
   inset: -2px;
   border-radius: 26px;
-  background: linear-gradient(45deg, #a855f7, #3b82f6, #a855f7);
+  // background: linear-gradient(45deg, #a855f7, #3b82f6, #a855f7);
   background-size: 200% 200%;
   animation: glowRotate 3s linear infinite;
   z-index: -1;
@@ -525,7 +527,7 @@ export default {
   margin-bottom: 14px;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
   animation: iconFloat 3s ease-in-out infinite;
-  img { width: 160px; height: 160px; }
+  img { width: 180px; height: 150px; }
 }
 
 @keyframes iconFloat {

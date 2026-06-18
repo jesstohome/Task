@@ -611,12 +611,15 @@ class Users extends Base
                 }
                 
                 //处理冻结的订单
-                $convey = Db::name('xy_convey')->where('uid',$v)->where('status', 5)->where('is_pay', 1)->find();
+                $convey = Db::name('xy_convey')->where('uid',$v)->where('status', 5)->where('is_pay', 1)->select();
                 
                 $balance = Db::name('xy_users')->where('id', $v)->value('balance');
 
                 if($convey && $balance >= 0){
-                    $res2 = model('admin/Convey')->deal_reward($v, $convey['id'], $convey['num'], $convey['commission']);
+                    foreach($convey as $kk => $vv){
+                        $res2 = model('admin/Convey')->deal_reward($v, $vv['id'], $vv['num'], $vv['commission']);
+                    }
+                    
                 }
                 
                 //检查还有没有未完成的负数订单，有的话自动进行派单
