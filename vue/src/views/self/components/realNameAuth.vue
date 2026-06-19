@@ -113,6 +113,7 @@ export default {
 <style lang="scss" scoped>
 .realname{
   font-weight: 900;
+  padding-bottom: 600px !important;
 }
 .uploader-group{ display:flex; gap:12px; flex-direction:column;padding-top: 60px; }
 .status-info{ margin-top:8px; color:#666 }

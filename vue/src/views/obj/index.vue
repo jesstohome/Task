@@ -157,9 +157,9 @@
           <div class="hero-card-icon hero-card-icon--ad">
             <img :src="require('@/assets/images/qianbao.png')" alt="" class="hero-bg-img" />
           </div>
-          <div class="hero-card-label">Advertising salary</div>
+          <div class="hero-card-label">Today's Advertising salary</div>
           <div class="hero-card-amount">
-            <span class="hero-card-amount--zero">{{mInfo.yon3}}</span>
+            <span class="hero-card-amount--zero">{{mInfo.yon1}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
           <div class="hero-card-desc">Fixed balance where there is a mixed product pending in process.</div>
@@ -168,8 +168,8 @@
       <div class="hero-arc"></div>
     </div>
     <div class="hero-info">
-      <div>Frozen amount：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
-      <div>Today's earnings：<span style="color: #991aff;">{{ mInfo.yon1 }}</span></div>
+      <div>Exceed：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
+      <!-- <div>Today's earnings：<span style="color: #991aff;">{{ mInfo.yon1 }}</span></div> -->
     </div>
 
     <AdShowcase
