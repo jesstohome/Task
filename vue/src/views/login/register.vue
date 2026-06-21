@@ -9,8 +9,8 @@
           class="zdy"
           v-model="userName"
           name="userName"
-          :label="'Username'"
-          :placeholder="'Username'"
+          :label="$t('msg.input_username')"
+          :placeholder="$t('msg.input_username')"
           input-align="right"
         />
         <van-field
@@ -18,8 +18,8 @@
           class="zdy"
           v-model="tel"
           name="tel"
-          :label="'Phone'"
-          :placeholder="'Phone'"
+          :label="$t('msg.phone')"
+          :placeholder="$t('msg.phone')"
           input-align="right"
         />
         <van-field
@@ -44,16 +44,16 @@
           label-width="100"
           v-model="depositPwd"
           name="depositPwd"
-          :label="'Withdrawal password'"
-          :placeholder="'Withdrawal password'"
+          :label="$t('msg.tx_pwd')"
+          :placeholder="$t('msg.tx_pwd')"
           input-align="right"
         />
         <van-field
           label-width="100"
           v-model="gender"
           name="gender"
-          label="Gender"
-          placeholder="Select Gender"
+          :label="$t('msg.gender')"
+          :placeholder="$t('msg.select_gender')"
           input-align="right"
           @click="genderPopup = true"
           readonly
@@ -68,17 +68,17 @@
           input-align="right"
         />
 
-        <van-checkbox v-model="agree" checked-color="#4c4bc3" icon-size="20px" label-disabled>I agree with <span style="color: #4c4bc3;font-weight: bold;" @click="toRoute()">the Non-Disclosure Agreement (NDA).</span></van-checkbox>
+        <van-checkbox v-model="agree" checked-color="#4c4bc3" icon-size="20px" label-disabled>{{ $t('msg.agree_prefix') }}<span style="color: #4c4bc3;font-weight: bold;" @click="toRoute()">{{ $t('msg.agree_nda') }}</span></van-checkbox>
       </van-cell-group>
 
       
 
       <div class="buttons">
         <van-button block round color="#991aff" native-type="submit">
-          Register
+          {{ $t('msg.register') }}
         </van-button>
         <div @click="$router.push({path: '/login'})" style="margin-top: 20px; text-align: center; font-size: 20px;text-decoration: underline; cursor: pointer;">
-         Back to Login
+         {{ $t('msg.back_to_login') }}
         </div>
       </div>
     </van-form>
@@ -129,8 +129,8 @@ export default {
     const agree = ref(true);
     const genderPopup = ref(false);
     const genderActionOptions = [
-      { name: 'Male', value: 'Male' },
-      { name: 'Female', value: 'Female' }
+      { name: t('msg.male'), value: 'Male' },
+      { name: t('msg.female'), value: 'Female' }
     ];
     const option = ref((baseInfo.value?.area_code) || [])
     const area_code = ref(option.value.map(rr => {return {text: rr, value: rr}}))
@@ -157,28 +157,28 @@ export default {
       // }
 
       if (!agree.value) {
-        proxy.$Message({ type: 'error', message: 'Please agree to the Non-Disclosure Agreement (NDA) before registering.'});
+        proxy.$Message({ type: 'error', message: t('msg.agree_required')});
         return false
       }
 
       if (formData.userName === '') {
-        proxy.$Message({ type: 'error', message: 'Username cannot be empty'});
+        proxy.$Message({ type: 'error', message: t('msg.username_required')});
         return false
       }
       if (formData.tel === '') {
-        proxy.$Message({ type: 'error', message: 'Phone cannot be empty'});
+        proxy.$Message({ type: 'error', message: t('msg.phone_required')});
         return false
       }
       if (formData.email === '') {
-        proxy.$Message({ type: 'error', message: 'Email cannot be empty'});
+        proxy.$Message({ type: 'error', message: t('msg.email_required')});
         return false
       }
       if (formData.pwd === '') {
-        proxy.$Message({ type: 'error', message: 'Password cannot be empty'});
+        proxy.$Message({ type: 'error', message: t('msg.password_required')});
         return false
       }
       if (formData.depositPwd === '') {
-        proxy.$Message({ type: 'error', message: 'Withdrawal password cannot be empty'});
+        proxy.$Message({ type: 'error', message: t('msg.withdrawal_pwd_required')});
         return false
       }
       

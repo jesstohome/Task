@@ -48,7 +48,7 @@
                 <span v-if="loadStep > 1">✓</span>
                 <span v-else>1</span>
               </div>
-              <div class="step-label">Matching</div>
+              <div class="step-label">{{ $t('msg.matching') }}</div>
             </div>
             <div class="step-line" :class="{ active: loadStep > 1 }"></div>
             <div class="step-item" :class="{ active: loadStep >= 2, done: loadStep > 2 }">
@@ -56,14 +56,14 @@
                 <span v-if="loadStep > 2">✓</span>
                 <span v-else>2</span>
               </div>
-              <div class="step-label">Pairing</div>
+              <div class="step-label">{{ $t('msg.pairing') }}</div>
             </div>
             <div class="step-line" :class="{ active: loadStep > 2 }"></div>
             <div class="step-item" :class="{ active: loadStep >= 3 }">
               <div class="step-dot">
                 <span>3</span>
               </div>
-              <div class="step-label">Success</div>
+              <div class="step-label">{{ $t('msg.success') }}</div>
             </div>
           </div>
         </div>
@@ -90,8 +90,8 @@
           </div>
 
           <!-- 标题 -->
-          <div class="result-title">Order Matched!</div>
-          <div class="result-subtitle">Your order has been successfully created</div>
+          <div class="result-title">{{ $t('msg.order_matched') }}</div>
+          <div class="result-subtitle">{{ $t('msg.order_created_success') }}</div>
 
           <!-- 分隔线 -->
           <div class="result-divider">
@@ -103,17 +103,17 @@
           <!-- 信息展示 -->
           <div class="result-info-grid">
             <div class="result-info-item">
-              <div class="info-label">Commission</div>
+              <div class="info-label">{{ $t('msg.commission_label') }}</div>
               <div class="info-value info-value--highlight">+{{ resultOrderInfo.commission }} {{ currency }}</div>
             </div>
             <div class="result-info-item">
-              <div class="info-label">Order Amount</div>
+              <div class="info-label">{{ $t('msg.order_amount_label') }}</div>
               <div class="info-value">{{ resultOrderInfo.amount }} {{ currency }}</div>
             </div>
           </div>
 
           <!-- 底部提示 -->
-          <div class="result-tip">Redirecting to order details...</div>
+          <div class="result-tip">{{ $t('msg.redirecting_order_details') }}</div>
 
           <!-- 倒计时条 -->
           <div class="result-countdown-bar">
@@ -134,41 +134,41 @@
           <div class="hero-avatar">
             <img :src="require('@/assets/images/touxian.webp')" alt="avatar" />
           </div>
-          <span class="hero-greeting">Hi, {{userinfo?.username}} 👋</span>
+          <span class="hero-greeting">{{ $t('msg.hi_greeting') }}, {{userinfo?.username}} 👋</span>
         </div>
         <div class="hero-rank">{{ info?.level_name }}</div>
       </div>
       <div class="hero-subtitle">
-        Join <strong>65,000</strong> others and learn the secrets to <strong>SEO</strong> success with our weekly blog posts.
+        <span v-html="$t('msg.hero_subtitle_text')"></span>
       </div>
       <div class="hero-cards">
         <div class="hero-card">
           <div class="hero-card-icon hero-card-icon--wallet">
             <img :src="require('@/assets/images/usdt.png')" alt="" class="hero-bg-img" />
           </div>
-          <div class="hero-card-label">Wallet Balance</div>
+          <div class="hero-card-label">{{ $t('msg.wallet_balance_label') }}</div>
           <div class="hero-card-amount">
             <span class="hero-card-amount--negative">{{monney}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
-          <div class="hero-card-desc">The total balance reflects both the deposited amount and profits earned</div>
+          <div class="hero-card-desc">{{ $t('msg.wallet_balance_desc') }}</div>
         </div>
         <div class="hero-card">
           <div class="hero-card-icon hero-card-icon--ad">
             <img :src="require('@/assets/images/qianbao.png')" alt="" class="hero-bg-img" />
           </div>
-          <div class="hero-card-label">Today's Advertising salary</div>
+          <div class="hero-card-label">{{ $t('msg.advertising_salary_today') }}</div>
           <div class="hero-card-amount">
             <span class="hero-card-amount--zero">{{mInfo.yon1}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
-          <div class="hero-card-desc">Fixed balance where there is a mixed product pending in process.</div>
+          <div class="hero-card-desc">{{ $t('msg.fixed_balance_desc') }}</div>
         </div>
       </div>
       <div class="hero-arc"></div>
     </div>
     <div class="hero-info">
-      <div>Exceed：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
+      <div>{{ $t('msg.exceed_label') }}：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
       <!-- <div>Today's earnings：<span style="color: #991aff;">{{ mInfo.yon1 }}</span></div> -->
     </div>
 
@@ -187,14 +187,14 @@
           <div class="notes-bg-overlay"></div>
         </div>
         <div class="notes-content">
-          <div class="notes-title">Important Notes</div>
+          <div class="notes-title">{{ $t('msg.important_notes') }}</div>
           <div class="notes-body">
-            <p>* Online Support Hours 09:00 - 21:59</p>
-            <p>- For any further questions, Please contact Online Customer Service</p>
+            <p>{{ $t('msg.online_support_hours') }}</p>
+            <p>{{ $t('msg.contact_cs_questions') }}</p>
           </div>
         </div>
       </div>
-      <div class="copyright">©2018-2026 AWISEE</div>
+      <div class="copyright">{{ $t('msg.copyright_text') }}</div>
     </div>
 
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">
@@ -268,7 +268,7 @@
 
     <van-dialog
       v-model:show="showCompoundOrder"
-      title="Multiple orders"
+      :title="$t('msg.multiple_order_title')"
       :show-cancel-button="false"
       :show-confirm-button="false"
       :close-on-click-overlay="false"
@@ -276,10 +276,10 @@
       <div class="compound-order-modal">
         <div class="compound-order-header">
           <div class="celebration-icon">🎉</div>
-          <h3>Congratulations on triggering the multiple order privilege!</h3>
+          <h3>{{ $t('msg.congrats_multiple_order') }}</h3>
           <p class="compound-order-desc">
-            You have completed the specified number of orders, unlocking the multiple order privilege!<br>
-            Please select an order sequence, and the system will automatically create multiple orders for you.
+            {{ $t('msg.multiple_order_desc1') }}<br>
+            {{ $t('msg.multiple_order_desc2') }}
           </p>
         </div>
         <div class="compound-order-options" v-if="compoundOrderData">

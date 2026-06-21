@@ -136,57 +136,29 @@ class Help extends Base
         $this->title = lang('编辑前台首页文本');
         $id = intval($id);
         if (request()->isPost()) {
-            // $this->applyCsrfToken();
-            $content = input('post.content/s', '');
             $id = input('post.id/d', 0);
             $title = input('post.title/s', '');
 
-           // if (!$content) $this->error(lang('正文内容为必填项'));
-            
-            
             $update['addtime'] = time();
-            $update['content'] = $content;
             $update['title'] = $title;
-            // $update['zh_cn'] = input('zh');
-            // $update['pt_br'] = input('pt');
-            // $update['es_mx'] = input('es');
-            // $update['en_id'] = input('en_id');
-            // $update['iv_vn'] = input('iv_vn');
-            // $update['tr_tr'] = input('tr_tr');
-            // $update['tw_tw'] = input('tw_tw');
-            // $update['hy_hy'] = input('hy_hy');
-            // $update['rus_rus'] = input('rus_rus');
-            // $update['prs_prs'] = input('prs_prs');
-            // $update['jp_jp'] = input('jp_jp');
-            // $update['en_au'] = input('en_au');
-            
-            // $update['t_zh_cn'] = input('t_zh_cn');
-            // $update['t_pt_br'] = input('t_pt_br');
-            // $update['t_es_mx'] = input('t_es_mx');
-            // $update['t_en_id'] = input('t_en_id');
-            // $update['t_iv_vn'] = input('t_iv_vn');
-            // $update['t_tr_tr'] = input('t_t_tr_tr');
-            // $update['t_tw_tw'] = input('t_tw_tw');
-            // $update['t_hy_hy'] = input('t_hy_hy');
-            // $update['t_rus_rus'] = input('t_rus_rus');
-            // $update['t_prs_prs'] = input('t_prs_prs');
-            // $update['t_jp_jp'] = input('t_jp_jp');
-            // $update['t_en_au'] = input('t_en_au');
-            
-             $update['en_es'] = input('en_es');
-            // $update['t_en_es'] = input('t_en_es');
-            
-            // $update['fa_ir'] = input('fa_ir');
-            // $update['t_fa_ir'] = input('t_fa_ir');
-            
-            //  $update['rom'] = input('rom');
-            // $update['t_rom'] = input('t_rom');
-            
-            
+            // 内容字段 — 6种语言
+            $update['en_es'] = input('en_es');       // 英语 English
+            $update['tw_tw'] = input('tw_tw');       // 法语 French
+            $update['hy_hy'] = input('hy_hy');       // 德语 German
+            $update['es_mx'] = input('es_mx');       // 西班牙语 Spanish
+            $update['pt_br'] = input('pt_br');       // 葡萄牙语 Portuguese
+            $update['rus_rus'] = input('rus_rus');   // 意大利语 Italian
+            // 标题字段 — 6种语言
+            $update['t_en_es'] = input('t_en_es');       // 英语 English
+            $update['t_tw_tw'] = input('t_tw_tw');       // 法语 French
+            $update['t_hy_hy'] = input('t_hy_hy');       // 德语 German
+            $update['t_es_mx'] = input('t_es_mx');       // 西班牙语 Spanish
+            $update['t_pt_br'] = input('t_pt_br');       // 葡萄牙语 Portuguese
+            $update['t_rus_rus'] = input('t_rus_rus');   // 意大利语 Italian
+
             $res = Db::table('xy_index_msg')->where('id', $id)->update($update);
             if ($res) {
                 unset($_POST['content']);
-                //sysoplog('编辑前台首页文本', json_encode($_POST, JSON_UNESCAPED_UNICODE));
                 sysoplog('编辑前台首页文本', $title);
                 $this->success(lang('编辑成功'), '#' . url('home_msg'));
             } else

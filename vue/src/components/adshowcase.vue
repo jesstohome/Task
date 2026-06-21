@@ -45,7 +45,7 @@
     <!-- ④ 按钮 -->
     <div class="ads-btn-wrap">
       <button class="ads-btn" @click="$emit('match')">
-        Ad Match ({{ completed }}/{{ total }})
+        {{ $t('msg.ad_match_btn', { completed, total }) }}
       </button>
     </div>
 

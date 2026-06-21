@@ -8,145 +8,75 @@
     <div class="layui-card-body think-box-shadow padding-left-40">
 
         <div class="layui-form-item layui-row layui-col-space15">
-           
+
              <label class="layui-col-xs9 relative">
                 <span class="color-green">{:lang('正文')}</span>
                  <input name="title" class="layui-input" value="{$info.title}"  placeholder="{:lang('请输入标题')}">
             </label>
-            <!--<label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题中文')}</span>-->
-            <!--    <input name="t_zh_cn" class="layui-input" value="{$info.t_zh_cn}"  placeholder="{:lang('请输入标题')}">-->
-                <input type="hidden" name="id" value="{$info.id}">
-            <!--    <input type="hidden" name="_csrf_" value="{:systoken('edit_home_msg')}">-->
-            <!--</label>-->
-            <!--<label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题英文')}</span>-->
-            <!--    <input name="t_en_es" class="layui-input" value="{$info.t_en_es}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题巴西')}</span>-->
-            <!--    <input name="t_pt_br" class="layui-input" value="{$info.t_pt_br}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题墨西哥(西班牙)')}</span>-->
-            <!--    <input name="t_es_mx" class="layui-input" value="{$info.t_es_mx}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题印度尼西亚')}</span>-->
-            <!--    <input name="t_en_id" class="layui-input" value="{$info.t_en_id}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题越南')}</span>-->
-            <!--    <input name="t_iv_vn" class="layui-input" value="{$info.t_iv_vn}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题土耳其')}</span>-->
-            <!--    <input name="t_tr_tr" class="layui-input" value="{$info.t_tr_tr}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题澳大利亚')}</span>-->
-            <!--    <input name="t_en_au" class="layui-input" value="{$info.t_en_au}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题泰国')}</span>-->
-            <!--    <input name="t_tw_tw" class="layui-input" value="{$info.t_tw_tw}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            
-            <!--<label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题罗马尼亚语')}</span>-->
-            <!--    <input name="t_rom" class="layui-input" value="{$info.t_rom}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题阿拉伯')}</span>-->
-            <!--    <input name="t_fa_ir" class="layui-input" value="{$info.t_fa_ir}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            
-            
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题中国')}</span>-->
-            <!--    <input name="t_hy_hy" class="layui-input" value="{$info.t_hy_hy}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题俄语')}</span>-->
-            <!--    <input name="t_rus_rus" class="layui-input" value="{$info.t_rus_rus}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题波兰语')}</span>-->
-            <!--    <input name="t_prs_prs" class="layui-input" value="{$info.t_prs_prs}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
-            <!-- <label class="layui-col-xs9 relative">-->
-            <!--    <span class="color-green">{:lang('标题日语')}</span>-->
-            <!--    <input name="t_jp_jp" class="layui-input" value="{$info.t_jp_jp}"  placeholder="{:lang('请输入标题')}">-->
-            <!--</label>-->
+            <input type="hidden" name="id" value="{$info.id}">
+
+            <!-- 英语 English - en_es -->
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('标题英语')}</span>
+                <input name="t_en_es" class="layui-input" value="{$info.t_en_es}"  placeholder="{:lang('请输入标题')}">
+            </label>
+            <!-- 法语 French - tw_tw -->
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('标题法语')}</span>
+                <input name="t_tw_tw" class="layui-input" value="{$info.t_tw_tw}"  placeholder="{:lang('请输入标题')}">
+            </label>
+            <!-- 德语 German - hy_hy -->
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('标题德语')}</span>
+                <input name="t_hy_hy" class="layui-input" value="{$info.t_hy_hy}"  placeholder="{:lang('请输入标题')}">
+            </label>
+            <!-- 西班牙语 Spanish - es_mx -->
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('标题西班牙语')}</span>
+                <input name="t_es_mx" class="layui-input" value="{$info.t_es_mx}"  placeholder="{:lang('请输入标题')}">
+            </label>
+            <!-- 葡萄牙语 Portuguese - pt_br -->
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('标题葡萄牙语')}</span>
+                <input name="t_pt_br" class="layui-input" value="{$info.t_pt_br}"  placeholder="{:lang('请输入标题')}">
+            </label>
+            <!-- 意大利语 Italian - rus_rus -->
+            <label class="layui-col-xs9 relative">
+                <span class="color-green">{:lang('标题意大利语')}</span>
+                <input name="t_rus_rus" class="layui-input" value="{$info.t_rus_rus}"  placeholder="{:lang('请输入标题')}">
+            </label>
         </div>
 
-
-
-        <!--<div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（中文）')}</span>-->
-        <!--    <textarea name="zh">{$info.zh_cn}</textarea>-->
-        <!--</div>-->
-         <div class="layui-form-item block">
-            <span class="label-required-prev color-green">{:lang('公告内容')}</span>
+        <!-- 公告内容（英语） English - en_es -->
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">{:lang('公告内容（英语）')}</span>
             <textarea name="en_es">{$info['en_es']}</textarea>
         </div>
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（巴西）')}</span>-->
-        <!--    <textarea name="pt">{$info['pt_br']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（墨西哥/西班牙）')}</span>-->
-        <!--    <textarea name="es">{$info['es_mx']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（印度尼西亚）')}</span>-->
-        <!--    <textarea name="en_id">{$info['en_id']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（越南）')}</span>-->
-        <!--    <textarea name="iv_vn">{$info['iv_vn']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（土耳其）')}</span>-->
-        <!--    <textarea name="tr_tr">{$info['tr_tr']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（澳大利亚）')}</span>-->
-        <!--    <textarea name="en_au">{$info['en_au']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（泰国）')}</span>-->
-        <!--    <textarea name="tw_tw">{$info['tw_tw']}</textarea>-->
-        <!--</div>-->
-        
-        <!--<div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（罗马尼亚语）')}</span>-->
-        <!--    <textarea name="rom">{$info['rom']}</textarea>-->
-        <!--</div>-->
-        
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（阿拉伯）')}</span>-->
-        <!--    <textarea name="fa_ir">{$info['fa_ir']}</textarea>-->
-        <!--</div>-->
-        
-        
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（中文）')}</span>-->
-        <!--    <textarea name="hy_hy">{$info['hy_hy']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（俄罗斯）')}</span>-->
-        <!--    <textarea name="rus_rus">{$info['rus_rus']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（波兰）')}</span>-->
-        <!--    <textarea name="prs_prs">{$info['prs_prs']}</textarea>-->
-        <!--</div>-->
-        <!-- <div class="layui-form-item block">-->
-        <!--    <span class="label-required-prev color-green">{:lang('公告内容（日本）')}</span>-->
-        <!--    <textarea name="jp_jp">{$info['jp_jp']}</textarea>-->
-        <!--</div>-->
+        <!-- 公告内容（法语） French - tw_tw -->
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">{:lang('公告内容（法语）')}</span>
+            <textarea name="tw_tw">{$info['tw_tw']}</textarea>
+        </div>
+        <!-- 公告内容（德语） German - hy_hy -->
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">{:lang('公告内容（德语）')}</span>
+            <textarea name="hy_hy">{$info['hy_hy']}</textarea>
+        </div>
+        <!-- 公告内容（西班牙语） Spanish - es_mx -->
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">{:lang('公告内容（西班牙语）')}</span>
+            <textarea name="es_mx">{$info['es_mx']}</textarea>
+        </div>
+        <!-- 公告内容（葡萄牙语） Portuguese - pt_br -->
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">{:lang('公告内容（葡萄牙语）')}</span>
+            <textarea name="pt_br">{$info['pt_br']}</textarea>
+        </div>
+        <!-- 公告内容（意大利语） Italian - rus_rus -->
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">{:lang('公告内容（意大利语）')}</span>
+            <textarea name="rus_rus">{$info['rus_rus']}</textarea>
+        </div>
 
         <div class="layui-form-item text-center">
             <button class="layui-btn" type="submit">{:lang('确认编辑')}</button>
@@ -162,23 +92,13 @@
 <script>
     window.form.render();
     require(['ckeditor', 'angular'], function () {
-        window.createEditor('[name="content"]', {height: 500});
-        window.createEditor('[name="zh"]', {height: 500});
-        window.createEditor('[name="en_es"]', {height: 500});
-         window.createEditor('[name="pt"]', {height: 500});
-         window.createEditor('[name="es"]', {height: 500});
-        // window.createEditor('[name="en_id"]', {height: 500});
-         window.createEditor('[name="iv_vn"]', {height: 500});
-        // window.createEditor('[name="tr_tr"]', {height: 500});
-        // window.createEditor('[name="en_au"]', {height: 500});
-         window.createEditor('[name="tw_tw"]', {height: 500});
-         window.createEditor('[name="rom"]', {height: 500});
-          window.createEditor('[name="fa_ir"]', {height: 500});
-        // window.createEditor('[name="hy_hy"]', {height: 500});
-        // window.createEditor('[name="rus_rus"]', {height: 500});
-        // window.createEditor('[name="prs_prs"]', {height: 500});
-        // window.createEditor('[name="jp_jp"]', {height: 500});
-        
+        window.createEditor('[name="en_es"]', {height: 500});   // 英语 English
+        window.createEditor('[name="tw_tw"]', {height: 500});   // 法语 French
+        window.createEditor('[name="hy_hy"]', {height: 500});   // 德语 German
+        window.createEditor('[name="es_mx"]', {height: 500});   // 西班牙语 Spanish
+        window.createEditor('[name="pt_br"]', {height: 500});   // 葡萄牙语 Portuguese
+        window.createEditor('[name="rus_rus"]', {height: 500}); // 意大利语 Italian
+
         var app = angular.module("GoodsForm", []).run(callback);
         angular.bootstrap(document.getElementById(app.name), [app.name]);
 

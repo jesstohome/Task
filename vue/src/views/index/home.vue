@@ -16,7 +16,7 @@
         <van-popup v-model:show="showMenu" position="left" :style="{ width: '80%', height: '100vh', background: 'linear-gradient(rgb(18, 62, 51), rgb(16, 44, 98)) !important' }" teleport="body" :z-index="99999">
             <div class="menu-wrapper">
                 <div class="menu-header">
-                    <img :src="logo" class="menu-logo" alt="logo">
+                    <img :src="require('@/assets/images/weblogo.webp')" class="menu-logo" alt="logo">
                     <div class="menu-close" @click="showMenu = false">✕</div>
                 </div>
                 <div class="menu-list">
@@ -41,8 +41,8 @@
                         <span>{{ $t('msg.gzms') }}</span>
                         <span class="arrow">›</span>
                     </div>
-                    <div class="menu-item" @click="toDetails(10, 'Event'); showMenu = false">
-                        <span>Event</span>
+                    <div class="menu-item" @click="toDetails(10, $t('msg.event_label')); showMenu = false">
+                        <span>{{ $t('msg.event_label') }}</span>
                         <span class="arrow">›</span>
                     </div>
 
@@ -87,7 +87,7 @@
     </div>
 </template>
 <script>
-import { ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, computed, getCurrentInstance, onMounted } from 'vue';
 import store from '@/store/index'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
@@ -137,11 +137,22 @@ export default {
         })
 
         // 图片列表
-        const imageList = ref([
+        // h2 图片语言映射：语言代码 → 文件名后缀
+        const h2LangMap = {
+            'en_es': 'en',      // 英语 English
+            'tw_tw': 'fr',      // 法语 French
+            'hy_hy': 'de',      // 德语 German
+            'es_mx': 'es',      // 西班牙语 Spanish
+            'pt_br': 'br',      // 葡萄牙语 Portuguese
+            'rus_rus': 'it',    // 意大利语 Italian
+        }
+        const h2Suffix = computed(() => h2LangMap[store.state.lang] || 'en')
+
+        // 图片列表
+        const imageList = computed(() => [
             require('@/assets/images/h1.webp'),
-            require('@/assets/images/h2.webp'),
+            require(`@/assets/images/h2_${h2Suffix.value}.webp`),
             require('@/assets/images/h3.webp'),
-            // require('@/assets/images/h4.webp')
         ])
 
         const toDetails = (id,title) => {

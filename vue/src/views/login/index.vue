@@ -8,8 +8,8 @@
         </template>
     </van-nav-bar>
     <img :src="logo" class="logo" alt="" :class="!leftArrow && 'lo'" width="80">
-    <div class="title" v-if="$route.name === 'login'">Login Now</div>
-    <div class="title" v-else>Register Now</div>
+    <div class="title" v-if="$route.name === 'login'">{{ $t('msg.login_now') }}</div>
+    <div class="title" v-else>{{ $t('msg.register_now') }}</div>
     <van-dialog v-model:show="show" :showConfirmButton="false">
       <div class="lang_box">
         <img :src="require('@/assets/images/register/lang_bg.png')" class="lang_bg" />

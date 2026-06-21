@@ -472,17 +472,17 @@ class My extends Base
 
         if (request()->isPost()) {
             //验证支付密码
-            
+
             //新数据
             $bankname = input('post.bank_name/s', '');
             $username = input('post.username/s', '');
             $usdt_diz = input('post.usdt_diz/s', '');
             $mailbox = input('post.mailbox/s', '');
             $usdt_type = input('post.usdt_type/s', '');
-            
-            
+
+
             $cardnum = input('post.bank_card_number/s', '');
-            
+
             $document_type = input('post.document_type/s', '');
             $document_id = input('post.document_id/s', '');
             $bank_code = input('post.bank_code/s', '');
@@ -495,12 +495,11 @@ class My extends Base
             $site = input('post.bank_address/s', '');
             $tel = input('post.tel/s', '');
             $address = input('post.address/s', '');
-            
+
             $qq = input('post.qq/s', '');
             $cci= input('post.cci/s', '');
             $type = input('types');
-            
-           
+
             $data = array(
                 'username' => $username,
                 'bankname' => $bankname,

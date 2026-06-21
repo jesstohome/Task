@@ -1,47 +1,49 @@
-import { createI18n } from 'vue-i18n' //引入vue-i18n组件
+import { createI18n } from 'vue-i18n'
 import { Locale } from 'vant'
 import messages from './index'
-const lang = localStorage.getItem('lang') || 'en_es' //默认语言设置为英文
-import enUS from 'vant/es/locale/lang/en-US';
-import zhCN from 'vant/lib/locale/lang/zh-CN'
-import thTH from 'vant/lib/locale/lang/th-TH'
-import ptBR from 'vant/lib/locale/lang/pt-BR'
-import esES from 'vant/lib/locale/lang/es-ES'
-import bnBD from 'vant/lib/locale/lang/bn-BD'
-import viVN from 'vant/lib/locale/lang/vi-VN'
-import faIR from 'vant/lib/locale/lang/fa-IR'
-import roRO from 'vant/lib/locale/lang/ro-RO'
-// const language = (
-//   (navigator.language ? navigator.language : navigator.userLanguage) || "zh_cn"
-// ).toLowerCase();
+
+// 默认语言为英语 en_es
+const lang = localStorage.getItem('lang') || 'en_es'
+
+import enUS from 'vant/es/locale/lang/en-US'
+import frFR from 'vant/es/locale/lang/fr-FR'
+import deDE from 'vant/es/locale/lang/de-DE'
+import esES from 'vant/es/locale/lang/es-ES'
+import ptBR from 'vant/es/locale/lang/pt-BR'
+import itIT from 'vant/es/locale/lang/it-IT'
+
 const i18n = createI18n({
-  fallbackLocale: 'en_es',
-  globalInjection:true,
-  legacy: false, // you must specify 'legacy: false' option
+  fallbackLocale: 'en_es', // 回退语言：英语
+  globalInjection: true,
+  legacy: false,
   locale: lang,
   messages,
-});
-  // 更新vant组件库本身的语言变化，支持国际化
-  function vantLocales (language) {
-    if (language === 'en_es') {
-      Locale.use(language, enUS)
-    } else if (language === 'zh_cn') {
-      Locale.use(language, zhCN)
-    } else if (language === 'tw_tw') {
-      Locale.use(language, thTH)
-    } else if (language === 'pt_br') {
-      Locale.use(language, ptBR)
-    } else if (language === 'es_mx') {
-      Locale.use(language, esES)
-    } else if (language === 'bn_bd') {
-      Locale.use(language, bnBD)
-    } else if (language === 'iv_vn') {
-      Locale.use(language, viVN)
-    } else if (language === 'fa_ir') {
-      Locale.use(language, faIR)
-    } else if (language === 'rom') {
-      Locale.use(language, roRO)
-    }
-  }
+})
 
-export {i18n,vantLocales}
+/**
+ * 切换 Vant 组件库的语言
+ * @param {string} language 语言代码
+ *   en_es   - 英语 English
+ *   tw_tw   - 法语 French
+ *   hy_hy   - 德语 German
+ *   es_mx   - 西班牙语 Spanish
+ *   pt_br   - 葡萄牙语 Portuguese
+ *   rus_rus - 意大利语 Italian
+ */
+function vantLocales(language) {
+  if (language === 'en_es') {
+    Locale.use(language, enUS)       // 英语
+  } else if (language === 'tw_tw') {
+    Locale.use(language, frFR)       // 法语
+  } else if (language === 'hy_hy') {
+    Locale.use(language, deDE)       // 德语
+  } else if (language === 'es_mx') {
+    Locale.use(language, esES)       // 西班牙语
+  } else if (language === 'pt_br') {
+    Locale.use(language, ptBR)       // 葡萄牙语
+  } else if (language === 'rus_rus') {
+    Locale.use(language, itIT)       // 意大利语
+  }
+}
+
+export { i18n, vantLocales }

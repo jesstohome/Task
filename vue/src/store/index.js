@@ -21,9 +21,14 @@ export default createStore({
   state: {
     lang,
     langImg,
+    // 语言列表 — value 需与后端语言代码一致
     langList:[
-      {label: 'lang.zh', value: 'zh_cn', img: require('@/assets/images/register/zh.png')},
-      {label: 'lang.en', value: 'en_es', img: require('@/assets/images/register/en.png')},
+      {label: 'lang.en', value: 'en_es', img: require('@/assets/images/register/en.png')},     // 英语 English
+      {label: 'lang.fr', value: 'tw_tw', img: require('@/assets/images/register/en.png')},     // 法语 French
+      {label: 'lang.de', value: 'hy_hy', img: require('@/assets/images/register/en.png')},     // 德语 German
+      {label: 'lang.es', value: 'es_mx', img: require('@/assets/images/register/en.png')},     // 西班牙语 Spanish
+      {label: 'lang.pt', value: 'pt_br', img: require('@/assets/images/register/en.png')},     // 葡萄牙语 Portuguese
+      {label: 'lang.it', value: 'rus_rus', img: require('@/assets/images/register/en.png')},   // 意大利语 Italian
     ],
     fooCheck,
     token,

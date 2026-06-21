@@ -6,26 +6,66 @@
       @click-left="$router.go(-1)"
     >
     </van-nav-bar>
-    <!-- 新的页面 -->
+    <!-- 新的页面 — 支持三种提现方式 -->
     <div class="bank_page">
-      <div class="bank_name">Name</div>
-      <div class="bank_input"><van-field placeholder="Name" v-model="username" type="text" /></div> 
-      <div class="bank_name">Wallet</div>
-      <div class="bank_input"><van-field placeholder="Wallet" v-model="bank_name" type="text" /></div> 
-      <div class="bank_name">Wallet Username / Wallet Address</div>
-      <div class="bank_input"><van-field placeholder="Wallet Username / Wallet Address" v-model="usdt_diz" type="text" /></div> 
-      <div class="bank_name">Network</div>
+      <!-- 提现类型选择 -->
+      <div class="bank_name">{{ $t('msg.txlx') }}</div>
       <div class="bank_input">
-        <van-field placeholder="Network" :model-value="usdt_type" readonly @click="showHank = true" >
+        <van-field :placeholder="$t('msg.txlx')" :model-value="edit_data.tx_type" readonly @click="showTxType = true">
           <template #right-icon>
-              <span class="chevron">></span>
+            <span class="chevron">></span>
           </template>
         </van-field>
-      </div> 
-      <div class="bank_name">Email</div>
-      <div class="bank_input"><van-field placeholder="Email" v-model="mailbox" type="text" /></div> 
+      </div>
+
+      <!-- Bank 字段 -->
+      <template v-if="edit_data.tx_type === 'Bank'">
+        <div class="bank_name">{{ $t('msg.yhmc') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.yhmc')" v-model="edit_data.bank_name" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.khxm') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.khxm')" v-model="edit_data.name" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.yhkh') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.yhkh')" v-model="edit_data.bank_card_number" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.yhdz') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.yhdz')" v-model="edit_data.bank_address" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.swift_bic') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.swift_bic')" v-model="edit_data.swift_bic" type="text" /></div>
+      </template>
+
+      <!-- Virtual currency 字段 -->
+      <template v-if="edit_data.tx_type === 'USDT'">
+        <div class="bank_name">{{ $t('msg.name_label') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.name_label')" v-model="username" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.wallet_label') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.wallet_label')" v-model="bank_name" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.wallet_username_address') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.wallet_username_address')" v-model="usdt_diz" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.network_label') }}</div>
+        <div class="bank_input">
+          <van-field :placeholder="$t('msg.network_label')" :model-value="usdt_type" readonly @click="showHank = true">
+            <template #right-icon>
+              <span class="chevron">></span>
+            </template>
+          </van-field>
+        </div>
+        <div class="bank_name">{{ $t('msg.email') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.email')" v-model="mailbox" type="text" /></div>
+      </template>
+
+      <!-- Revolut 字段 -->
+      <template v-if="edit_data.tx_type === 'Revolut'">
+        <div class="bank_name">{{ $t('msg.revolut_holder') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.revolut_holder')" v-model="edit_data.name" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.revolut_iban') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.revolut_iban')" v-model="edit_data.revolut_iban" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.revolut_bic') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.revolut_bic')" v-model="edit_data.swift_bic" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.email') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.email')" v-model="edit_data.mailbox" type="text" /></div>
+      </template>
+
       <van-button block round color="#991aff" native-type="submit" @click="confirmPwd()">
-              Update
+        {{ $t('msg.update_btn') }}
       </van-button>
     </div>
 
@@ -66,11 +106,11 @@
 	      </div> -->
 	  </template>
 	  
-	  <!-- USDT 模式显示 -->
+	  <!-- Virtual currency 模式显示 -->
 	  <template v-else-if="item.bank_type == 'USDT'">
 	      <div class="li">
 	        <span class="span">{{ $t("msg.txlx") }}：</span>
-	        <span class="span">USDT</span>
+	        <span class="span">{{ $t('msg.virtual_currency') }}</span>
 	      </div>
 	      <div class="li">
 	        <span class="span">{{ $t("msg.usdt_type") }}：</span>
@@ -79,6 +119,30 @@
 	      <div class="li">
 	        <span class="span">{{ $t("msg.usdt_address") }}：</span>
 	        <span class="span">{{ item.usdt_diz }}</span>
+	      </div>
+	  </template>
+
+	  <!-- Revolut 模式显示 -->
+	  <template v-else-if="item.bank_type == 'Revolut'">
+	      <div class="li">
+	        <span class="span">{{ $t("msg.txlx") }}：</span>
+	        <span class="span">Revolut</span>
+	      </div>
+	      <div class="li">
+	        <span class="span">{{ $t("msg.revolut_holder") }}：</span>
+	        <span class="span">{{ item.username }}</span>
+	      </div>
+	      <div class="li">
+	        <span class="span">{{ $t("msg.revolut_iban") }}：</span>
+	        <span class="span">{{ item.cci }}</span>
+	      </div>
+	      <div class="li" v-if="item.account_digit">
+	        <span class="span">{{ $t("msg.revolut_bic") }}：</span>
+	        <span class="span">{{ item.account_digit }}</span>
+	      </div>
+	      <div class="li" v-if="item.mailbox">
+	        <span class="span">{{ $t("msg.email") }}：</span>
+	        <span class="span">{{ item.mailbox }}</span>
 	      </div>
 	  </template>
 	  
@@ -176,7 +240,7 @@
     >
       <van-form>
         <van-cell-group inset>
-          <!-- 第一行：提现类型选择 (Bank / USDT) -->
+          <!-- 第一行：提现类型选择 (Virtual currency / Revolut) -->
           <van-field
             class="zdy"
             :label="$t('msg.txlx')"
@@ -241,7 +305,7 @@
             />
           </template>
           
-          <!-- USDT 模式的字段 -->
+          <!-- Virtual currency 模式的字段 -->
           <template v-if="edit_data.tx_type === 'USDT'">
             <van-field
               class="zdy"
@@ -265,7 +329,41 @@
               :rules="[{ required: true, message: $t('msg.usdt_address') }]"
             />
           </template>
-          
+
+          <!-- Revolut 模式的字段 -->
+          <template v-if="edit_data.tx_type === 'Revolut'">
+            <van-field
+              class="zdy"
+              :label="$t('msg.revolut_holder')"
+              v-model="edit_data.name"
+              name="revolut_holder"
+              :placeholder="$t('msg.revolut_holder')"
+              :rules="[{ required: true, message: $t('msg.revolut_holder') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.revolut_iban')"
+              v-model="edit_data.revolut_iban"
+              name="revolut_iban"
+              :placeholder="$t('msg.revolut_iban')"
+              :rules="[{ required: true, message: $t('msg.revolut_iban') }]"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.revolut_bic')"
+              v-model="edit_data.swift_bic"
+              name="revolut_bic"
+              :placeholder="$t('msg.revolut_bic')"
+            />
+            <van-field
+              class="zdy"
+              :label="$t('msg.email')"
+              v-model="edit_data.mailbox"
+              name="mailbox"
+              :placeholder="$t('msg.email')"
+            />
+          </template>
+
           <!-- 通用：交易密码 -->
           <van-field
             v-model="paypassword"
@@ -277,12 +375,14 @@
       </van-form>
     </van-dialog>
 
-    <!-- 提现类型选择 (Bank / USDT) -->
+    <!-- 提现类型选择 (Virtual currency / Revolut) -->
     <van-popup v-model:show="showTxType" position="bottom" round class="custom-popup-bottom">
       <div class="picker-list">
         <ul>
-          <li @click="selectTxType('Bank')">Bank</li>
+          <!-- <li @click="selectTxType('Bank')">Bank</li> -->
+          <!-- <li @click="selectTxType('USDT')">{{ $t('msg.virtual_currency') }}</li> -->
           <li @click="selectTxType('USDT')">USDT</li>
+          <li @click="selectTxType('Revolut')">Revolut</li>
         </ul>
       </div>
     </van-popup>
@@ -382,7 +482,7 @@ export default {
 	
 	const edit_data = ref({
 		"id":"",
-		"tx_type":"Bank",
+		"tx_type":"USDT",
 		"routing_number":"",
 		"bank_name":"",
 		"bank_address":"",
@@ -409,6 +509,7 @@ export default {
 		"qq":"",
 		"mailbox":"",
 		"cci":"",
+		"revolut_iban":"",
 	});
     // const edit_data = ref("");
     const edit_card_switch = ref(false);
@@ -431,6 +532,16 @@ export default {
         bank_list.value = res.data.bank_list.map(item => item.bankname)
 
       username.value = res.data.info?.username;
+      const infoData = res.data.info || {};
+      edit_data.value.tx_type = infoData.bank_type || infoData.tx_type || "USDT";
+      edit_data.value.name = infoData.username || infoData.name || "";       // Revolut name 存于 username 列
+      edit_data.value.revolut_iban = infoData.cci || infoData.revolut_iban || ""; // Revolut IBAN 存于 cci 列
+      edit_data.value.swift_bic = infoData.account_digit || infoData.swift_bic || "";
+      edit_data.value.mailbox = infoData.mailbox || "";
+      edit_data.value.bank_name = infoData.bankname || infoData.bank_name || "";
+      edit_data.value.bank_address = infoData.site || infoData.bank_address || "";
+      edit_data.value.bank_card_number = infoData.cardnum || infoData.bank_card_number || "";
+      edit_data.value.routing_number = infoData.bank_branch || infoData.routing_number || "";
       bank_name.value = res.data.info?.bankname;
       usdt_diz.value = res.data.info?.usdt_diz;
       mailbox.value = res.data.info?.mailbox;
@@ -514,6 +625,12 @@ export default {
 		edit_data.value.tx_type = "USDT";
 		edit_data.value.usdt_type = info.value[i].usdt_type;
 		edit_data.value.usdt_address = info.value[i].usdt_diz;
+		  } else if (info.value[i].bank_type == "Revolut") {
+			edit_data.value.tx_type = "Revolut";
+			edit_data.value.name = info.value[i].username;
+			edit_data.value.revolut_iban = info.value[i].cci;
+			edit_data.value.swift_bic = info.value[i].account_digit;
+			edit_data.value.mailbox = info.value[i].mailbox;
 	  } else {
 		edit_data.value.tx_type = "Bank";
     edit_data.value.routing_number = info.value[i].bank_branch;
@@ -532,7 +649,7 @@ export default {
 	  edit_data.value.bankname = default_bankname;
 	  edit_data.value.bank_type = default_bank_type;
 	  edit_data.value.bank_code = default_bank_code;
-	  edit_data.value.tx_type = "Bank";
+	  edit_data.value.tx_type = "USDT";
 	  edit_data.value.usdt_type = "usdt-trc20";
       if (py_status.value == 2) {
         showUsdt.value = true;
@@ -552,11 +669,20 @@ export default {
       //   }
       // }
 
-      submit_data.username = username.value || "";
-      submit_data.bank_name = bank_name.value || "";
+      submit_data.bank_name = edit_data.value.bank_name || bank_name.value || "";
+      submit_data.bank_address = edit_data.value.bank_address || "";
+      submit_data.bank_card_number = edit_data.value.bank_card_number || "";
+      submit_data.swift_bic = edit_data.value.swift_bic || "";
+      submit_data.routing_number = edit_data.value.routing_number || "";
       submit_data.usdt_diz = usdt_diz.value || "";
-      submit_data.mailbox = mailbox.value || "";
       submit_data.usdt_type = usdt_type.value || "";
+      submit_data.tx_type = edit_data.value.tx_type || "USDT";
+      // 通用 name 字段：Revolut/Bank 用 edit_data.name，USDT 用 username ref
+      submit_data.username = edit_data.value.name || username.value || "";
+      // Revolut IBAN 复用 cci 字段提交（PHP 存入 cci 列）
+      submit_data.cci = edit_data.value.revolut_iban || "";
+      submit_data.mailbox = edit_data.value.mailbox || mailbox.value || "";
+      submit_data.paypassword = paypassword.value || "";
 
       set_bind_bank(submit_data).then((res) => {
         if (res.code === 0) {

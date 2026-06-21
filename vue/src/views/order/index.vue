@@ -5,7 +5,7 @@
                 <van-list
                     v-model:loading="loading"
                     :finished="finished"
-                    :finished-text="list.length ? 'No more' || 'No more' : ''"
+                    :finished-text="list.length ? $t('msg.no_more') : ''"
                     :loading-text="$t('msg.loading') || 'Loading...'"
                     @load="onLoad"
                 >
@@ -37,11 +37,11 @@
                                <span class="value">{{currency+info.commission}}</span>
                            </div>
                            <div class="tent">
-                               <span class="span">Type</span>
-                               <span class="value" v-if="info.order_mode == 10">Gift pack orders</span>
-                               <span class="value" v-else-if="info.order_mode == 9">Multiple Order</span>
-                               <span class="value" v-else-if="info.order_mode == 6">Member orders</span>
-                               <span class="value" v-else >Solution group orders</span>
+                               <span class="span">{{ $t('msg.type_label') }}</span>
+                               <span class="value" v-if="info.order_mode == 10">{{ $t('msg.gift_pack_orders') }}</span>
+                               <span class="value" v-else-if="info.order_mode == 9">{{ $t('msg.multiple_order') }}</span>
+                               <span class="value" v-else-if="info.order_mode == 6">{{ $t('msg.member_orders') }}</span>
+                               <span class="value" v-else >{{ $t('msg.solution_group_orders') }}</span>
                            </div>
                            <div class="tent" v-if="info.duorw">
                                <span class="span">{{$t('msg.dqjd')}}</span>
@@ -55,7 +55,7 @@
                        </div>
                         <van-button class="tj-btn" round block color="#991aff" v-if="info.status == 0" @click="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
                         <!-- <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click="toTei()">Contact customer service to complete your order.</van-button> -->
-                        <van-button round block type="danger" v-else-if="info.status == 5" @click="toTei()">Contact customer service to complete your order.</van-button>
+                        <van-button round block type="danger" v-else-if="info.status == 5" @click="toTei()">{{ $t('msg.contact_cs_complete') }}</van-button>
                    </div>
                 </van-list>
                 <van-empty v-if="list.length == 0 && finished" :description="$t('msg.zwdd')" />
@@ -123,11 +123,11 @@ export default {
 
         const goDetail = (id) => {
             if (!id) {
-                Toast.fail('Data anomaly')
+                Toast.fail(t('msg.data_anomaly'))
                 return
             }
             try {
-                Toast.loading({ message: 'Redirecting...', forbidClick: true, duration: 0 })
+                Toast.loading({ message: t('msg.redirecting'), forbidClick: true, duration: 0 })
                 push({ name: 'detail', params: { id: String(id) } })
                     .then(() => Toast.clear())
                     .catch(() => {

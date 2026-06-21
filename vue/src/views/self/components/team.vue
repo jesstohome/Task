@@ -77,7 +77,6 @@ import { ref} from 'vue';
 import {junior} from '@/api/self/index'
 import { useRouter } from 'vue-router';
 import store from '@/store/index'
-import fa from '@/i18n/lang/fa';
 import {formatTime} from '@/api/format.js'
 export default {
     setup(){

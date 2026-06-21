@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -vE '^\\\\s*//|t\\\\\\(\\\\s*'\\\\''|\\\\$t\\\\\\(\\\\s*'\\\\''|vant|lang|ref=|v-model|loading|\\\\.value|placeholder|label\\\\s*=|error|success|type=|:value|selected|class=|style=|:src=|:to=|:href=|:key=')",
+      "Bash(grep -rnP '>[^<{]*[A-Za-z]{4,}[^<{]*<' src/views/ --include='*.vue')",
+      "Bash(grep -rnP '>[^<{]*[a-zA-Z]{4,}[^<{]*<' src/views/ --include='*.vue')",
+      "Bash(grep -vE '\\\\$t\\\\\\(|t\\\\\\(|trans\\\\\\(|i18n|lang|v-if|v-else|v-for|v-model|\\\\.value|this\\\\.|:value|:label|:title|:placeholder|props\\\\.|emit|computed|return|function|\\\\/\\\\/|import|\\\\.ts|\\\\.js|font-size|color|background|margin|padding|width|height|display|flex|class=|style=')",
+      "Bash(sed -n '1,10p' es.js)",
+      "Bash(sed -n '1,10p' br.js)",
+      "Bash(sed -n '1,10p' fr.js)",
+      "Bash(sed -n '1,10p' de.js)",
+      "Bash(sed -n '1,10p' it.js)",
+      "Bash(npm run *)"
+    ]
+  }
+}

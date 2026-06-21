@@ -22,13 +22,13 @@
         <div class="profile-user-info">
           <div class="profile-username">{{ userinfo.username }}</div>
           <!-- <div class="profile-invite">Invitation Code: <span class="profile-invite-code">{{ userinfo.invite_code || 'VRUA37' }}</span></div> -->
-          <div class="profile-invite">Trial bonus: <span class="profile-invite-code">{{ userinfo.lottery_money || '0' }} {{ currency || 'USD' }}</span></div>
+          <div class="profile-invite">{{ $t('msg.trial_bonus') }}: <span class="profile-invite-code">{{ userinfo.lottery_money || '0' }} {{ currency || 'USD' }}</span></div>
         </div>
       </div>
 
       <!-- Credit Score 行 -->
       <div class="profile-credit-row">
-        <span class="profile-credit-label">Credit Score:</span>
+        <span class="profile-credit-label">{{ $t('msg.credit_score') }}:</span>
         <div class="profile-credit-bar">
           <div class="profile-credit-fill" :style="{ width: creditPercent + '%' }"></div>
         </div>
@@ -39,7 +39,7 @@
       <div class="profile-balance-cards">
         <!-- 左：Wallet Amount -->
         <div class="profile-balance-card">
-          <div class="pbc-label">Wallet Amount</div>
+          <div class="pbc-label">{{ $t('msg.wallet_amount') }}</div>
           <div class="pbc-amount">
             <span class="pbc-amount-num pbc-amount-num--neg">{{ monney || '0.00' }}</span>
             <span class="pbc-amount-unit">{{ currency || 'USD' }}</span>
@@ -47,7 +47,7 @@
         </div>
         <!-- 右：Advertising salary -->
         <div class="profile-balance-card">
-          <div class="pbc-label">Advertising salary</div>
+          <div class="pbc-label">{{ $t('msg.advertising_salary') }}</div>
           <div class="pbc-amount">
             <span class="pbc-amount-num">{{ mInfo.yon3 || '0' }}</span>
             <span class="pbc-amount-unit">{{ currency || 'USD' }}</span>
@@ -61,14 +61,14 @@
          ③ My Financial 分组
     ══════════════════════════════════════════════════════ -->
     <div class="menu-section">
-      <div class="menu-section-title">My Financial</div>
+      <div class="menu-section-title">{{ $t('msg.my_financial') }}</div>
       <div class="menu-group">
 
         <div class="menu-item" @click="toRoute(list[1], 1)">
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/deposit.png')" alt="" />
           </div>
-          <span class="menu-item-label">Deposit</span>
+          <span class="menu-item-label">{{ $t('msg.chongzhi') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -76,7 +76,7 @@
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/withdraw.png')" alt="" />
           </div>
-          <span class="menu-item-label">Withdraw</span>
+          <span class="menu-item-label">{{ $t('msg.tikuan') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -84,7 +84,7 @@
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/transaction.png')" alt="" />
           </div>
-          <span class="menu-item-label">Transaction</span>
+          <span class="menu-item-label">{{ $t('msg.zbjl') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -95,14 +95,14 @@
          ④ My Detail 分组
     ══════════════════════════════════════════════════════ -->
     <div class="menu-section">
-      <div class="menu-section-title">My Detail</div>
+      <div class="menu-section-title">{{ $t('msg.my_detail') }}</div>
       <div class="menu-group">
 
         <div class="menu-item" @click="toRoute(qitalist[4], 4)">
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/kyc.png')" alt="" />
           </div>
-          <span class="menu-item-label">KYC</span>
+          <span class="menu-item-label">{{ $t('msg.kyc_label') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -110,7 +110,7 @@
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/edit.png')" alt="" />
           </div>
-          <span class="menu-item-label">Edit Password</span>
+          <span class="menu-item-label">{{ $t('msg.editPwd') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -118,7 +118,7 @@
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/payment.png')" alt="" />
           </div>
-          <span class="menu-item-label">Payment Methods</span>
+          <span class="menu-item-label">{{ $t('msg.payment_methods') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
         
@@ -130,14 +130,14 @@
          ⑤ Other 分组
     ══════════════════════════════════════════════════════ -->
     <div class="menu-section">
-      <div class="menu-section-title">Other</div>
+      <div class="menu-section-title">{{ $t('msg.qita') }}</div>
       <div class="menu-group">
 
         <div class="menu-item" @click="toRoute(qitalist[0], 0)">
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/contactus.png')" alt="" />
           </div>
-          <span class="menu-item-label">Contact Us</span>
+          <span class="menu-item-label">{{ $t('msg.tel') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -145,7 +145,15 @@
           <div class="menu-item-icon">
             <img :src="require('@/assets/images/self/notify.png')" alt="" />
           </div>
-          <span class="menu-item-label">Notifications</span>
+          <span class="menu-item-label">{{ $t('msg.xxgg') }}</span>
+          <span class="menu-item-arrow">›</span>
+        </div>
+
+        <div class="menu-item" @click="setlang()">
+          <div class="menu-item-icon">
+            <img :src="require('@/assets/images/self/lang.png')" alt="" />
+          </div>
+          <span class="menu-item-label">{{ $t('msg.check_lang') }}</span>
           <span class="menu-item-arrow">›</span>
         </div>
 
@@ -156,7 +164,7 @@
          ⑥ Logout 按钮（底部固定）
     ══════════════════════════════════════════════════════ -->
     <div class="logout-wrap">
-      <button class="logout-btn" @click="tuichu">Logout</button>
+      <button class="logout-btn" @click="tuichu">{{ $t('msg.out') }}</button>
     </div>
 
     <div class="copyright">©2018-2026 AWISEE</div>
@@ -170,13 +178,37 @@
           position="bottom"
           :style="{ height: '280px' }">
           <div class="payment-popup" style="padding: 20px;">
-            <div class="payment-title">Withdrawal password</div>
-            <div class="payment-input"><van-field placeholder="Withdrawal password" v-model="paypass" type="password" /></div>       
+            <div class="payment-title">{{ $t('msg.tx_pwd') }}</div>
+            <div class="payment-input"><van-field :placeholder="$t('msg.tx_pwd')" v-model="paypass" type="password" /></div>
             <van-button block round color="#991aff" native-type="submit" @click="gopaypass()">
-              Submit
+              {{ $t('msg.submit') }}
             </van-button>
-          </div>         
+          </div>
         </van-popup>
+
+    <!-- 语言选择底部弹出层 -->
+    <van-popup
+      v-model:show="showLangPopup"
+      closeable
+      position="bottom"
+      round
+      teleport="body"
+      :style="{ height: '50vh' }">
+      <div class="lang-popup">
+        <div class="lang-popup-title">{{ $t('msg.check_lang') }}</div>
+        <div class="lang-list">
+          <div
+            class="lang-item"
+            :class="{ 'lang-item--active': currentLang === item.value }"
+            v-for="(item, index) in langOptions"
+            :key="index"
+            @click="selectLang(item)">
+            <span class="lang-item-name">{{ item.label }}</span>
+            <van-icon v-if="currentLang === item.value" name="success" color="#991aff" />
+          </div>
+        </div>
+      </div>
+    </van-popup>
 
   </div>
 </template>
@@ -191,15 +223,15 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
 import { bind_bank } from '@/api/self/index.js'
 import { Dialog } from 'vant'
-import langVue from '@/components/lang.vue'
+import { vantLocales } from '@/i18n/i18n'
 import GiftPackage from '@/components/gift/index.js'
 
 export default {
-  components: { langVue, GiftPackage },
+  components: { GiftPackage },
   setup() {
     const { push } = useRouter();
     const { proxy } = getCurrentInstance()
-    const { t } = useI18n()
+    const { t, locale } = useI18n()
     const upload = ref(null)
     const currency = ref(store.state.baseInfo?.currency)
     const userinfo = ref(store.state.userinfo)
@@ -215,6 +247,19 @@ export default {
     const showGift = ref(false)
     const paymentshow = ref(false)
     const paypass = ref('')
+
+    // 语言选择
+    const showLangPopup = ref(false)
+    const currentLang = ref(store.state.lang || 'en_es') // 默认英语
+    // 语言列表 — value 需与后端语言代码一致
+    const langOptions = ref([
+      { label: 'English', value: 'en_es' },       // 英语 English
+      { label: 'Français', value: 'tw_tw' },      // 法语 French
+      { label: 'Deutsch', value: 'hy_hy' },       // 德语 German
+      { label: 'Español', value: 'es_mx' },       // 西班牙语 Spanish
+      { label: 'Português', value: 'pt_br' },     // 葡萄牙语 Portuguese
+      { label: 'Italiano', value: 'rus_rus' },    // 意大利语 Italian
+    ])
 
     store.dispatch('changefooCheck', 'self')
 
@@ -323,10 +368,23 @@ export default {
       }
     }
 
+    const setlang = () => {
+      showLangPopup.value = true
+    }
+
+    const selectLang = (item) => {
+      currentLang.value = item.value
+      locale.value = item.value
+      store.dispatch('changelang', item.value)
+      vantLocales(item.value)
+      showLangPopup.value = false
+    }
+
     return {
       currency, level, list, qitalist, tuichu, setAvatar, toShare, toRoute, afterRead,
       upload, userinfo, monney, mInfo, activeTab, creditPercent, inviteCode, copyInvite,
-      idStatus, idRemark, push, showGift, paymentshow, paypass, gopaypass
+      idStatus, idRemark, push, showGift, paymentshow, paypass, gopaypass,
+      showLangPopup, currentLang, langOptions, setlang, selectLang
     }
   }
 }
@@ -344,6 +402,47 @@ export default {
   .payment-input{
     margin: 40px auto;
   }
+}
+
+/* 语言选择弹出层 */
+.lang-popup {
+  padding: 20px 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.lang-popup-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #1a1a2e;
+  text-align: center;
+  padding: 20px 0;
+  flex-shrink: 0;
+}
+.lang-list {
+  flex: 1;
+  overflow-y: auto;
+}
+.lang-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 20px;
+  font-size: 30px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:active {
+    background: #f5f5f5;
+  }
+  &--active {
+    color: #991aff;
+    font-weight: 600;
+  }
+}
+.lang-item-name {
+  flex: 1;
 }
 /* ════════════════════════════════════════════════════════════
    新版整体容器
