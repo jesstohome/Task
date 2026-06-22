@@ -420,9 +420,9 @@ qingbaochimimayizhi: 'Mantieni la password coerente',
 	contact_cs_questions: '- Per qualsiasi ulteriore domanda, contattare il Servizio Clienti online',
 	copyright_text: '©2018-2026 AWISEE',
 	// obj/index.vue - compound order modal
-	multiple_order_title: 'Ordini multipli',
-	congrats_multiple_order: 'Congratulazioni per aver attivato il privilegio di ordini multipli!',
-	multiple_order_desc1: 'Hai completato il numero specificato di ordini, sbloccando il privilegio di ordini multipli!',
+	multiple_order_title: 'Ordini bundle',
+	congrats_multiple_order: 'Congratulazioni per aver attivato il privilegio di ordini bundle!',
+	multiple_order_desc1: 'Hai completato il numero specificato di ordini, sbloccando il privilegio di ordini bundle!',
 	multiple_order_desc2: 'Seleziona una sequenza di ordini e il sistema creerà automaticamente più ordini per te.',
 	// adshowcase.vue
 	ad_match_btn: 'Corrispondenza annunci ({completed}/{total})',
@@ -431,5 +431,6 @@ qingbaochimimayizhi: 'Mantieni la password coerente',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
 	virtual_currency: 'Valuta virtuale',
+	Current_balance: 'Saldo corrente',
 	}
 }

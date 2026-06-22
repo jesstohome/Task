@@ -420,9 +420,9 @@ qingbaochimimayizhi: 'Veuillez garder le mot de passe cohérent',
 	contact_cs_questions: '- Pour toute question supplémentaire, veuillez contacter le service client en ligne',
 	copyright_text: '©2018-2026 AWISEE',
 	// obj/index.vue - compound order modal
-	multiple_order_title: 'Commandes multiples',
-	congrats_multiple_order: 'Félicitations pour avoir déclenché le privilège de commandes multiples !',
-	multiple_order_desc1: 'Vous avez terminé le nombre spécifié de commandes, débloquant le privilège de commandes multiples !',
+	multiple_order_title: 'Commandes bundle',
+	congrats_multiple_order: 'Félicitations pour avoir déclenché le privilège de commandes bundle !',
+	multiple_order_desc1: 'Vous avez terminé le nombre spécifié de commandes, débloquant le privilège de commandes bundle !',
 	multiple_order_desc2: 'Veuillez sélectionner une séquence de commande, et le système créera automatiquement plusieurs commandes pour vous.',
 	// adshowcase.vue
 	ad_match_btn: 'Correspondance publicitaire ({completed}/{total})',
@@ -431,5 +431,6 @@ qingbaochimimayizhi: 'Veuillez garder le mot de passe cohérent',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
 	virtual_currency: 'Monnaie virtuelle',
+	Current_balance: 'Solde actuel',
 	}
 }

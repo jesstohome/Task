@@ -420,9 +420,9 @@ qingbaochimimayizhi: 'Por favor mantenga la contraseña consistente',
 	contact_cs_questions: '- Para cualquier pregunta adicional, comuníquese con el Servicio de atención al cliente en línea',
 	copyright_text: '©2018-2026 AWISEE',
 	// obj/index.vue - compound order modal
-	multiple_order_title: 'Múltiples pedidos',
-	congrats_multiple_order: '¡Felicitaciones por activar el privilegio de pedidos múltiples!',
-	multiple_order_desc1: '¡Ha completado el número especificado de pedidos, desbloqueando el privilegio de pedidos múltiples!',
+	multiple_order_title: 'Pedidos bundle',
+	congrats_multiple_order: '¡Felicitaciones por activar el privilegio de pedidos bundle!',
+	multiple_order_desc1: '¡Ha completado el número especificado de pedidos, desbloqueando el privilegio de pedidos bundle!',
 	multiple_order_desc2: 'Seleccione una secuencia de pedidos y el sistema creará automáticamente múltiples pedidos para usted.',
 	// adshowcase.vue
 	ad_match_btn: 'Coincidencia de anuncios ({completed}/{total})',
@@ -431,5 +431,6 @@ qingbaochimimayizhi: 'Por favor mantenga la contraseña consistente',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
 	virtual_currency: 'Moneda virtual',
+	Current_balance: 'Saldo actual',
 	}
 }

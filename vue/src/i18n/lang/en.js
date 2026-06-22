@@ -420,10 +420,10 @@ qingbaochimimayizhi: 'Please keep the password consistent',
 	contact_cs_questions: '- For any further questions, Please contact Online Customer Service',
 	copyright_text: '©2018-2026 AWISEE',
 	// obj/index.vue - compound order modal
-	multiple_order_title: 'Multiple orders',
-	congrats_multiple_order: 'Congratulations on triggering the multiple order privilege!',
-	multiple_order_desc1: 'You have completed the specified number of orders, unlocking the multiple order privilege!',
-	multiple_order_desc2: 'Please select an order sequence, and the system will automatically create multiple orders for you.',
+	multiple_order_title: 'Bundle Order',
+	congrats_multiple_order: 'Congratulations on triggering the bundle order privilege!',
+	multiple_order_desc1: 'You have completed the specified number of orders, unlocking the bundle order privilege!',
+	multiple_order_desc2: 'Please select an order sequence, and the system will automatically create bundle orders for you.',
 	// adshowcase.vue
 	ad_match_btn: 'Ad Match ({completed}/{total})',
 	// bingbank.vue - Revolut withdrawal
@@ -431,5 +431,6 @@ qingbaochimimayizhi: 'Please keep the password consistent',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
 	virtual_currency: 'Virtual currency',
+	Current_balance: 'Current balance',
 	}
 }

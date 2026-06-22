@@ -28,39 +28,12 @@
         <div @click="$router.push({path: '/register'})" style="margin-top: 20px; text-align: center; font-size: 20px;text-decoration: underline; cursor: pointer;">
           {{ $t('msg.register') }}
         </div>
-        <div @click="setlang()" style="margin-top: 20px; text-align: center; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          {{ $t('msg.check_lang') }}
-        </div>
 <!--        <van-button round block plain  type="primary" @click="toDown()">
           {{$t('msg.appDown')}}
         </van-button> -->
         
       </div>
     </van-form>
-
-    <!-- 语言选择底部弹出层 -->
-    <van-popup
-      v-model:show="showLangPopup"
-      closeable
-      position="bottom"
-      round
-      teleport="body"
-      :style="{ height: '50vh' }">
-      <div class="lang-popup">
-        <div class="lang-popup-title">{{ $t('msg.check_lang') }}</div>
-        <div class="lang-list">
-          <div
-            class="lang-item"
-            :class="{ 'lang-item--active': currentLang === item.value }"
-            v-for="(item, index) in langOptions"
-            :key="index"
-            @click="selectLang(item)">
-            <span class="lang-item-name">{{ item.label }}</span>
-            <van-icon v-if="currentLang === item.value" name="success" color="#991aff" />
-          </div>
-        </div>
-      </div>
-    </van-popup>
 
     <div class="footer-copyright">©2018-2026 AWISEE</div>
   </div>
@@ -73,15 +46,12 @@ import { watch, ref, getCurrentInstance } from 'vue';
 import store from '@/store/index'
 import {login} from '@/api/login/index.js'
 import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n'
-import { vantLocales } from '@/i18n/i18n'
 export default {
   name: 'HomeView',
   components: {loginTop},
   setup() {
     const { push } = useRouter();
     const {proxy} = getCurrentInstance()
-    const { t, locale } = useI18n()
     const baseInfo = ref(store.state.baseInfo)
     const option = ref((baseInfo.value?.area_code) || [])
     const userjs = ref(store.state.user)
@@ -90,31 +60,6 @@ export default {
     const tel = ref(userjs.value?.tel || '');
     const pwd = ref(userjs.value?.pwd || '');
     const qv = ref(userjs.value?.qv || area_code.value[0]?.value);
-
-    // 语言选择
-    const showLangPopup = ref(false)
-    const currentLang = ref(store.state.lang || 'en_es') // 默认英语
-    // 语言列表 — value 需与后端语言代码一致
-    const langOptions = ref([
-      { label: 'English', value: 'en_es' },       // 英语 English
-      { label: 'Français', value: 'tw_tw' },      // 法语 French
-      { label: 'Deutsch', value: 'hy_hy' },       // 德语 German
-      { label: 'Español', value: 'es_mx' },       // 西班牙语 Spanish
-      { label: 'Português', value: 'pt_br' },     // 葡萄牙语 Portuguese
-      { label: 'Italiano', value: 'rus_rus' },    // 意大利语 Italian
-    ])
-
-    const setlang = () => {
-      showLangPopup.value = true
-    }
-
-    const selectLang = (item) => {
-      currentLang.value = item.value
-      locale.value = item.value
-      store.dispatch('changelang', item.value)
-      vantLocales(item.value)
-      showLangPopup.value = false
-    }
 
     const toDown = () => {
       console.log(baseInfo.value.app_url)
@@ -165,8 +110,7 @@ export default {
       onSubmit,
       area_code,
       qv,
-      toDown,
-      showLangPopup, currentLang, langOptions, setlang, selectLang
+      toDown
     };
   }
 }
@@ -287,46 +231,5 @@ flex-direction: column;
     width: 100%;
     font-size: 26px;
     font-weight: 500;
-}
-
-/* 语言弹出层 */
-.lang-popup {
-  padding: 20px 24px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.lang-popup-title {
-  font-size: 34px;
-  font-weight: 800;
-  color: #1a1a2e;
-  text-align: center;
-  padding: 20px 0;
-  flex-shrink: 0;
-}
-.lang-list {
-  flex: 1;
-  overflow-y: auto;
-}
-.lang-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 20px;
-  font-size: 30px;
-  color: #333;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
-  transition: background 0.15s;
-  &:active {
-    background: #f5f5f5;
-  }
-  &--active {
-    color: #991aff;
-    font-weight: 600;
-  }
-}
-.lang-item-name {
-  flex: 1;
 }
 </style>

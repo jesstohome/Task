@@ -84,15 +84,15 @@
             <div class="ordernum">
                     <div class="tent">
 						<span class="span">{{$t('msg.order_Num')}}</span>
-						<span class="value">{{onceinfo.data?.num}} {{ currency }}</span>
+						<span class="value">{{currency}} {{onceinfo.data?.num}}</span>
 					</div>
                     <div class="tent">
 						<span class="span">{{$t('msg.bili')}}</span>
-						<span class="value">{{uinfo.level_bili}}</span>
+						<span class="value">{{currency}} {{uinfo.level_bili}}</span>
 					</div>
                     <div class="tent">
 						<span class="span">{{$t('msg.yonj')}}</span>
-						<span class="value">{{onceinfo.data?.commission}} {{ currency }}</span>
+						<span class="value">{{currency}} {{onceinfo.data?.commission}}</span>
 					</div>
             </div>
             <div class="orderinfo">

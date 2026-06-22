@@ -3,10 +3,36 @@
     <van-nav-bar :title="title" :left-arrow="leftArrow" @click-left="$router.go(-1)" v-if="$route.name === 'login'">
         <template #right>
             <template v-if="$route.name === 'login'">
-                <img @click="$router.push({path: '/service'})" :src="require('@/assets/images/service.png')" class="lang-icon" alt="">
+                <img @click="$router.push({path: '/service'})" :src="require('@/assets/images/service.png')" class="service-icon" alt="">
+                <img @click="setlang()" :src="require('@/assets/images/self/lang.png')" class="lang-icon" alt="">
             </template>
         </template>
     </van-nav-bar>
+
+    <!-- 语言选择底部弹出层 -->
+    <van-popup
+      v-model:show="showLangPopup"
+      closeable
+      position="bottom"
+      round
+      teleport="body"
+      :style="{ height: '50vh' }">
+      <div class="lang-popup">
+        <div class="lang-popup-title">{{ $t('msg.check_lang') }}</div>
+        <div class="lang-list">
+          <div
+            class="lang-item"
+            :class="{ 'lang-item--active': currentLang === item.value }"
+            v-for="(item, index) in langOptions"
+            :key="index"
+            @click="selectLang(item)">
+            <span class="lang-item-name">{{ item.label }}</span>
+            <van-icon v-if="currentLang === item.value" name="success" color="#991aff" />
+          </div>
+        </div>
+      </div>
+    </van-popup>
+
     <img :src="logo" class="logo" alt="" :class="!leftArrow && 'lo'" width="80">
     <div class="title" v-if="$route.name === 'login'">{{ $t('msg.login_now') }}</div>
     <div class="title" v-else>{{ $t('msg.register_now') }}</div>
@@ -36,7 +62,7 @@
 import { ref, getCurrentInstance,watch } from 'vue';
 import { useI18n } from 'vue-i18n'
 import store from '../../store/index'
-// import logo from '@/assets/images/news/logo.png'
+import { vantLocales } from '@/i18n/i18n'
 import langVue from '@/components/lang.vue'
 export default {
   components: {langVue},
@@ -78,12 +104,36 @@ export default {
       console.log(proxy)
       proxy.$Message({ type: 'success', message: t('msg.switch_lang_success') });
     }
+
+    // 语言选择底部弹出层
+    const showLangPopup = ref(false)
+    const currentLang = ref(store.state.lang || 'en_es')
+    const langOptions = ref([
+      { label: 'English', value: 'en_es' },       // 英语 English
+      { label: 'Français', value: 'tw_tw' },      // 法语 French
+      { label: 'Deutsch', value: 'hy_hy' },       // 德语 German
+      { label: 'Español', value: 'es_mx' },       // 西班牙语 Spanish
+      { label: 'Português', value: 'pt_br' },     // 葡萄牙语 Portuguese
+      { label: 'Italiano', value: 'rus_rus' },    // 意大利语 Italian
+    ])
+
+    const setlang = () => {
+      showLangPopup.value = true
+    }
+
+    const selectLang = (item) => {
+      currentLang.value = item.value
+      locale.value = item.value
+      store.dispatch('changelang', item.value)
+      vantLocales(item.value)
+      showLangPopup.value = false
+    }
     watch(() => store.state.baseInfo,(newVal)=>{
       logo.value = newVal?.site_icon
       langs.value = (newVal?.languageList) || []
     }, { deep: true })
 
-    return {show,langs,handSeletlanguages,langcheck,submitLang,logo,app_name}
+    return {show,langs,handSeletlanguages,langcheck,submitLang,logo,app_name,showLangPopup,currentLang,langOptions,setlang,selectLang}
   }
 }
 </script>
@@ -95,11 +145,17 @@ export default {
   
   &.login {
     background-color: white;
-    .lang-icon {
+    .service-icon {
       width: 60px;
       height: 60px;
       vertical-align: middle;
-      margin-right: 20px;
+      margin-right: 34px;
+    }
+    .lang-icon {
+      width: 50px;
+      height: 50px;
+      vertical-align: middle;
+      cursor: pointer;
     }
   }
   
@@ -195,5 +251,46 @@ export default {
         padding: 50px 54px 50px;
       }
     }
+  }
+
+  /* 语言弹出层 */
+  .lang-popup {
+    padding: 20px 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .lang-popup-title {
+    font-size: 34px;
+    font-weight: 800;
+    color: #1a1a2e;
+    text-align: center;
+    padding: 20px 0;
+    flex-shrink: 0;
+  }
+  .lang-list {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .lang-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 20px;
+    font-size: 30px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.15s;
+    &:active {
+      background: #f5f5f5;
+    }
+    &--active {
+      color: #991aff;
+      font-weight: 600;
+    }
+  }
+  .lang-item-name {
+    flex: 1;
   }
 </style>

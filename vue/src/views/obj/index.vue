@@ -104,11 +104,11 @@
           <div class="result-info-grid">
             <div class="result-info-item">
               <div class="info-label">{{ $t('msg.commission_label') }}</div>
-              <div class="info-value info-value--highlight">+{{ resultOrderInfo.commission }} {{ currency }}</div>
+              <div class="info-value info-value--highlight">+{{ currency }} {{ resultOrderInfo.commission }}</div>
             </div>
             <div class="result-info-item">
               <div class="info-label">{{ $t('msg.order_amount_label') }}</div>
-              <div class="info-value">{{ resultOrderInfo.amount }} {{ currency }}</div>
+              <div class="info-value">{{ currency }} {{ resultOrderInfo.amount }}</div>
             </div>
           </div>
 
@@ -148,8 +148,9 @@
           </div>
           <div class="hero-card-label">{{ $t('msg.wallet_balance_label') }}</div>
           <div class="hero-card-amount">
-            <span class="hero-card-amount--negative">{{monney}}</span>
-            <span class="hero-card-currency">{{currency}}</span>
+            <span class="hero-card-amount--negative" style="font-size: 11px;color:black;" v-if="Number(monney.replace(/,/g, '')) < 0">{{ $t('msg.exceed_label') }}</span>
+            <span class="hero-card-amount--negative">{{ currency }} {{ monney }}</span>
+            <span class="hero-card-currency"></span>
           </div>
           <div class="hero-card-desc">{{ $t('msg.wallet_balance_desc') }}</div>
         </div>
@@ -159,8 +160,8 @@
           </div>
           <div class="hero-card-label">{{ $t('msg.advertising_salary_today') }}</div>
           <div class="hero-card-amount">
-            <span class="hero-card-amount--zero">{{mInfo.yon1}}</span>
-            <span class="hero-card-currency">{{currency}}</span>
+            <span class="hero-card-amount--zero">{{ currency }} {{ mInfo.yon1 }}</span>
+            <span class="hero-card-currency"></span>
           </div>
           <div class="hero-card-desc">{{ $t('msg.fixed_balance_desc') }}</div>
         </div>
@@ -168,8 +169,8 @@
       <div class="hero-arc"></div>
     </div>
     <div class="hero-info">
-      <div>{{ $t('msg.exceed_label') }}：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
-      <!-- <div>Today's earnings：<span style="color: #991aff;">{{ mInfo.yon1 }}</span></div> -->
+      <div>{{ $t('msg.Current_balance') }}：<span style="color: #991aff;">{{ currency }} {{ mInfo.dongjiejine }}</span></div>
+      <!-- <div>Today's earnings：<span style="color: #991aff;">{{ currency }} {{ mInfo.yon1 }}</span></div> -->
     </div>
 
     <AdShowcase

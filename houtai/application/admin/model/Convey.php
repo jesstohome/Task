@@ -137,11 +137,11 @@ class Convey extends Model
         //获取今天的订单数
         list($orderNum) = $this->get_user_group_rule($uinfo['id'], $uinfo['group_id']);
         //查询有没有打针订单
-        $inyectar = $this->get_inyectar($uid, $orderNum);
-        //打针
-        if ($inyectar) {
-            $min = $max = $uinfo['balance'] * $inyectar['scale'];
-        }
+        // $inyectar = $this->get_inyectar($uid, $orderNum);
+        // //打针
+        // if ($inyectar) {
+        //     $min = $max = $uinfo['balance'] * $inyectar['scale'];
+        // }
         
         if ($prefix_type == 'LB' || $prefix_type == 'FS') {
             $goods = $this->rand_order($custom_amount, $custom_amount,$uid,$cid);
@@ -256,15 +256,15 @@ class Convey extends Model
         // }
         
             
-        if ($inyectar) {
-            Db::name('xy_inyectar')
-                ->where('id', $inyectar['id'])
-                ->update([
-                    'in_time' => time(),
-                    'in_amount' => $goods['num'],
-                    'in_oid' => $id
-                ]);
-        }
+        // if ($inyectar) {
+        //     Db::name('xy_inyectar')
+        //         ->where('id', $inyectar['id'])
+        //         ->update([
+        //             'in_time' => time(),
+        //             'in_amount' => $goods['num'],
+        //             'in_oid' => $id
+        //         ]);
+        // }
         if ($res && $res1) {
             Db::commit();
             return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $id, 'orderNum' => $orderNum, 'commission'=>$c_data['commission'], 'amount'=>$c_data['num']];
@@ -812,168 +812,6 @@ class Convey extends Model
         }
     }
 
-    /**
-     * 旧的分组下单
-     * @param $uid
-     * @param $cid
-     */
-    public function old_create_order_group($uid, $cid = 1)
-    {
-
-        $add_id = Db::name('xy_member_address')->where('uid', $uid)->value('id');//获取收款地址信息s
-        if(config('master_cardnum') == 1){
-            if (!$add_id) return ['code' => 1, 'info' => yuylangs('wszshdz')];
-        }else{
-            $add_id = 1;
-        }
-        $uinfo = Db::name('xy_users')->find($uid);
-        if ($uinfo['deal_status'] != 2) return ['code' => 1, 'info' => yuylangs('qdyzz')];
-        $groupInfo = Db::name('xy_group')->where('id', $uinfo['group_id'])->find();
-        //是否符合级别最低金额
-        $user_level = Db::table("xy_level")->where("level", $uinfo['level'])->find();
-        if ($uinfo['balance'] < $user_level['num_min']) {
-            return [
-                'code' => 1,
-                'info' => sprintf(yuylangs('zhyebz'), ($groupInfo['money'] - $uinfo['balance']) . ""),
-                'url' => url('index/ctrl/recharge')
-            ];
-        }
-        list($orderNum, $groupRule) = $this->get_user_group_rule($uinfo['id'], $uinfo['group_id']);
-
-        $inyectar = $this->get_inyectar($uid, $orderNum);
-
-        $orderNum = $this->dangqshuyu($uinfo['id'], $uinfo['group_id']); //当前属于任务第几单  ///
-
-//        if (empty($groupRule)) {
-//            return ['code' => 1, 'info' => yuylangs('qd_sb')];
-//        }
-
-        $groupRule = Db::table("xy_group_rule")->where("group_id",$uinfo['group_id'])->where("order_num",$orderNum)->find();
-
-
-        $add_orders1 = $groupRule["add_orders1"];  //是否多任务
-        if($add_orders1){
-            $add_orders1 = $add_orders1 + 1;
-        }
-
-        $time = time();
-        $orderListData = [];
-        list($day_d_count1, $groupRule1, $all_order_num1) = Convey::instance()->get_user_group_rule($uinfo['id'], $uinfo['group_id']);
-
-        if ($groupRule['order_type'] == 1) {
-            $keys = Db::table("xy_convey")->where(['uid'=>$uinfo['id'],'group_id'=>$uinfo['group_id'],'group_is_active'=>1,'group_rule_num'=>$orderNum])->count();
-
-            $oP = explode('|', $groupRule['order_price']);
-
-            if(empty($oP[$keys])){
-                $bl = $oP[0];
-            }else{
-                $bl = $oP[$keys];
-            }
-            $min = $max = $uinfo['balance'] * $bl;
-            //打针
-            if ($inyectar) {
-                $min = $max = $uinfo['balance'] * $bl * $inyectar['scale'];
-            }
-            $goods = $this->rand_order($min, $max, $uid, $cid);
-        }else{
-            $min = $uinfo['balance'] * config('deal_min_num') / 100;
-            $max = $uinfo['balance'] * config('deal_max_num') / 100;
-            //打针
-            if ($inyectar) {
-                $min = $max = $uinfo['balance'] * $inyectar['scale'];
-            }
-            $goods = $this->rand_order($min, $max, $uid, $cid);
-
-        }
-
-
-
-
-        if($goods['code'] == 1){
-            return $goods;
-        }
-
-        //计算佣金
-        $commission = $this->get_commission($goods['num'], $groupRule);
-        $ids = [getSn('UB')];
-        $c_data = [
-            'id' => $ids[0],
-            'uid' => $uid,
-            'level_id' => $uinfo['level'],
-            'num' => $goods['num'],
-            'addtime' => $time,
-            'endtime' => $time + config('deal_timeout'),
-            'add_id' => $add_id,
-            'goods_id' => $goods['id'],
-            'goods_count' => $goods['count'],
-            'commission' => $commission,  //交易佣金按照会员等级
-            'group_id' => $uinfo['group_id'],
-            'group_rule_num' => $orderNum,
-            'user_balance' => $uinfo['balance'],
-            'user_freeze_balance' => $uinfo['freeze_balance'],
-            "group_count" =>  $all_order_num1, //折叠数量
-            "duorw" => $add_orders1,
-            "rwdans"  =>  $lastOrder1 = Db::name('xy_convey')->where('uid', $uid)->where("qkon = 1")->where('group_is_active', 1)->where('group_id', $uinfo['group_id'])->count()
-        ];
-
-        //多任务
-        if($add_orders1){
-            //分组随机数
-            $fenzhRes = Db::table("xy_convey")->where(['uid' => $uid,"qkon"=>1,'group_id' => $uinfo['group_id'],"group_completedornot"=>1])->find();
-            if($fenzhRes){
-                $c_data["rands"] = $fenzhRes["rands"];
-                $c_data["zhuass"] = $fenzhRes["zhuass"] + 1;
-            }else{
-                $c_data["rands"] = rand(1,99999).time();
-                $c_data["zhuass"] = 1;
-            }
-        }
-
-
-        $other_data = [];
-        //查出用户推荐人 发放推荐人佣金
-        if ($uinfo['parent_id'] > 0) {
-            $pLevel = Db::name('xy_users')->where(['id' => $uinfo['parent_id']])->value('level');
-            if ($pLevel) {
-                $plevel_data = Db::name('xy_level')->where('level', $pLevel)->find();
-                if($plevel_data['promotion_commisssion'] == 1){
-                    $tj_bili = config('level1_commission') / 100;
-                    if ($tj_bili) {
-                        if (isset($c_data)) $c_data['parent_commission'] = floatval($c_data['commission']) * floatval($tj_bili);
-                        $other_data['parent_uid'] = $uinfo['parent_id'];
-                    }
-                }
-            }
-        }
-        //事务处理
-        Db::startTrans();
-        //将账户状态改为交易中
-        $res = Db::name('xy_users')->where('id', $uid)
-            ->update(['deal_status' => 3,
-                'deal_time' => strtotime(date('Y-m-d')),
-                'deal_count' => Db::raw('deal_count+1')
-            ]);
-        //插入订单记录
-        $res1 = Db::name($this->table)->insert(array_merge($c_data, $other_data));
-
-        if ($inyectar) {
-            Db::name('xy_inyectar')
-                ->where('id', $inyectar['id'])
-                ->update([
-                    'in_time' => time(),
-                    'in_amount' => $goods['num'],
-                    'in_oid' => $ids[0]
-                ]);
-        }
-        if ($res && $res1) {
-            Db::commit();
-            return ['code' => 0, 'info' => yuylangs('qd_ok'), 'oid' => $ids, 'orderNum' => $orderNum];
-        } else {
-            Db::rollback();
-            return ['code' => 1, 'info' => yuylangs('qd_sb')];
-        }
-    }
 
     /**
      * 获取用户可交易情况
@@ -1249,7 +1087,7 @@ class Convey extends Model
         }
     
         // 全局单价下限
-        $price_floor = 40;
+        $price_floor = 10;
     
         $user_goods_ids = get_user_order_goods_ids($uid);
     
@@ -1264,7 +1102,7 @@ class Convey extends Model
             $half = (int)floor($num / 2);
     
             // $num < 100 时单价下限50；$num >= 100 时单价下限40
-            $price_min = ($num < 100) ? 50 : $price_floor;
+            $price_min = ($num < 100) ?10 : $price_floor;
     
             $can_split = ($half >= $price_min);
     

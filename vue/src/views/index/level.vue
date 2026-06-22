@@ -24,10 +24,10 @@
                                     </div>
                                 </div>
                                 <div class="price" v-if="item.name == 'VIP1'">{{ $t('msg.shxyh') }}</div>
-                                <div class="price" v-else>{{ item.num }} {{ currency }}</div>
+                                <div class="price" v-else>{{ currency }} {{ item.num }} </div>
                             </div>
                             <div class="card-info">
-                                <div class="line">● {{ $t('msg.zhzjcg')}} {{ item.num }} {{ currency }}</div>
+                                <div class="line">● {{ $t('msg.zhzjcg')}} {{ currency }} {{ item.num }} </div>
                                 <div class="line">● {{ $t('msg.mxrwlr') }} {{((item.bili || 0)*100).toFixed(2)}}%</div>
                                 <div class="line">● {{ $t('msg.mtrwcs') }} {{ item.order_num }}</div>
                             </div>

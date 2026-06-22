@@ -420,10 +420,10 @@ qingbaochimimayizhi: 'Bitte halten Sie das Passwort einheitlich',
 	contact_cs_questions: '- Bei weiteren Fragen wenden Sie sich bitte an den Online-Kundendienst',
 	copyright_text: '©2018-2026 AWISEE',
 	// obj/index.vue - compound order modal
-	multiple_order_title: 'Mehrere Bestellungen',
-	congrats_multiple_order: 'Herzlichen Glückwunsch zur Auslösung des Mehrfachbestellungs-Privilegs!',
-	multiple_order_desc1: 'Sie haben die angegebene Anzahl von Bestellungen abgeschlossen und das Mehrfachbestellungs-Privileg freigeschaltet!',
-	multiple_order_desc2: 'Bitte wählen Sie eine Bestellsequenz aus, und das System erstellt automatisch mehrere Bestellungen für Sie.',
+	multiple_order_title: 'Bundle Bestellungen',
+	congrats_multiple_order: 'Herzlichen Glückwunsch zur Auslösung des Bundle Bestellungs-Privilegs!',
+	multiple_order_desc1: 'Sie haben die angegebene Anzahl von Bestellungen abgeschlossen und das Bundle Bestellungs-Privileg freigeschaltet!',
+	multiple_order_desc2: 'Bitte wählen Sie eine Bestellsequenz aus, und das System erstellt automatisch mehrere Bundle Bestellungen für Sie.',
 	// adshowcase.vue
 	ad_match_btn: 'Anzeigenabgleich ({completed}/{total})',
 	// bingbank.vue - Revolut withdrawal
@@ -431,5 +431,6 @@ qingbaochimimayizhi: 'Bitte halten Sie das Passwort einheitlich',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
 	virtual_currency: 'Virtuelle Währung',
+	Current_balance: 'Aktuelles Guthaben',
 	}
 }
