@@ -148,6 +148,7 @@
           </div>
           <div class="hero-card-label">Wallet Balance</div>
           <div class="hero-card-amount">
+            <span class="hero-card-amount--negative" style="font-size: 11px;color:black;" v-if="Number(monney.replace(/,/g, '')) < 0">Exceed </span>
             <span class="hero-card-amount--negative">{{monney}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
@@ -168,7 +169,7 @@
       <div class="hero-arc"></div>
     </div>
     <div class="hero-info">
-      <div>Exceed：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
+      <div>Current Balance：<span style="color: #991aff;">{{ mInfo.dongjiejine }}</span></div>
       <!-- <div>Today's earnings：<span style="color: #991aff;">{{ mInfo.yon1 }}</span></div> -->
     </div>
 
@@ -268,7 +269,7 @@
 
     <van-dialog
       v-model:show="showCompoundOrder"
-      title="Multiple orders"
+      title="Bundle Order"
       :show-cancel-button="false"
       :show-confirm-button="false"
       :close-on-click-overlay="false"
@@ -276,10 +277,10 @@
       <div class="compound-order-modal">
         <div class="compound-order-header">
           <div class="celebration-icon">🎉</div>
-          <h3>Congratulations on triggering the multiple order privilege!</h3>
+          <h3>Congratulations on triggering the bundle order privilege!</h3>
           <p class="compound-order-desc">
-            You have completed the specified number of orders, unlocking the multiple order privilege!<br>
-            Please select an order sequence, and the system will automatically create multiple orders for you.
+            You have completed the specified number of orders, unlocking the bundle order privilege!<br>
+            Please select an order sequence, and the system will automatically create bundle orders for you.
           </p>
         </div>
         <div class="compound-order-options" v-if="compoundOrderData">
