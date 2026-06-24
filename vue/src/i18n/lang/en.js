@@ -98,7 +98,7 @@ module.exports = {
 		"kszq": "Start making money",
 		"hy_level": "Membership grade",
 		"sxtz": "The required investment",
-		"yonj": "commission",
+		"yonj": "Advertising salary",
 		yonj1: 'commission',
 		yonj2: 'commission',
 		"now_level": "The current level",
