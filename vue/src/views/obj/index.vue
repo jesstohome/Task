@@ -346,181 +346,286 @@ export default {
     const compoundOrderData = ref(null)
 
 
-    const startKlineAnimation = (duration) => {
-      // 清理上次动画
-      if (klineAnimFrame) cancelAnimationFrame(klineAnimFrame)
-      if (klineStopFn) klineStopFn()
+    const startKlineAnimation = (duration, getResultTrend) => {
+  if (klineAnimFrame) cancelAnimationFrame(klineAnimFrame)
+  if (klineStopFn) klineStopFn()
 
-      return new Promise(async (resolve) => {
-        await nextTick()
-        const canvas = klineCanvasRef.value
-        const volCanvas = klineVolRef.value
-        if (!canvas) { resolve(); return }
+  return new Promise(async (resolve) => {
+    await nextTick()
+    const canvas = klineCanvasRef.value
+    const volCanvas = klineVolRef.value
+    if (!canvas) { resolve(); return }
 
-        const dpr = window.devicePixelRatio || 1
-        const W = canvas.offsetWidth || 600
-        const H = canvas.offsetHeight || 200
-        canvas.width = W * dpr
-        canvas.height = H * dpr
-        const ctx = canvas.getContext('2d')
-        ctx.scale(dpr, dpr)
+    const dpr = window.devicePixelRatio || 1
+    const W = canvas.offsetWidth || 320
+    const H = canvas.offsetHeight || 200
+    canvas.width = W * dpr
+    canvas.height = H * dpr
+    const ctx = canvas.getContext('2d')
+    ctx.scale(dpr, dpr)
 
-        let vW = 0, vH = 0
-        if (volCanvas) {
-          vW = volCanvas.offsetWidth || 600
-          vH = volCanvas.offsetHeight || 50
-          volCanvas.width = vW * dpr
-          volCanvas.height = vH * dpr
-          const vCtx = volCanvas.getContext('2d')
-          vCtx.scale(dpr, dpr)
-        }
-
-        // 随机生成K线数据
-        const totalCandles = 32
-        const rand = (min, max) => Math.random() * (max - min) + min
-        const candles = []
-        let price = rand(80, 120)
-        const trend = Math.random() > 0.4 ? 'up' : 'down'
-        klineTrend.value = trend
-
-        for (let i = 0; i < totalCandles; i++) {
-          const momentum = trend === 'up' ? 0.55 : 0.45
-          const isGreen = Math.random() < momentum
-          const bodySize = rand(1.5, 8)
-          const open = price
-          const close = isGreen ? price + bodySize : price - bodySize
-          const high = Math.max(open, close) + rand(0.5, 4)
-          const low = Math.min(open, close) - rand(0.5, 4)
-          const vol = rand(30, 100)
-          candles.push({ open, close, high, low, vol, isGreen })
-          price = close + rand(-2, 2)
-          price = Math.max(price, 20)
-        }
-
-        const startPrice = candles[0].open
-        const endPrice = candles[candles.length - 1].close
-        const pct = ((endPrice - startPrice) / startPrice * 100).toFixed(2)
-        klinePct.value = Math.abs(Number(pct)).toFixed(2)
-        klineTrend.value = endPrice >= startPrice ? 'up' : 'down'
-
-        const allHigh = Math.max(...candles.map(c => c.high))
-        const allLow = Math.min(...candles.map(c => c.low))
-        const priceRange = allHigh - allLow || 1
-        const maxVol = Math.max(...candles.map(c => c.vol))
-
-        const padL = 8, padR = 8, padT = 12, padB = 8
-        const candleW = (W - padL - padR) / totalCandles
-        const bodyW = Math.max(candleW * 0.55, 3)
-
-        const priceToY = (p) => padT + (allHigh - p) / priceRange * (H - padT - padB)
-        const volToH = (v) => (v / maxVol) * (vH - 4)
-
-        let drawn = 0
-        const startTime = performance.now()
-        let stopped = false
-        klineStopFn = () => { stopped = true }
-
-        const drawGridLines = () => {
-          ctx.strokeStyle = 'rgba(255,255,255,0.06)'
-          ctx.lineWidth = 0.5
-          for (let i = 0; i <= 4; i++) {
-            const y = padT + (H - padT - padB) * i / 4
-            ctx.beginPath()
-            ctx.moveTo(padL, y)
-            ctx.lineTo(W - padR, y)
-            ctx.stroke()
-          }
-          // MA线占位（提前画完整MA，逐步显示）
-        }
-
-        const drawMA = (upTo) => {
-          const period = 5
-          if (upTo < period) return
-          ctx.strokeStyle = 'rgba(255, 200, 0, 0.5)'
-          ctx.lineWidth = 1
-          ctx.setLineDash([])
-          ctx.beginPath()
-          for (let i = period - 1; i <= upTo; i++) {
-            const avg = candles.slice(i - period + 1, i + 1).reduce((s, c) => s + c.close, 0) / period
-            const x = padL + i * candleW + candleW / 2
-            const y = priceToY(avg)
-            if (i === period - 1) ctx.moveTo(x, y)
-            else ctx.lineTo(x, y)
-          }
-          ctx.stroke()
-        }
-
-        const frame = (now) => {
-          if (stopped) return
-          const elapsed = now - startTime
-          const progress = Math.min(elapsed / duration, 1)
-
-          // 逐步显示K线数量（缓动）
-          const easedProgress = 1 - Math.pow(1 - progress, 2)
-          const targetDrawn = Math.floor(easedProgress * totalCandles)
-
-          ctx.clearRect(0, 0, W, H)
-          drawGridLines()
-
-          for (let i = 0; i < targetDrawn; i++) {
-            const c = candles[i]
-            const x = padL + i * candleW + (candleW - bodyW) / 2
-            const openY = priceToY(c.open)
-            const closeY = priceToY(c.close)
-            const highY = priceToY(c.high)
-            const lowY = priceToY(c.low)
-
-            const color = c.isGreen ? '#26c970' : '#ef5350'
-            const dimColor = c.isGreen ? 'rgba(38,201,112,0.35)' : 'rgba(239,83,80,0.35)'
-
-            // 影线
-            ctx.strokeStyle = color
-            ctx.lineWidth = 1
-            ctx.beginPath()
-            ctx.moveTo(x + bodyW / 2, highY)
-            ctx.lineTo(x + bodyW / 2, lowY)
-            ctx.stroke()
-
-            // 实体
-            const bodyTop = Math.min(openY, closeY)
-            const bodyH = Math.max(Math.abs(openY - closeY), 1.5)
-            ctx.fillStyle = color
-            ctx.fillRect(x, bodyTop, bodyW, bodyH)
-
-            // 最后一根特效光晕
-            if (i === targetDrawn - 1 && progress < 0.98) {
-              ctx.fillStyle = dimColor
-              ctx.fillRect(x - 2, bodyTop - 2, bodyW + 4, bodyH + 4)
-            }
-          }
-
-          drawMA(targetDrawn - 1)
-
-          // 画量柱
-          if (volCanvas) {
-            const vCtx = volCanvas.getContext('2d')
-            vCtx.clearRect(0, 0, vW, vH)
-            for (let i = 0; i < targetDrawn; i++) {
-              const c = candles[i]
-              const x = padL + i * candleW + (candleW - bodyW) / 2
-              const vh = volToH(c.vol)
-              vCtx.fillStyle = c.isGreen ? 'rgba(38,201,112,0.6)' : 'rgba(239,83,80,0.6)'
-              vCtx.fillRect(x, vH - vh, bodyW, vh)
-            }
-          }
-
-          drawn = targetDrawn
-
-          if (progress < 1) {
-            klineAnimFrame = requestAnimationFrame(frame)
-          } else {
-            resolve()
-          }
-        }
-
-        klineAnimFrame = requestAnimationFrame(frame)
-      })
+    let vW = 0, vH = 0, vCtx = null
+    if (volCanvas) {
+      vW = volCanvas.offsetWidth || 320
+      vH = volCanvas.offsetHeight || 50
+      volCanvas.width = vW * dpr
+      volCanvas.height = vH * dpr
+      vCtx = volCanvas.getContext('2d')
+      vCtx.scale(dpr, dpr)
     }
+
+    const totalCandles = 32
+    const splitAt = 28
+    const rand = (min, max) => Math.random() * (max - min) + min
+
+    const candles = []
+    let price = rand(80, 120)
+
+    for (let i = 0; i < splitAt; i++) {
+      const isGreen = Math.random() > 0.45
+      const bodySize = rand(1.5, 8)
+      const open = price
+      const close = isGreen ? price + bodySize : price - bodySize
+      const high = Math.max(open, close) + rand(0.5, 4)
+      const low = Math.min(open, close) - rand(0.5, 4)
+      candles.push({ open, close, high, low, vol: rand(30, 100), isGreen })
+      price = close + rand(-2, 2)
+      price = Math.max(price, 20)
+    }
+
+    let tailGenerated = false
+
+    const generateTail = (trend) => {
+      if (tailGenerated) return
+      tailGenerated = true
+      for (let i = 0; i < 4; i++) {
+        const isGreen = trend === 'up' ? Math.random() > 0.15 : Math.random() < 0.15
+        const bodySize = rand(3, 10)
+        const open = price
+        const close = isGreen ? price + bodySize : price - bodySize
+        const high = Math.max(open, close) + rand(0.3, 2)
+        const low = Math.min(open, close) - rand(0.3, 2)
+        candles.push({ open, close, high, low, vol: rand(60, 100), isGreen })
+        price = close
+      }
+      const startPrice = candles[0].open
+      const endPrice = candles[candles.length - 1].close
+      klineTrend.value = trend
+      klinePct.value = Math.abs((endPrice - startPrice) / startPrice * 100).toFixed(2)
+    }
+
+    const padL = 8, padR = 8, padT = 16, padB = 8
+    const candleW = (W - padL - padR) / totalCandles
+    const bodyW = Math.max(candleW * 0.55, 3)
+    const maxVol = 100
+
+    const getAllHighLow = () => {
+      const visible = candles.slice(0, candles.length)
+      const high = visible.length ? Math.max(...visible.map(c => c.high)) : 120
+      const low = visible.length ? Math.min(...visible.map(c => c.low)) : 80
+      return { high, low }
+    }
+
+    const drawBackground = () => {
+      // 深色渐变背景
+      const bgGrad = ctx.createLinearGradient(0, 0, W, H)
+      bgGrad.addColorStop(0, 'rgba(15, 12, 40, 0.95)')
+      bgGrad.addColorStop(0.5, 'rgba(20, 10, 50, 0.92)')
+      bgGrad.addColorStop(1, 'rgba(10, 18, 45, 0.95)')
+      ctx.fillStyle = bgGrad
+      ctx.fillRect(0, 0, W, H)
+
+      // 装饰：左上角放射光晕（紫色）
+      const glow1 = ctx.createRadialGradient(W * 0.1, H * 0.15, 0, W * 0.1, H * 0.15, W * 0.4)
+      glow1.addColorStop(0, 'rgba(120, 60, 220, 0.12)')
+      glow1.addColorStop(1, 'transparent')
+      ctx.fillStyle = glow1
+      ctx.fillRect(0, 0, W, H)
+
+      // 装饰：右下角放射光晕（蓝色）
+      const glow2 = ctx.createRadialGradient(W * 0.85, H * 0.8, 0, W * 0.85, H * 0.8, W * 0.45)
+      glow2.addColorStop(0, 'rgba(30, 80, 200, 0.10)')
+      glow2.addColorStop(1, 'transparent')
+      ctx.fillStyle = glow2
+      ctx.fillRect(0, 0, W, H)
+
+      // 水平网格线（4条，带刻度标签）
+      const { high, low } = getAllHighLow()
+      const priceRange = high - low || 1
+      ctx.setLineDash([3, 5])
+      for (let i = 0; i <= 3; i++) {
+        const y = padT + (H - padT - padB) * i / 3
+        const priceLabel = (high - priceRange * i / 3).toFixed(1)
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)'
+        ctx.lineWidth = 0.5
+        ctx.beginPath()
+        ctx.moveTo(padL, y)
+        ctx.lineTo(W - padR, y)
+        ctx.stroke()
+
+        // 价格刻度
+        ctx.setLineDash([])
+        ctx.fillStyle = 'rgba(255,255,255,0.2)'
+        ctx.font = '9px monospace'
+        ctx.textAlign = 'right'
+        ctx.fillText(priceLabel, W - padR - 2, y - 2)
+      }
+      ctx.setLineDash([])
+      ctx.textAlign = 'left'
+    }
+
+    const drawMA = (visibleCandles, priceToY) => {
+      const period = 5
+      if (visibleCandles.length < period) return
+      // MA5 黄色
+      ctx.strokeStyle = 'rgba(255, 200, 0, 0.55)'
+      ctx.lineWidth = 1
+      ctx.setLineDash([])
+      ctx.beginPath()
+      for (let i = period - 1; i < visibleCandles.length; i++) {
+        const avg = visibleCandles.slice(i - period + 1, i + 1).reduce((s, c) => s + c.close, 0) / period
+        const x = padL + i * candleW + candleW / 2
+        const y = priceToY(avg)
+        if (i === period - 1) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+
+      // MA10 蓝紫色
+      const period2 = 10
+      if (visibleCandles.length < period2) return
+      ctx.strokeStyle = 'rgba(130, 100, 255, 0.45)'
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      for (let i = period2 - 1; i < visibleCandles.length; i++) {
+        const avg = visibleCandles.slice(i - period2 + 1, i + 1).reduce((s, c) => s + c.close, 0) / period2
+        const x = padL + i * candleW + candleW / 2
+        const y = priceToY(avg)
+        if (i === period2 - 1) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+    }
+
+    const startTime = performance.now()
+    let stopped = false
+    klineStopFn = () => { stopped = true }
+
+    const frame = (now) => {
+      if (stopped) return
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const easedProgress = 1 - Math.pow(1 - progress, 2)
+
+      let targetDrawn = Math.floor(easedProgress * totalCandles)
+
+      // 后4根未生成时，最多只画到 splitAt
+      if (!tailGenerated) {
+        targetDrawn = Math.min(targetDrawn, splitAt)
+        const result = getResultTrend ? getResultTrend() : null
+        if (result) generateTail(result)
+      }
+      targetDrawn = Math.min(targetDrawn, candles.length)
+
+      const visibleCandles = candles.slice(0, targetDrawn)
+
+      // 动态计算价格范围
+      const allHigh = visibleCandles.length ? Math.max(...visibleCandles.map(c => c.high)) : 120
+      const allLow = visibleCandles.length ? Math.min(...visibleCandles.map(c => c.low)) : 80
+      const priceRange = allHigh - allLow || 1
+      const priceToY = (p) => padT + (allHigh - p) / priceRange * (H - padT - padB)
+
+      // 清空并画背景
+      ctx.clearRect(0, 0, W, H)
+      drawBackground()
+
+      // 画面积图（收盘价连线填充）
+      if (visibleCandles.length > 1) {
+        ctx.beginPath()
+        visibleCandles.forEach((c, i) => {
+          const x = padL + i * candleW + candleW / 2
+          const y = priceToY(c.close)
+          if (i === 0) ctx.moveTo(x, y)
+          else ctx.lineTo(x, y)
+        })
+        const lastX = padL + (visibleCandles.length - 1) * candleW + candleW / 2
+        ctx.lineTo(lastX, H)
+        ctx.lineTo(padL + candleW / 2, H)
+        ctx.closePath()
+        const areaGrad = ctx.createLinearGradient(0, 0, 0, H)
+        const isUp = klineTrend.value === 'up'
+        areaGrad.addColorStop(0, isUp ? 'rgba(38,201,112,0.08)' : 'rgba(239,83,80,0.08)')
+        areaGrad.addColorStop(1, 'transparent')
+        ctx.fillStyle = areaGrad
+        ctx.fill()
+      }
+
+      // 画MA线
+      drawMA(visibleCandles, priceToY)
+
+      // 画K线
+      visibleCandles.forEach((c, i) => {
+        const x = padL + i * candleW + (candleW - bodyW) / 2
+        const openY = priceToY(c.open)
+        const closeY = priceToY(c.close)
+        const highY = priceToY(c.high)
+        const lowY = priceToY(c.low)
+        const color = c.isGreen ? '#26c970' : '#ef5350'
+
+        // 影线
+        ctx.strokeStyle = c.isGreen ? 'rgba(38,201,112,0.7)' : 'rgba(239,83,80,0.7)'
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(x + bodyW / 2, highY)
+        ctx.lineTo(x + bodyW / 2, lowY)
+        ctx.stroke()
+
+        // 实体
+        const bodyTop = Math.min(openY, closeY)
+        const bodyH = Math.max(Math.abs(openY - closeY), 1.5)
+        ctx.fillStyle = color
+        ctx.fillRect(x, bodyTop, bodyW, bodyH)
+
+        // 最后一根闪烁光晕
+        if (i === visibleCandles.length - 1) {
+          const pulse = (Math.sin(now / 200) + 1) / 2
+          ctx.fillStyle = c.isGreen
+            ? `rgba(38,201,112,${0.1 + pulse * 0.15})`
+            : `rgba(239,83,80,${0.1 + pulse * 0.15})`
+          ctx.fillRect(x - 3, bodyTop - 3, bodyW + 6, bodyH + 6)
+        }
+      })
+
+      // 画量柱
+      if (vCtx && visibleCandles.length) {
+        vCtx.clearRect(0, 0, vW, vH)
+        // vol背景
+        const volBg = vCtx.createLinearGradient(0, 0, vW, 0)
+        volBg.addColorStop(0, 'rgba(15,12,40,0.9)')
+        volBg.addColorStop(1, 'rgba(10,18,45,0.9)')
+        vCtx.fillStyle = volBg
+        vCtx.fillRect(0, 0, vW, vH)
+
+        const maxV = Math.max(...visibleCandles.map(c => c.vol), 1)
+        visibleCandles.forEach((c, i) => {
+          const x = padL + i * candleW + (candleW - bodyW) / 2
+          const vh = (c.vol / maxV) * (vH - 4)
+          vCtx.fillStyle = c.isGreen ? 'rgba(38,201,112,0.55)' : 'rgba(239,83,80,0.55)'
+          vCtx.fillRect(x, vH - vh, bodyW, vh)
+        })
+      }
+
+      if (progress < 1 || !tailGenerated) {
+        klineAnimFrame = requestAnimationFrame(frame)
+      } else {
+        resolve()
+      }
+    }
+
+    klineAnimFrame = requestAnimationFrame(frame)
+  })
+}
 
     // 进度条 class 根据步骤切换宽度
     const loadProgressClass = computed(() => {
@@ -646,18 +751,24 @@ export default {
       loadStep.value = 1
       loadText.value = t('msg.zzszsj')
 
-      let submit = null
+      let orderResult = null  // 用来存接口结果
       const time = (info.value.deal_zhuji_time || 1) * 1000
       const time2 = (info.value.deal_shop_time || 2) * 1000
       const totalDuration = time + time2
 
-      // 启动K线动画，总时长 = step1时间 + step2时间
-      startKlineAnimation(totalDuration)
+      // 传入一个getter，让K线动画可以随时获取结果
+      startKlineAnimation(totalDuration, () => orderResult)
 
       setTimeout(async () => {
         loadStep.value = 2
         loadText.value = t('msg.zzppsp')
-        submit = await submit_order()
+        const submit = await submit_order()
+        // 接口返回后立即设置结果方向
+        if (submit?.code === 0) {
+          orderResult = 'up'
+        } else {
+          orderResult = 'down'
+        }
         setout(submit, time2)
       }, time)
     }
