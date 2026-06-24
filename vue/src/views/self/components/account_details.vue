@@ -20,9 +20,9 @@
                 <div class="address" v-for="(item,index) in list" :key="index">
                     <div class="l">
                         <div class="time red">{{$t('msg.zblx')}}：{{tabs?.find(rr=>rr.value==item.type)?.label || $t('msg.all')}}</div>
-                        <div class="time">{{$t('msg.zqje')}}：{{currency}} {{item.balance || '0.00'}}</div>
-                        <div class="time green">{{$t('msg.zbje')}}：{{currency}} {{item.num}}</div>
-                        <div class="time">{{$t('msg.zhje')}}：{{currency}} {{item.newnum}}</div>
+                        <div class="time">{{$t('msg.zqje')}}：{{currency}}{{item.balance || '0.00'}}</div>
+                        <div class="time green">{{$t('msg.zbje')}}：{{currency}}{{item.num}}</div>
+                        <div class="time">{{$t('msg.zhje')}}：{{currency}}{{item.newnum}}</div>
                         <div class="time">{{$t('msg.zbsj')}}：{{formatTime('',item.addtime)}}</div>
                     </div>
                 </div>

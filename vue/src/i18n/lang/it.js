@@ -102,7 +102,7 @@ module.exports = {
 		"kszq": "Inizia a guadagnare soldi",
 		"hy_level": "Grado di iscrizione",
 		"sxtz": "L\'investimento richiesto",
-		"yonj": "commissione",
+		"yonj": "Salário publicitário",
 		yonj1: 'commissione',
 		yonj2: 'commissione',
 		"now_level": "Il livello attuale",

@@ -22,7 +22,7 @@
         <div class="profile-user-info">
           <div class="profile-username">{{ userinfo.username }}</div>
           <!-- <div class="profile-invite">Invitation Code: <span class="profile-invite-code">{{ userinfo.invite_code || 'VRUA37' }}</span></div> -->
-          <div class="profile-invite">{{ $t('msg.trial_bonus') }}: <span class="profile-invite-code">{{ currency || '€' }} {{ userinfo.lottery_money || '0' }}</span></div>
+          <div class="profile-invite">{{ $t('msg.trial_bonus') }}: <span class="profile-invite-code">{{ currency || '€' }}{{ userinfo.lottery_money || '0' }}</span></div>
         </div>
       </div>
 
@@ -41,7 +41,7 @@
         <div class="profile-balance-card">
           <div class="pbc-label">{{ $t('msg.wallet_amount') }}</div>
           <div class="pbc-amount">
-            <span class="pbc-amount-num pbc-amount-num--neg">{{ currency || '€' }} {{ monney || '0.00' }}</span>
+            <span class="pbc-amount-num pbc-amount-num--neg">{{ currency || '€' }}{{ monney || '0.00' }}</span>
             <span class="pbc-amount-unit"></span>
           </div>
         </div>
@@ -49,7 +49,7 @@
         <div class="profile-balance-card">
           <div class="pbc-label">{{ $t('msg.advertising_salary') }}</div>
           <div class="pbc-amount">
-            <span class="pbc-amount-num">{{ currency || '€' }} {{ mInfo.yon3 || '0' }}</span>
+            <span class="pbc-amount-num">{{ currency || '€' }}{{ mInfo.yon3 || '0' }}</span>
             <span class="pbc-amount-unit"></span>
           </div>
         </div>
