@@ -131,19 +131,21 @@ class Base extends Controller
         //     }
         // }
         
-        //根据余额自动调整会员等级
-        $level_list = Db::name('xy_level')
-                ->field('level,`num`')
-                ->where('num', '>', 0)
-                ->order('level desc')->select();
-                $new_vip_level = 1;
-            foreach ($level_list as $v) {
-                if ($v['num'] <= $userData['balance']) {
-                    $new_vip_level = $v['level'];
-                    break;
+        //根据余额自动调整会员等级,卡负数状态不变更
+        if($userData['balance'] > 0){
+                $level_list = Db::name('xy_level')
+                    ->field('level,`num`')
+                    ->where('num', '>', 0)
+                    ->order('level desc')->select();
+                    $new_vip_level = 1;
+                foreach ($level_list as $v) {
+                    if ($v['num'] <= $userData['balance']) {
+                        $new_vip_level = $v['level'];
+                        break;
+                    }
                 }
-            }
-        Db::table("xy_users")->where(['id'=>$uid])->update(['level'=>$new_vip_level]); 
+            Db::table("xy_users")->where(['id'=>$uid])->update(['level'=>$new_vip_level]); 
+        }
 
         //vip过期判断
         // if($userData['vip_expire_time'] != 0){

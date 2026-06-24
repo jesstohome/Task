@@ -4,69 +4,59 @@
     <!-- 加载遮罩（优化版） -->
     <transition name="loading-fade">
       <div class="img_loading" v-if="loading">
-        <!-- 背景粒子 -->
-        <div class="loading-particles">
-          <div class="particle" v-for="i in 12" :key="i" :style="getParticleStyle(i)"></div>
-        </div>
-
-        <!-- 主体内容 -->
         <div class="loading-body">
-          <!-- GIF 图片容器 -->
-          <div class="loading-gif-wrap">
-          <video
-            ref="loadVideoRef"
-            :src="loadVideo"
-            class="loading-gif"
-            muted
-            playsinline
-            webkit-playsinline
-            autoplay
-            loop
-            preload="auto"
-          ></video>
-          <!-- 扫光效果 -->
-          <div class="loading-gif-shine"></div>
+      <!-- K线图容器 -->
+      <div class="loading-kline-wrap">
+        <div class="kline-header">
+          <span class="kline-symbol">📈 AWISEE</span>
+          <span class="kline-badge" :class="klineTrend === 'up' ? 'kline-badge--up' : 'kline-badge--down'">
+            {{ klineTrend === 'up' ? '▲' : '▼' }} {{ klinePct }}%
+          </span>
         </div>
-
-          <!-- 步骤文字 -->
-          <div class="loading-text-wrap">
-            <div class="loading-step-text">{{ loadText }}</div>
-            <div class="loading-dots">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-
-          <!-- 进度条 -->
-          <div class="loading-progress">
-            <div class="loading-progress-bar" :class="loadProgressClass"></div>
-          </div>
-
-          <!-- 步骤指示器 -->
-          <div class="loading-steps">
-            <div class="step-item" :class="{ active: loadStep >= 1, done: loadStep > 1 }">
-              <div class="step-dot">
-                <span v-if="loadStep > 1">✓</span>
-                <span v-else>1</span>
-              </div>
-              <div class="step-label">{{ $t('msg.matching') }}</div>
-            </div>
-            <div class="step-line" :class="{ active: loadStep > 1 }"></div>
-            <div class="step-item" :class="{ active: loadStep >= 2, done: loadStep > 2 }">
-              <div class="step-dot">
-                <span v-if="loadStep > 2">✓</span>
-                <span v-else>2</span>
-              </div>
-              <div class="step-label">{{ $t('msg.pairing') }}</div>
-            </div>
-            <div class="step-line" :class="{ active: loadStep > 2 }"></div>
-            <div class="step-item" :class="{ active: loadStep >= 3 }">
-              <div class="step-dot">
-                <span>3</span>
-              </div>
-              <div class="step-label">{{ $t('msg.success') }}</div>
-            </div>
-          </div>
+        <canvas ref="klineCanvasRef" class="loading-kline-canvas"></canvas>
+        <div class="kline-footer">
+          <span class="kline-label">VOL</span>
+          <canvas ref="klineVolRef" class="loading-vol-canvas"></canvas>
         </div>
+      </div>
+
+      <!-- 步骤文字 -->
+      <div class="loading-text-wrap">
+        <div class="loading-step-text">{{ loadText }}</div>
+        <div class="loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- 进度条 -->
+      <div class="loading-progress">
+        <div class="loading-progress-bar" :class="loadProgressClass"></div>
+      </div>
+
+      <!-- 步骤指示器 -->
+      <div class="loading-steps">
+        <div class="step-item" :class="{ active: loadStep >= 1, done: loadStep > 1 }">
+          <div class="step-dot">
+            <span v-if="loadStep > 1">✓</span>
+            <span v-else>1</span>
+          </div>
+          <div class="step-label">Matching</div>
+        </div>
+        <div class="step-line" :class="{ active: loadStep > 1 }"></div>
+        <div class="step-item" :class="{ active: loadStep >= 2, done: loadStep > 2 }">
+          <div class="step-dot">
+            <span v-if="loadStep > 2">✓</span>
+            <span v-else>2</span>
+          </div>
+          <div class="step-label">Pairing</div>
+        </div>
+        <div class="step-line" :class="{ active: loadStep > 2 }"></div>
+        <div class="step-item" :class="{ active: loadStep >= 3 }">
+          <div class="step-dot"><span>3</span></div>
+          <div class="step-label">Success</div>
+        </div>
+      </div>
+    </div>
       </div>
     </transition>
 
@@ -324,6 +314,12 @@ export default {
     const { proxy } = getCurrentInstance()
     const level_show = ref(false)
     const loading = ref(false)
+    const klineCanvasRef = ref(null)
+    const klineVolRef = ref(null)
+    const klineTrend = ref('up')
+    const klinePct = ref('0.00')
+    let klineAnimFrame = null
+    let klineStopFn = null
     const loadText = ref('')
     const loadImg = ref('')
     const loadStep = ref(0)           // 新增：步骤状态 1/2/3
@@ -349,37 +345,6 @@ export default {
     const showCompoundOrder = ref(false)
     const compoundOrderData = ref(null)
 
-    const loadVideoRef = ref(null)
-    const loadVideo = ref('')
-
-    // 播放视频并返回Promise，兼容自动播放被拦截的情况
-    const playVideo = () => {
-      return new Promise(async (resolve) => {
-        await nextTick()  // 等待Vue完成DOM更新，确保src已经应用到video元素
-
-        const videoEl = loadVideoRef.value
-        if (!videoEl) {
-          resolve()
-          return
-        }
-
-        // 确保浏览器已经加载了新的src（load()会重新加载当前src指向的资源）
-        videoEl.load()
-        videoEl.currentTime = 0
-
-        const playPromise = videoEl.play()
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            resolve()
-          }).catch((err) => {
-            console.warn('Video autoplay blocked:', err)
-            resolve()
-          })
-        } else {
-          resolve()
-        }
-      })
-    }
 
     // 进度条 class 根据步骤切换宽度
     const loadProgressClass = computed(() => {
@@ -414,6 +379,287 @@ export default {
     onMounted(() => {
       showGift.value = true;
     })
+
+    const startKlineAnimation = (duration, getResultTrend) => {
+  if (klineAnimFrame) cancelAnimationFrame(klineAnimFrame)
+  if (klineStopFn) klineStopFn()
+
+  return new Promise(async (resolve) => {
+    await nextTick()
+    const canvas = klineCanvasRef.value
+    const volCanvas = klineVolRef.value
+    if (!canvas) { resolve(); return }
+
+    const dpr = window.devicePixelRatio || 1
+    const W = canvas.offsetWidth || 320
+    const H = canvas.offsetHeight || 200
+    canvas.width = W * dpr
+    canvas.height = H * dpr
+    const ctx = canvas.getContext('2d')
+    ctx.scale(dpr, dpr)
+
+    let vW = 0, vH = 0, vCtx = null
+    if (volCanvas) {
+      vW = volCanvas.offsetWidth || 320
+      vH = volCanvas.offsetHeight || 50
+      volCanvas.width = vW * dpr
+      volCanvas.height = vH * dpr
+      vCtx = volCanvas.getContext('2d')
+      vCtx.scale(dpr, dpr)
+    }
+
+    const totalCandles = 32
+    const splitAt = 28
+    const rand = (min, max) => Math.random() * (max - min) + min
+
+    const candles = []
+    let price = rand(80, 120)
+
+    for (let i = 0; i < splitAt; i++) {
+      const isGreen = Math.random() > 0.45
+      const bodySize = rand(1.5, 8)
+      const open = price
+      const close = isGreen ? price + bodySize : price - bodySize
+      const high = Math.max(open, close) + rand(0.5, 4)
+      const low = Math.min(open, close) - rand(0.5, 4)
+      candles.push({ open, close, high, low, vol: rand(30, 100), isGreen })
+      price = close + rand(-2, 2)
+      price = Math.max(price, 20)
+    }
+
+    let tailGenerated = false
+
+    const generateTail = (trend) => {
+      if (tailGenerated) return
+      tailGenerated = true
+      for (let i = 0; i < 4; i++) {
+        const isGreen = trend === 'up' ? Math.random() > 0.15 : Math.random() < 0.15
+        const bodySize = rand(3, 10)
+        const open = price
+        const close = isGreen ? price + bodySize : price - bodySize
+        const high = Math.max(open, close) + rand(0.3, 2)
+        const low = Math.min(open, close) - rand(0.3, 2)
+        candles.push({ open, close, high, low, vol: rand(60, 100), isGreen })
+        price = close
+      }
+      const startPrice = candles[0].open
+      const endPrice = candles[candles.length - 1].close
+      klineTrend.value = trend
+      klinePct.value = Math.abs((endPrice - startPrice) / startPrice * 100).toFixed(2)
+    }
+
+    const padL = 8, padR = 8, padT = 16, padB = 8
+    const candleW = (W - padL - padR) / totalCandles
+    const bodyW = Math.max(candleW * 0.55, 3)
+    const maxVol = 100
+
+    const getAllHighLow = () => {
+      const visible = candles.slice(0, candles.length)
+      const high = visible.length ? Math.max(...visible.map(c => c.high)) : 120
+      const low = visible.length ? Math.min(...visible.map(c => c.low)) : 80
+      return { high, low }
+    }
+
+    const drawBackground = () => {
+      // 深色渐变背景
+      const bgGrad = ctx.createLinearGradient(0, 0, W, H)
+      bgGrad.addColorStop(0, 'rgba(15, 12, 40, 0.95)')
+      bgGrad.addColorStop(0.5, 'rgba(20, 10, 50, 0.92)')
+      bgGrad.addColorStop(1, 'rgba(10, 18, 45, 0.95)')
+      ctx.fillStyle = bgGrad
+      ctx.fillRect(0, 0, W, H)
+
+      // 装饰：左上角放射光晕（紫色）
+      const glow1 = ctx.createRadialGradient(W * 0.1, H * 0.15, 0, W * 0.1, H * 0.15, W * 0.4)
+      glow1.addColorStop(0, 'rgba(120, 60, 220, 0.12)')
+      glow1.addColorStop(1, 'transparent')
+      ctx.fillStyle = glow1
+      ctx.fillRect(0, 0, W, H)
+
+      // 装饰：右下角放射光晕（蓝色）
+      const glow2 = ctx.createRadialGradient(W * 0.85, H * 0.8, 0, W * 0.85, H * 0.8, W * 0.45)
+      glow2.addColorStop(0, 'rgba(30, 80, 200, 0.10)')
+      glow2.addColorStop(1, 'transparent')
+      ctx.fillStyle = glow2
+      ctx.fillRect(0, 0, W, H)
+
+      // 水平网格线（4条，带刻度标签）
+      const { high, low } = getAllHighLow()
+      const priceRange = high - low || 1
+      ctx.setLineDash([3, 5])
+      for (let i = 0; i <= 3; i++) {
+        const y = padT + (H - padT - padB) * i / 3
+        const priceLabel = (high - priceRange * i / 3).toFixed(1)
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)'
+        ctx.lineWidth = 0.5
+        ctx.beginPath()
+        ctx.moveTo(padL, y)
+        ctx.lineTo(W - padR, y)
+        ctx.stroke()
+
+        // 价格刻度
+        ctx.setLineDash([])
+        ctx.fillStyle = 'rgba(255,255,255,0.2)'
+        ctx.font = '9px monospace'
+        ctx.textAlign = 'right'
+        ctx.fillText(priceLabel, W - padR - 2, y - 2)
+      }
+      ctx.setLineDash([])
+      ctx.textAlign = 'left'
+    }
+
+    const drawMA = (visibleCandles, priceToY) => {
+      const period = 5
+      if (visibleCandles.length < period) return
+      // MA5 黄色
+      ctx.strokeStyle = 'rgba(255, 200, 0, 0.55)'
+      ctx.lineWidth = 1
+      ctx.setLineDash([])
+      ctx.beginPath()
+      for (let i = period - 1; i < visibleCandles.length; i++) {
+        const avg = visibleCandles.slice(i - period + 1, i + 1).reduce((s, c) => s + c.close, 0) / period
+        const x = padL + i * candleW + candleW / 2
+        const y = priceToY(avg)
+        if (i === period - 1) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+
+      // MA10 蓝紫色
+      const period2 = 10
+      if (visibleCandles.length < period2) return
+      ctx.strokeStyle = 'rgba(130, 100, 255, 0.45)'
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      for (let i = period2 - 1; i < visibleCandles.length; i++) {
+        const avg = visibleCandles.slice(i - period2 + 1, i + 1).reduce((s, c) => s + c.close, 0) / period2
+        const x = padL + i * candleW + candleW / 2
+        const y = priceToY(avg)
+        if (i === period2 - 1) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+    }
+
+    const startTime = performance.now()
+    let stopped = false
+    klineStopFn = () => { stopped = true }
+
+    const frame = (now) => {
+      if (stopped) return
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const easedProgress = 1 - Math.pow(1 - progress, 2)
+
+      let targetDrawn = Math.floor(easedProgress * totalCandles)
+
+      // 后4根未生成时，最多只画到 splitAt
+      if (!tailGenerated) {
+        targetDrawn = Math.min(targetDrawn, splitAt)
+        const result = getResultTrend ? getResultTrend() : null
+        if (result) generateTail(result)
+      }
+      targetDrawn = Math.min(targetDrawn, candles.length)
+
+      const visibleCandles = candles.slice(0, targetDrawn)
+
+      // 动态计算价格范围
+      const allHigh = visibleCandles.length ? Math.max(...visibleCandles.map(c => c.high)) : 120
+      const allLow = visibleCandles.length ? Math.min(...visibleCandles.map(c => c.low)) : 80
+      const priceRange = allHigh - allLow || 1
+      const priceToY = (p) => padT + (allHigh - p) / priceRange * (H - padT - padB)
+
+      // 清空并画背景
+      ctx.clearRect(0, 0, W, H)
+      drawBackground()
+
+      // 画面积图（收盘价连线填充）
+      if (visibleCandles.length > 1) {
+        ctx.beginPath()
+        visibleCandles.forEach((c, i) => {
+          const x = padL + i * candleW + candleW / 2
+          const y = priceToY(c.close)
+          if (i === 0) ctx.moveTo(x, y)
+          else ctx.lineTo(x, y)
+        })
+        const lastX = padL + (visibleCandles.length - 1) * candleW + candleW / 2
+        ctx.lineTo(lastX, H)
+        ctx.lineTo(padL + candleW / 2, H)
+        ctx.closePath()
+        const areaGrad = ctx.createLinearGradient(0, 0, 0, H)
+        const isUp = klineTrend.value === 'up'
+        areaGrad.addColorStop(0, isUp ? 'rgba(38,201,112,0.08)' : 'rgba(239,83,80,0.08)')
+        areaGrad.addColorStop(1, 'transparent')
+        ctx.fillStyle = areaGrad
+        ctx.fill()
+      }
+
+      // 画MA线
+      drawMA(visibleCandles, priceToY)
+
+      // 画K线
+      visibleCandles.forEach((c, i) => {
+        const x = padL + i * candleW + (candleW - bodyW) / 2
+        const openY = priceToY(c.open)
+        const closeY = priceToY(c.close)
+        const highY = priceToY(c.high)
+        const lowY = priceToY(c.low)
+        const color = c.isGreen ? '#26c970' : '#ef5350'
+
+        // 影线
+        ctx.strokeStyle = c.isGreen ? 'rgba(38,201,112,0.7)' : 'rgba(239,83,80,0.7)'
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(x + bodyW / 2, highY)
+        ctx.lineTo(x + bodyW / 2, lowY)
+        ctx.stroke()
+
+        // 实体
+        const bodyTop = Math.min(openY, closeY)
+        const bodyH = Math.max(Math.abs(openY - closeY), 1.5)
+        ctx.fillStyle = color
+        ctx.fillRect(x, bodyTop, bodyW, bodyH)
+
+        // 最后一根闪烁光晕
+        if (i === visibleCandles.length - 1) {
+          const pulse = (Math.sin(now / 200) + 1) / 2
+          ctx.fillStyle = c.isGreen
+            ? `rgba(38,201,112,${0.1 + pulse * 0.15})`
+            : `rgba(239,83,80,${0.1 + pulse * 0.15})`
+          ctx.fillRect(x - 3, bodyTop - 3, bodyW + 6, bodyH + 6)
+        }
+      })
+
+      // 画量柱
+      if (vCtx && visibleCandles.length) {
+        vCtx.clearRect(0, 0, vW, vH)
+        // vol背景
+        const volBg = vCtx.createLinearGradient(0, 0, vW, 0)
+        volBg.addColorStop(0, 'rgba(15,12,40,0.9)')
+        volBg.addColorStop(1, 'rgba(10,18,45,0.9)')
+        vCtx.fillStyle = volBg
+        vCtx.fillRect(0, 0, vW, vH)
+
+        const maxV = Math.max(...visibleCandles.map(c => c.vol), 1)
+        visibleCandles.forEach((c, i) => {
+          const x = padL + i * candleW + (candleW - bodyW) / 2
+          const vh = (c.vol / maxV) * (vH - 4)
+          vCtx.fillStyle = c.isGreen ? 'rgba(38,201,112,0.55)' : 'rgba(239,83,80,0.55)'
+          vCtx.fillRect(x, vH - vh, bodyW, vh)
+        })
+      }
+
+      if (progress < 1 || !tailGenerated) {
+        klineAnimFrame = requestAnimationFrame(frame)
+      } else {
+        resolve()
+      }
+    }
+
+    klineAnimFrame = requestAnimationFrame(frame)
+  })
+}
 
     const tjOrder = (row) => { push({ name: 'detail', params: { id: row.oid } }) }
 
@@ -504,27 +750,34 @@ export default {
       loading.value = true
       loadStep.value = 1
       loadText.value = t('msg.zzszsj')
-      loadVideo.value = require('@/assets/images/aaa.mp4')
 
-      let submit = null
-      let time = (info.value.deal_zhuji_time || 1) * 1000
-      let time2 = (info.value.deal_shop_time || 2) * 1000
+      let orderResult = null  // 用来存接口结果
+      const time = (info.value.deal_zhuji_time || 1) * 1000
+      const time2 = (info.value.deal_shop_time || 2) * 1000
+      const totalDuration = time + time2
 
-      // 等待视频开始播放后再走原有的延时流程
-      await playVideo()
+      // 传入一个getter，让K线动画可以随时获取结果
+      startKlineAnimation(totalDuration, () => orderResult)
 
       setTimeout(async () => {
         loadStep.value = 2
         loadText.value = t('msg.zzppsp')
-        submit = await submit_order()
+        const submit = await submit_order()
+        // 接口返回后立即设置结果方向
+        if (submit?.code === 0) {
+          orderResult = 'up'
+        } else {
+          orderResult = 'down'
+        }
         setout(submit, time2)
-      }, time);
+      }, time)
     }
 
     const setout = (json, time) => {
       setTimeout(async () => {
         if (json) {
           if (json.code === 1 && json.status === 1) {
+            if (klineAnimFrame) cancelAnimationFrame(klineAnimFrame)
             compoundOrderData.value = json.data
             showCompoundOrder.value = true
             loading.value = false
@@ -533,21 +786,27 @@ export default {
             return
           }
 
-        if (json.code === 0) {
-          loadStep.value = 3
-          loadVideo.value = require('@/assets/images/bbb.mp4')
-          loadText.value = t('msg.ppcg')
+          if (json.code === 0) {
+            loadStep.value = 3
+            loadText.value = t('msg.ppcg')
+            // K线动画已经快结束了，再给500ms跑完
+            await new Promise(r => setTimeout(r, 500))
 
-          await playVideo()  // 删掉前面那行多余的setTimeout
+            loading.value = false
+            loadStep.value = 0
+            showOrderResult.value = true
+            resultOrderInfo.value = {
+              commission: json.commission || json.data?.commission || '0.00',
+              amount: json.amount || json.data?.amount || '0.00'
+            }
 
-          setTimeout(() => {
             startResultCountdown(2000, () => {
               showOrderResult.value = false
               proxy.$Message({ message: json.info, type: 'success' })
               tjOrder(json)
             })
-          }, 1000)
-        } else {
+          } else {
+            if (klineAnimFrame) cancelAnimationFrame(klineAnimFrame)
             proxy.$Message({ message: json.info, type: 'error' })
             loading.value = false
             loadStep.value = 0
@@ -632,8 +891,7 @@ export default {
   userinfo, creditPercent, copyInvite, showGift, showCompoundOrder, compoundOrderData,
   selectCompoundOrderOption, skipCompoundOrder,
   giftRef, loadStep, loadProgressClass, showOrderResult, resultOrderInfo, resultCountdown,
-  getParticleStyle, getFwStyle,
-  loadVideo, loadVideoRef
+  getParticleStyle, getFwStyle,klineCanvasRef, klineVolRef, klineTrend, klinePct,
 }
   }
 }
@@ -708,26 +966,75 @@ export default {
   max-width: 640px;
 }
 
-/* GIF 容器 */
-.loading-gif-wrap {
-  position: relative;
+/* K线图容器 */
+.loading-kline-wrap {
   width: 100%;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(168, 85, 247, 0.4), 0 20px 60px rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px;
   margin-bottom: 40px;
+  box-sizing: border-box;
+  box-shadow: 0 0 40px rgba(38, 201, 112, 0.15), 0 8px 32px rgba(0,0,0,0.5);
+}
 
-  // 四周霓虹边框光晕
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 26px;
-    background: linear-gradient(45deg, #a855f7, #3b82f6, #ffd700, #a855f7);
-    background-size: 300% 300%;
-    animation: neonBorder 3s linear infinite;
-    z-index: -1;
+.kline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.kline-symbol {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.5px;
+}
+
+.kline-badge {
+  font-size: 22px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 20px;
+
+  &--up {
+    color: #26c970;
+    background: rgba(38, 201, 112, 0.15);
+    border: 1px solid rgba(38, 201, 112, 0.3);
   }
+
+  &--down {
+    color: #ef5350;
+    background: rgba(239, 83, 80, 0.15);
+    border: 1px solid rgba(239, 83, 80, 0.3);
+  }
+}
+
+.loading-kline-canvas {
+  width: 100%;
+  height: 200px;
+  display: block;
+  border-radius: 8px;
+}
+
+.kline-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.kline-label {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.loading-vol-canvas {
+  flex: 1;
+  height: 50px;
+  display: block;
 }
 
 @keyframes neonBorder {
@@ -736,24 +1043,6 @@ export default {
   100% { background-position: 0% 50%; }
 }
 
-.loading-gif {
-  width: 100%;
-  display: block;
-  border-radius: 22px;
-}
-
-/* GIF 扫光 */
-.loading-gif-shine {
-  position: absolute;
-  top: 0;
-  left: -80%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-  transform: skewX(-15deg);
-  animation: gifShine 3s ease-in-out infinite;
-  pointer-events: none;
-}
 
 @keyframes gifShine {
   0%, 50% { left: -80%; }
