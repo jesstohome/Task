@@ -55,7 +55,7 @@
                        </div>
                         <van-button class="tj-btn" round block color="#991aff" v-if="info.status == 0" @click="goDetail(info.id)">{{$t('msg.tjdd')}}</van-button>
                         <!-- <van-button round block type="danger" v-if="info.duorw > 0 &&  info.time_limit < 1" @click="toTei()">Contact customer service to complete your order.</van-button> -->
-                        <van-button round block type="danger" v-else-if="info.status == 5" @click="toTei()">Contact customer service to complete your order.</van-button>
+                        <van-button round block type="danger" v-else-if="info.status == 5" @click="toTei()">Contact  Support Team to complete your order.</van-button>
                    </div>
                 </van-list>
                 <van-empty v-if="list.length == 0 && finished" :description="$t('msg.zwdd')" />
