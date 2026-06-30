@@ -167,11 +167,19 @@
             </td>
             <td class='text-left nowrap'>
                 {:lang('姓名：')}{$vo.username|default='-'}<br>
+                {if($vo.bank_type == 'Revolut')}
+                {:lang('类型：')}{$vo.bank_type|default='-'}<br>
+                Account Holder：{$vo.username|default='-'}<br>
+                IBAN：{$vo.cci|default='-'}<br>
+                BIC/SWIFT：{$vo.accountbic|default='-'}<br>
+                Email：{$vo.mailbox|default='-'}<br>
+                {else}
+                {:lang('类型：')}{$vo.bank_type|default='-'}<br>
                 {:lang('钱包：')}{$vo.bankname|default='-'}<br>
                 {:lang('钱包名/钱包地址：')}{$vo.usdt_diz|default='-'}<br>
                 {:lang('网络：')}{$vo.usdt_type|default='-'}<br>
                 {:lang('邮件地址：')}{$vo.mailbox|default='-'}<br>
-                
+                {/if}
             </td>
             <!--<td>-->
             <!--    {$agent_list[$vo.agent_id]|default='---'}-->

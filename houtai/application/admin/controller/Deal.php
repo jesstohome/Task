@@ -1551,6 +1551,7 @@ class Deal extends Base
             }else{
                 $vo['endtime'] = '';
             }
+            $vo['accountbic'] = Db::table('xy_bankinfo')->where('uid',$vo['uid'])->value('account_digit');
 
         }
         $data = Data::arr2table($data);
