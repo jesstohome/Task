@@ -1758,6 +1758,29 @@ class Users extends Base
        // $res = Db::table("xy_users")->where(['id'=>$id])->update(['qkon'=>$status]);
         //$res = model('Users')->edit_users_status($id, $status);
         
+        //清空抢单次数的同时清空体验金
+        $this->info = Db::table($this->table)->find($id);
+        if($this->info['lottery_money'] > 0){
+            
+            Db::name('xy_users')
+                    ->where('id', $id)
+                    ->dec('balance', $this->info['lottery_money'])
+                    ->update([
+                        'lottery_money' => 0
+                    ]);
+            
+            Db::name('xy_balance_log')->insert([
+                        'uid' => $id,
+                        'sid' => $id,
+                        'oid' => '',
+                        'num' => $this->info['lottery_money'],
+                        'type' => 34,
+                        'status' => 2,
+                        'addtime' => time(),
+                        "balance" => $this->info['balance']
+                    ]);
+            }
+        
        
         return $this->success(lang("操作成功"));
     }
