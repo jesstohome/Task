@@ -85,7 +85,7 @@ module.exports = {
 		"login": "The login",
 		"register2": "registered",
 		"register1": "registered",
-		"register": "registered",
+		"register": "Registered",
 		"email_register": "Email Register",
 		"phone_register": "Phone Register",
 		"input_code": "Please enter the invitation code",
