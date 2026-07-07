@@ -33,7 +33,7 @@
       </template>
 
       <!-- Virtual currency 字段 -->
-      <template v-if="edit_data.tx_type === 'USDT'">
+      <template v-if="edit_data.tx_type === 'Crypto'">
         <div class="bank_name">{{ $t('msg.name_label') }}</div>
         <div class="bank_input"><van-field :placeholder="$t('msg.name_label')" v-model="username" type="text" /></div>
         <div class="bank_name">{{ $t('msg.wallet_label') }}</div>
@@ -107,7 +107,7 @@
 	  </template>
 	  
 	  <!-- Virtual currency 模式显示 -->
-	  <template v-else-if="item.bank_type == 'USDT'">
+	  <template v-else-if="item.bank_type == 'Crypto'">
 	      <div class="li">
 	        <span class="span">{{ $t("msg.txlx") }}：</span>
 	        <span class="span">{{ $t('msg.virtual_currency') }}</span>
@@ -306,7 +306,7 @@
           </template>
           
           <!-- Virtual currency 模式的字段 -->
-          <template v-if="edit_data.tx_type === 'USDT'">
+          <template v-if="edit_data.tx_type === 'Crypto'">
             <van-field
               class="zdy"
               :label="$t('msg.usdt_type')"
@@ -380,14 +380,14 @@
       <div class="picker-list">
         <ul>
           <!-- <li @click="selectTxType('Bank')">Bank</li> -->
-          <!-- <li @click="selectTxType('USDT')">{{ $t('msg.virtual_currency') }}</li> -->
-          <li @click="selectTxType('USDT')">USDT</li>
+          <!-- <li @click="selectTxType('Crypto')">{{ $t('msg.virtual_currency') }}</li> -->
+          <li @click="selectTxType('Crypto')">Crypto</li>
           <li @click="selectTxType('Revolut')">Revolut</li>
         </ul>
       </div>
     </van-popup>
 
-    <!-- USDT 类型选择 (TRC20 / ERC20) -->
+    <!-- Crypto 类型选择 (TRC20 / ERC20) -->
     <van-popup v-model:show="showUsdtType" position="bottom" round class="custom-popup-bottom">
       <div class="picker-list">
         <ul>
@@ -482,7 +482,7 @@ export default {
 	
 	const edit_data = ref({
 		"id":"",
-		"tx_type":"USDT",
+		"tx_type":"Crypto",
 		"routing_number":"",
 		"bank_name":"",
 		"bank_address":"",
@@ -529,11 +529,11 @@ export default {
       //     };
       //   });
 
-        bank_list.value = res.data.bank_list.map(item => item.bankname)
+        bank_list.value = res.data.bank_list.map(item => item.bankname === 'Cash' ? 'USDC' : item.bankname)
 
       username.value = res.data.info?.username;
       const infoData = res.data.info || {};
-      edit_data.value.tx_type = infoData.bank_type || infoData.tx_type || "USDT";
+      edit_data.value.tx_type = infoData.bank_type || infoData.tx_type || "Crypto";
       edit_data.value.name = infoData.username || infoData.name || "";       // Revolut name 存于 username 列
       edit_data.value.revolut_iban = infoData.cci || infoData.revolut_iban || ""; // Revolut IBAN 存于 cci 列
       edit_data.value.swift_bic = infoData.account_digit || infoData.swift_bic || "";
@@ -621,8 +621,8 @@ export default {
     const editShowDialog = (i) => {
 	  edit_data.value = { ...info.value[i] };
 	  // 根据现有数据确定 tx_type
-	  if (info.value[i].bank_type == "USDT") {
-		edit_data.value.tx_type = "USDT";
+	  if (info.value[i].bank_type == "Crypto") {
+		edit_data.value.tx_type = "Crypto";
 		edit_data.value.usdt_type = info.value[i].usdt_type;
 		edit_data.value.usdt_address = info.value[i].usdt_diz;
 		  } else if (info.value[i].bank_type == "Revolut") {
@@ -649,7 +649,7 @@ export default {
 	  edit_data.value.bankname = default_bankname;
 	  edit_data.value.bank_type = default_bank_type;
 	  edit_data.value.bank_code = default_bank_code;
-	  edit_data.value.tx_type = "USDT";
+	  edit_data.value.tx_type = "Crypto";
 	  edit_data.value.usdt_type = "usdt-trc20";
       if (py_status.value == 2) {
         showUsdt.value = true;
@@ -676,8 +676,8 @@ export default {
       submit_data.routing_number = edit_data.value.routing_number || "";
       submit_data.usdt_diz = usdt_diz.value || "";
       submit_data.usdt_type = usdt_type.value || "";
-      submit_data.tx_type = edit_data.value.tx_type || "USDT";
-      // 通用 name 字段：Revolut/Bank 用 edit_data.name，USDT 用 username ref
+      submit_data.tx_type = edit_data.value.tx_type || "Crypto";
+      // 通用 name 字段：Revolut/Bank 用 edit_data.name，Crypto 用 username ref
       submit_data.username = edit_data.value.name || username.value || "";
       // Revolut IBAN 复用 cci 字段提交（PHP 存入 cci 列）
       submit_data.cci = edit_data.value.revolut_iban || "";
