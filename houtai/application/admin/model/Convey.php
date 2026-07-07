@@ -113,7 +113,7 @@ class Convey extends Model
         
         // 复数订单和礼包订单跳过订单上限检查
         if (!($is_compound_order || $is_libaoorder) && $count >= $order_num) {
-            return ['code' => 1, 'info' => 'Task completed. Please contact customer service for further assistance!', 'endRal' => true];
+            return ['code' => 1, 'info' => 'program completed. Please contact customer service for further assistance!', 'endRal' => true];
         }
         
        
