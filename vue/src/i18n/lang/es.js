@@ -430,6 +430,7 @@ qingbaochimimayizhi: 'Por favor mantenga la contraseña consistente',
 	revolut_holder: 'Titular de la cuenta',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
+		revolut_country: 'País',
 	virtual_currency: 'Moneda virtual',
 	Current_balance: 'Saldo actual',
 	}

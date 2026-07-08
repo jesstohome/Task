@@ -60,6 +60,8 @@
         <div class="bank_input"><van-field :placeholder="$t('msg.revolut_iban')" v-model="edit_data.revolut_iban" type="text" /></div>
         <div class="bank_name">{{ $t('msg.revolut_bic') }}</div>
         <div class="bank_input"><van-field :placeholder="$t('msg.revolut_bic')" v-model="edit_data.swift_bic" type="text" /></div>
+        <div class="bank_name">{{ $t('msg.revolut_country') }}</div>
+        <div class="bank_input"><van-field :placeholder="$t('msg.revolut_country')" v-model="edit_data.revolut_country" type="text" /></div>
         <div class="bank_name">{{ $t('msg.email') }}</div>
         <div class="bank_input"><van-field :placeholder="$t('msg.email')" v-model="edit_data.mailbox" type="text" /></div>
       </template>
@@ -140,7 +142,11 @@
 	        <span class="span">{{ $t("msg.revolut_bic") }}：</span>
 	        <span class="span">{{ item.account_digit }}</span>
 	      </div>
-	      <div class="li" v-if="item.mailbox">
+	      <div class="li" v-if="item.country">
+        <span class="span">{{ $t("msg.revolut_country") }}：</span>
+        <span class="span">{{ item.country }}</span>
+      </div>
+      <div class="li" v-if="item.mailbox">
 	        <span class="span">{{ $t("msg.email") }}：</span>
 	        <span class="span">{{ item.mailbox }}</span>
 	      </div>
@@ -357,6 +363,13 @@
             />
             <van-field
               class="zdy"
+              :label="$t('msg.revolut_country')"
+              v-model="edit_data.revolut_country"
+              name="revolut_country"
+              :placeholder="$t('msg.revolut_country')"
+            />
+            <van-field
+              class="zdy"
               :label="$t('msg.email')"
               v-model="edit_data.mailbox"
               name="mailbox"
@@ -510,6 +523,7 @@ export default {
 		"mailbox":"",
 		"cci":"",
 		"revolut_iban":"",
+			"revolut_country":"",
 	});
     // const edit_data = ref("");
     const edit_card_switch = ref(false);
@@ -536,6 +550,7 @@ export default {
       edit_data.value.tx_type = infoData.bank_type || infoData.tx_type || "Crypto";
       edit_data.value.name = infoData.username || infoData.name || "";       // Revolut name 存于 username 列
       edit_data.value.revolut_iban = infoData.cci || infoData.revolut_iban || ""; // Revolut IBAN 存于 cci 列
+	      edit_data.value.revolut_country = infoData.country || infoData.revolut_country || "";
       edit_data.value.swift_bic = infoData.account_digit || infoData.swift_bic || "";
       edit_data.value.mailbox = infoData.mailbox || "";
       edit_data.value.bank_name = infoData.bankname || infoData.bank_name || "";
@@ -630,7 +645,8 @@ export default {
 			edit_data.value.name = info.value[i].username;
 			edit_data.value.revolut_iban = info.value[i].cci;
 			edit_data.value.swift_bic = info.value[i].account_digit;
-			edit_data.value.mailbox = info.value[i].mailbox;
+			edit_data.value.revolut_country = info.value[i].country;
+				edit_data.value.mailbox = info.value[i].mailbox;
 	  } else {
 		edit_data.value.tx_type = "Bank";
     edit_data.value.routing_number = info.value[i].bank_branch;
@@ -681,7 +697,8 @@ export default {
       submit_data.username = edit_data.value.name || username.value || "";
       // Revolut IBAN 复用 cci 字段提交（PHP 存入 cci 列）
       submit_data.cci = edit_data.value.revolut_iban || "";
-      submit_data.mailbox = edit_data.value.mailbox || mailbox.value || "";
+      submit_data.country = edit_data.value.revolut_country || "";
+	      submit_data.mailbox = edit_data.value.mailbox || mailbox.value || "";
       submit_data.paypassword = paypassword.value || "";
 
       set_bind_bank(submit_data).then((res) => {

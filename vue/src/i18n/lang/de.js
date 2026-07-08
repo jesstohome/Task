@@ -430,6 +430,7 @@ qingbaochimimayizhi: 'Bitte halten Sie das Passwort einheitlich',
 	revolut_holder: 'Kontoinhaber',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
+		revolut_country: 'Land',
 	virtual_currency: 'Virtuelle Währung',
 	Current_balance: 'Aktuelles Guthaben',
 	}

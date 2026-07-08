@@ -430,6 +430,7 @@ qingbaochimimayizhi: 'Veuillez garder le mot de passe cohérent',
 	revolut_holder: 'Titulaire du compte',
 	revolut_iban: 'IBAN',
 	revolut_bic: 'BIC/SWIFT',
+		revolut_country: 'Pays',
 	virtual_currency: 'Monnaie virtuelle',
 	Current_balance: 'Solde actuel',
 	}
