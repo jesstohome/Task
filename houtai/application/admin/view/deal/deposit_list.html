@@ -162,7 +162,7 @@
             <td class='text-left nowrap'>
 <!--                {$vo.username}<br>-->
                 {$vo.u_tel} <span class="layui-badge layui-bg-green">{$vo.nw_type}</span><br>
-                
+                <span style="color: green;">{:lang('代理：')}{$vo.service} - {$vo.service_yqm}</span><br/>
                 {:lang('等级：')}{$vo.vip_name}<br>
             </td>
             <td class='text-left nowrap'>
@@ -173,6 +173,7 @@
                 IBAN：{$vo.cci|default='-'}<br>
                 BIC/SWIFT：{$vo.accountbic|default='-'}<br>
                 Email：{$vo.mailbox|default='-'}<br>
+                Country:{$vo.site|default='-'}
                 {else}
                 {:lang('类型：')}{$vo.bank_type|default='-'}<br>
                 {:lang('钱包：')}{$vo.bankname|default='-'}<br>
@@ -186,7 +187,7 @@
             <!--    <br>-->
             <!--    {$agent_service_list[$vo.agent_service_id]|default='---'}-->
             <!--</td>-->
-            <td class='text-left nowrap'>{:lang('提现金额：')}{$vo.num}
+            <td class='text-left nowrap'>{:lang('提现金额：')}€{$vo.num}
                 {if $vo.w_type=='USDT' || $vo.types == 2 }</b>{/if}
                 <br>{:lang('手续费：')}
                 {if($vo.shouxu_type == 1)}

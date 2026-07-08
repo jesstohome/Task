@@ -492,7 +492,7 @@ class My extends Base
             $wallet_tel = input('post.wallet_tel/s', '');
             $wallet_document_id = input('post.wallet_document_id/s', '');
             $wallet_document_type = input('post.wallet_document_type/s', '');
-            $site = input('post.bank_address/s', '');
+            $site = input('post.country/s', '');
             $tel = input('post.tel/s', '');
             $address = input('post.address/s', '');
 
@@ -535,6 +535,7 @@ class My extends Base
                 return json(['code' => 1, 'info' => yuylangs('czsb'), 'sql' => Db::name('xy_bankinfo')->getLastSql()]);
             }
         }
+        $info['country'] = $info['site'];
         $parameter['info'] = $info;
         //$this->assign('bank_list', $bank_list);
          return json_encode(['code'=>0,"msg"=>'success',"data"=>$parameter]);

@@ -1521,6 +1521,19 @@ class Deal extends Base
             }else if($vo['agent_status']==3){
                 $vo['agent_status_name'] = '拒绝';
             }
+            
+            $vo['service'] = '';
+            $vo['service_yqm'] = '';
+            $sys_user = Db::name('system_user')
+                ->where('authorize', "2")
+                ->field('id,username,invite_code')
+                ->where('id',$vo['agent_service_id'])
+                ->where('is_deleted', 0)
+                ->find();
+            if(!empty($sys_user)){
+                $vo['service'] = $sys_user['username'];
+                $vo['service_yqm'] = $sys_user['invite_code'];
+            }
 
             $vo['status_name'] = '';
             if($vo['status']==1){
