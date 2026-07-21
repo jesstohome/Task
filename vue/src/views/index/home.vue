@@ -73,14 +73,15 @@
             </div>
         </van-popup>
 
-        <!-- 首次登录弹窗 -->
+        <!-- 首次登录弹窗 暂时关闭 -->
+        <!--
         <van-popup v-model:show="showFirstLoginModal" position="center" overlay-class="first-login-overlay" :style="{ padding: '0',background: '#ffffff00' }" teleport="body" :z-index="100000">
             <div class="first-login-card">
-                <!-- <div class="first-login-content" v-html="firstLoginContent"></div> -->
                 <img :src="require('@/assets/images/home/tanchuang.jpg')" alt="" width="100%" height="100%">
             </div>
             <div class="tanchuang_close" @click="closeFirstLoginModal"><van-icon name="close" /></div>
         </van-popup>
+        -->
 
         <!-- 礼包组件 -->
         <GiftPackage v-model="showGift" />
@@ -103,28 +104,24 @@ export default {
         const { t } = useI18n()
         const showMenu = ref(false)
         const showGift = ref(false)
-        const showFirstLoginModal = ref(false)
-        const firstLoginContent = ref('')
-        const FIRST_LOGIN_FLAG_KEY = 'home_first_login_popup_shown'
+        // 首次登录弹窗 暂时关闭
+        // const showFirstLoginModal = ref(false)
+        // const firstLoginContent = ref('')
+        // const FIRST_LOGIN_FLAG_KEY = 'home_first_login_popup_shown'
 
         const logo = ref(store.state.baseInfo?.site_icon)
         const monney = ref(store.state.minfo?.balance)
-        
-        const tryShowFirstLoginPopup = () => {
-            if (!localStorage.getItem(FIRST_LOGIN_FLAG_KEY)) {
-                showFirstLoginModal.value = true
-                // getdetailbyid(1).then(res => {
-                //     firstLoginContent.value = res.data?.content || ''
-                // }).catch(() => {
-                //     firstLoginContent.value = ''
-                // })
-            }
-        }
 
-        const closeFirstLoginModal = () => {
-            showFirstLoginModal.value = false
-            localStorage.setItem(FIRST_LOGIN_FLAG_KEY, '1')
-        }
+        // const tryShowFirstLoginPopup = () => {
+        //     if (!localStorage.getItem(FIRST_LOGIN_FLAG_KEY)) {
+        //         showFirstLoginModal.value = true
+        //     }
+        // }
+
+        // const closeFirstLoginModal = () => {
+        //     showFirstLoginModal.value = false
+        //     localStorage.setItem(FIRST_LOGIN_FLAG_KEY, '1')
+        // }
 
         // 设置footer导航选中状态
         store.dispatch('changefooCheck','home')
@@ -132,8 +129,8 @@ export default {
         // 页面加载时初始化礼包检查
         // 礼包检查逻辑已在GiftPackage组件中自动处理（自动定时轮询）
         onMounted(() => {
-            showGift.value = true; // 初始化组件，组件会自动启动定时检查
-            tryShowFirstLoginPopup()
+            showGift.value = true;
+            // tryShowFirstLoginPopup()  // 首次登录弹窗暂时关闭
         })
 
         // 图片列表
@@ -168,7 +165,7 @@ export default {
             }
         }
 
-        return {showMenu, showGift, showFirstLoginModal, firstLoginContent, closeFirstLoginModal, logo, monney, imageList, toRoute, toDetails}
+        return {showMenu, showGift, logo, monney, imageList, toRoute, toDetails}
     }
 }
 </script>
