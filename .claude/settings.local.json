@@ -4,7 +4,10 @@
       "Bash(npm install postcss-pxtorem --save-dev)",
       "Bash(cp /tmp/autoload_files.php.bak /Users/dingding/work/code/testcode/Task/houtai/vendor/composer/autoload_files.php)",
       "Bash(cp /tmp/autoload_static.php.bak /Users/dingding/work/code/testcode/Task/houtai/vendor/composer/autoload_static.php)",
-      "Bash(php -r ' *)"
+      "Bash(php -r ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/)",
+      "Bash(curl -s http://localhost:8080/)",
+      "Bash(curl *)"
     ],
     "deny": [],
     "ask": []
