@@ -12,7 +12,7 @@
     <div class="viewport-container">
       <NavBar v-if="showNavBar" />
       <TabNav v-if="showNavBar" />
-      <div class="app-content">
+      <div class="app-content" :class="{ 'has-nav': showNavBar }">
         <my-scroll>
           <router-view />
         </my-scroll>
@@ -128,7 +128,10 @@ export default {
   min-height: 0;
   box-sizing: border-box;
   overflow: hidden;
-  padding-top: 170px;
+}
+
+.app-content.has-nav{
+  padding-top: 190px;
 }
 
 .app-content > *{
