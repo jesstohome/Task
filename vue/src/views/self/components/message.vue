@@ -139,7 +139,7 @@ export default {
         .van-tab--card{
             color: #44a8ff;
             border-right: var(--van-border-width-base) solid #44a8ff;
-            background-color: #fff;
+            background-color: $bg-card;
             &.van-tab--active{
                 background-color: #44a8ff;
                 color: #fff;
@@ -152,12 +152,12 @@ export default {
         .box{
             margin-bottom: 30px;
             padding: 30px;
-            background-color: #fff;
+            background-color: $bg-card;
             border-radius: 12px;
             box-shadow: $shadow;
             .t{
                 font-size: 18px;
-                color: #999;
+                color: $textMuted;
                 margin-top: 20px;
             }
             .content{
@@ -166,12 +166,12 @@ export default {
                 text-align: left;
                 .title{
                     font-size: 28px;
-                    color: #333;
+                    color: $textColor;
                     margin-bottom: 20px;
                 }
                 .text{
                     font-size: 22px;
-                    color: #999;
+                    color: $textMuted;
                 }
             }
             &.not{

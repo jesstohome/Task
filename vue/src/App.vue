@@ -1,12 +1,21 @@
 <template>
+  <!-- 紫色光束背景装饰层 -->
+  <div class="bg-decorations">
+    <div class="bg-beam bg-beam--1"></div>
+    <div class="bg-beam bg-beam--2"></div>
+    <div class="bg-glow bg-glow--tl"></div>
+    <div class="bg-glow bg-glow--br"></div>
+    <div class="bg-line bg-line--top"></div>
+    <div class="bg-line bg-line--bottom"></div>
+  </div>
   <div class="viewport-outer">
     <div class="viewport-container">
+      <NavBar v-if="showNavBar" />
       <div class="app-content">
         <my-scroll>
           <router-view />
         </my-scroll>
       </div>
-      <Footer v-if="showFooter" />
     </div>
   </div>
 </template>
@@ -17,40 +26,27 @@ import { useI18n } from 'vue-i18n'
 import store from '@/store/index'
 import { vantLocales } from '@/i18n/i18n'
 import myScroll from './components/scroll.vue'
-import Footer from './components/footer.vue' // ⭐ 引入 footer
+import NavBar from './components/navbar.vue'
 import { useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue'
 
 export default {
-  components: { myScroll, Footer },
+  components: { myScroll, NavBar },
   setup () {
     const { locale } = useI18n()
     const route = useRoute()
 
-    const showFooter = computed(() => {
-      const noFooterPages = ['login', 'register', 'service','level','libao','detail']
-      return !noFooterPages.includes(route.name)
+    const showNavBar = computed(() => {
+      const noNavPages = ['login', 'register']
+      return !noNavPages.includes(route.name)
     })
 
-    // 设置rem基准，让1rem始终等于设计稿中的1px/20
-    // 在不同设备上保持字体和尺寸一致
     const setRem = () => {
-      //取消整体尺寸自动缩放1
-                    // const width = window.innerWidth
-                    // // 限制最大宽度为1000px，超过1000px时rem基准不再增大
-                    // const baseWidth = Math.min(width, 1000)
-                    // // 设计稿750px，除以20得到37.5作为基准
-                    // // 在1000px宽度时：1000/20 = 50
-                    // const rem = baseWidth / 20
-                    // document.documentElement.style.fontSize = rem + 'px'
       document.documentElement.style.fontSize = 18 + 'px'
     }
 
     onMounted(() => {
       setRem()
-
-      //取消整体尺寸自动缩放2
-                  //window.addEventListener('resize', setRem)
     })
 
     const changeFavicon = link => {
@@ -84,13 +80,14 @@ export default {
     })
 
     return {
-      showFooter
+      showNavBar
     }
   }
 }
 </script>
 
 <style lang="scss">
+@import '@/assets/common.scss';
 .viewport-outer{
   display: flex;
   justify-content: center;
@@ -103,7 +100,7 @@ export default {
 
 .viewport-container{
   width: 100%;
-  max-width: 1000PX; /* 最大宽度1000px */
+  max-width: 1000PX;
   height: 100%;
   position: relative;
   display: flex;
@@ -113,26 +110,28 @@ export default {
 .app-content{
   flex: 1;
   width: 100%;
-  height: 100%;
+  min-height: 0;
   box-sizing: border-box;
   overflow: hidden;
+  padding-top: 100px;
 }
 
 .app-content > *{
-  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
-/* ⭐ Footer 样式 - 固定在底部 */
-.viewport-container > .footer{
+.viewport-container > .navbar{
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0;
+  top: 0;
   width: 100%;
-  max-width: 1000PX; /* 与container一致 */
+  max-width: 1000PX;
   z-index: 9999;
-  background: #fff;
-  box-shadow: 0 -2px 8px rgba(187, 187, 187, 0.3);
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 #app {
@@ -142,16 +141,112 @@ export default {
   text-align: center;
   color: $textColor;
   height: 100vh;
-  /* iOS Safari 优化 */
   position: fixed;
   width: 100%;
   overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
-  /* 防止 iOS 上的双击延迟 */
   touch-action: pan-y;
-  /* 修复背景颜色不一致 - 确保所有设备显示白色背景 */
-  background-color: #ffffff;
-  background: #ffffff;
+  background-color: $bg-primary;
+  background: $bg-primary;
+}
+
+/* ── 紫色光束背景装饰层 ── */
+.bg-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+/* 左上角紫色光晕 */
+.bg-glow--tl {
+  position: absolute;
+  top: -15%;
+  left: -8%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(ellipse at 30% 30%, rgba(153, 26, 255, 0.10) 0%, rgba(120, 20, 220, 0.04) 40%, transparent 70%);
+}
+
+/* 右下角蓝色光晕 */
+.bg-glow--br {
+  position: absolute;
+  bottom: -12%;
+  right: -8%;
+  width: 45%;
+  height: 50%;
+  background: radial-gradient(ellipse at 70% 70%, rgba(59, 130, 246, 0.08) 0%, rgba(30, 80, 200, 0.03) 45%, transparent 72%);
+}
+
+/* 斜向紫色光束 1 */
+.bg-beam--1 {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 35%;
+  height: 120%;
+  background: linear-gradient(
+    135deg,
+    transparent 30%,
+    rgba(153, 26, 255, 0.03) 45%,
+    rgba(153, 26, 255, 0.07) 50%,
+    rgba(153, 26, 255, 0.03) 55%,
+    transparent 70%
+  );
+  transform: rotate(-15deg);
+}
+
+/* 斜向紫色光束 2 */
+.bg-beam--2 {
+  position: absolute;
+  top: 10%;
+  right: -8%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    225deg,
+    transparent 25%,
+    rgba(120, 80, 220, 0.025) 45%,
+    rgba(153, 26, 255, 0.055) 50%,
+    rgba(120, 80, 220, 0.025) 55%,
+    transparent 75%
+  );
+  transform: rotate(10deg);
+}
+
+/* 顶部横向紫色细线 */
+.bg-line--top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(153, 26, 255, 0.15) 20%,
+    rgba(153, 26, 255, 0.3) 50%,
+    rgba(153, 26, 255, 0.15) 80%,
+    transparent 100%
+  );
+}
+
+/* 底部横向紫色细线 */
+.bg-line--bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(153, 26, 255, 0.10) 30%,
+    rgba(153, 26, 255, 0.20) 50%,
+    rgba(153, 26, 255, 0.10) 70%,
+    transparent 100%
+  );
 }
 </style>

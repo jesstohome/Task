@@ -703,10 +703,10 @@ export default {
     margin: 20px;
     // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     padding: 40px;
-    background: #fff;
+    background: $bg-card;
     border-radius: 12px;
     font-size: 32px;
-    color: #333;
+    color: $textColor;
     text-align: left;
     .bank_name {
       margin-bottom: 10px;
@@ -718,7 +718,7 @@ export default {
         font-size: 24px;
       }
       .van-cell{
-        background-color: #f5f5f5;
+        background-color: $bg-card;
         padding: 20px;
       }
     }
@@ -727,10 +727,10 @@ export default {
     margin: 20px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     padding: 40px;
-    background: #fff;
+    background: $bg-card;
     border-radius: 12px;
     font-size: 24px;
-    color: #333;
+    color: $textColor;
     text-align: left;
     .li {
       margin-bottom: 10px;
@@ -828,7 +828,7 @@ export default {
     .text_b {
       margin: 150px 60px 40px;
       font-size: 18px;
-      color: #999;
+      color: $textMuted;
       text-align: left;
       .tex {
         margin-top: 20px;
@@ -891,7 +891,7 @@ export default {
     cursor: pointer;
   }
   .picker-list li:hover {
-    background: #f5f5f7;
+    background: $bg-card;
   }
 
   /* Ensure the popup container is constrained to 50% height and inner body allows wheel */

@@ -237,11 +237,10 @@ export default {
 	line-height: 82px;
 }
 .order{
-    background-color: #f1f1f1;
-    margin-top: 50px;
-    margin-bottom: 100px;
+    background-color: $bg-primary;
+    margin-top: 20px;
     :deep(.van-nav-bar){
-        background-color: #d4dff5;
+        background-color: $bg-primary;
     }
     :deep(.van-tab__panel){
         padding: 0 var(--van-padding-md);
@@ -264,7 +263,7 @@ export default {
   :deep(.van-list__finished-text){
       padding: 20px 0;
       text-align: center;
-      color: #999;
+      color: $textMuted;
       font-size: 24px;
   }
 }
@@ -284,21 +283,23 @@ export default {
 .list{
     padding: 30px;
     box-shadow: $shadow;
-    color: $subtext;
+    color: $textSecondary;
     text-align: left;
     margin-top: 20px;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: $bg-card;
         .top{
         display: flex;
         justify-content: space-between;
         margin-bottom: 35px;
         font-size: 26px;
+        color: $textColor;
     }
     .cet{
         display: flex;
-        background-color: #fafafa;
+        background-color: $bg-card-hover;
         padding: 10px 0;
+        border-radius: 8px;
         &.aaa{
             .img{
                 width: auto;
@@ -311,7 +312,7 @@ export default {
             height: 180PX;
         }
         .text{
-            color: #333;
+            color: $textColor;
             font-size: 24px;
             display: flex;
             flex-direction: column;
@@ -340,15 +341,15 @@ export default {
             justify-content: space-between;
             font-size: 24px;
             margin-top: 15PX;
-            color: #333;
+            color: $textColor;
             .span{
-                color: #333;
+                color: $textSecondary;
             }
             .van-count-down{
                 color: red;
             }
             .value{
-                color: #999;
+                color: $textSecondary;
                 :deep(.van-rate__icon) {
                     font-size: 36px;
                 }
@@ -368,7 +369,7 @@ export default {
     margin: 20px 30px;
     margin-bottom: 0px;
     font-size: 26px;
-    color: #000000;
+    color: $textColor;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -383,7 +384,7 @@ export default {
     .pinglunb{
         margin-top: 20px;
             width: 90%;
-    border: 1px solid #dadada;
+    border: 1px solid $border;
     border-radius: 5px;
     }
 }

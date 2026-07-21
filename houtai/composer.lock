@@ -499,16 +499,16 @@
         },
         {
             "name": "zoujingli/ip2region",
-            "version": "v1.0.12",
+            "version": "v3.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zoujingli/ip2region.git",
-                "reference": "82cebc7a6be46524797454e98d3b165521065c26"
+                "reference": "v3.0.15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/82cebc7a6be46524797454e98d3b165521065c26",
-                "reference": "82cebc7a6be46524797454e98d3b165521065c26",
+                "url": "https://api.github.com/repos/zoujingli/ip2region/zipball/v3.0.15",
+                "reference": "v3.0.15",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -518,12 +518,18 @@
                 ]
             },
             "require": {
-                "php": ">=5.3"
+                "php": ">=7.1.0"
             },
             "type": "library",
             "autoload": {
+                "psr-4": {
+                    "ip2region\\": "src/ip2region/"
+                },
                 "classmap": [
-                    "Ip2Region.php"
+                    "src/Ip2Region.php"
+                ],
+                "files": [
+                    "src/common.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -534,19 +540,19 @@
                 {
                     "name": "Anyon",
                     "email": "zoujingli@qq.com",
-                    "homepage": "http://ctolog.com"
+                    "homepage": "https://thinkadmin.top"
                 }
             ],
-            "description": "Ip2Region for PHP",
+            "description": "ip2region v3.0 for PHP - IP geolocation library with IPv4/IPv6 support",
             "homepage": "https://github.com/zoujingli/Ip2Region",
             "keywords": [
-                "Ip2Region"
+                "ip2region", "ip", "ipv4", "ipv6", "geolocation"
             ],
             "support": {
                 "issues": "https://github.com/zoujingli/ip2region/issues",
-                "source": "https://github.com/zoujingli/ip2region/tree/v1.0.12"
+                "source": "https://github.com/zoujingli/ip2region/tree/v3.0.15"
             },
-            "time": "2022-03-03T10:24:30+00:00"
+            "time": "2026-01-01T00:00:00+00:00"
         },
         {
             "name": "zoujingli/think-library",

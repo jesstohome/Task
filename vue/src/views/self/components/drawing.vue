@@ -291,7 +291,7 @@ export default {
         .text_b{
             margin:70px 60px 40px;
             font-size: 27px;
-            color: #333;
+            color: $textColor;
             text-align: left;
             line-height: 1.5;
             .tex{
@@ -313,7 +313,7 @@ export default {
             text-align: left;
             font-size: 30px;
             margin-bottom: 20px;
-            color: #333;
+            color: $textColor;
         }
         .ktx{
             width: 100%;
@@ -340,10 +340,10 @@ export default {
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 40px;
-            background-color: #fff;
+            background-color: $bg-card;
             padding: 24px;
             border-radius: 20px;
-            color: #333;
+            color: $textColor;
             .text{
                 display: flex;
                 width: 100%;
@@ -364,7 +364,7 @@ export default {
                 span{
                     flex: 1;
                     &.tel{
-                        color: #999;
+                        color: $textMuted;
                     }
                 }
             }
@@ -379,8 +379,8 @@ export default {
             .span{
                 padding: 4px 8px;
                 border-radius: 6px;
-                background-color: #f0f0f0;
-                color: #333;
+                background-color: $bg-card-hover;
+                color: $textColor;
                 font-size: 14px;
                 white-space: nowrap;
                 cursor: pointer;

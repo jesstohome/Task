@@ -99,7 +99,7 @@ export default {
     .list{
         border-radius: 30px;
         position: relative;
-        background-color: #fff;
+        background-color: $bg-card;
         text-align: left;
         overflow: hidden;
         margin-top: -85px;

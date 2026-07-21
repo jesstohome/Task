@@ -18,7 +18,7 @@
     "ext-mbstring": "*",
     "endroid/qr-code": "^1.9",
     "topthink/framework": "5.1.*",
-    "zoujingli/ip2region": "^1.0",
+    "zoujingli/ip2region": "^3.0",
     "zoujingli/think-library": "5.1.x-dev",
     "zoujingli/weopen-developer": "dev-master",
     "phpoffice/phpexcel": "^1.8"

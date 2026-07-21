@@ -322,14 +322,12 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/theme.scss';
 .content{
-    // background-color: #f3f3f3;
     font-size: 30px;
     font-weight: 900;
-	margin-bottom: 200px;
-	padding-bottom: 200px;
+    padding-bottom: 100px;
 }
 :deep(.van-nav-bar){
-        background-color: #000000;
+        background-color: $textColor;
         color: #fff;
         position: absolute;
         left: 0;
@@ -373,14 +371,14 @@ export default {
         }
 		.tops {
 				margin-bottom: 0;
-				color: #333;
+				color: $textColor;
 				.span {
 						margin-right: 24px;
 				}
 		}
 		.box{
 				padding: 15px;
-				border: 2px solid #ccc;
+				border: 2px solid $border;
 				margin-top: 24px;
 				&:first-child{
 						margin-top: 0;
@@ -401,7 +399,7 @@ export default {
         display: flex;
         justify-content: flex-start;
         margin: 20px;
-        background-color: #f0f0f0;
+        background-color: $bg-card;
         border-radius: 10px;
         line-height: 100px;
         align-items: center;
@@ -417,7 +415,7 @@ export default {
         padding: 20px;
         border-radius: 10px;
         margin: 0 20px 20px 20px;
-        background-color: #fff;
+        background-color: $bg-card;
         display: flex;
         justify-content: space-between;
         .tent{
@@ -428,11 +426,11 @@ export default {
             gap: 10px;
             .span{
                 font-size: 28px;
-                color: #333;
+                color: $textColor;
             }
             .value{
                 font-size: 28px;
-                color: #666;
+                color: $textSecondary;
             }
         }
 }
@@ -440,18 +438,18 @@ export default {
         padding: 20px;
         border-radius: 10px;
         margin: 0 20px 20px 20px;
-        background-color: #fff;
+        background-color: $bg-card;
         .tent{
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
             .span{
                 font-size: 28px;
-                color: #333;
+                color: $textColor;
             }
             .value{
                 font-size: 28px;
-                color: #666;
+                color: $textSecondary;
             }
         }
 }
@@ -459,7 +457,7 @@ export default {
 		margin: 20px 20px;
 		margin-bottom: 0px;
 		font-size: 26px;
-		color: #000000;
+		color: $textColor;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -480,20 +478,20 @@ export default {
 				margin-top: 20px;
 				width: 98%;
                 padding: 10px;
-		border: 1px solid #dadada;
+		border: 1px solid $border;
 		border-radius: 5px;
-        background-color: #fff;
+        background-color: $bg-card;
         font-size: 30px;
         :deep(.van-cell__title) {
             font-size: 30px;    /* 例如 28/30 按需调整 */
-            color: #333;
+            color: $textColor;
             line-height: 50px;
         }
 
             /* 调整 cell 值（右侧）文字大小 */
         :deep(.van-cell__value) {
             font-size: 28px;
-            color: #666;
+            color: $textSecondary;
             line-height: 50px;
             }
         :deep(.van-button__content){

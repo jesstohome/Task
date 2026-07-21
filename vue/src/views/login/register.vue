@@ -250,7 +250,7 @@ export default {
 @import '@/styles/theme.scss';
 .homes{
   font-weight: 900;
-  //background-image: linear-gradient(rgb(10, 66, 255), rgb(11, 199, 255));
+  background: $bg-primary;
     :deep(.van-cell){
         font-size: 30px;
         line-height: 30px;
@@ -265,11 +265,11 @@ export default {
             background-color: initial;
         }
         .van-ellipsis{
-          color: #000;
+          color: $textColor;
         }
         .van-cell{
             padding: 34px 10px;
-            border-bottom: 1px solid #b2b2b2;
+            border-bottom: 1px solid $border;
             background-color: initial;
             &.zdy{
               .van-field__left-icon{
@@ -306,7 +306,7 @@ export default {
                 font-size: 30px;
             }
             .van-field__label{
-              color: #000;
+              color: $textColor;
             }
             &::after {
                 display: none;

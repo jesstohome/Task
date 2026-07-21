@@ -229,7 +229,7 @@ export default {
         .text_b{
             margin: 150px 60px 40px;
             font-size: 18px;
-            color: #999;
+            color: $textMuted;
             text-align: left;
             .tex{
                 margin-top: 20px;

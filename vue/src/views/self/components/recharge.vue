@@ -105,9 +105,9 @@ export default {
     :deep(.van-list){
         .van-loading{
             background: initial;
-            color: #666;
+            color: $textSecondary;
             .van-loading__text{
-                color: #666;
+                color: $textSecondary;
             }
         }
         .address{
@@ -124,7 +124,7 @@ export default {
                 .time{
                     font-size: 28px;
                     font-weight: 600;
-                    color: #333;
+                    color: $textColor;
                 }
                 .tag{
                     margin-top: 30px;

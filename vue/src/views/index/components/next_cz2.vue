@@ -138,7 +138,7 @@ export default {
         .text_b{
             margin: 150px 60px 40px;
             font-size: 18px;
-            color: #999;
+            color: $textMuted;
             text-align: left;
             .tex{
                 margin-top: 20px;
@@ -196,7 +196,7 @@ export default {
                 padding-left: 30px;
                 border-left: 10px solid $theme;
                 font-size: 24px;
-                color: #333;
+                color: $textColor;
                 margin-bottom: 5px;
             }
             .van-radio-group{

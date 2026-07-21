@@ -163,7 +163,7 @@ export default {
         :deep(.van-tab){
             font-size: 30px;
             font-weight: 600;
-            color: #333;
+            color: $textColor;
             flex: 1;
         }
         :deep(.van-tab--active){
@@ -266,7 +266,7 @@ export default {
         .text_b{
             margin: 150px 60px 40px;
             font-size: 18px;
-            color: #999;
+            color: $textMuted;
             text-align: left;
             .tex{
                 margin-top: 20px;

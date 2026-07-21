@@ -34,7 +34,7 @@
         
       </div>
     </van-form>
-    <div class="footer-copyright">©2018-2026 AWISEE</div>
+    <div class="footer-copyright">©2018-2026 shiftdigital</div>
   </div>
   
 </template>
@@ -122,7 +122,7 @@ font-weight: 900;
 min-height: 100vh;
 display: flex;
 flex-direction: column;
-  //background-image: linear-gradient(180deg,#0a3cff,#0bd3ff);
+background: $bg-primary;
     :deep(.van-form){
         flex: 1;
         padding: 40px 0 0;
@@ -131,11 +131,11 @@ flex-direction: column;
             background-color: initial;
         }
         .van-ellipsis{
-          color: #000;
+          color: $textColor;
         }
         .van-cell{
             padding: 30px 10px;
-            border-bottom: 1px solid #1a7ae7;
+            border-bottom: 1px solid $border;
             background-color: initial;
             &.zdy{
               .van-field__left-icon{
@@ -230,5 +230,6 @@ flex-direction: column;
     width: 100%;
     font-size: 26px;
     font-weight: 500;
+    color: $textMuted;
 }
 </style>

@@ -8,7 +8,7 @@
       <!-- K线图容器 -->
       <div class="loading-kline-wrap">
         <div class="kline-header">
-          <span class="kline-symbol">📈 AWISEE</span>
+          <span class="kline-symbol">📈 shiftdigital</span>
           <span class="kline-badge" :class="klineTrend === 'up' ? 'kline-badge--up' : 'kline-badge--down'">
             {{ klineTrend === 'up' ? '▲' : '▼' }} {{ klinePct }}%
           </span>
@@ -185,7 +185,7 @@
           </div>
         </div>
       </div>
-      <div class="copyright">©2018-2026 AWISEE</div>
+      <div class="copyright">©2018-2026 shiftdigital</div>
     </div>
 
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">
@@ -898,13 +898,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/theme.scss';
 
 .hero-info{
     display: flex;
     justify-content: space-between;
     margin: 30px 30px;
     font-size: 28px;
-    color: #000;
+    color: $textColor;
     font-weight: 500;
 }
 
@@ -1460,8 +1461,8 @@ export default {
 }
 .hero-cards { position: relative; z-index: 2; display: flex; gap: 20px; padding: 0 24px; padding-bottom: 60px; top: 70px; }
 .hero-card {
-  flex: 1; background: #ffffff; border-radius: 24px; padding: 28px 24px 28px;
-  position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.18); text-align: left; overflow: visible;
+  flex: 1; background: $bg-card; border-radius: 24px; padding: 28px 24px 28px;
+  position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.4); text-align: left; overflow: visible;
 }
 .hero-card-icon {
   position: absolute; top: -48px; left: 80%; transform: translateX(-50%);
@@ -1471,16 +1472,16 @@ export default {
   &--wallet { background: linear-gradient(135deg, #7b6cf6 0%, #5b4fcf 100%); }
   &--ad { background: linear-gradient(135deg, #8b6cf6 0%, #6a3fcf 100%); }
 }
-.hero-card-label { font-size: 26px; font-weight: 700; color: #1a1a2e; margin-top: 8px; margin-bottom: 10px; }
+.hero-card-label { font-size: 26px; font-weight: 700; color: $textColor; margin-top: 8px; margin-bottom: 10px; }
 .hero-card-amount { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-.hero-card-amount--negative { font-size: 38px; font-weight: 800; color: #991aff; }
-.hero-card-amount--zero { font-size: 38px; font-weight: 800; color: #991aff; }
-.hero-card-currency { font-size: 26px; font-weight: 600; color: #555; }
-.hero-card-desc { font-size: 24px; line-height: 1.5; color: #000; }
+.hero-card-amount--negative { font-size: 38px; font-weight: 800; color: $theme; }
+.hero-card-amount--zero { font-size: 38px; font-weight: 800; color: $theme; }
+.hero-card-currency { font-size: 26px; font-weight: 600; color: $textSecondary; }
+.hero-card-desc { font-size: 24px; line-height: 1.5; color: $textSecondary; }
 .hero-arc { position: relative; z-index: 1; width: 100%; height: 0; }
 :deep(.ad-showcase) { margin-top: -20px; }
 
-.below-showcase { width: 100%; padding: 0 24px 40px; box-sizing: border-box; background: #ffffff;margin-top: 80px; }
+.below-showcase { width: 100%; padding: 0 24px 40px; box-sizing: border-box; background: $bg-primary;margin-top: 80px; }
 .notes-card { position: relative; border-radius: 20px; overflow: hidden; margin-bottom: 32px; min-height: 180px; }
 .notes-card-bg {
   position: absolute; inset: 0; z-index: 0;
@@ -1490,14 +1491,14 @@ export default {
 .notes-content { position: relative; z-index: 1; padding: 32px 28px; text-align: left; }
 .notes-title { font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 18px; }
 .notes-body { font-size: 26px; line-height: 1.7; color: rgba(255,255,255,0.88); p { margin: 0 0 6px; } }
-.copyright { text-align: center; font-size: 24px; color: #aaaaaa; padding: 8px 0 24px; }
+.copyright { text-align: center; font-size: 24px; color: $textMuted; padding: 8px 0 24px; }
 
 .obj {
-  display: flex; flex-direction: column; padding-bottom: 160px !important;
+  display: flex; flex-direction: column;
   .content {
-    flex: 1; background-color: #fff; padding: 30px; overflow: auto;
+    flex: 1; background-color: $bg-primary; padding: 30px; overflow: auto;
     border-top-left-radius: 30px; border-top-right-radius: 30px;
-    padding-top: 0px; padding-bottom: 650px; color: #333;
+    padding-top: 0px; padding-bottom: 40px; color: $textColor;
     .qd { margin-top: 40px; text-align: left;
       .title { font-size: 28px; font-weight: 600; color: #333; }
       .sub { font-size: 24px; line-height: 30px; margin-top: 10px; color: #333; }

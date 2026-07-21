@@ -84,7 +84,7 @@
         ),
         'zoujingli/ip2region' => array(
             'pretty_version' => 'v1.0.12',
-            'version' => '1.0.12.0',
+            'version' => '3.0.15.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../zoujingli/ip2region',
             'aliases' => array(),

@@ -318,7 +318,7 @@ export default {
         margin: 50px 15px;
         .yezr{
             text-align: left;
-            color: #333;
+            color: $textColor;
             margin-top: 50px;
             margin-bottom: 50px;
             font-size: 30px;
@@ -326,7 +326,7 @@ export default {
         .licai{
             margin-top: 20px;
             margin-bottom: 10px;
-            color: #333;
+            color: $textColor;
             display: flex;
             font-size: 30px;
             .licaia{
@@ -338,7 +338,7 @@ export default {
             width: 100%;
             border-radius: 30px;
             padding: 30px;
-            background-color: #fff;
+            background-color: $bg-card;
             .top{
                 padding: 24px 0;
                 display: flex;
@@ -351,7 +351,7 @@ export default {
                     width: 50%;
                     text-align: left;
                     .text{
-                        color: #333;
+                        color: $textColor;
                     }
                     .value{
                         margin-top: 20px;
@@ -369,7 +369,7 @@ export default {
                     text-align: left;
                     .text{
                         font-size: 28px;
-                        color: #333;
+                        color: $textColor;
                         margin-bottom: 20px;
                         .texta{
                             font-size: 28px;
@@ -416,7 +416,7 @@ export default {
                     margin-top: 40px;
                     .l{
                         font-size: 22px;
-                        color: #333;
+                        color: $textColor;
                         margin-right: 20px;
                     }
                     .r{
@@ -434,10 +434,10 @@ export default {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                background-color: #fff;
+                background-color: $bg-card;
                 margin-top: 20px;
                 border-radius: 10px;
-                color: #333;
+                color: $textColor;
                 border: 1px solid #ccc;
                 padding: 15px 0;
                 &.check{
@@ -483,9 +483,9 @@ export default {
         :deep(.van-list){
             .van-loading{
                 background: initial;
-                color: #666;
+                color: $textSecondary;
                 .van-loading__text{
-                    color: #666;
+                    color: $textSecondary;
                 }
             }
             .address{
@@ -494,7 +494,7 @@ export default {
                 padding: 30px 30px 120px;
                 margin: 0 0px 40px;
                 text-align: left;
-                background-color: #fff;
+                background-color: $bg-card;
                 &.mb30{
                     padding-bottom: 30px;
                 }
@@ -505,7 +505,7 @@ export default {
                     .time{
                         font-size: 30px;
                         font-weight: 600;
-                        color: #333;
+                        color: $textColor;
                     }
                     .tag{
                         font-size: 28px;
@@ -520,12 +520,12 @@ export default {
                     .time{
                         font-size: 22px;
                         font-weight: 600;
-                        color: #999;
+                        color: $textMuted;
                     }
                     .tag{
                         font-size: 22px;
                         font-weight: 600;
-                        color: #333;
+                        color: $textColor;
                     }
                 }
                 .ra{

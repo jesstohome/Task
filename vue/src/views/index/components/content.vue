@@ -61,11 +61,11 @@
         text-align: left;
         padding: 40px 30px;
         font-size: 30px;
-        color: #333;
+        color: $textColor;
         line-height: 1.8;
         overflow: auto;
         border-radius: 12px;
-        background-color: #fff;
+        background-color: $bg-card;
         flex: 1;
     }
 }

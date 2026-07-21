@@ -127,9 +127,9 @@ export default {
     :deep(.van-list){
         .van-loading{
             background: initial;
-            color: #666;
+            color: $textSecondary;
             .van-loading__text{
-                color: #666;
+                color: $textSecondary;
             }
         }
         .address{
@@ -140,7 +140,7 @@ export default {
             // background-image: url('~@/assets/images/self/address/bg.png');
             // background-size: 100% 100%;
             text-align: left;
-            background-color: #fff;
+            background-color: $bg-card;
             &.mb30{
                 padding-bottom: 30px;
             }
@@ -151,7 +151,7 @@ export default {
                 .time{
                     font-size: 30px;
                     font-weight: 600;
-                    color: #333;
+                    color: $textColor;
                 }
                 .tag{
                     font-size: 18px;
@@ -166,12 +166,12 @@ export default {
                 .time{
                     font-size: 22px;
                     font-weight: 600;
-                    color: #999;
+                    color: $textMuted;
                 }
                 .tag{
                     font-size: 22px;
                     font-weight: 600;
-                    color: #333;
+                    color: $textColor;
                 }
             }
             .r{

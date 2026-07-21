@@ -208,7 +208,7 @@ export default {
         .text_b{
             margin: 70px 60px 40px;
             font-size: 28px;
-            color: #999;
+            color: $textMuted;
             text-align: left;
             .tex{
                 margin-top: 20px;
@@ -230,7 +230,7 @@ export default {
             flex-wrap: wrap;
             // justify-content: space-between;
             margin-bottom: 40px;
-            color: #333;
+            color: $textColor;
             .span{
                 width: 30%;
                 line-height: 62px;
@@ -240,7 +240,7 @@ export default {
                 font-size: 30px;
                 margin-bottom: 20px;
                 margin-left: 5%;
-                background-color: #fff;
+                background-color: $bg-card;
                 &:nth-child(3n+1){
                     margin-left: 0;
                 }
@@ -279,7 +279,7 @@ export default {
         }
         .warn{
             white-space: nowrap;
-            color: #333;
+            color: $textColor;
             margin: 40px 0;
             text-align: left;
             .l {
@@ -290,7 +290,7 @@ export default {
             text-align: left;
             .title{
                 font-size: 32px;
-                color: #333;
+                color: $textColor;
             }
             .van-radio-group{
                 display: flex;

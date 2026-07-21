@@ -9,16 +9,21 @@ class ComposerStaticInit09fb67115c1225dd8c791a62882d72d6
     public static $files = array (
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '8dafcc6956460bc297e00381fed53e11' => __DIR__ . '/..' . '/zoujingli/think-library/src/common.php',
+        'c35bd2c4a1a74328ff526c8ddb0ccfc0' => __DIR__ . '/..' . '/zoujingli/ip2region/src/common.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        't' => 
+        't' =>
         array (
             'think\\composer\\' => 15,
         ),
-        'l' => 
+        'l' =>
         array (
             'library\\' => 8,
+        ),
+        'i' =>
+        array (
+            'ip2region\\' => 10,
         ),
         'W' => 
         array (
@@ -59,7 +64,11 @@ class ComposerStaticInit09fb67115c1225dd8c791a62882d72d6
         array (
             0 => __DIR__ . '/..' . '/topthink/think-installer/src',
         ),
-        'library\\' => 
+        'ip2region\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/zoujingli/ip2region/src/ip2region',
+        ),
+        'library\\' =>
         array (
             0 => __DIR__ . '/..' . '/zoujingli/think-library/src',
         ),
@@ -123,7 +132,7 @@ class ComposerStaticInit09fb67115c1225dd8c791a62882d72d6
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Ip2Region' => __DIR__ . '/..' . '/zoujingli/ip2region/Ip2Region.php',
+        'Ip2Region' => __DIR__ . '/..' . '/zoujingli/ip2region/src/Ip2Region.php',
         'We' => __DIR__ . '/..' . '/zoujingli/wechat-developer/We.php',
     );
 

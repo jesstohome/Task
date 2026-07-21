@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install postcss-pxtorem --save-dev)"
+      "Bash(npm install postcss-pxtorem --save-dev)",
+      "Bash(cp /tmp/autoload_files.php.bak /Users/dingding/work/code/testcode/Task/houtai/vendor/composer/autoload_files.php)",
+      "Bash(cp /tmp/autoload_static.php.bak /Users/dingding/work/code/testcode/Task/houtai/vendor/composer/autoload_static.php)",
+      "Bash(php -r ' *)"
     ],
     "deny": [],
     "ask": []

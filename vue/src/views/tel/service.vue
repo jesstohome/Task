@@ -120,11 +120,11 @@ export default {
                 }
                 .title{
                     font-size: 36px;
-                    color: #333;
+                    color: $textColor;
                 }
                 .time{
                     font-size: 20px;
-                    color: #999;
+                    color: $textSecondary;
                 }
                 .van-button{
                     padding: 0;

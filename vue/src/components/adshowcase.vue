@@ -323,7 +323,7 @@ $brand: #991aff;
 .ad-showcase {
   width: 100%;
   padding-bottom: 40px;
-  background: #fff;
+  background: transparent;
   box-sizing: border-box;
   padding: 50px;
   padding-top: 0px;

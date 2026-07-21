@@ -101,7 +101,7 @@ export default {
         border-radius: 30px;
         flex: 1;
         overflow: auto;
-        // background-color: #fff;
+        // background-color: $bg-card;
         .bottom{
             width: 100%;
             height: 74px;
@@ -114,7 +114,7 @@ export default {
         }
         .top{
             padding:20px;
-            background-color: #fff;
+            background-color: $bg-card;
             border-radius: 20px;
             .title{
                 margin-bottom: 20px;
@@ -123,14 +123,14 @@ export default {
                 font-size: 22px;
                 line-height: 2;
                 text-indent: 2em;
-                color: #666;
+                color: $textSecondary;
                 margin-bottom: 20px;
             }
             .b{
                 width: 290px;
                 margin: 0 auto;
                 font-size: 26px;
-                color: #333;
+                color: $textColor;
                 position: relative;
                 .span{
                     margin-left: 5px;

@@ -7,7 +7,7 @@
             </template>
         </template>
     </van-nav-bar>
-    <img :src="logo" class="logo" alt="" :class="!leftArrow && 'lo'" width="80">
+    <img :src="logoSrc" class="logo" alt="" :class="!leftArrow && 'lo'" width="80">
     <div class="title" v-if="$route.name === 'login'">Login Now</div>
     <div class="title" v-else>Register Now</div>
     <van-dialog v-model:show="show" :showConfirmButton="false">
@@ -61,6 +61,7 @@ export default {
     const show = ref(false);
     const langcheck = ref('')
     const langImg = ref('')
+    const logoSrc = require('@/assets/images/shiftlogo-header.svg')
     const logo = ref(store.state.baseInfo?.site_icon)
     const app_name = ref(store.state.baseInfo?.app_name)
     langcheck.value = store.state.lang
@@ -83,18 +84,19 @@ export default {
       langs.value = (newVal?.languageList) || []
     }, { deep: true })
 
-    return {show,langs,handSeletlanguages,langcheck,submitLang,logo,app_name}
+    return {show,langs,handSeletlanguages,langcheck,submitLang,logoSrc,logo,app_name}
   }
 }
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/theme.scss';
 .home{
   position: relative;
   padding-top: calc(var(--van-nav-bar-height) + 10px);
   
   &.login {
-    background-color: white;
+    background-color: $bg-primary;
     .lang-icon {
       width: 60px;
       height: 60px;

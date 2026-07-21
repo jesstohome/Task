@@ -154,12 +154,12 @@ export default {
             text-align: left;
             display: flex;
             justify-content: space-between;
-            background-color: #fff;
+            background-color: $bg-card;
             .l{
                 .time{
                     font-size: 28px;
                     // font-weight: 600;
-                    color: #333;
+                    color: $textColor;
                     &.red{
                         color: red;
                     }

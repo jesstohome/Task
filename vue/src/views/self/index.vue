@@ -159,7 +159,7 @@
       <button class="logout-btn" @click="tuichu">Logout</button>
     </div>
 
-    <div class="copyright">©2018-2026 AWISEE</div>
+    <div class="copyright">©2018-2026 shiftdigital</div>
 
     <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />
@@ -349,9 +349,9 @@ export default {
    新版整体容器
    ════════════════════════════════════════════════════════════ */
 .self-new {
-  //background: #f5f5f5;
+  background: $bg-primary;
   min-height: 100vh;
-  padding-bottom: 140px;  /* 给底部logout按钮留空间 */
+  padding-bottom: 40px;
   overflow-x: hidden;
 }
 
@@ -377,9 +377,9 @@ export default {
    头像从卡片上边探出（负的margin-top）
    ════════════════════════════════════════════════════════════ */
 .profile-main {
-  background: #ffffff;
+  background: $bg-card;
   border-radius: 28px;
-  margin-top: -30px;  /* 卡片探出背景图 */
+  margin-top: -30px;
   position: relative;
   z-index: 10;
   padding: 0 28px 36px;
@@ -421,18 +421,18 @@ export default {
 .profile-username {
   font-size: 36px;
   font-weight: 800;
-  color: #1a1a2e;
+  color: #fff;
   margin-bottom: 6px;
   letter-spacing: 0.5px;
 }
 .profile-invite {
   font-size: 26px;
-  color: #666666;
+  color: $textSecondary;
   font-weight: 400;
 }
 .profile-invite-code {
   font-weight: 700;
-  color: #333333;
+  color: $textColor;
 }
 
 /* Credit Score 行 */
@@ -444,7 +444,7 @@ export default {
 }
 .profile-credit-label {
   font-size: 26px;
-  color: #555555;
+  color: $textSecondary;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -465,7 +465,7 @@ export default {
 .profile-credit-pct {
   font-size: 26px;
   font-weight: 800;
-  color: #1a1a2e;
+  color: #fff;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -520,7 +520,7 @@ export default {
 .menu-section-title {
   font-size: 34px;
   font-weight: 800;
-  color: #1a1a2e;
+  color: #fff;
   margin-bottom: 16px;
   text-align: left;
   padding-left: 4px;
@@ -528,7 +528,7 @@ export default {
 
 /* 菜单卡片容器 */
 .menu-group {
-  background: #f3f3f3;
+  background: $bg-card;
   border-radius: 20px;
   overflow: hidden;
 }
@@ -538,7 +538,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 30px 24px;
-  background: #f0f0f0;
+  background: $bg-card;
   cursor: pointer;
   transition: background 0.15s;
   position: relative;
@@ -551,11 +551,11 @@ export default {
     right: 0;
     bottom: 0;
     height: 1px;
-    background: #e0e0e0;
+    background: $border;
   }
 
   &:active {
-    background: #e8e8e8;
+    background: $bg-card-hover;
   }
 }
 
@@ -570,10 +570,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
   }
 }
 
@@ -581,14 +583,14 @@ export default {
   flex: 1;
   font-size: 30px;
   font-weight: 500;
-  color: #1a1a2e;
+  color: $textColor;
   text-align: left;
 }
 
 /* 右侧箭头 */
 .menu-item-arrow {
   font-size: 50px;
-  color: #bbbbbb;
+  color: $textMuted;
   font-weight: 900;
   line-height: 1;
 }
@@ -629,7 +631,7 @@ export default {
 .copyright {
   text-align: center;
   font-size: 24px;
-  color: #aaaaaa;
+  color: $textMuted;
   padding: 8px 0 24px;
 }
 </style>

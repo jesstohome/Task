@@ -202,7 +202,7 @@ export default {
                         font-weight: 600;
                         border-radius: 20px;
                         &.check{
-                            background-color: #fff;
+                            background-color: $bg-card;
                             color: $theme;
                         }
                     }
@@ -221,13 +221,13 @@ export default {
                 }
             }
             :deep(.van-calendar){
-                color: #333;
+                color: $textColor;
             }
         }
     }
     .list{
         position: relative;
-        background-color: #fff;
+        background-color: $bg-card;
         text-align: left;
         // overflow: hidden;
         margin-top: -85px;
