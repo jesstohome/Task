@@ -19,15 +19,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home_box{
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     .pore{
         flex: 1;
-        overflow: auto;
         display: flex;
         flex-direction: column;
-
     }
 
 }

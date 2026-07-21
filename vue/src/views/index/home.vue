@@ -25,7 +25,7 @@
       <p class="about-text">
         Whether you're a dealership growing your market share or trying to stand out among the competition;
         we have the team, tech-enabled products and innovative strategies to help any OEM grow their business.
-        That's why these top automotive brands have chosen Force Marketing and our Family of Brands as a
+        That's why these top automotive brands have chosen shiftdigital and our Family of Brands as a
         Certified Advertising Partner. We offer customized programs to each OEMs guidelines that help dealers
         across the nation maximize their ad dollars with approved Co-op funding.
       </p>
@@ -118,7 +118,7 @@
     <section class="cta-section">
       <p class="cta-heading"><strong>OUR BRANDS</strong></p>
       <h4 class="cta-subheading">
-        Explore Force Marketing's rich portfolio of brands that provide dealers with a
+        Explore shiftdigital's rich portfolio of brands that provide dealers with a
         new front-to-back consumer lifecycle marketing solution.
       </h4>
       <button class="cta-btn" @click="$router.push('/tel')">
@@ -152,7 +152,20 @@
           </div>
         </div>
 
-        <!-- Col 2: Thumbnails -->
+        <!-- Col 2: Video -->
+        <div class="footer-col footer-col--video">
+          <div class="video-wrapper">
+            <iframe
+              src="https://www.youtube.com/embed/c1hS4eXQzXo"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+
+        <!--
         <div class="footer-col footer-col--thumbs">
           <div class="footer-thumb">
             <img :src="thumbImgs.culture" alt="Culture" />
@@ -162,7 +175,6 @@
           </div>
         </div>
 
-        <!-- Col 3: OEM Certified Partners -->
         <div class="footer-col footer-col--links">
           <h4 class="footer-heading">OEM Certified Partners</h4>
           <ul class="footer-link-list">
@@ -170,7 +182,6 @@
           </ul>
         </div>
 
-        <!-- Col 4: About Us -->
         <div class="footer-col footer-col--links">
           <h4 class="footer-heading">About Us</h4>
           <ul class="footer-link-list">
@@ -178,7 +189,6 @@
           </ul>
         </div>
 
-        <!-- Col 5: Get Connected -->
         <div class="footer-col footer-col--contact">
           <h4 class="footer-heading">Get Connected</h4>
           <ul class="footer-contact-list">
@@ -188,11 +198,12 @@
           </ul>
           <button class="footer-contact-btn" @click="$router.push('/tel')">CONTACT US</button>
         </div>
+        -->
       </div>
 
       <!-- Bottom bar -->
       <div class="footer-bottom">
-        <p>&copy; 2025 Force Marketing | All Rights Reserved | Privacy Policy</p>
+        <p>&copy; 2025 shiftdigital | All Rights Reserved | Privacy Policy</p>
       </div>
     </footer>
 
@@ -205,9 +216,10 @@
 import { ref, onMounted } from 'vue'
 import store from '@/store/index'
 import GiftPackage from '@/components/gift/index.js'
+import TabNav from '@/components/tabnav.vue'
 
 export default {
-  components: { GiftPackage },
+  components: { GiftPackage, TabNav },
   setup() {
     const showGift = ref(false)
 
@@ -289,7 +301,7 @@ export default {
     }
 
     const oemPartners = ['Audi', 'BMW MINI', 'INFINITI', 'Jaguar Land Rover', 'KIA', 'Mazda', 'Stellantis']
-    const aboutLinks = ['Our Brands', 'Force Marketing', 'WeDrive Auto', 'GSM', 'Culture', 'Leadership', 'Join Us']
+    const aboutLinks = ['Our Brands', 'shiftdigital', 'WeDrive Auto', 'GSM', 'Culture', 'Leadership', 'Join Us']
 
     return {
       showGift,
@@ -705,6 +717,29 @@ export default {
       height: auto;
       display: block;
     }
+  }
+}
+
+/* Video */
+.footer-col--video {
+  grid-column: 1 / -1;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 }
 

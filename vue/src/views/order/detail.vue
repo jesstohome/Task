@@ -146,8 +146,10 @@ import store from '@/store/index'
 import { order_info, do_order, submit_order } from '@/api/order/index'
 import { formatTime } from '@/api/format.js'
 import { Toast } from 'vant'
+import TabNav from '@/components/tabnav.vue'
 
 export default {
+  components: { TabNav },
 	setup() {
 		const { proxy } = getCurrentInstance()
 		const route = useRoute()

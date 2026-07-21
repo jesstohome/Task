@@ -75,8 +75,9 @@ import {formatTime} from '@/api/format.js'
 import { useCountDown } from '@vant/use'
 import { Toast } from 'vant'
 import GiftPackage from '@/components/gift/index.js'
+import TabNav from '@/components/tabnav.vue'
 export default {
-    components: { GiftPackage },
+    components: { GiftPackage, TabNav },
     setup(){
         const {proxy} = getCurrentInstance()
         const { push } = useRouter();
@@ -238,7 +239,7 @@ export default {
 }
 .order{
     background-color: $bg-primary;
-    margin-top: 20px;
+    // margin-top: 20px;
     :deep(.van-nav-bar){
         background-color: $bg-primary;
     }

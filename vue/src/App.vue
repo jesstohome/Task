@@ -11,6 +11,7 @@
   <div class="viewport-outer">
     <div class="viewport-container">
       <NavBar v-if="showNavBar" />
+      <TabNav v-if="showNavBar" />
       <div class="app-content">
         <my-scroll>
           <router-view />
@@ -27,11 +28,12 @@ import store from '@/store/index'
 import { vantLocales } from '@/i18n/i18n'
 import myScroll from './components/scroll.vue'
 import NavBar from './components/navbar.vue'
+import TabNav from './components/tabnav.vue'
 import { useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue'
 
 export default {
-  components: { myScroll, NavBar },
+  components: { myScroll, NavBar, TabNav },
   setup () {
     const { locale } = useI18n()
     const route = useRoute()
@@ -107,13 +109,26 @@ export default {
   flex-direction: column;
 }
 
+.viewport-container > .tabnav{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100px;
+  width: 100%;
+  max-width: 1000PX;
+  z-index: 9998;
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 .app-content{
   flex: 1;
   width: 100%;
   min-height: 0;
   box-sizing: border-box;
   overflow: hidden;
-  padding-top: 100px;
+  padding-top: 170px;
 }
 
 .app-content > *{

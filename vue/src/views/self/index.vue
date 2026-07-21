@@ -193,9 +193,10 @@ import { bind_bank } from '@/api/self/index.js'
 import { Dialog } from 'vant'
 import langVue from '@/components/lang.vue'
 import GiftPackage from '@/components/gift/index.js'
+import TabNav from '@/components/tabnav.vue'
 
 export default {
-  components: { langVue, GiftPackage },
+  components: { langVue, GiftPackage, TabNav },
   setup() {
     const { push } = useRouter();
     const { proxy } = getCurrentInstance()
@@ -350,7 +351,7 @@ export default {
    ════════════════════════════════════════════════════════════ */
 .self-new {
   background: $bg-primary;
-  min-height: 100vh;
+  min-height: 100%;
   padding-bottom: 40px;
   overflow-x: hidden;
 }

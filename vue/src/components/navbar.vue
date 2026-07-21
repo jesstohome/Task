@@ -30,6 +30,7 @@
         </div>
 
         <div class="menu-list">
+          <!--
           <div
             class="menu-item"
             :class="{ active: currentRoute === '/home' }"
@@ -62,6 +63,7 @@
             <span class="menu-icon">👤</span>
             <span>{{ $t('msg.self') }}</span>
           </div>
+          -->
 
           <div class="menu-divider"></div>
 

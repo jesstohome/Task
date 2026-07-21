@@ -303,9 +303,10 @@ import { useI18n } from 'vue-i18n'
 import { getsupport } from '@/api/tel/index'
 import AdShowcase from '@/components/adshowcase.vue'
 import GiftPackage from '@/components/gift/index.js'
+import TabNav from '@/components/tabnav.vue'
 
 export default {
-  components: { AdShowcase, GiftPackage },
+  components: { AdShowcase, GiftPackage, TabNav },
   setup() {
     const { t } = useI18n()
     const giftRef = ref(null)
