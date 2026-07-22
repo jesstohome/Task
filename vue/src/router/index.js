@@ -296,14 +296,8 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
   const publicPages = ['login', 'register', 'content', 'service']
   if (publicPages.includes(to.name)) {
-    // 已登录访问登录/注册页 → 跳首页
-    if (token) {
-      next('/home')
-    } else {
-      next()
-    }
+    next()
   } else if (!token) {
-    // 未登录访问其他页 → 跳登录页
     next('/login')
   } else {
     next()

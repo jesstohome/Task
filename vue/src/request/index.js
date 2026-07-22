@@ -57,7 +57,8 @@ service.interceptors.response.use(
 		// 这个状态码是和后端约定的
 		const code = dataAxios.code
 		if(code == -400) {
-			Message({ type: 'error', message:dataAxios.info});
+			localStorage.removeItem('token')
+			Message({ type: 'error', message: dataAxios.info })
 			router.push('/login')
 		}
 		return response
