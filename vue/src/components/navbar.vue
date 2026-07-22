@@ -16,7 +16,7 @@
     <van-popup
       v-model:show="showMenu"
       position="right"
-      :style="{ width: '82%', height: '100vh' }"
+      :style="{ width: '50%', height: '100vh' }"
       teleport="body"
       :z-index="100000"
     >
@@ -75,14 +75,14 @@
             <span class="menu-icon">🤝</span>
             <span>{{ $t('msg.dlhz') }}</span>
           </div>
-          <div class="menu-item" @click="navigate('/drawing')">
+          <!-- <div class="menu-item" @click="navigate('/drawing')">
             <span class="menu-icon">💳</span>
             <span>{{ $t('msg.tixian') }}</span>
           </div>
           <div class="menu-item" @click="navigate('/chongzhi')">
             <span class="menu-icon">💰</span>
             <span>{{ $t('msg.chongzhi') }}</span>
-          </div>
+          </div> -->
           <div class="menu-item" @click="toContent(3, $t('msg.gzms'))">
             <span class="menu-icon">📖</span>
             <span>{{ $t('msg.gzms') }}</span>
@@ -106,7 +106,7 @@
 
           <div class="menu-divider"></div>
 
-          <div class="menu-item" @click="navigate('/tel')">
+          <div class="menu-item" @click="navigate('/service')">
             <span class="menu-icon">📞</span>
             <span>{{ $t('msg.tel') }}</span>
           </div>
@@ -133,7 +133,7 @@ export default {
     const route = useRoute()
     const showMenu = ref(false)
 
-    const logoSrc = require('@/assets/images/shiftlogo-header.svg')
+    const logoSrc = require('@/assets/images/Logo-White.png')
     const logo = computed(() => store.state.baseInfo?.site_icon)
     const currentRoute = computed(() => route.path)
 

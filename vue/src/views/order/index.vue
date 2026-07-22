@@ -239,14 +239,24 @@ export default {
 }
 .order{
     background-color: $bg-primary;
-    // margin-top: 20px;
+    padding-bottom: 120px;
     :deep(.van-nav-bar){
         background-color: $bg-primary;
     }
     :deep(.van-tab__panel){
         padding: 0 var(--van-padding-md);
     }
-        :deep(.van-tabs){
+    :deep(.van-tabs__wrap){
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1000PX;
+        z-index: 999;
+        background: $bg-card;
+    }
+    :deep(.van-tabs){
         .van-tab--card:last-child{
             border-right: none;
         }

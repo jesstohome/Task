@@ -159,7 +159,7 @@
       <button class="logout-btn" @click="tuichu">Logout</button>
     </div>
 
-    <div class="copyright">©2018-2026 shiftdigital</div>
+    <div class="copyright">© 2025 Force Marketing</div>
 
     <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />

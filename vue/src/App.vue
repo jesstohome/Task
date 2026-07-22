@@ -11,8 +11,8 @@
   <div class="viewport-outer">
     <div class="viewport-container">
       <NavBar v-if="showNavBar" />
-      <TabNav v-if="showNavBar" />
-      <div class="app-content" :class="{ 'has-nav': showNavBar }">
+      <TabNav v-if="showTabNav" />
+      <div class="app-content" :class="{ 'has-nav': showNavBar, 'has-tabnav': showTabNav }">
         <my-scroll>
           <router-view />
         </my-scroll>
@@ -41,6 +41,11 @@ export default {
     const showNavBar = computed(() => {
       const noNavPages = ['login', 'register']
       return !noNavPages.includes(route.name)
+    })
+
+    const showTabNav = computed(() => {
+      const tabPages = ['home', 'obj', 'order', 'self', 'detail']
+      return tabPages.includes(route.name)
     })
 
     const setRem = () => {
@@ -82,7 +87,8 @@ export default {
     })
 
     return {
-      showNavBar
+      showNavBar,
+      showTabNav,
     }
   }
 }
@@ -131,6 +137,10 @@ export default {
 }
 
 .app-content.has-nav{
+  padding-top: 100px;
+}
+
+.app-content.has-tabnav{
   padding-top: 190px;
 }
 

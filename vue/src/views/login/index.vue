@@ -61,7 +61,7 @@ export default {
     const show = ref(false);
     const langcheck = ref('')
     const langImg = ref('')
-    const logoSrc = require('@/assets/images/shiftlogo-header.svg')
+    const logoSrc = require('@/assets/images/Logo-White.png')
     const logo = ref(store.state.baseInfo?.site_icon)
     const app_name = ref(store.state.baseInfo?.app_name)
     langcheck.value = store.state.lang

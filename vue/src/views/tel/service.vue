@@ -7,17 +7,14 @@
             </template>
         </van-nav-bar>
         <!-- <img :src="require('@/assets/images/tel/bg.png')" alt="" class="bg"> -->
-        <div class="bg">
-            <!-- <span class="span">{{$t('msg.kffw')}}</span> -->
-            <!-- <span class="span" @click="toTel()">{{$t('msg.kffw')}}</span> -->
-        </div>
+        
         <div class="tent">
             <div class="box" v-for="(item,index) in list" :key="index">
                 <div class="right">
                     <div class="flex">
                         <div class="title">{{item.username}}</div>
                         <div class="time">{{item.btime}}——{{item.etime}}</div>
-                        <van-button block color="#991aff" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
+                        <van-button block round style="padding: 2px;" color="#991aff" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
                     </div>
                 </div>
             </div>
@@ -62,7 +59,7 @@ export default {
             width: 100%;
             background-color: $theme;
             color: #333;
-            padding: 40px 0;
+            padding: 20px 0;
             .van-nav-bar__left{
                 .van-icon{
                     color: #fff;
@@ -79,34 +76,32 @@ export default {
                 line-height: 60px;
             }
         }
-    
+
     .bg{
-        width: 100vw;
-        height: 260px;
+        width: 100%;
+        height: 60px;
         background-color: $theme;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        // padding-bottom: 46PX;
         font-size: 34px;
         color: #fff;
         font-family: "PingFang SC,Helvetica Neue,Helvetica,Arial,Hiragino Sans GB,Heiti SC,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif"!important;
-        // padding-top: var(--van-nav-bar-height);
     }
     .tent{
         width: 100%;
-        padding: 0 30px;
-        margin-top: -120px;
+        padding: 30px 30px 0;
         position: relative;
         .box{
             width: 100%;
-            height: 350px;
+            height: 250px;
             background-image: url('~@/assets/images/tel/tel.png');
             background-size: 100% 100%;
             box-shadow: $shadow;
             border-radius: 30px;
             padding: 85px 45px 72px 0;
             text-align: right;
+            margin-bottom: 30px;
             .right{
                 max-width: 400px;
                 display: inline-block;

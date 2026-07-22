@@ -25,7 +25,7 @@
       <p class="about-text">
         Whether you're a dealership growing your market share or trying to stand out among the competition;
         we have the team, tech-enabled products and innovative strategies to help any OEM grow their business.
-        That's why these top automotive brands have chosen shiftdigital and our Family of Brands as a
+        That's why these top automotive brands have chosen Force and our Family of Brands as a
         Certified Advertising Partner. We offer customized programs to each OEMs guidelines that help dealers
         across the nation maximize their ad dollars with approved Co-op funding.
       </p>
@@ -118,7 +118,7 @@
     <section class="cta-section">
       <p class="cta-heading"><strong>OUR BRANDS</strong></p>
       <h4 class="cta-subheading">
-        Explore shiftdigital's rich portfolio of brands that provide dealers with a
+        Explore Force's rich portfolio of brands that provide dealers with a
         new front-to-back consumer lifecycle marketing solution.
       </h4>
       <button class="cta-btn" @click="$router.push('/tel')">
@@ -203,7 +203,7 @@
 
       <!-- Bottom bar -->
       <div class="footer-bottom">
-        <p>&copy; 2025 shiftdigital | All Rights Reserved | Privacy Policy</p>
+        <p>&copy; 2025 Force Marketing | All Rights Reserved | Privacy Policy</p>
       </div>
     </footer>
 
@@ -285,7 +285,7 @@ export default {
     }
 
     // ── Footer ──
-    const footerLogo = require('@/assets/images/shiftlogo-header.svg')
+    const footerLogo = require('@/assets/images/Logo-White.png')
 
     const socialIcons = [
       { name: 'Facebook', label: 'f' },
@@ -301,7 +301,7 @@ export default {
     }
 
     const oemPartners = ['Audi', 'BMW MINI', 'INFINITI', 'Jaguar Land Rover', 'KIA', 'Mazda', 'Stellantis']
-    const aboutLinks = ['Our Brands', 'shiftdigital', 'WeDrive Auto', 'GSM', 'Culture', 'Leadership', 'Join Us']
+    const aboutLinks = ['Our Brands', 'Force', 'WeDrive Auto', 'GSM', 'Culture', 'Leadership', 'Join Us']
 
     return {
       showGift,

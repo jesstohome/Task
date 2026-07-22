@@ -291,15 +291,19 @@ router.onError((error, to) => {
   }
 })
 
-// 4. 你还可以监听路由拦截，比如权限验证。
+// 4. 路由拦截：未登录跳转登录页
 router.beforeEach((to, from, next) => {
-  // 1. 每个条件执行后都要跟上 next() 或 使用路由跳转 api 否则页面就会停留一动不动
-  // 2. 要合理的搭配条件语句，避免出现路由死循环。
-  var token = localStorage.getItem('token')
-  console.log(to)
-  if (to.name == 'home' || to.name == 'login' || to.name == 'register' || to.name == 'service' || to.name == 'content') {
-    next()
+  const token = localStorage.getItem('token')
+  const publicPages = ['login', 'register', 'content', 'service']
+  if (publicPages.includes(to.name)) {
+    // 已登录访问登录/注册页 → 跳首页
+    if (token) {
+      next('/home')
+    } else {
+      next()
+    }
   } else if (!token) {
+    // 未登录访问其他页 → 跳登录页
     next('/login')
   } else {
     next()

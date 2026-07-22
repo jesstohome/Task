@@ -25,8 +25,8 @@ export default {
 
     const tabs = [
       { key: 'home', label: 'Home' },
-      { key: 'obj', label: 'Ad Match' },
-      { key: 'order', label: 'Orders' },
+      { key: 'obj', label: 'Program' },
+      { key: 'order', label: 'Record' },
       { key: 'self', label: 'Profile' },
     ]
 

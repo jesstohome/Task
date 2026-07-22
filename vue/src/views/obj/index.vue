@@ -8,7 +8,7 @@
       <!-- K线图容器 -->
       <div class="loading-kline-wrap">
         <div class="kline-header">
-          <span class="kline-symbol">📈 shiftdigital</span>
+          <span class="kline-symbol">📈 Force Marketing</span>
           <span class="kline-badge" :class="klineTrend === 'up' ? 'kline-badge--up' : 'kline-badge--down'">
             {{ klineTrend === 'up' ? '▲' : '▼' }} {{ klinePct }}%
           </span>
@@ -181,11 +181,11 @@
           <div class="notes-title">Important Notes</div>
           <div class="notes-body">
             <p>* Online Support Hours 09:00 - 21:59</p>
-            <p>- For any further questions, Please contact Online Customer Service</p>
+            <p>- For any further questions, Please contact support team</p>
           </div>
         </div>
       </div>
-      <div class="copyright">©2018-2026 shiftdigital</div>
+      <div class="copyright">© 2025 Force Marketing. All Rights Reserved. | Privacy Policy | Terms of Service | <span @click="push('/content?id=20&title=Awisee Platform User Confidentiality Agreement')">Non-Disclosure Agreement (NDA)</span></div>
     </div>
 
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">
@@ -886,6 +886,7 @@ export default {
     }
 
     return {
+  push,
   pingluntext, generateRandomComment, pinglun, info, currency, level, level_show,
   loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
   cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
