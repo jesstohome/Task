@@ -8,7 +8,7 @@
       <!-- K线图容器 -->
       <div class="loading-kline-wrap">
         <div class="kline-header">
-          <span class="kline-symbol">📈 Force Marketing</span>
+          <span class="kline-symbol">📈 </span>
           <span class="kline-badge" :class="klineTrend === 'up' ? 'kline-badge--up' : 'kline-badge--down'">
             {{ klineTrend === 'up' ? '▲' : '▼' }} {{ klinePct }}%
           </span>
@@ -117,12 +117,13 @@
 
     <div class="hero-section">
       <div class="hero-bg">
-        <img :src="require('@/assets/images/starting_bg.webp')" alt="" class="hero-bg-img" />
+        <canvas ref="heroKlineRef" class="hero-kline-canvas"></canvas>
+        <div class="hero-bg-overlay"></div>
       </div>
       <div class="hero-nav">
         <div class="hero-nav-left">
           <div class="hero-avatar">
-            <img :src="require('@/assets/images/touxian.webp')" alt="avatar" />
+            <img :src="userinfo?.headpic || require('@/assets/images/touxian.webp')" alt="avatar" />
           </div>
           <span class="hero-greeting">Hi, {{userinfo?.username}} 👋</span>
         </div>
@@ -185,7 +186,7 @@
           </div>
         </div>
       </div>
-      <div class="copyright">© 2025 Force Marketing. All Rights Reserved. | Privacy Policy | Terms of Service | <span @click="push('/content?id=20&title=Awisee Platform User Confidentiality Agreement')">Non-Disclosure Agreement (NDA)</span></div>
+      <div class="copyright"> All Rights Reserved. | Privacy Policy | Terms of Service | <span @click="push('/content?id=20&title=Awisee Platform User Confidentiality Agreement')">Non-Disclosure Agreement (NDA)</span></div>
     </div>
 
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">
@@ -293,7 +294,7 @@
 </template>
 
 <script>
-import { ref, computed, getCurrentInstance, reactive, onMounted, nextTick } from 'vue';
+import { ref, computed, getCurrentInstance, reactive, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { rot_order, submit_order, order_info, do_order, start_compound_order, process_compound_order_next } from '@/api/order/index'
 import store from '@/store/index'
 import { getdetailbyid, getHomeData } from '@/api/home/index.js'
@@ -321,6 +322,126 @@ export default {
     const klinePct = ref('0.00')
     let klineAnimFrame = null
     let klineStopFn = null
+
+    // ── Hero 背景K线动画 ──
+    const heroKlineRef = ref(null)
+    let heroKlineTimer = null
+    let heroResizeObserver = null
+
+    const startHeroKline = () => {
+      const canvas = heroKlineRef.value
+      if (!canvas) return
+
+      const dpr = window.devicePixelRatio || 1
+      const parent = canvas.parentElement
+      const rand = (min, max) => Math.random() * (max - min) + min
+      const totalCandles = 24
+      let W, H, candleW, bodyW, ctx
+
+      const initCandles = () => {
+        const arr = []
+        let p = rand(60, 140)
+        for (let i = 0; i < totalCandles; i++) {
+          const isGreen = Math.random() > 0.42
+          const bodySize = rand(1.5, 8)
+          const open = p
+          const close = isGreen ? p + bodySize : p - bodySize
+          const high = Math.max(open, close) + rand(0.5, 4)
+          const low = Math.min(open, close) - rand(0.5, 4)
+          arr.push({ open, close, high, low, isGreen })
+          p = close + rand(-2, 2)
+          p = Math.max(p, 20)
+        }
+        return arr
+      }
+
+      let candles = initCandles()
+
+      const resize = () => {
+        W = parent.offsetWidth
+        H = parent.offsetHeight
+        canvas.width = W * dpr
+        canvas.height = H * dpr
+        canvas.style.width = W + 'px'
+        canvas.style.height = H + 'px'
+        ctx = canvas.getContext('2d')
+        ctx.scale(dpr, dpr)
+        candleW = W / totalCandles
+        bodyW = Math.max(candleW * 0.55, 2)
+      }
+
+      resize()
+
+      heroResizeObserver = new ResizeObserver(() => {
+        resize()
+        draw()
+      })
+      heroResizeObserver.observe(parent)
+
+      const padT = 8, padB = 8
+
+      const draw = () => {
+        if (!ctx) return
+        ctx.clearRect(0, 0, W, H)
+
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H)
+        bgGrad.addColorStop(0, 'rgba(10, 12, 30, 1)')
+        bgGrad.addColorStop(0.5, 'rgba(15, 10, 40, 1)')
+        bgGrad.addColorStop(1, 'rgba(8, 15, 35, 1)')
+        ctx.fillStyle = bgGrad
+        ctx.fillRect(0, 0, W, H)
+
+        const visible = candles
+        const allHigh = Math.max(...visible.map(c => c.high))
+        const allLow = Math.min(...visible.map(c => c.low))
+        const range = allHigh - allLow || 1
+        const toY = (p) => padT + (allHigh - p) / range * (H - padT - padB)
+
+        ctx.setLineDash([2, 6])
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)'
+        ctx.lineWidth = 0.5
+        for (let i = 0; i <= 3; i++) {
+          const y = padT + (H - padT - padB) * i / 3
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke()
+        }
+        ctx.setLineDash([])
+
+        visible.forEach((c, i) => {
+          const x = i * candleW + candleW / 2
+          const yOpen = toY(c.open)
+          const yClose = toY(c.close)
+          const yHigh = toY(c.high)
+          const yLow = toY(c.low)
+
+          ctx.strokeStyle = c.isGreen ? 'rgba(0, 200, 130, 0.45)' : 'rgba(255, 80, 80, 0.45)'
+          ctx.lineWidth = 1
+          ctx.beginPath(); ctx.moveTo(x, yHigh); ctx.lineTo(x, Math.max(yOpen, yClose)); ctx.stroke()
+          ctx.beginPath(); ctx.moveTo(x, Math.min(yOpen, yClose)); ctx.lineTo(x, yLow); ctx.stroke()
+
+          const bodyH = Math.max(Math.abs(yClose - yOpen), 1)
+          ctx.fillStyle = c.isGreen ? 'rgba(0, 200, 130, 0.3)' : 'rgba(255, 80, 80, 0.3)'
+          ctx.fillRect(x - bodyW / 2, Math.min(yOpen, yClose), bodyW, bodyH)
+        })
+
+        candles.shift()
+        const last = candles[candles.length - 1]
+        const isGreen = Math.random() > 0.45
+        const bodySize = rand(1.5, 8)
+        const open = last.close
+        const close = isGreen ? open + bodySize : open - bodySize
+        const high = Math.max(open, close) + rand(0.5, 3)
+        const low = Math.min(open, close) - rand(0.5, 3)
+        candles.push({ open, close, high, low, isGreen: close >= open })
+      }
+
+      draw()
+      heroKlineTimer = setInterval(draw, 500)
+    }
+
+    const stopHeroKline = () => {
+      if (heroKlineTimer) { clearInterval(heroKlineTimer); heroKlineTimer = null }
+      if (heroResizeObserver) { heroResizeObserver.disconnect(); heroResizeObserver = null }
+    }
     const loadText = ref('')
     const loadImg = ref('')
     const loadStep = ref(0)           // 新增：步骤状态 1/2/3
@@ -660,6 +781,11 @@ export default {
 
     onMounted(() => {
       showGift.value = true;
+      nextTick(() => startHeroKline())
+    })
+
+    onBeforeUnmount(() => {
+      stopHeroKline()
     })
 
     const tjOrder = (row) => { push({ name: 'detail', params: { id: row.oid } }) }
@@ -886,7 +1012,7 @@ export default {
     }
 
     return {
-  push,
+  push, heroKlineRef,
   pingluntext, generateRandomComment, pinglun, info, currency, level, level_show,
   loading, getDd, clickRight, confirmPwd, tjOrder, showTj, onceinfo, formatTime,
   cancelPwd, content, loadText, status_list, loadImg, activeTab, monney, mInfo,
@@ -1428,13 +1554,17 @@ export default {
 }
 .hero-bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 400px;
   border-bottom-left-radius: 48px;
   border-bottom-right-radius: 48px;
   overflow: hidden;
   z-index: 0;
 }
 .hero-bg-img { width: 100%; object-fit: cover; object-position: center 30%; display: block; }
+.hero-kline-canvas { width: 100%; height: 100%; display: block; }
 .hero-bg-overlay {
   position: absolute;
   inset: 0;

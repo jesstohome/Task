@@ -20,7 +20,7 @@ class My extends Base
     {
         $parameter["info"] = db('xy_users')->field('username,tel,level,id,headpic,balance,lottery_money,freeze_balance,lixibao_balance,invite_code,show_td')->find($this->usder_id);
         
-        $parameter["info"]["headpic"] = '/upload/touxian.png';
+        $parameter["info"]["headpic"] = !empty($parameter["info"]["headpic"]) ? $parameter["info"]["headpic"] : '/upload/touxian.png';
       
       // $parameter["sell_y_num"] = db('xy_convey')->where('status', 1)->where('uid', $this->usder_id)->sum('commission');
 

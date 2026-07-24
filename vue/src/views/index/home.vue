@@ -25,7 +25,7 @@
       <p class="about-text">
         Whether you're a dealership growing your market share or trying to stand out among the competition;
         we have the team, tech-enabled products and innovative strategies to help any OEM grow their business.
-        That's why these top automotive brands have chosen Force and our Family of Brands as a
+        That's why these top automotive brands have chosen our Family of Brands as a
         Certified Advertising Partner. We offer customized programs to each OEMs guidelines that help dealers
         across the nation maximize their ad dollars with approved Co-op funding.
       </p>
@@ -129,7 +129,7 @@
       <div class="cta-spacer"></div>
 
       <div class="cta-logos">
-        <img :src="brandImgs.force" alt="Force Marketing" class="cta-logo-img" />
+        <img :src="brandImgs.force" alt="" class="cta-logo-img" />
         <img :src="brandImgs.wedrive" alt="WeDrive Auto" class="cta-logo-img" />
         <img :src="brandImgs.gsm" alt="GSM" class="cta-logo-img" />
       </div>
@@ -140,7 +140,7 @@
       <div class="footer-grid">
         <!-- Col 1: Logo + Tagline + Social -->
         <div class="footer-col footer-col--brand">
-          <img :src="footerLogo" class="footer-logo-img" alt="Force Marketing" />
+          <img :src="footerLogo" class="footer-logo-img" alt="" />
           <p class="footer-tagline">
             Through our tech-driven products and solutions, it's our mission to transform
             the brand-to-consumer buying experience.
@@ -203,7 +203,7 @@
 
       <!-- Bottom bar -->
       <div class="footer-bottom">
-        <p>&copy; 2025 Force Marketing | All Rights Reserved | Privacy Policy</p>
+        <p> </p>
       </div>
     </footer>
 

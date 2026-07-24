@@ -15,9 +15,9 @@
 
       <!-- 用户信息行：头像（探出） + 用户名 + 邀请码 -->
       <div class="profile-user-row">
-        <div class="profile-avatar-wrap">
-          <!-- <img :src="userinfo?.headpic" alt="avatar" class="profile-avatar-img" /> -->
-          <img :src="require('@/assets/images/touxian.webp')" alt="avatar" class="profile-avatar-img" />
+        <div class="profile-avatar-wrap" @click="avatarInputRef?.click()">
+          <input ref="avatarInputRef" type="file" accept="image/*" style="display:none" @change="onAvatarChange" />
+          <img :src="avatarSrc" alt="avatar" class="profile-avatar-img" />
         </div>
         <div class="profile-user-info">
           <div class="profile-username">{{ userinfo.username }}</div>
@@ -159,7 +159,7 @@
       <button class="logout-btn" @click="tuichu">Logout</button>
     </div>
 
-    <div class="copyright">© 2025 Force Marketing</div>
+    <div class="copyright"></div>
 
     <!-- 礼包组件 -->
     <GiftPackage v-model="showGift" />
@@ -182,7 +182,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, computed, getCurrentInstance, onMounted } from 'vue';
 import { getself, get_id_auth, check_paypass } from '@/api/self/index'
 import { uploadImg, headpicUpdatae, getHomeData } from '@/api/home/index.js'
 import { logout } from '@/api/login/index'
@@ -190,7 +190,7 @@ import store from '@/store/index'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
 import { bind_bank } from '@/api/self/index.js'
-import { Dialog } from 'vant'
+import { Dialog, Toast } from 'vant'
 import langVue from '@/components/lang.vue'
 import GiftPackage from '@/components/gift/index.js'
 import TabNav from '@/components/tabnav.vue'
@@ -252,7 +252,12 @@ export default {
     }
 
     const getInfo = () => {
-      getself().then(res => { if (res.code === 0) userinfo.value = { ...res.data?.info } })
+      getself().then(res => {
+        if (res.code === 0) {
+          userinfo.value = { ...res.data?.info }
+          store.dispatch('changeuserinfo', userinfo.value)
+        }
+      })
     }
 
     const gopaypass = () => { 
@@ -304,7 +309,30 @@ export default {
       else if (row.click) { row.click(row) }
     }
 
-    const setAvatar = () => { upload.value?.chooseFile() }
+    const setAvatar = () => { avatarInputRef.value?.click() }
+    const avatarInputRef = ref(null)
+    const defaultAvatar = require('@/assets/images/touxian.webp')
+    const avatarSrc = computed(() => {
+      if (userinfo.value?.headpic && userinfo.value.headpic !== '/upload/touxian.png') {
+        return userinfo.value.headpic
+      }
+      return defaultAvatar
+    })
+    const onAvatarChange = (e) => {
+      const file = e.target.files?.[0]
+      if (!file) return
+      const fd = new FormData()
+      fd.append('file', file)
+      const toast = Toast.loading({ message: 'Uploading...', forbidClick: true, duration: 0 })
+      uploadImg(fd).then(res => {
+        if (res && res.uploaded) {
+          headpicUpdatae({ url: res.url }).then(() => getInfo())
+        }
+      }).finally(() => {
+        toast.close()
+        e.target.value = ''
+      })
+    }
     const afterRead = (file) => {
       const formData = new FormData();
       formData.append('file', file.file);
@@ -327,6 +355,7 @@ export default {
     return {
       currency, level, list, qitalist, tuichu, setAvatar, toShare, toRoute, afterRead,
       upload, userinfo, monney, mInfo, activeTab, creditPercent, inviteCode, copyInvite,
+      avatarInputRef, avatarSrc, onAvatarChange,
       idStatus, idRemark, push, showGift, paymentshow, paypass, gopaypass
     }
   }

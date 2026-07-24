@@ -36,7 +36,7 @@
             :class="{ active: currentRoute === '/home' }"
             @click="navigate('/home')"
           >
-            <span class="menu-icon">🏠</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.home') }}</span>
           </div>
           <div
@@ -52,7 +52,7 @@
             :class="{ active: currentRoute === '/order' }"
             @click="navigate('/order')"
           >
-            <span class="menu-icon">📋</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.order') }}</span>
           </div>
           <div
@@ -60,7 +60,7 @@
             :class="{ active: currentRoute === '/self' }"
             @click="navigate('/self')"
           >
-            <span class="menu-icon">👤</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.self') }}</span>
           </div>
           -->
@@ -68,46 +68,47 @@
           <div class="menu-divider"></div>
 
           <div class="menu-item" @click="openWFP">
-            <span class="menu-icon">🌐</span>
+            <span class="menu-icon"></span>
             <span>WFP</span>
           </div>
           <div class="menu-item" @click="toContent(4, $t('msg.dlhz'))">
-            <span class="menu-icon">🤝</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.dlhz') }}</span>
           </div>
           <!-- <div class="menu-item" @click="navigate('/drawing')">
-            <span class="menu-icon">💳</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.tixian') }}</span>
           </div>
           <div class="menu-item" @click="navigate('/chongzhi')">
-            <span class="menu-icon">💰</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.chongzhi') }}</span>
           </div> -->
-          <div class="menu-item" @click="toContent(3, $t('msg.gzms'))">
-            <span class="menu-icon">📖</span>
-            <span>{{ $t('msg.gzms') }}</span>
-          </div>
+          
           <div class="menu-item" @click="toContent(10, 'Event')">
-            <span class="menu-icon">📅</span>
+            <span class="menu-icon"></span>
             <span>Event</span>
           </div>
-          <div class="menu-item" @click="toContent(12, $t('msg.qyzz'))">
-            <span class="menu-icon">🏢</span>
-            <span>{{ $t('msg.qyzz') }}</span>
-          </div>
           <div class="menu-item" @click="toContent(2, $t('msg.gsjj'))">
-            <span class="menu-icon">ℹ️</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.gsjj') }}</span>
           </div>
+          <div class="menu-item" @click="toContent(12, $t('msg.qyzz'))">
+            <span class="menu-icon"></span>
+            <span>{{ $t('msg.qyzz') }}</span>
+          </div>
+          <div class="menu-item" @click="toContent(3, $t('msg.gzms'))">
+            <span class="menu-icon"></span>
+            <span>{{ $t('msg.gzms') }}</span>
+          </div>
           <div class="menu-item" @click="toContent(7, 'AML')">
-            <span class="menu-icon">🛡️</span>
+            <span class="menu-icon"></span>
             <span>AML</span>
           </div>
 
           <div class="menu-divider"></div>
 
           <div class="menu-item" @click="navigate('/service')">
-            <span class="menu-icon">📞</span>
+            <span class="menu-icon"></span>
             <span>{{ $t('msg.tel') }}</span>
           </div>
         </div>

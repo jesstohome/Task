@@ -100,7 +100,7 @@ module.exports = {
 		"sxtz": "The required investment",
 		"yonj": "Advertising salary",
 		yonj1: 'commission',
-		yonj2: 'commission',
+		yonj2: 'Profit',
 		"now_level": "The current level",
 		"add_level": "upgraded",
 		"get_monney": "Reap the benefits",

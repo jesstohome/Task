@@ -34,7 +34,7 @@
         
       </div>
     </van-form>
-    <div class="footer-copyright">© 2025 Force Marketing</div>
+    <div class="footer-copyright"></div>
   </div>
   
 </template>
