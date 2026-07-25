@@ -117,91 +117,95 @@ class User extends Controller
     public function do_register()
     {
         $tel = input('post.tel/s', '');
-    
-        if ($this->replaceSpecialChar($tel) == 1) {
-            return json(['code' => 1, 'info' => yuylangs('sjhmgzbzq')]);
-        }
-    
-        $user_name   = input('post.userName/s', '');
-        $email       = input('post.email/s', '');
-        $gender      = input('post.gender/s', '');
-        $pwd         = input('post.pwd/s', '');
-        $pwd2        = input('post.depositPwd/s', '');
-        $invite_code = input('post.invite_code/s', '');
-    
-        if (!$invite_code) {
-            return json(['code' => 1, 'info' => yuylangs('code_not')]);
-        }
-    
-        // 查询代理邀请码（一次性，未使用）
-        $agentInviteCode = Db::table('xy_agent_invite_code')
-            ->where(['invite_code' => $invite_code, 'status' => 0, 'is_deleted' => 0])
-            ->find();
-    
-        if (!$agentInviteCode) {
-            return json(['code' => 1, 'info' => yuylangs('code_not')]);
-        }
-    
-        $agentInviteCodeId = $agentInviteCode['id'];
-    
-        $params = [
-            'email'            => $email,
-            'whatsapp'         => $gender,
-            'status'           => 0,
-            'agent_service_id' => $agentInviteCode['agent_id'],
-        ];
-    
-        $ip = $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['REMOTE_ADDR'];
-    
-        // 占用邀请码（乐观锁：只有 status=0 才能更新成功）
-        $claimed = Db::table('xy_agent_invite_code')
-            ->where('id', $agentInviteCodeId)
-            ->where('status', 0)
-            ->update([
-                'status'    => 1,
-                'update_at' => date('Y-m-d H:i:s'),
-            ]);
-    
-        if (!$claimed) {
-            return json(['code' => 1, 'info' => yuylangs('code_not')]);
-        }
-    
-        // 执行注册
-        $res = model('admin/Users')
-            ->add_users($tel, $user_name, $pwd, 0, '', $pwd2, 0, $ip, '', $params);
-    
-        if (isset($res['code']) && $res['code'] == 0) {
-            // 注册成功：记录使用信息
-            Db::table('xy_agent_invite_code')
-                ->where('id', $agentInviteCodeId)
-                ->update([
-                    'used_user_id' => isset($res['id']) ? $res['id'] : 0,
-                    'used_at'      => date('Y-m-d H:i:s'),
-                    'update_at'    => date('Y-m-d H:i:s'),
-                ]);
-                
-            //自动补充邀请码
-            $newCode = strtoupper(substr(md5(uniqid('', true) . mt_rand(100000, 999999)), 0, 8));
+     
+        if($this->replaceSpecialChar($tel) == 1){
             
-            Db::table('xy_agent_invite_code')->insert([
-                'agent_id'    => $agentInviteCode['agent_id'],
-                'invite_code' => $newCode,
-                'status'      => 0,
-                'create_at'   => date('Y-m-d H:i:s'),
-                'update_at'   => date('Y-m-d H:i:s'),
-            ]);
-        } else {
-            // 注册失败：回滚邀请码状态
-            Db::table('xy_agent_invite_code')
-                ->where('id', $agentInviteCodeId)
-                ->update([
-                    'status'       => 0,
-                    'used_user_id' => 0,
-                    'used_at'      => null,
-                    'update_at'    => date('Y-m-d H:i:s'),
-                ]);
+            return json(['code' => 1, 'info' => yuylangs('sjhmgzbzq')]);
+        } 
+        
+        $user_name = input('post.userName/s', '');
+        $email = input('post.email/s', '');
+        $gender = input('post.gender/s', '');
+        //$user_name = '';    //交给模型随机生成用户名
+       // $verify = input('post.verify/d', '');       //短信验证码
+        $pwd = input('post.pwd/s', '');
+        $pwd2 = input('post.depositPwd/s', '');
+        $invite_code = input('post.invite_code/s', '');     //邀请码
+        // if(!$qv){
+        //     return json(['code' => 1, 'info' => yuylangs('请选择区号！')]);
+        // }
+        
+        if (!$invite_code) return json(['code' => 1, 'info' => yuylangs('code_not')]);
+        //验证码
+        /*if (config('app.verify') && $verify != '88888') {
+            $verify_msg = Db::table('xy_verify_msg')->field('msg,addtime')->where(['tel' => $tel, 'type' => 1])->find();
+            if (!$verify_msg) return json(['code' => 1, 'info' => yuylangs('yzmbcz')]);
+            if ($verify != $verify_msg['msg']) return json(['code' => 1, 'info' => yuylangs('yzmcw')]);
+            if (($verify_msg['addtime'] + (config('app.zhangjun_sms.min') * 60)) < time()) return json(['code' => 1, 'info' => yuylangs('yzmysx')]);
+        }*/
+        $pid = 0;
+        $agent_id = 0;
+        $type = input('type',1);
+        $params['agent_service_id'] = '';
+        $params['email'] = $email;
+        $params['whatsapp'] = $gender;
+        $params['status'] = 0;  //默认不能登录
+        if($invite_code){
+            // 用户邀请码
+            if($type == 1){
+                $parentinfo = Db::table($this->table)->field('id,status,agent_id,parent_id,level,agent_service_id')->where('invite_code', $invite_code)->find();
+                
+                // 如果用户表找不到,尝试在代理表中查找
+                if (!$parentinfo) {
+                    $sys_user = Db::table('system_user')->where(['invite_code' => $invite_code, 'is_deleted' => 0])->find();
+                    if ($sys_user) {
+                        // 找到代理,修改type为2并执行代理逻辑
+                        $type = 2;
+                        $params['agent_service_id'] = $sys_user['id'];
+                    } else {
+                        // 用户表和代理表都找不到
+                        return json(['code' => 1, 'info' => yuylangs('code_not')]);
+                    }
+                }
+                
+                // 只有在用户表找到时才执行以下逻辑
+                if ($type == 1) {
+                    $is_invite = Db::table('xy_level')
+                        ->where('level', $parentinfo['level'])
+                        ->value('is_invite');
+                    if (empty($is_invite)) return json(['code' => 1, 'info' => yuylangs('user_not_auth')]);
+                    if ($parentinfo['status'] != 1) return json(['code' => 1, 'info' => yuylangs('disable_user')]);
+                    $pid = $parentinfo['id'];
+                    if ($parentinfo['agent_id'] > 0) {
+                        $agent_id = $parentinfo['agent_id'];
+                    }
+                    if ($parentinfo['agent_service_id'] > 0) {
+                        $params['agent_service_id'] = $parentinfo['agent_service_id'];
+                    }
+                }
+            }
+            
+            // 代理邀请码(可能是原本的type==2,也可能是type==1降级而来)
+            if($type == 2){
+                // 如果不是从type==1降级来的,需要重新查询
+                if (!isset($params['agent_service_id'])) {
+                    $sys_user = Db::table('system_user')->where(['invite_code' => $invite_code, 'is_deleted' => 0])->find();
+                    if (!$sys_user) return json(['code' => 1, 'info' => yuylangs('code_not')]);
+                    $params['agent_service_id'] = $sys_user['id'];
+                }
+            }
+            
+            if($type != 1 && $type != 2){
+                return json(['code' => 1, 'info' => translate('error in type')]);
+            }
         }
-    
+
+//        if ($agent_id == 0) {
+//            $agent_id = model('admin/Users')->get_agent_id();
+//        }
+        $ip = $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['REMOTE_ADDR'];
+        $res = model('admin/Users')
+            ->add_users($tel, $user_name, $pwd, $pid, '', $pwd2, $agent_id, $ip, $qv='',$params);
         return json($res);
     }
     

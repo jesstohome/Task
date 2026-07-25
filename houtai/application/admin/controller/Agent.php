@@ -344,9 +344,8 @@ class Agent extends Base
             ->find();
             
             $vo['invite_link'] = '';
-            if($agentInviteCode){
-                $vo['invite_link'] = sysconf('web_url').'/register?type=2&invite_code='.$agentInviteCode['invite_code'];
-                $vo['invite_code'] = $agentInviteCode['invite_code'];
+            if($vo['invite_code']){
+                $vo['invite_link'] = sysconf('web_url').'/register?type=2&invite_code='.$vo['invite_code'];
             }
             if($vo['nickname'] == ''){
                 $vo['nickname'] = '-';
