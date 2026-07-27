@@ -264,6 +264,7 @@
       :show-cancel-button="false"
       :show-confirm-button="false"
       :close-on-click-overlay="false"
+      :teleport="'body'"
     >
       <div class="compound-order-modal">
         <div class="compound-order-header">
@@ -1661,7 +1662,7 @@ export default {
         .value1 { padding: 3px 10px; background-color: #07c160; color: #fff; }
       }
     }
-    .van-dialog__content { max-height: 60vh; overflow: auto; }
+    .van-dialog__content { overflow: auto; }
     .van-dialog__footer { margin-top: 40px; .van-dialog__confirm { color: $theme; } }
   }
   .list {
@@ -1690,12 +1691,12 @@ export default {
   .pinglunb { margin-top: 20px; width: 90%; border: 1px solid #dadada; border-radius: 5px; }
 }
 
-.compound-order-modal { padding: 20px; max-height: 70vh; overflow-y: auto; }
+.compound-order-modal { padding: 20px; overflow-y: auto; max-height: 60vh; background-color: #fff; }
 .compound-order-header {
   text-align: center; margin-bottom: 30px;
   .celebration-icon { font-size: 48px; margin-bottom: 16px; }
-  h3 { font-size: 32px; font-weight: 700; color: #333; margin: 0 0 16px 0; }
-  .compound-order-desc { font-size: 26px; line-height: 1.6; color: #666; margin: 0; }
+  h3 { font-size: 32px; font-weight: 700; color: #000; margin: 0 0 16px 0; }
+  .compound-order-desc { font-size: 26px; line-height: 1.6; color: #000; margin: 0; }
 }
 .compound-order-options { margin-bottom: 30px; }
 .compound-option-card {
