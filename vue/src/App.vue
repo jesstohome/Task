@@ -30,7 +30,7 @@ import myScroll from './components/scroll.vue'
 import NavBar from './components/navbar.vue'
 import TabNav from './components/tabnav.vue'
 import { useRoute } from 'vue-router'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
 export default {
   components: { myScroll, NavBar, TabNav },
@@ -52,8 +52,39 @@ export default {
       document.documentElement.style.fontSize = 18 + 'px'
     }
 
+    // 加载 Chatwoot 客服 SDK
+    const loadChatwoot = () => {
+      const script = document.createElement('script')
+      script.src = 'https://app.jdwe.live/packs/js/sdk.js'
+      script.onload = () => {
+        window.chatwootSDK.run({
+          websiteToken: 'XFFx6yNqEQWp2nNrysY9e1Pi',
+          baseUrl: 'https://app.jdwe.live'
+        })
+        const userinfo = store.state.userinfo
+        if (userinfo && userinfo.id) {
+          window.$chatwoot.setUser('999' + userinfo.id, {
+            name: userinfo.username || '',
+            phone_number: userinfo.tel || ''
+          })
+        }
+      }
+      document.body.appendChild(script)
+    }
+
     onMounted(() => {
       setRem()
+      loadChatwoot()
+    })
+
+    // 监听用户登录，自动更新 Chatwoot 用户身份
+    watch(() => store.state.userinfo, (newVal) => {
+      if (window.$chatwoot && newVal && newVal.id) {
+        window.$chatwoot.setUser('999' + newVal.id, {
+          name: newVal.username || '',
+          phone_number: newVal.tel || ''
+        })
+      }
     })
 
     const changeFavicon = link => {

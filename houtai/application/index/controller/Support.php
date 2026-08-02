@@ -18,12 +18,12 @@ class Support extends Controller
         $tokenData = Db::table("xy_token")->where("token",$token)->order("time desc")->find();
         $uid = $tokenData['uid'];
         $data['info'] = db('xy_cs')->where('status', 1)->select();
-        
+        //增加用户id前缀999，防止客服平台多平台用户id冲突
         if($uid){
             $uinfo = Db::name('xy_users')->field('tel,username')->find($uid);
             if($uinfo){
                 foreach($data['info'] as $k => $v){
-                    $data['info'][$k]['url'] = $v['url'] . '&identifier=' . $uid . '&name=' . $uinfo['username'];
+                    $data['info'][$k]['url'] = $v['url'] . '&identifier=999' . $uid . '&name=' . $uinfo['username'];
                 }
             }
         }

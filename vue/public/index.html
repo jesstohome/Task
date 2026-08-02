@@ -42,33 +42,5 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
 
-    <script>
-      (function(d,t) {
-        var BASE_URL="https://app.jdwe.live";
-        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-        g.src=BASE_URL+"/packs/js/sdk.js";
-        g.defer = true;
-        g.async = true;
-        s.parentNode.insertBefore(g,s);
-        g.onload=function(){
-          window.chatwootSDK.run({
-            websiteToken: 'XFFx6yNqEQWp2nNrysY9e1Pi',
-            baseUrl: BASE_URL
-          })
-            // 设置用户信息，如果localStorage中有userinfo
-          const userinfoStr = localStorage.getItem('userinfo');
-          if (userinfoStr) {
-            const userinfo = JSON.parse(userinfoStr);
-            window.$chatwoot.setUser(userinfo.id, {
-                  name: userinfo.username || '',
-                  phone_number: userinfo.tel || ''
-                });
-          }     
-        }
-      })(document,"script");
-      
-        
-    </script>
-    
   </body>
 </html>
