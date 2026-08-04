@@ -61,6 +61,11 @@ export default {
           websiteToken: 'XFFx6yNqEQWp2nNrysY9e1Pi',
           baseUrl: 'https://app.jdwe.live'
         })
+        // 存量用户首次加载时清除旧 ID 的 Chatwoot 会话，仅清除一次
+        if (!localStorage.getItem('cw_reset_done')) {
+          window.$chatwoot.reset()
+          localStorage.setItem('cw_reset_done', '1')
+        }
         const userinfo = store.state.userinfo
         if (userinfo && userinfo.id) {
           window.$chatwoot.setUser('999' + userinfo.id, {
