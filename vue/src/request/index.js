@@ -58,6 +58,8 @@ service.interceptors.response.use(
 		const code = dataAxios.code
 		if(code == -400) {
 			localStorage.removeItem('token')
+			// localStorage.removeItem('chatwoot_user_id')
+			// if (window.$chatwoot) { window.$chatwoot.reset() }
 			Message({ type: 'error', message: dataAxios.info })
 			router.push('/login')
 		}

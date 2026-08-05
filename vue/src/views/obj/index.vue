@@ -139,7 +139,7 @@
           </div>
           <div class="hero-card-label">Wallet Balance</div>
           <div class="hero-card-amount">
-            <span class="hero-card-amount--negative" style="font-size: 11px;color:black;" v-if="Number(monney.replace(/,/g, '')) < 0">Exceed </span>
+            <span class="hero-card-amount--negative" style="font-size: 11px;color:white;" v-if="Number(monney.replace(/,/g, '')) < 0">Exceed </span>
             <span class="hero-card-amount--negative">{{monney}}</span>
             <span class="hero-card-currency">{{currency}}</span>
           </div>
