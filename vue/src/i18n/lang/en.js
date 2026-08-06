@@ -351,6 +351,9 @@ wfsyqtgjgn: "Unable to Use Other Advanced Features",
 	auth_not: 'Not Verified',
 	qingshuruxinxin: 'Please upload complete information',
 	gaojirenzheng:'Advanced verified',
-qingbaochimimayizhi: 'Please keep the password consistent'
+qingbaochimimayizhi: 'Please keep the password consistent',
+	zx: 'Online',
+	lx: 'Offline',
+	gzsj: 'Working Hours'
 	}
 }

@@ -337,6 +337,9 @@ module.exports = {
     auth_not: '未认证',
     qingshuruxinxin: '请上传完整信息',
     gaojirenzheng: '高级认证',
-    qingbaochimimayizhi: '请保持密码一致'
+    qingbaochimimayizhi: '请保持密码一致',
+    zx: '在线',
+    lx: '离线',
+    gzsj: '工作时间'
     }
   }

@@ -1,140 +1,207 @@
 <template>
     <div class="tel">
-        <van-nav-bar :title="$t('msg.kffw')" left-arrow @click-left="$router.go(-1)">
-            <template #right>
-                <!-- <van-icon name="comment-o" size="18"/> -->
-                <!-- <img :src="require('@/assets/images/news/msg3.png')" width="26.5" alt=""> -->
-            </template>
-        </van-nav-bar>
-        <!-- <img :src="require('@/assets/images/tel/bg.png')" alt="" class="bg"> -->
-        
+        <van-nav-bar :title="$t('msg.kffw')" left-arrow @click-left="$router.go(-1)" />
+
         <div class="tent">
-            <div class="box" v-for="(item,index) in list" :key="index">
-                <div class="right">
-                    <div class="flex">
-                        <div class="title">{{item.username}}</div>
-                        <div class="time">{{item.btime}}——{{item.etime}}</div>
-                        <van-button block round style="padding: 2px;" color="#991aff" @click="tel(item)">{{$t('msg.ljzx')}}</van-button>
+            <div class="card" v-for="(item, index) in list" :key="index">
+                <!-- 头部：头像 + 名称 + 在线状态 -->
+                <div class="card-header">
+                    <div class="avatar">
+                        <span class="avatar-text">{{ item.username.charAt(0) }}</span>
+                    </div>
+                    <div class="info">
+                        <div class="name">{{ item.username }}</div>
+                        <div class="status-row">
+                            <span class="dot" :class="isOnline(item) ? 'online' : 'offline'"></span>
+                            <span class="status-text">{{ isOnline(item) ? $t('msg.zx') : $t('msg.lx') }}</span>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 工作时间 -->
+                <div class="work-time">
+                    <van-icon name="clock-o" size="16" />
+                    <span>{{ $t('msg.gzsj') }}: {{ item.btime }} - {{ item.etime }}</span>
+                </div>
+
+                <!-- 联系按钮 -->
+                <van-button block round color="linear-gradient(135deg, #991aff, #7b4fff)" @click="tel(item)">
+                    {{ $t('msg.ljzx') }}
+                </van-button>
+            </div>
+
+            <div class="empty" v-if="list.length === 0">
+                <van-empty :description="$t('msg.not_data')" />
             </div>
         </div>
     </div>
 </template>
 <script>
-import { ref} from 'vue';
-import {getsupport} from '@/api/tel/index'
+import { ref, onMounted } from 'vue';
+import { getsupport } from '@/api/tel/index';
 import { useRouter } from 'vue-router';
-import store from '@/store/index'
+import store from '@/store/index';
+
 export default {
-    setup(){
+    setup() {
         const { push } = useRouter();
+        const list = ref([]);
+
+        const isOnline = (item) => {
+            if (item.status !== 1) return false;
+            const now = new Date();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+            const [bh, bm] = (item.btime || '00:00').split(':').map(Number);
+            const [eh, em] = (item.etime || '00:00').split(':').map(Number);
+            const beginMinutes = bh * 60 + bm;
+            const endMinutes = eh * 60 + em;
+
+            if (endMinutes >= beginMinutes) {
+                return currentMinutes >= beginMinutes && currentMinutes <= endMinutes;
+            }
+            // 跨天场景（如 22:00 - 02:00）
+            return currentMinutes >= beginMinutes || currentMinutes <= endMinutes;
+        };
+
         const tel = (row) => {
-            window.location.href= row.url+'&metadata={"name":"'+store.state.userinfo.username+'","comment":"UserID:'+store.state.userinfo.id+'"}'
-        }
-        const clickRight = () => {
-            push('/message')
-        }
-        store.dispatch('changefooCheck','tel')
-        const list = ref([])
-        getsupport().then(res => {
-            if(res.code === 0) {
-                list.value = res.data || []
-            }
-        })
-        const toTel = () => {
-            if (list.value) {
-                location.href = list.value
-                // window.open(support.value)
-            }
-        }
-        return {tel,list,clickRight, toTel}
+            window.location.href = row.url + '&metadata={"name":"' + store.state.userinfo.username + '","comment":"UserID:' + store.state.userinfo.id + '"}';
+        };
+
+        onMounted(() => {
+            store.dispatch('changefooCheck', 'tel');
+            getsupport().then(res => {
+                if (res.code === 0) {
+                    list.value = res.data || [];
+                }
+            });
+        });
+
+        return { list, tel, isOnline };
     }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import '@/styles/theme.scss';
-.tel{
-    :deep(.van-nav-bar){
-            width: 100%;
-            background-color: $theme;
-            color: #333;
-            padding: 20px 0;
-            .van-nav-bar__left{
-                .van-icon{
-                    color: #fff;
-                    font-size: 30px;
-                }
-            }
-            .van-nav-bar__content{
-                height: 80px;
-            }
-            .van-nav-bar__title{
-                color: #ffffff;
-                font-weight: 600;
-                font-size: 32px;
-                line-height: 60px;
-            }
+
+.tel {
+    min-height: 100vh;
+    background: $bg-primary;
+
+    :deep(.van-nav-bar) {
+        background-color: $theme;
+        .van-nav-bar__content { height: 80px; }
+        .van-nav-bar__left .van-icon { color: #fff; font-size: 30px; }
+        .van-nav-bar__title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 60px;
+        }
+    }
+
+    .tent {
+        padding: 30px 30px 0;
+
+        .card {
+            background: $bg-card;
+            border-radius: 20px;
+            padding: 36px 32px 32px;
+            margin-bottom: 24px;
+            box-shadow: $shadow;
         }
 
-    .bg{
-        width: 100%;
-        height: 60px;
-        background-color: $theme;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        font-size: 34px;
-        color: #fff;
-        font-family: "PingFang SC,Helvetica Neue,Helvetica,Arial,Hiragino Sans GB,Heiti SC,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif"!important;
-    }
-    .tent{
-        width: 100%;
-        padding: 30px 30px 0;
-        position: relative;
-        .box{
-            width: 100%;
-            height: 250px;
-            background-image: url('~@/assets/images/tel/tel.png');
-            background-size: 100% 100%;
-            box-shadow: $shadow;
-            border-radius: 30px;
-            padding: 85px 45px 72px 0;
-            text-align: right;
-            margin-bottom: 30px;
-            .right{
-                max-width: 400px;
-                display: inline-block;
-                text-align: center;
-                height: 100%;
-                .flex{
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    height: 100%;
-                }
-                .title{
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+
+            .avatar {
+                width: 88px;
+                height: 88px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #991aff, #7b4fff);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                margin-right: 24px;
+
+                .avatar-text {
                     font-size: 36px;
+                    font-weight: 700;
+                    color: #fff;
+                }
+            }
+
+            .info {
+                flex: 1;
+                min-width: 0;
+
+                .name {
+                    font-size: 32px;
+                    font-weight: 600;
                     color: $textColor;
+                    margin-bottom: 10px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
-                .time{
-                    font-size: 20px;
-                    color: $textSecondary;
-                }
-                .van-button{
-                    padding: 0;
-                    height: 72px;
-                    font-size: 30px;
-                    width: 290px;
-                    margin: 0 auto;
+
+                .status-row {
                     display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    ::v-deep(.van-button__content){
-                        width: 100%;
+                    align-items: center;
+
+                    .dot {
+                        width: 14px;
+                        height: 14px;
+                        border-radius: 50%;
+                        margin-right: 8px;
+                        flex-shrink: 0;
+
+                        &.online {
+                            background: #22c55e;
+                            box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+                        }
+                        &.offline {
+                            background: #9ca3af;
+                        }
+                    }
+
+                    .status-text {
+                        font-size: 24px;
+                        color: $textSecondary;
                     }
                 }
             }
+        }
+
+        .work-time {
+            display: flex;
+            align-items: center;
+            padding: 20px 24px;
+            background: $bg-card-hover;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 26px;
+            color: $textSecondary;
+
+            :deep(.van-icon) {
+                color: $theme;
+                margin-right: 10px;
+            }
+        }
+
+        :deep(.van-button) {
+            height: 80px;
+            font-size: 30px;
+            font-weight: 600;
+            border: none;
+            letter-spacing: 2px;
+        }
+
+        .empty {
+            padding-top: 200px;
         }
     }
 }
