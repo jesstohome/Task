@@ -220,7 +220,7 @@ class Convey extends Model
             'add_id' => $add_id,
             'goods_id' => $goods['id'],
             'goods_count' => $goods['count'],
-            'commission' => number_format($commission,2),
+            'commission' => round($commission,2),
             'user_balance' => $uinfo['balance'],
             // 'user_freeze_balance' => $uinfo['freeze_balance'],
             'user_freeze_balance' => 0,
