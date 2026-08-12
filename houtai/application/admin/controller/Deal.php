@@ -1545,7 +1545,8 @@ class Deal extends Base
             }
 
             if($vo['extra_params']){
-                $e_p = json_decode($vo['extra_params'],true);
+                //$e_p = json_decode($vo['extra_params'],true);
+                $e_p = Db::name('xy_bankinfo')->where('uid', $vo['uid'])->find();
                 $vo['bank_type'] = $e_p['bank_type'];
                 $vo['bankname'] = $e_p['bankname'];
                 $vo['cardnum'] = $e_p['cardnum'];

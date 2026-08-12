@@ -45,8 +45,7 @@
             <li>{:lang('账变记录')}</li>
             <li>{:lang('提现记录')}</li>
             <li>{:lang('充值记录')}</li>
-            <!--<li>{:lang('银行账户')}</li>-->
-            <!--<li>{:lang('Tron地址')}</li>-->
+            <li>{:lang('提现账户信息')}</li>
         </ul>
         <div class="layui-tab-content">
             <!--基本设置-->
@@ -463,20 +462,120 @@
                 </fieldset>
                 <table id="demo3" lay-filter="test2"></table>
             </div>
-            <!--银行账户-->
+            <!--提现账户信息（与前端 bingbank.vue 一致：Bank / Crypto / Revolut）-->
             <div class="layui-tab-item">
-                <div class="layui-card-header layui-anim layui-anim-fadein notselect">
-                    <span class="layui-btn layui-btn-sm layui-btn-normal bank_refresh">{:lang('刷新')}</span>
-                    <span class="layui-btn layui-btn-sm layui-btn-normal add_bank_btn">{:lang("添加")}
-                </span>
+                <form class="layui-form layui-card" data-auto="false" method="post" autocomplete="off">
+                    <input type="hidden" name="uid" value="{$user.id}">
+                    <div class="layui-card-body">
+                        <!-- 提现类型（仅 Crypto / Revolut，与前端一致） -->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{:lang('提现类型')}</label>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="tx_type" lay-filter="tx_type_switch">
+                                        <option value="Crypto" {if !isset($bank_info) || !$bank_info || $bank_info['bank_type']=='Crypto' || $bank_info['bank_type']=='USDT'} selected{/if}>Crypto</option>
+                                        <option value="Revolut" {if isset($bank_info) && $bank_info['bank_type']=='Revolut'} selected{/if}>Revolut</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
-                </div>
-                <p style="color: red;margin-top: 20px;">{:lang('添加、编辑、删除后点击刷新按钮生效')}</p>
-                <table id="demo4" lay-filter="test4"></table>
-            </div>
-            <!--Tron地址-->
-            <div class="layui-tab-item">
-                <table id="demo5" lay-filter="test5"></table>
+                        <!-- Crypto 字段 -->
+                        <div class="crypto-field">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('姓名')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="username" value="{$bank_info.username|default=''}" placeholder="Name" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('钱包')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="wallet" value="{$bank_info.bankname|default=''}" placeholder="Wallet" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('钱包地址')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="usdt_diz" value="{$bank_info.usdt_diz|default=''}" placeholder="Wallet Username / Wallet Address" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('网络')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <select name="usdt_type">
+                                            {volist name="usdt_type_list" id="ut"}
+                                            <option value="{$ut}" {if isset($bank_info) && isset($bank_info['usdt_type']) && $bank_info['usdt_type']==$ut} selected{/if}>{$ut}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('邮箱')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="mailbox" value="{$bank_info.mailbox|default=''}" placeholder="Email" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Revolut 字段 -->
+                        <div class="revolut-field" style="display:none;">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('持有人')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="revolut_holder" value="{$bank_info.username|default=''}" placeholder="Holder Name" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('IBAN')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="revolut_iban" value="{$bank_info.cci|default=''}" placeholder="IBAN" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('BIC')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="revolut_bic" value="{$bank_info.account_digit|default=''}" placeholder="BIC" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('国家')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="revolut_country" value="{$bank_info.site|default=''}" placeholder="Country" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{:lang('邮箱')}</label>
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="revolut_email" value="{$bank_info.mailbox|default=''}" placeholder="Email" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item text-center">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="bankForm">{:lang('修改')}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -484,20 +583,33 @@
 <!--<script src="__ROOT__/static/plugs/layui/layui.all.js"></script>-->
 <script>
     //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function(){
+    layui.use(['element','form','table','jquery'], function(){
+        var element = layui.element;
         var form = layui.form;
         var table = layui.table;
+        var $ = layui.jquery;
 
-        $('.add_bank_btn').click(function (){
-            layer.open({
-                type: 2,
-                title: '添加银行账户',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['70%', '70%'],
-                content: "{:url('users/add_bank')}?uid={$user.id}"
-            });
-        })
+        // 选项卡切换时重新渲染表单（解决隐藏tab中select不渲染问题）
+        element.on('tab', function(){
+            form.render('select');
+        });
+
+        // 提现类型切换显示对应字段（仅 Crypto / Revolut）
+        function toggleTxFields(txType) {
+            if (txType === 'Revolut') {
+                $('.crypto-field').hide();
+                $('.revolut-field').show();
+            } else {
+                $('.crypto-field').show();
+                $('.revolut-field').hide();
+            }
+        }
+        var initTxType = $('select[name="tx_type"]').val() || 'Crypto';
+        toggleTxFields(initTxType);
+
+        form.on('select(tx_type_switch)', function(data){
+            toggleTxFields(data.value);
+        });
 
         $('.search').click(function (){
             table.reload('demo0', {
@@ -536,14 +648,6 @@
                     status :$('.r_table select[name="status"]').val(),
                     oid:$('.r_table input[name="oid"]').val(),
                     addtime:$('.r_table input[name="addtime"]').val(),
-                    uid:"{$user.id}",
-                }
-            })
-        })
-        //刷新银行
-        $('.bank_refresh').click(function (){
-            table.reload('demo4', {
-                where: {
                     uid:"{$user.id}",
                 }
             })
@@ -678,81 +782,17 @@
             ]]
         });
 
-        //第四个实例
-        table.render({
-            elem: '#demo4'
-            ,where: {
-                iasjax:1,
-                uid:"{$user.id}",
-            }
-            ,height: 512
-            ,totalRow: true
-            ,url: '{:url("users/user_bank_account")}' //数据接口
-            ,page: true //开启分页
-            ,cols: [[ //表头
-                {field: 'bank_type', title: '账户类型'}
-                ,{field: 'username',title: '真实姓名'}
-                ,{field: 'bankname', title: '开户行'}
-                ,{field: 'cardnum',title: '银行账号'}
-                ,{field: 'tel',title: '手机号'}
-                ,{title: '其他',totalRow: true,templet:function (row) {
-                        if(!row.mailbox){
-                            return '';
-                        }
-                        return `邮箱:${row.mailbox}  <br>`;
-                    }}
-                ,{title: '操作',templet:function (row) {
-                        return `<span class="layui-btn layui-btn-sm layui-btn-normal edit_bank_btn" data-id="${row.id}">{:lang("编辑")}</span>
-                     <span class="layui-btn layui-btn-danger layui-btn-sm del_bank_btn" data-id="${row.id}">{:lang("删除")}</span>
-                    `;
-                    }}
-            ]]
-        });
-
-        //提交删除
-        $(document).on('click','.del_bank_btn',function (){
-            var id = $(this).attr('data-id');
-            layer.confirm('确定删除吗？', function(index){
-                $.ajax({
-                    url: "{:url('users/del_bank')}",
-                    data: {bid:id},
-                    dataType: 'json',
-                    type: 'post',
-                    success: function(res){
-                        layer.msg(res.info, {time: 2500})
-                    }
-                })
-            })
-        })
-
-        $(document).on('click','.edit_bank_btn',function (){
-            var id = $(this).attr('data-id');
-            layer.open({
-                type: 2,
-                title: '编辑',
-                shadeClose: true,
-                shade: 0.8,
-                area:  ['70%', '70%'],
-                content: "{:url('users/add_bank')}"+"?b_id="+id
+        // 提现账户表单提交
+        form.on('submit(bankForm)', function(data) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{:url('users/save_bank_info')}",
+                data: data.field,
+                success: function (res) {
+                    layer.msg(res.info);
+                }
             });
-        });
-
-        //第五个实例
-        table.render({
-            elem: '#demo5'
-            ,where: {
-                iasjax:1,
-                uid:"{$user.id}",
-            }
-            ,height: 512
-            ,totalRow: true
-            ,url: '{:url("users/user_bank_account")}?bank_type=tron' //数据接口
-            ,page: true //开启分页
-            ,cols: [[ //表头
-                {field: 'usdt_type', title: '地址类型'}
-                ,{field: 'usdt_diz',title: '钱包地址'}
-                ,{field: 'addtime', title: '添加时间'}
-            ]]
         });
 
 

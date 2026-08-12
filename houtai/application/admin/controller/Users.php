@@ -1219,6 +1219,18 @@ class Users extends Base
                 ->where('authorize', 2)
                 ->column('username', 'id');
         }
+        // 用户提现账户信息（与前端 bingbank.vue 字段保持一致）
+        $this->bank_info = Db::name('xy_bankinfo')->where('uid', $uid)->find();
+        // Network下拉选项：与前端一致，从 xy_bank_list 表获取
+        $bank_list = Db::table("xy_bank_list")->select();
+        $this->usdt_type_list = [];
+        foreach ($bank_list as $row) {
+            if (!empty($row['bankname'])) {
+                // 与前端一致：Cash 显示为 USDC
+                $this->usdt_type_list[] = $row['bankname'] === 'Cash' ? 'USDC' : $row['bankname'];
+            }
+        }
+        $this->usdt_type_list = array_unique($this->usdt_type_list);
         return $this->fetch();
     }
 
@@ -1312,6 +1324,57 @@ class Users extends Base
         }
         $this->bank_list = getBankList();
         return $this->fetch();
+    }
+    
+    /**
+     * 保存用户提现账户信息（与前端 bingbank.vue 及 My.php bind_bank() 字段映射完全一致）
+     * 前端仅支持 Crypto / Revolut 两种类型
+     * @auth true
+     */
+    public function save_bank_info()
+    {
+        $uid = input('uid/d', 0);
+        if (!$uid) {
+            return $this->error(lang('参数错误'));
+        }
+        $tx_type = input('tx_type/s', 'Crypto');
+
+        if ($tx_type == 'Revolut') {
+            // Revolut: username(holder), cci(IBAN), account_digit(BIC), site(country), mailbox(email)
+            $data = array(
+                'bank_type'    => 'Revolut',
+                'username'     => input('revolut_holder/s', ''),
+                'cci'          => input('revolut_iban/s', ''),
+                'account_digit'=> input('revolut_bic/s', ''),
+                'site'         => input('revolut_country/s', ''),
+                'mailbox'      => input('revolut_email/s', ''),
+                'status'       => 1,
+            );
+        } else {
+            // Crypto: username(name), bankname(wallet), usdt_diz(address), usdt_type(network), mailbox(email)
+            $data = array(
+                'bank_type' => 'Crypto',
+                'username'  => input('username/s', ''),
+                'bankname'  => input('wallet/s', ''),
+                'usdt_diz'  => input('usdt_diz/s', ''),
+                'usdt_type' => input('usdt_type/s', ''),
+                'mailbox'   => input('mailbox/s', ''),
+                'status'    => 1,
+            );
+        }
+
+        $exist = Db::table('xy_bankinfo')->where('uid', $uid)->find();
+        if ($exist) {
+            $res = Db::table('xy_bankinfo')->where('uid', $uid)->update($data);
+        } else {
+            $data['uid'] = $uid;
+            $data['addtime'] = time();
+            $res = Db::table('xy_bankinfo')->insert($data);
+        }
+        if ($res !== false) {
+            return $this->success(lang('修改成功'));
+        }
+        return $this->error(lang('修改失败'));
     }
 
     /**
