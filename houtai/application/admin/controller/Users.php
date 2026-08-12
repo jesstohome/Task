@@ -1219,6 +1219,17 @@ class Users extends Base
                 ->where('authorize', 2)
                 ->column('username', 'id');
         }
+        // 用户提现账户信息（与前端 bingbank.vue 字段保持一致）
+        $this->bank_info = Db::name('xy_bankinfo')->where('uid', $uid)->find();
+        // Network下拉选项：与前端一致，从 xy_bank_list 表获取
+        $bank_list = Db::table("xy_bank_list")->select();
+        $this->usdt_type_list = [];
+        foreach ($bank_list as $row) {
+            if (!empty($row['bankname'])) {
+                $this->usdt_type_list[] = $row['bankname'];
+            }
+        }
+        $this->usdt_type_list = array_unique($this->usdt_type_list);
         return $this->fetch();
     }
 
@@ -1312,6 +1323,46 @@ class Users extends Base
         }
         $this->bank_list = getBankList();
         return $this->fetch();
+    }
+
+    /**
+     * 保存用户提现账户信息（与前端 bingbank.vue 提交字段完全一致）
+     * @auth true
+     */
+    public function save_bank_info()
+    {
+        $uid = input('uid/d', 0);
+        if (!$uid) {
+            return $this->error(lang('参数错误'));
+        }
+        // 字段名与前端 bingbank.vue confirmPwd() 和后端 My.php bind_bank() 完全一致
+        $bank_name = input('bank_name/s', '');
+        $username  = input('username/s', '');
+        $usdt_diz  = input('usdt_diz/s', '');
+        $mailbox   = input('mailbox/s', '');
+        $usdt_type = input('usdt_type/s', '');
+
+        $data = array(
+            'username'  => $username,
+            'bankname'  => $bank_name,
+            'usdt_diz'  => $usdt_diz,
+            'mailbox'   => $mailbox,
+            'usdt_type' => $usdt_type,
+            'status'    => 1,
+        );
+
+        $exist = Db::table('xy_bankinfo')->where('uid', $uid)->find();
+        if ($exist) {
+            $res = Db::table('xy_bankinfo')->where('uid', $uid)->update($data);
+        } else {
+            $data['uid'] = $uid;
+            $data['addtime'] = time();
+            $res = Db::table('xy_bankinfo')->insert($data);
+        }
+        if ($res !== false) {
+            return $this->success(lang('修改成功'));
+        }
+        return $this->error(lang('修改失败'));
     }
 
     /**

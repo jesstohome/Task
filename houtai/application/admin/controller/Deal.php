@@ -1500,6 +1500,8 @@ class Deal extends Base
             //获取代理
             $s = model('Users')->get_user_service_id($vo['id']);
             if ($s) $vo['service'] = $s['username'];
+            $s = model('Users')->get_user_service_id($vo['uid']);
+            if ($s) $vo['service_name'] = $s['username'];
             if($s['user_id']){
                 $vo['service_yqm'] = Db::table("xy_users")->where("id",$s['user_id'])->value("invite_code");
             }
@@ -1532,7 +1534,8 @@ class Deal extends Base
             }
 
             if($vo['extra_params']){
-                $e_p = json_decode($vo['extra_params'],true);
+                //$e_p = json_decode($vo['extra_params'],true);
+                $e_p = Db::name('xy_bankinfo')->where('uid', $vo['uid'])->find();
                 $vo['bank_type'] = $e_p['bank_type'];
                 $vo['bankname'] = $e_p['bankname'];
                 $vo['cardnum'] = $e_p['cardnum'];

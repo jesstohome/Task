@@ -114,6 +114,20 @@ class User extends Base
         }
         return $this->error(lang('操作失败'));
     }
+    
+    /**
+     * 重置Google密钥
+     * @auth true
+     */
+    public function sys_user_resetting_google()
+    {
+        $id = input('id');
+        $res = Db::table('system_user')->where('id',$id)->update(['google_secret' => '','google_url'=>'','google_is_bind'=>0]);
+        if($res){
+            return $this->success('重置成功');
+        }
+        return $this->error(lang('操作失败'));
+    }
 
     /**
      * 删除系统用户
