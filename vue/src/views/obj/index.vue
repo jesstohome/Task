@@ -186,7 +186,7 @@
           </div>
         </div>
       </div>
-      <div class="copyright"> All Rights Reserved. | Privacy Policy | Terms of Service | <span @click="push('/content?id=20&title=Awisee Platform User Confidentiality Agreement')">Non-Disclosure Agreement (NDA)</span></div>
+      <div class="copyright"> All Rights Reserved. | Privacy Policy | Terms of Service | <span @click="push('/content?id=20&title=Force Platform User Confidentiality Agreement')">Non-Disclosure Agreement (NDA)</span></div>
     </div>
 
     <van-dialog v-model:show="level_show" :title="$t('msg.djsm')" :cancelButtonText="$t('msg.quxiao')" show-cancel-button :showConfirmButton="false">

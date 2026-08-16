@@ -135,7 +135,7 @@ export default {
     const option = ref((baseInfo.value?.area_code) || [])
     const area_code = ref(option.value.map(rr => {return {text: rr, value: rr}}))
     const toRoute = () => {
-      push('/content?id=20&title=Awisee Platform User Confidentiality Agreement')
+      push('/content?id=20&title=Force Platform User Confidentiality Agreement')
     }
     
     const onSubmit = (values) => {
