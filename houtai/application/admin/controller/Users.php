@@ -465,6 +465,9 @@ class Users extends Base
 
             //总赠送
             $vo['give_amount_sum'] = Db::name('xy_balance_log')->where('uid', $vo['id'])->where('type', 34)->where('status', 1)->sum('num');
+            
+            //未完成复数单数量
+            $vo['fushu_num'] = Db::name('xy_compound_order_log')->where('uid', $vo['id'])->where('status', 1)->count();
 
             //余额宝收益
             $vo['lixbao_income'] = Db::name('xy_balance_log')->where('uid', $vo['id'])->where('status', 1)->where('type', 23)->sum('num');
@@ -1324,7 +1327,7 @@ class Users extends Base
         $this->bank_list = getBankList();
         return $this->fetch();
     }
-
+    
     /**
      * 保存用户提现账户信息（与前端 bingbank.vue 提交字段完全一致）
      * @auth true

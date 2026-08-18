@@ -419,14 +419,14 @@ class CompoundOrder extends Base
             }
 
             // 检查用户是否已经有进行中的复数订单
-            $existing_log = Db::name('xy_compound_order_log')
-                ->where('uid', $uid)
-                ->where('status', 1)
-                ->find();
+            // $existing_log = Db::name('xy_compound_order_log')
+            //     ->where('uid', $uid)
+            //     ->where('status', 1)
+            //     ->find();
 
-            if ($existing_log) {
-                return json(['code' => 0, 'info'  => lang('该用户已有进行中的复数订单')]);
-            }
+            // if ($existing_log) {
+            //     return json(['code' => 0, 'info'  => lang('该用户已有进行中的复数订单')]);
+            // }
             
             if($data['trigger_count'] < $yizuo) return json(['code' => 0, 'info'  => lang('触发单数过低！')]);
 

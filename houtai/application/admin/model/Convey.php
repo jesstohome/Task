@@ -143,6 +143,11 @@ class Convey extends Model
             $min = $max = $uinfo['balance'] * $inyectar['scale'];
         }
         
+        //射负数订单根据用户当前余额计算订单金额
+        if($prefix_type == 'FS'){
+            $custom_amount += $uinfo['balance'];
+        }
+        
         if ($prefix_type == 'LB' || $prefix_type == 'FS') {
             $goods = $this->rand_order($custom_amount, $custom_amount,$uid,$cid);
         }else{
@@ -220,7 +225,7 @@ class Convey extends Model
             'add_id' => $add_id,
             'goods_id' => $goods['id'],
             'goods_count' => $goods['count'],
-            'commission' => round($commission, 2),
+            'commission' => round($commission,2),
             'user_balance' => $uinfo['balance'],
             // 'user_freeze_balance' => $uinfo['freeze_balance'],
             'user_freeze_balance' => 0,

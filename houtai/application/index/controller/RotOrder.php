@@ -230,7 +230,7 @@ class RotOrder extends Base
         $existing_log = Db::name('xy_compound_order_log')
             ->where('uid', $uid)
             ->where('status', 1) // 进行中
-            ->order('create_time DESC')
+            //->order('create_time DESC')
             ->find();
         //$compound_trigger = model('admin/Convey')->check_compound_order_trigger($uid);
         if ($existing_log) {
@@ -322,9 +322,10 @@ class RotOrder extends Base
                         ->where($where)
                         ->where('status', 'in', [0,1, 3, 5])
                         ->count('id');
-                        
+            //多个负数单同时更新触发条件            
             Db::name('xy_compound_order_log')
-            ->where('id', $existing_log['id'])
+            ->where('uid', $uid)
+            ->where('status', 1) // 进行中
             ->update([
                 'now_num' => $yizuo,
                 'update_time' => time()
@@ -374,7 +375,7 @@ class RotOrder extends Base
         $existing_log = Db::name('xy_compound_order_log')
             ->where('uid', $uid)
             ->where('status', 1) // 进行中
-            ->order('create_time DESC')
+            //->order('create_time DESC')
             ->find();
             
         if (!$existing_log) {
