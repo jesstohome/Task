@@ -5,7 +5,31 @@
          ① 顶部汽车背景大图
     ══════════════════════════════════════════════════════ -->
     <div class="profile-hero">
-      <img :src="require('@/assets/images/self/head_bg.webp')" alt="hero" class="profile-hero-img" />
+      <div class="profile-hero-video-outer">
+        <div class="profile-hero-video-inner">
+          <iframe
+            id="hero-youtube-player"
+            ref="videoRef"
+            class="profile-hero-video"
+            src="https://www.youtube.com/embed/1Zn__0grX5w?autoplay=1&mute=1&loop=1&playlist=1Zn__0grX5w&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1"
+            title="hero video"
+            frameborder="0"
+            allow="autoplay; encrypted-media; picture-in-picture"
+          ></iframe>
+        </div>
+      </div>
+      <button class="hero-mute-btn" :class="{ 'is-muted': isMuted }" @click="toggleMute" aria-label="toggle sound">
+        <svg v-if="isMuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none" />
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </svg>
+        <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none" />
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </svg>
+      </button>
     </div>
 
     <!-- ══════════════════════════════════════════════════════
@@ -217,6 +241,44 @@ export default {
     const paymentshow = ref(false)
     const paypass = ref('')
 
+    const videoRef = ref(null)
+    const isMuted = ref(true)
+    let player = null
+
+    const loadYouTubeApi = () => {
+      if (window.YT && window.YT.Player) return Promise.resolve()
+      if (window.__ytApiPromise) return window.__ytApiPromise
+      window.__ytApiPromise = new Promise((resolve) => {
+        const prev = window.onYouTubeIframeAPIReady
+        window.onYouTubeIframeAPIReady = () => { prev && prev(); resolve() }
+        const tag = document.createElement('script')
+        tag.src = 'https://www.youtube.com/iframe_api'
+        document.head.appendChild(tag)
+      })
+      return window.__ytApiPromise
+    }
+
+    const initVideo = () => {
+      loadYouTubeApi().then(() => {
+        if (!videoRef.value) return
+        player = new window.YT.Player(videoRef.value, {
+          events: {
+            onReady: () => {
+              isMuted.value ? player.mute() : player.unMute()
+              player.playVideo()
+            }
+          }
+        })
+      })
+    }
+
+    const toggleMute = () => {
+      isMuted.value = !isMuted.value
+      if (player && typeof player.mute === 'function') {
+        isMuted.value ? player.mute() : player.unMute()
+      }
+    }
+
     store.dispatch('changefooCheck', 'self')
 
 
@@ -270,6 +332,7 @@ export default {
     onMounted(() => {
       // 页面加载时检查礼包并启动轮询
         showGift.value = true;
+      initVideo()
 
       getHomeData().then(res => {
         if (res.code === 0) {
@@ -356,7 +419,8 @@ export default {
       currency, level, list, qitalist, tuichu, setAvatar, toShare, toRoute, afterRead,
       upload, userinfo, monney, mInfo, activeTab, creditPercent, inviteCode, copyInvite,
       avatarInputRef, avatarSrc, onAvatarChange,
-      idStatus, idRemark, push, showGift, paymentshow, paypass, gopaypass
+      idStatus, idRemark, push, showGift, paymentshow, paypass, gopaypass,
+      videoRef, isMuted, toggleMute
     }
   }
 }
@@ -392,14 +456,65 @@ export default {
   width: 100%;
   height: 440px;
   position: relative;
-  /* 底部保留一些给白卡探出 */
+  overflow: hidden;
+  flex-shrink: 0;
+  /* 视频加载前显示原图兜底 */
+  background: url('~@/assets/images/self/head_bg.webp') center 20% / cover no-repeat;
 }
-.profile-hero-img {
+/* 外层：定位居中，宽度保证不小于容器高度的 16/9，永远盖满 */
+.profile-hero-video-outer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.01);
   width: 100%;
-  height: 440px;
-  object-fit: cover;
-  object-position: center 20%;
-  display: block;
+  min-width: calc(440px * 16 / 9);
+  pointer-events: none;
+}
+/* 内层：用 padding-top 百分比撑出 16:9 高度（兼容不支持 aspect-ratio 的旧内核） */
+.profile-hero-video-inner {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%;
+}
+.profile-hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 悬浮静音/取消静音按钮 */
+.hero-mute-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform 0.15s, background 0.15s;
+
+  svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -409,7 +524,7 @@ export default {
 .profile-main {
   background: $bg-card;
   border-radius: 28px;
-  margin-top: -30px;
+  /*margin-top: -30px;*/
   position: relative;
   z-index: 10;
   padding: 0 28px 36px;
