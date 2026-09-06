@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php *)",
+      "Bash(lsof -iTCP -sTCP:LISTEN -P)",
+      "Read(//Users/dingding/Library/FlyEnv/**)"
+    ]
+  }
+}

@@ -85,6 +85,16 @@
                 </select>
             </div>
         </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label label-required">{:lang('Google验证')}</label>
+            <div class="layui-input-block">
+                <select name="google_verify" class="layui-select" id="selectList">
+                    <option value="1" {if($system_user.google_verify != 0)} selected {/if}>{:lang('开启')}</option>
+                    <option value="0" {if($system_user.google_verify == 0)} selected {/if}>{:lang('关闭')}</option>
+                </select>
+            </div>
+        </div>
     </div>
     <div class="hr-line-dashed"></div>
     <div class="layui-form-item text-center">

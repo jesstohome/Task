@@ -110,7 +110,8 @@ class Login extends Controller
             if (md5($user['password'] . session('loginskey')) !== $data['password']) {
                  $this->error(lang('登录账号或密码错误，请重新输入!'));
                 }
-                if (config('open_google_safe') == true) {
+                // 该账号关闭谷歌验证后不再校验谷歌验证码
+                if (config('open_google_safe') == true && intval($user['google_verify'] ?? 1) === 1) {
                     //判断是否绑定谷歌令牌
                     if (GoogleService::instance()->isBind($user['id'])) {
                         $googleCode = input('google_code');

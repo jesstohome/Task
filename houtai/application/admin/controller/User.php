@@ -167,6 +167,7 @@ class User extends Base
                 }
             }
             $data['authorize'] = input('authorize');
+            $data['google_verify'] = input('google_verify/d', 1);
             if(input('password')){
                 $data['password'] = md5(input('password'));
             }

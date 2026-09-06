@@ -425,6 +425,7 @@ class Agent extends Base
             }
             cache('edit_agent_'.session('admin_user')['id'],1,3);
             $data = input();
+            $data['google_verify'] = input('google_verify/d', 1);
             $id = input('id');
             if(!empty($data['password'])){
                 $data['password'] = md5($data['password']);
