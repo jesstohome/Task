@@ -52,43 +52,33 @@ export default {
       document.documentElement.style.fontSize = 18 + 'px'
     }
 
-    // 加载 Chatwoot 客服 SDK
-    const loadChatwoot = () => {
+    const libredeskConfig = (userinfo) => ({
+      baseURL: 'https://chat.robothub.shop',
+      inboxID: 'ac32a3db-42a5-4561-a347-7230152593a7',
+      visitorName: (userinfo && userinfo.username) || '',
+      visitorId: userinfo && userinfo.id ? String(userinfo.id) : '',
+      visitorPhone: (userinfo && userinfo.tel) || '',
+      visitorEmail: ''
+    })
+
+    // 加载 Libredesk 客服插件（Settings 必须在 widget.js 加载前设置）
+    const loadLibredesk = () => {
+      window.LibredeskSettings = libredeskConfig(store.state.userinfo)
       const script = document.createElement('script')
-      script.src = 'https://app.jdwe.live/packs/js/sdk.js'
-      script.onload = () => {
-        window.chatwootSDK.run({
-          websiteToken: 'XFFx6yNqEQWp2nNrysY9e1Pi',
-          baseUrl: 'https://app.jdwe.live'
-        })
-        // 存量用户首次加载时清除旧 ID 的 Chatwoot 会话，仅清除一次
-        if (!localStorage.getItem('cw_reset_done')) {
-          window.$chatwoot.reset()
-          localStorage.setItem('cw_reset_done', '1')
-        }
-        const userinfo = store.state.userinfo
-        if (userinfo && userinfo.id) {
-          window.$chatwoot.setUser('999' + userinfo.id, {
-            name: userinfo.username || '',
-            phone_number: userinfo.tel || ''
-          })
-        }
-      }
+      script.src = 'https://chat.robothub.shop/widget.js'
+      script.async = true
       document.body.appendChild(script)
     }
 
     onMounted(() => {
       setRem()
-      loadChatwoot()
+      loadLibredesk()
     })
 
-    // 监听用户登录，自动更新 Chatwoot 用户身份
+    // 监听用户登录，更新 Libredesk 访客身份
     watch(() => store.state.userinfo, (newVal) => {
-      if (window.$chatwoot && newVal && newVal.id) {
-        window.$chatwoot.setUser('999' + newVal.id, {
-          name: newVal.username || '',
-          phone_number: newVal.tel || ''
-        })
+      if (newVal && newVal.id) {
+        window.LibredeskSettings = libredeskConfig(newVal)
       }
     })
 
