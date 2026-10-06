@@ -19,6 +19,11 @@
       </div>
     </div>
   </div>
+  <!-- 页面自带客服图标：首屏立即显示，点击打开 Libredesk 聊天窗 -->
+  <div class="kf-launcher" :style="launcherStyle" @click="onLauncherClick">
+    <img class="kf-launcher__logo" :src="launcherLogo" alt="客服" />
+    <div v-if="unreadCount > 0 && !chatVisible" class="kf-launcher__badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</div>
+  </div>
 </template>
 
 <script>
@@ -30,7 +35,7 @@ import myScroll from './components/scroll.vue'
 import NavBar from './components/navbar.vue'
 import TabNav from './components/tabnav.vue'
 import { useRoute } from 'vue-router'
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 export default {
   components: { myScroll, NavBar, TabNav },
@@ -52,26 +57,104 @@ export default {
       document.documentElement.style.fontSize = 18 + 'px'
     }
 
+    const LIBREDESK_BASE_URL = 'https://chat.robothub.shop'
+    const LIBREDESK_INBOX_ID = 'ac32a3db-42a5-4561-a347-7230152593a7'
+    const LAUNCHER_DEFAULT_COLOR = '#8c00ff'
+    const LAUNCHER_DEFAULT_LOGO = `${LIBREDESK_BASE_URL}/static/public/launcher-logo.png`
+    const LAUNCHER_SETTINGS_KEY = 'libredesk_launcher_settings'
+
     const libredeskConfig = (userinfo) => ({
-      baseURL: 'https://chat.robothub.shop',
-      inboxID: 'ac32a3db-42a5-4561-a347-7230152593a7',
+      baseURL: LIBREDESK_BASE_URL,
+      inboxID: LIBREDESK_INBOX_ID,
       visitorName: (userinfo && userinfo.username) || '',
       visitorId: userinfo && userinfo.id ? String(userinfo.id) : '',
       visitorPhone: (userinfo && userinfo.tel) || '',
-      visitorEmail: ''
+      visitorEmail: '',
+      // 插件自带图标要等设置接口和聊天窗口都加载完才显示，太慢，隐藏它，改用页面自带的即时图标
+      hideLauncher: true
     })
+
+    // 页面自带客服图标：首屏即渲染，不等插件
+    const launcherLogo = ref(LAUNCHER_DEFAULT_LOGO)
+    const launcherStyle = ref({ bottom: '20px', right: '20px', backgroundColor: LAUNCHER_DEFAULT_COLOR })
+    const unreadCount = ref(0)
+    const chatVisible = ref(false)
+    const pendingOpen = ref(false)
+
+    const applyLauncherSettings = (data) => {
+      const launcher = (data && data.launcher) || {}
+      const spacing = launcher.spacing || {}
+      const side = launcher.position === 'left' ? 'left' : 'right'
+      launcherStyle.value = {
+        bottom: `${spacing.bottom != null ? spacing.bottom : 20}px`,
+        backgroundColor: launcher.color || LAUNCHER_DEFAULT_COLOR,
+        [side]: `${spacing.side != null ? spacing.side : 20}px`
+      }
+      if (launcher.logo_url) launcherLogo.value = launcher.logo_url
+    }
+
+    // 拉取图标配置（颜色/logo/位置），localStorage 缓存 24 小时，先用默认值渲染
+    const loadLauncherSettings = () => {
+      try {
+        const cached = JSON.parse(localStorage.getItem(LAUNCHER_SETTINGS_KEY))
+        if (cached && cached.data && Date.now() - cached.ts < 24 * 60 * 60 * 1000) {
+          applyLauncherSettings(cached.data)
+        }
+      } catch (e) {
+        localStorage.removeItem(LAUNCHER_SETTINGS_KEY)
+      }
+      fetch(`${LIBREDESK_BASE_URL}/api/v1/widget/chat/settings/launcher?inbox_id=${LIBREDESK_INBOX_ID}`)
+        .then(res => res.json())
+        .then(result => {
+          if (result.status === 'success') {
+            localStorage.setItem(LAUNCHER_SETTINGS_KEY, JSON.stringify({ data: result.data, ts: Date.now() }))
+            applyLauncherSettings(result.data)
+          }
+        })
+        .catch(() => {})
+    }
+
+    const onLauncherClick = () => {
+      const widget = window.Libredesk
+      if (widget && typeof widget.toggle === 'function' && widget.iframe) {
+        widget.toggle()
+      } else {
+        // 插件还没初始化完，记住意图，就绪后自动打开
+        pendingOpen.value = true
+      }
+    }
 
     // 加载 Libredesk 客服插件（Settings 必须在 widget.js 加载前设置）
     const loadLibredesk = () => {
       window.LibredeskSettings = libredeskConfig(store.state.userinfo)
       const script = document.createElement('script')
-      script.src = 'https://chat.robothub.shop/widget.js'
+      script.src = `${LIBREDESK_BASE_URL}/widget.js`
       script.async = true
+      script.onload = () => {
+        // 等插件的 iframe 创建完成（此时聊天窗口已就绪）再挂接回调
+        let tries = 0
+        const hook = () => {
+          const widget = window.Libredesk
+          if (widget && typeof widget.toggle === 'function' && widget.iframe) {
+            widget.onUnreadCountChange(count => { unreadCount.value = count })
+            widget.onShow(() => { chatVisible.value = true })
+            widget.onHide(() => { chatVisible.value = false })
+            if (pendingOpen.value) {
+              pendingOpen.value = false
+              widget.toggle()
+            }
+            return
+          }
+          if (tries++ < 50) setTimeout(hook, 200)
+        }
+        hook()
+      }
       document.body.appendChild(script)
     }
 
     // 在 setup 阶段就加载，不等待组件挂载，配合 index.html 的 preload 让图标随页面一起出现
     loadLibredesk()
+    loadLauncherSettings()
 
     onMounted(() => {
       setRem()
@@ -117,6 +200,11 @@ export default {
     return {
       showNavBar,
       showTabNav,
+      launcherLogo,
+      launcherStyle,
+      unreadCount,
+      chatVisible,
+      onLauncherClick,
     }
   }
 }
@@ -205,6 +293,57 @@ export default {
   touch-action: pan-y;
   background-color: $bg-primary;
   background: $bg-primary;
+}
+
+/* 页面自带客服图标（替代插件延迟加载的图标，样式与插件保持一致）
+   kf-launcher 已加入 postcss 的 selectorBlackList，px 不会被转成 rem，与插件内联样式保持相同真实像素 */
+.kf-launcher{
+  position: fixed;
+  z-index: 9999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(9, 14, 21, 0.45), 0 3px 18px rgba(9, 14, 21, 0.55);
+  transition: transform 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  &:active{
+    transform: scale(0.9);
+  }
+  @media (max-width: 33.3333rem){
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.kf-launcher__logo{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.kf-launcher__badge{
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ef4444;
+  color: #fff;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border: 2px solid #fff;
+  box-sizing: border-box;
 }
 
 /* ── 紫色光束背景装饰层 ── */

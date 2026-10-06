@@ -64,8 +64,15 @@ export default {
             return currentMinutes >= beginMinutes || currentMinutes <= endMinutes;
         };
 
+        // 与 Libredesk 插件传值格式保持一致：name / user_id / phone
         const tel = (row) => {
-            window.location.href = row.url + '&metadata={"name":"' + store.state.userinfo.username + '","comment":"UserID:' + store.state.userinfo.id + '"}';
+            const userinfo = store.state.userinfo || {};
+            const params = [];
+            if (userinfo.username) params.push('name=' + encodeURIComponent(userinfo.username));
+            if (userinfo.id) params.push('user_id=' + encodeURIComponent(String(userinfo.id)));
+            if (userinfo.tel) params.push('phone=' + encodeURIComponent(userinfo.tel));
+            const sep = row.url.indexOf('?') !== -1 ? '&' : '?';
+            window.location.href = row.url + sep + params.join('&');
         };
 
         onMounted(() => {
