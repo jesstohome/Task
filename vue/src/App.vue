@@ -70,9 +70,11 @@ export default {
       document.body.appendChild(script)
     }
 
+    // 在 setup 阶段就加载，不等待组件挂载，配合 index.html 的 preload 让图标随页面一起出现
+    loadLibredesk()
+
     onMounted(() => {
       setRem()
-      loadLibredesk()
     })
 
     // 监听用户登录，更新 Libredesk 访客身份
